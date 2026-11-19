@@ -1,5 +1,5 @@
 # T23 — plate B03-SH05 (MEREDITH's order "ยิง!" on a low heroic three-quarter) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (length depends on open Q8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (arm chop, talking face)
 Blocked by: T03, T09, T11, T12, T13, T18 · Consumers: B03-SH05 (global 667–687)
 Model: sonnet, medium
@@ -25,6 +25,10 @@ Files: `src/painted/edu30/shots/B03-SH05.tsx`
 **Open-question dependency (Q8).** As written the shot is 21 f; the alternative holds it to global 704 (37 f) with the end key held.
 
 **Judgment for the builder (Hard).** War-film grammar played straight: the low lens, the raised arm, the chop landing on "ยิง!" (L 6–7), a set face. No smirk, no comedy in this shot.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T23/`): L 0, 4, 6, 7, 12, 20; `scripts/qa-sheet.sh out/edu30-T23/sheet.png --cols 6 --width 270 out/edu30-T23/s*.png`; `measure-shots.ts B03-SH05 0,20`; clean L 7 through `caption-zone.py`.

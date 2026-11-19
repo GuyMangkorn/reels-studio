@@ -1,29 +1,30 @@
 # EDU-EP30-SHORT — plate tickets (index)
 
-Revision **`EDU-EP30-TICKETS-R2`** · Film, 2026-11-19 (R1 → R2: fix pass on T01, T02, T03, new T34, Q7/Q8 answered; see the change log) · procedure: [plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md) (trial, 19 Nov 2026)
-Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-for-dev; 28 shots, 1977 f; b01–b07), brief [EDU-EP30-BRIEF-R3](../short/film-brief.md#r3-changes) (VD30-01 … VD30-13, W3.2 look lock), look-lock assets in `src/painted/edu30/` and `src/painted/kit/` at `63fa4f6` (branch `claude/ep30-continuation-493a12`). Evidence: planning only; no ticket built, no runtime or picture evidence.
+Revision **`EDU-EP30-TICKETS-R3`** · Film, 2026-11-19 (R2 → R3: decisions on the built T03, T04, T06, T09, T10, T13; r3 fix passes on T04, T06, T09, T10; new T35; consumer notes; TF17–TF20; see the change log) · procedure: [plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md) (trial, 19 Nov 2026)
+Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-for-dev; 28 shots, 1977 f; b01–b07), brief [EDU-EP30-BRIEF-R3](../short/film-brief.md#r3-changes) (VD30-01 … VD30-13, W3.2 look lock), look-lock assets in `src/painted/edu30/` and `src/painted/kit/` at `63fa4f6`; Boss results merged on branch `claude/ep30-continuation-493a12` at `9a64214` (T01–T04, T06, T09, T10, T13). Evidence for built tickets: each ticket's Result (tests, measured numbers, proof sheets); Film viewed the T06 and T09 proof stills for R3. Nothing else built.
 
 ## Tickets
 
 | Ticket | Class | Hard | Blocked by | Status | Fix passes | Result commit |
 | --- | --- | --- | --- | --- | --- | --- |
-| [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | r2 ready: file the LF01a baseline (one command), no code change | 0 | r1 in ticket Result |
-| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | r2 done: place tag 48 px, box 967 px (4/4 tests) | 0 | r2 in ticket Result |
-| [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | r2 ready: Grade removed, CAL ranges and emu heading π (Q-B moved to T34) | 0 | r1 in ticket Result |
-| [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (after its r2) | ready | 0 | — |
-| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | done (Film answers three open questions in Result) | 0 | on branch `worktree-agent-a58fca69d4e9c2d39` |
-| [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8 answered) | 0 | — |
-| [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | done (look check pending) | 0 | T06 commit on the Boss branch |
-| [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 | ready | 0 | — |
-| [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T07 | ready (Q8 answered) | 0 | — |
-| [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | ready | 0 | — |
-| [T10](T10-dam-shore-path.md) dam: east approach, queue path, reflect, stone, near slope + clearance | set | no | T03 | done (see Result: 6 values to confirm) | 0 | this commit on the T10 worktree branch |
-| [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13, T03 | ready | 0 | — |
+| [T01](T01-newsreel-kit-layer.md) newsreel layer in the kit (pop, tintMix) | capability | no | — | done (r2: LF01a baseline `LF01a.baseline-63fa4f6.png` filed; new vs baseline mean 0.0004) | 1 | `817b899` (r1), `2143dff` (r2) |
+| [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | done (r2: place tag 48 px, box 967.1 px, 4/4 tests) | 1 | `9a1dae6` (r1), `733c658` + `97c2e64` (r2) |
+| [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | done (r2 built: Grade removed, CAL emu heading π; r3 Film: CAL emu range 290 ± 10 px to the toe line, no Boss pass) | 1 | `9e40bbf` (r1), `6082ee6` (r2) |
+| [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (done) | ready — **dispatchable** | 0 | — |
+| [T35](T35-airborne-shadow.md) airborne emu shadow stays on the ground (`BeastPlace.air`, `EmuMember.air`) | capability | no | T06 (done) | ready — **dispatchable** (new in R3, from the T06 hop note) | 0 | — |
+| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | r3 ready — **dispatchable** fix pass: smoke Σ cap 0.6 and blast Σ cap 0.5, lower per-puff alpha; sky tie accepted; no B04-SH03 mirror (TF20) | 0 (r3 is the first) | `727fc25` (r1) |
+| [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 (r3), T10 (r3) | ready (r3 notes: jam casing keys from the built port and the moved stone) | 0 | — |
+| [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | r3 ready — **dispatchable** fix pass: look check **fix** (wing read as arm and hand), plume wing, drooping FLAP_OUT, startle 0.15, neck curve; hop shadow → T35 | 0 (r3 is the first) | `273f065` (r1) |
+| [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 (r3) | ready (r3 notes: mixer rule) | 0 | — |
+| [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T35, T07 | ready (Q8 answered) | 0 | — |
+| [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | r3 ready — **dispatchable** fix pass: high view without ridge rows, P2 on a bare variant ≤ 12, B05-SH04 wire 2.5 px, `paintPaddockScene` in `paddock.ts` (Q-A to Q-D answered) | 0 (r3 is the first) | `a9bf187` (r1) |
+| [T10](T10-dam-shore-path.md) dam: east approach, queue path, reflect, stone, near slope + clearance | set | no | T03 | r3 ready — **dispatchable** fix pass: wading y on the water leg, `STONE_AT` and the B04-SH04 eye moved −0.23 m x with the locked gun (Q-1 to Q-6 confirmed) | 0 (r3 is the first) | `5c39438` (r1) |
+| [T11](T11-seated-gunner.md) seated gunner four views + recoil jolt | figure | yes | T13 (done), T03 | ready — **dispatchable** (r3 notes: gun anchors, pan ticks) | 0 | — |
 | [T12](T12-crew-farmer-poses.md) crew and farmer poses (salute, P30, P44-back, loader, farmer) | figure | yes | T11, T13 | ready | 0 | — |
-| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | built, blocked on Film anchor values A1-A5 (Result) | 0 | T13 commit, branch `worktree-agent-a72562b1a2e567b2d` |
+| [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | done (r3 Film: A1–A5 answered, the locked gun wins; consumers call `paintLewisPanTicks`; no Boss pass) | 0 | `e7a496e` (r1) |
 | [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | ready | 0 | — |
 | [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 | ready (Q7 answered) | 0 | — |
-| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10, T08 | ready (Q7 answered) | 0 | — |
+| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10 (r3), T08, T35 | ready (Q7 answered; r3 notes: wading, hop `air`) | 0 | — |
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12, T13 | ready (Q7 answered) | 0 | — |
 | [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready | 0 | — |
@@ -31,10 +32,10 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | ready | 0 | — |
 | [T22](T22-plate-b02-sh06-heads.md) plate B02-SH06 | set | yes | T03, T07, T08, T09, T11, T12, T13 | ready | 0 | — |
 | [T23](T23-plate-b03-sh05-order.md) plate B03-SH05 | set | yes | T03, T09, T11, T12, T13, T18 | ready (Q8 answered) | 0 | — |
-| [T24](T24-plate-b03-sh01-burst.md) plate B03-SH01 (burst) | set | yes | T03, T04, T05, T06, T08, T09, T11, T13, T34 | ready (Q8 answered) | 0 | — |
+| [T24](T24-plate-b03-sh01-burst.md) plate B03-SH01 (burst) | set | yes | T03, T04 (r3), T05, T06 (r3), T08, T09 (r3), T11, T13, T34 | ready (Q8 answered; r3 notes: muzzle (432, 1020)) | 0 | — |
 | [T25](T25-plates-b03-scatter-signal.md) plates B03-SH02, SH03 (L07 mime) | set | yes | T03, T04, T05, T07, T08, T09, T11, T12, T15 | ready | 0 | — |
 | [T26](T26-plates-b04-ambush-queue.md) plates B04-SH01, SH02 | set | yes | T03, T10, T11, T12, T16 | ready | 0 | — |
-| [T27](T27-plates-b04-burst-jam.md) plates B04-SH03, SH04 | set | yes | T03, T04, T05, T06, T10, T11, T13, T16, T34 | ready | 0 | — |
+| [T27](T27-plates-b04-burst-jam.md) plates B04-SH03, SH04 | set | yes | T03, T04 (r3), T05, T06 (r3), T10 (r3), T11, T13, T16, T34, T35 | ready (r3 notes: muzzle (637, 827), no mirror, B04-SH04 eye x −5.68) | 0 | — |
 | [T28](T28-plates-b04-gunner-watch.md) plates B04-SH06, SH05 (PB01) | set | yes | T03, T05, T07, T10, T11, T13, T15, T16, T17 | ready (Q7 answered) | 0 | — |
 | [T29](T29-plates-b05-chase.md) plates B05-SH01, SH02 | set | yes | T03, T04, T06, T08, T09, T11, T14 | ready | 0 | — |
 | [T30](T30-plates-b05-withdrawal-wave.md) retreat vantage + plates B05-SH03, SH04 | set | yes | T03, T07, T08, T09, T14, T15 | ready | 0 | — |
@@ -42,7 +43,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T32](T32-plates-b06-timelapse-withdrawal.md) plates B06-SH03, SH04 | set | yes | T30, T01, T03, T08, T09, T14, T15 | ready | 0 | — |
 | [T33](T33-plates-b07-arms.md) plates B07-SH01, SH02 | set | yes | T01, T03, T07 | ready | 0 | — |
 
-34 tickets: 19 asset/capability (T01–T18, T34), 15 plate tickets covering all 28 shots once. `needs-input`: none (every value decided; the two open user questions are carried as dependencies below, with the scene-sheet values as written). Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15; `flock.ts`/`proof-flock.tsx` T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T12 → T17 → T18; `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32). First wave (no blockers): T01, T02; then T03; then T04, T06, T09, T10, T13 in parallel.
+35 tickets: 20 asset/capability (T01–T18, T34, T35), 15 plate tickets covering all 28 shots once. `needs-input`: none (every value decided; Q7 and Q8 answered by the user, values as written). Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15; `flock.ts`/`proof-flock.tsx` T35 → T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T12 → T17 → T18; `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32). First wave (no blockers): T01, T02; then T03; then T04, T06, T09, T10, T13 in parallel (all built). **Dispatchable now (R3):** T04 r3, T06 r3, T09 r3, T10 r3 (fix passes), T11, T34, T35 (new); they share no file (T35: `beast.ts`, `flock.ts`, `proof-flock.tsx`; T06 r3: `emu.ts`; T09 r3: `paddock.ts`; T10 r3: `dam.ts`; T04 r3: `kit/gunfire.ts`; T11: `cast.ts`; T34: `shot.ts`, `PaintedStage.tsx`, `edu30/shot.tsx`). A blocker named in any row waits for its r3 pass where it has one (T04, T06, T09, T10). Next after them: T05 (T04 r3 + T10 r3), T07 (T06 r3), T12 and T14 (T11).
 
 ## User questions Q7 and Q8: answered (user, 19 Nov 2026)
 
@@ -65,6 +66,9 @@ Every ticket links here. A ticket's own value wins over this section.
 - **Dispatch and model.** One ticket per fresh Boss invocation on Sonnet, `medium` ([plate-tickets skill](../../../../.agents/skills/plate-tickets/SKILL.md#coordinator-dispatch)); brief = ticket path + revision + model line. Tickets with no shared `Files` and no edge run in parallel, each in its own worktree. Fix-pass cap: two per ticket, then the user decides (one option: rerun on Opus); record it in Fix passes.
 - **What is authoritative.** The linked shot block's Staging, Camera, Projection and Acceptance; the ticket adds build decisions. A ticket row marked **Film fix** overrides the sheet value it names (listed below for the next sheet revision). A missing or conflicting value: set `Status: blocked`, write the question in Result and return; Film answers by revising the ticket.
 - **Man height (r2).** The kit man (`man-parted` + slouch hat) measures about 1.82 m to the hat top (304 px at 6 m, f 1000; T03 CAL); the 1.70 m cast height is the head top (283 px). A pass range computed for a man from 1.70 m is read to the head top; a probe `top` that includes the hat is 1.074 × it. The cast is never scaled to match.
+- **Lewis gun (r3).** Every ticket that paints a Lewis gun reads its points from `lewisAnchors` (T13), never from sheet literals: the locked gun is 1.32 m with the muzzle 0.66 m ahead of the tripod head (TF17). Right after the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})`; without it the pan step per round is invisible.
+- **Space-P plates (r3).** Plates in space P paint the set through T09 `paintPaddockScene` (birds in its `cast` callback) with their schedule values (`eaten`, `stubble`, `light`), not `looks.ts` `paintPaddock` directly.
+- **Emu lead height (r3).** An emu's probe height in side or three-quarter view is read from the head top to the toe line (T03 r3).
 - **Locked looks.** LF01a, LF02 (R4), LF03 (R2) and KP-EMU (r1) are user-locked (W3.2). At default options every extended module reproduces them (mean absolute pixel difference ≤ 2 on the 0–255 scale against a pre-change render, unless the ticket names another bound). Known limits accepted with the lock are fixed only where a ticket says so.
 - **Clocks.** Story events (head turns, nods, wing gestures, taps, bow, rounds, scatter, jam, rack, time-lapse) on the shot clock; walk/peck/run phases, wheat sway, water ripples and the windmill on the ambient clock ([DF-20261030-painted-story-hold-ambient-clock](../../../../docs/dev-findings.md#df-20261030-painted-story-hold-ambient-clock)). Every helper is a pure function of the frame: frame L computed alone equals frame L after 0…L.
 - **Screen layers.** Shake and weave move the plate canvas only; titles, captions, the `@TamMaiLa` mark and the label never move ([DF-20261030-painted-screen-layers-overlay](../../../../docs/dev-findings.md#df-20261030-painted-screen-layers-overlay)). Plates draw no caption, mark or label (Editor).
@@ -80,7 +84,7 @@ Every ticket links here. A ticket's own value wins over this section.
 
 | Ticket | Proof | Film's answer |
 | --- | --- | --- |
-| T06 | reaction stills (startle, duck-flap, hop): `out/edu30-T06/sheet.png`, store `projects/edu/EDU/previews/sheet.png` | pending (Film to answer before T08 and T16) |
+| T06 | reaction stills (startle, duck-flap, hop): store `projects/edu/EDU/previews/KP-{stand,fold,startle,duck,flap,flap-back,hop}.png` (the store `sheet.png` is shared by several tickets and was overwritten; r3 proof is archived under ticket-named files) | r1: **fix** (2026-11-19, Film): the startle wing at 0.4 reads as a dark arm with a claw and the flap-back tufts read as arms held out with fingers; stand, fold, duck, profile flap and hop pass; neck kink at the bib in startle. r3 fix pass in the ticket; **r3 sheet: pending** (Film answers before T08 and T16) |
 | T15 | mime stills and the watch strip (wing at high reach) | pending |
 
 ## Film fixes to fold into the next scene-sheet revision
@@ -104,6 +108,10 @@ Each is decided in the named ticket; the sheets still carry the old wording unti
 | TF13 | T16 | B04-SH02 head "walks 0.3 m/s from 4.6, 4.0 by local 49" → stands to L 40, steps L 41–49, walks on | both cannot hold with a 0.6 m step |
 | TF14 | T18 | B03-SH05 "the near (right) arm" → the right arm is the far arm (screen left) | the lens is at his left front |
 | TF16 | T03 | brief Composition seam "Grade → Newsreel → Grain" → no `Grade` in the plate stack (the Editor may add one above the plates) | it sat under the opaque canvas and did nothing; the locked looks never had it; `NewsreelOverlay` carries the vignette |
+| TF17 | T13 | sheet gun anchors for a 1.1 m gun (paddock muzzle (0, 0.72, −1.1), pan top (0, 0.97, 0.15); B03-SH01 muzzle (457, 951); B04-SH03 muzzle (541, 860); G2 muzzle 0.80 m from the pivot) → the locked build: muzzle (0, 0.586, −0.659), pan (0, 0.650, 0.184), (432, 1020), (637, 827), 0.66 m | LF01a/LF02 lock the gun; the sheets assumed a shorter, taller-panned gun |
+| TF18 | T13, T10, T27 | B04-SH04 eye (−5.45, 1.0, −4.45) → (−5.68, 1.0, −4.45); pan (422, 226) → (415, 253), port (633, 624) → (638, 545) | G1 keeps its LF02 mark; the locked pan and port sit 0.23 m further −x |
+| TF19 | T10, T05 | jam stone (−5.4, 0.33, −4.9) → (−5.63, 0.33, −4.9); casing port key → (−5.679, 0.857, −4.95) | moves with the real port so the casing still lands on it |
+| TF20 | T04, T27 | B04-SH03 "the water mirrors every flash" → no mirror; halation, spouts and casings carry the water side | from this lens the ray to the mirrored muzzle meets the water plane on the dry south bank (waterline z ≈ −5.65, 0.65 m in front of G1) |
 | TF15 | T32 | fence birds added at L 66, 74, 82, 90 → per-jump counts 5, 6, 7, 8, 8, 9 | the time-lapse shows held states |
 
 ## Coverage (every Boss row of SCENE-R2 → ticket)
@@ -131,7 +139,8 @@ Each is decided in the named ticket; the sheets still carry the old wording unti
 | O3: `new: order-chop` P07 → P05 + MEREDITH `talk` (B03-SH05) | T18 |
 | Props: Lewis anchors, recoil, pan, traverse, jam action, cocking handle travel | T13 |
 | Props: truck drive/stop/bump, G2 pedestal, `YCam.body` riders, dust, every truck schedule | T14 |
-| Gunfire effects: flash, halation, pop, smoke, blast, shake, water mirror (index; VD30-11) | T04 |
+| Gunfire effects: flash, halation, pop, smoke, blast, shake (water mirror dropped in R3, TF20) (index; VD30-11) | T04 |
+| Airborne shadow for the hops (T06 note) | T35 (T16, T27 use) |
 | Gunfire effects: casings, strike spurts, water spouts, splash, jam casing | T05 |
 | Crew withdrawal marks (SD06), no crew in B04-SH03/SH05/SH06 frames | T10 (export), T27, T28 |
 | Identical retreat vantage and truck path (B05-SH03, B06-SH03, B06-SH04) | T30 (`vantage.ts`), T32 |
@@ -147,6 +156,8 @@ Not ticketed here (other owners): sounds and the cue sheet (Ton, index O4), Edit
 The SCENE-R1 tickets T01–T23 (written from `EDU-EP30-SCENE-R1`, stopped at T23 before B05-SH03, never dispatched) were deleted in this revision; their numbers are reused here with SCENE-R2 content, and T01–T14 keep their subjects. Dropped with the retired shots and lines: B02-SH05 plate (heads rising behind the crew, `new: loader-kneel-back`, its woodblock beats), B03-SH04 plate (`new: binoculars-at-eyes`, the feather on the pan, the empty paddock), the emu head cock (B04-SH05 stare, L11), the emu talking while running in the B03-SH03 run-past, the tracking followers of the old B03-SH03, the tiny wing flaps of B05-SH03 and B06-SH04 (SD16), and the 26-shot / 2012-frame shot table. Old plate tickets T15–T23 are replaced by T19–T28.
 
 ## Change log
+
+- 2026-11-19, Film, `EDU-EP30-TICKETS-R3` (decisions on the merged Boss results at `9a64214`, nothing built): index rows and the task W5.2 count reconciled from each ticket's own Status/Result (the merge kept one side of both files). **T03 r3** CAL emu 290 ± 10 px to the toe line, done, no pass. **T04 r3** fix pass: smoke and blast haze caps, lower per-puff alphas; clipped-sky tie accepted; no B04-SH03 flash mirror (TF20). **T06 r3** fix pass after Film's look check (fix): plume wing, drooping FLAP_OUT, startle wing 0.15, neck curve; FOLD reading and the one-sided mixer rule accepted; mixer rule written into T07 and T15. **T09 r3** fix pass: high view without ridge rows, P2 on `P30-P2-bare`, post (1020, 991) a typo → (753, 987), rut clause dropped, Q-D accepted, B05-SH04 wire 2.5 px `#3e3226`, `paintPaddockScene` in `paddock.ts`. **T10 r3** fix pass: Q-1 to Q-6 confirmed, wading y, stone and B04-SH04 eye moved with the gun. **T13 r3** A1–A5: the locked gun wins, G1 stays, lens and stone move (TF17–TF19), done, no pass. **T35 new** (airborne shadow; blocks T08, T16, T27). r3 notes in T05, T07, T08, T11, T12, T14–T17, T19, T21–T30. Stale "open Q7/Q8" status marks replaced (answered, values as written). Common rules: Lewis gun, space-P plates, emu lead height.
 
 - 2026-11-19, Film, `EDU-EP30-TICKETS-R2` (fix pass on the three built tickets, nothing built): **T01 r2** re-baselines the proof on the current render, filed as `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.baseline-63fa4f6.png` (the approved store still untouched, drift 3.58 accepted; `strength 0` identity accepted, only the CAL reel and tests call it). **T02 r2** place tag 48 px, padding 56 px, box 967 ± 2 px. **T03 r2** CAL man 304 ± 10 px (hat), emu unchanged, CAL emu heading π and gun heading 0, `Grade` dropped (TF16), Shake30.rot degrees confirmed and Q-D confirmed. **T34 new** (`canvasStyle` hook), blocks T24 and T27. Q7 and Q8 answered by the user, values as written, no ticket change. Common rule "Man height" added.
 

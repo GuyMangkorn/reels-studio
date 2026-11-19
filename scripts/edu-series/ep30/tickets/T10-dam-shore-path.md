@@ -1,5 +1,5 @@
 # T10 — the farm dam has its east approach, the queue path, a reflection helper, the jam stone, and the near inner slope under the B04-SH06 lens (slope clearance checked)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r3 fix pass: wading y on the water leg, the jam stone and the B04-SH04 eye moved with the locked gun; readings Q-1 to Q-6 confirmed; r1 built)
 Class: set · Hard: no
 Blocked by: T03 (`proof-dam.tsx` exists) · Consumers: B04-SH01 … B04-SH06; T16 (queue path)
 Model: sonnet, medium
@@ -18,9 +18,11 @@ Files: `src/painted/edu30/dam.ts`, `src/painted/edu30/proof-dam.tsx` (adds `D30-
 | `queuePoint(s)` / `queueTangent(s)` | position and unit tangent at arc length s from the **gun end** (−3.0, 0.33, −4.9) back along the path; `sAtRimX(x)` = x + 3.0 on the rim segment (x 4.6 → s 7.6; x 1.6 → s 4.6) | ticket (T16 uses s from the head) |
 | Wet rim | the R4 thin dark wet rim along the south waterline, extended along the east shore to the corner (14.5, 0.4, −5.2); width 0.25 m, colour as R4 | lf02-r4 |
 | `reflect(v: V3): V3` | `[v[0], 2 × DAM.water − v[1], v[2]]` (water y 0.30); reflections toned toward `DAM.reflection` as in R4, drawn only where the projected point lies over water; also exported as a `clip` test for T04's mirrored flash | lf02-r4 reflection rules |
-| `paintStone(p, c, at, seed)` | one flat stone 0.14 × 0.10 × 0.05 m, `#8d806d` lit / `#5f5547` shade, at (−5.4, 0.33, −4.9) | b04 B04-SH04 (SD07) |
+| `paintStone(p, c, at, seed)` | one flat stone 0.14 × 0.10 × 0.05 m, `#8d806d` lit, shade faces 0.3 toward dark (as built, r3), at **(−5.63, 0.33, −4.9)** (r3, TF19: moved −0.23 m x with the locked gun's port, so the casing still drops onto it; was (−5.4, 0.33, −4.9)) | b04 B04-SH04 (SD07); Film r3 |
 | Near inner slope (`paintDam({nearSlope: true})`) | for lenses whose eye z lies on the inner slope (z −2.8..−5.0): the slope inside 4 m of the camera footprint is painted as a wash (`DAM.inner`, lit) plus 60 seeded clods and dry tussock marks (0.04–0.12 m), the two R4 bathtub rings continued to the lens, and the wet rim at the waterline; plain fills for the large area ([DF-20261030-p5brush-large-fill-mottle](../../../../docs/dev-findings.md#df-20261030-p5brush-large-fill-mottle)) | b04 B04-SH06 (camera on the slope) |
 | Slope clearance (all B04 lenses, from `southBankY` at `df8a7fc`: crest 1.2 m at z −2.8, water 0.3 at z −5.0) | B04-SH06 start eye (−4.6, 1.45, −3.9): ground 0.75 → **0.70 m** clear; end (−4.68, 1.45, −3.95): 0.73 → 0.72 m · B04-SH05 (−1.6, 1.15, −4.75): 0.40 → 0.75 m · B04-SH02 (1.5, 1.1, −4.25): 0.61 → 0.49 m · B04-SH04 (−5.45, 1.0, −4.45): 0.53 → 0.47 m · B04-SH01 and B04-SH03 eyes are over the water (0.55 m and 0.62 m). All ≥ 0.3 m: **the eyes stay as written** (the sheet's B04-SH06 note assumed a 1.6 m crest, giving 0.5 m; the locked 1.2 m crest gives more) | b04 B04-SH06 Camera ("Boss confirms against `southBankY`, ≥ 0.3 m"); dam.ts |
+| B04-SH04 eye (r3, TF18) | (−5.68, 1.0, −4.45) in `B04_EYES` and `DAM_CAMS` (was −5.45; z unchanged, clearance 0.47 m unchanged); the D30-jam proof uses it, stone target (674 ± 25, 1361 ± 25) unchanged | Film r3 (T13 A2) |
+| Wading y (r3) | `queuePoint(s)` returns y = `DAM.water` (0.30) wherever `overWater(x, z)` (the east-shore leg, z < about −8), and the bank height elsewhere; continuous at the waterline within 0.15 m (the path points' 0.40–0.45 m inside the water were above the surface); T16 hides the feet (ankle-deep) | Film r3 (Q-1) |
 | Clearance test | `tests/edu30-dam.test.ts` asserts eye y − `southBankY(eye z)` ≥ 0.3 for every B04 camera start and end above | ticket |
 | Crew withdrawal marks | not painted; export `CREW_WITHDRAWN = {meredith: (−7.2, 0.9, −3.6), gunner2: (−6.4, 0.7, −4.0)}` for the record (no B04-SH03/SH05/SH06 frame shows them) | b04 Space D continuity |
 | G1 aims | export `G1_AIM = {sh01: 0.55 rad (as LF02), fire: barrel along +x}` (B04-SH03 … SH06) | b04 Space D continuity |
@@ -40,6 +42,16 @@ References (store): `projects/edu/EDU/previews/LF02.58933d6b.png` (LF02 R4, lock
 | D30-sh05 | rim and shallows running away from the lens toward the corner | dot at s 4.6 (x 1.6) at x 507 ± 25 px |
 | D30-jam | stone below the caption band | stone centre (674 ± 25, 1361 ± 25) px |
 | D30-sh06 | lit slope in the lower frame falling to the wet rim, water and far bank beyond, test post at the gunner mark | post top near (454 ± 30, 537 ± 30) px; no unpainted ground pixel below the horizon |
+
+## r3 decisions (Film, 2026-11-19): Boss readings Q-1 to Q-6
+- **Q-1 confirmed with a fix:** the queue wades in the east-bay shallows as the approved D2 board shows; the path y there becomes the water surface (table, Wading y). Path x, z unchanged.
+- **Q-2 confirmed:** `bankTop(x)` as built (crest 1.2 to x 10.5, ramp to 0.5 at x 12, level to 16, ramp to 0 at 17.5), always on; `southBankY` unchanged.
+- **Q-3 confirmed:** the wet rim follows the east-bay waterline (13.4, −6.4) … (16.4, −16.0), 0.25 m; the corner point is dry slope.
+- **Q-4 confirmed:** track painted before the water, over the north spoil bank; 40 claw dashes on the last leg.
+- **Q-5 confirmed:** `paintBox` face tones 0.3 toward dark (about `#63594c`, within a few values of `#5f5547`).
+- **Q-6 confirmed:** `reflectClip(v)`, `G1_AIM.fire` [1, 0, 0], `B04_EYES` and `DAM_CAMS` as built. No flash-mirror predicate is needed: from the B04-SH03 lens the mirrored flash would sit on the south bank (waterline z ≈ −5.65 at the gun; T04 r3 decision 3, TF20), so B04-SH03 paints no mirror.
+- Moved with the locked gun (T13 A2): `STONE_AT` (−5.63, 0.33, −4.9), B04-SH04 eye x −5.68.
+- r3 work for Boss: the wading y, `STONE_AT`, the B04-SH04 eye in `B04_EYES` / `DAM_CAMS`; tests: `queuePoint` y = 0.30 where the leg is over water (e.g. s 25, about (14.53, z −12.69); r1 returns 0.45 there) and the bank height where it is not (s 20, z −7.69); re-run D30-LF02 (≤ 2), D30-queue, D30-jam (stone (674, 1361) ± 25 on the new eye) and record them.
 
 ## Result (Boss fills)
 Commit: this commit on the T10 worktree branch (see index) · proof sheet: `out/edu30-T10/sheet.png` (store `projects/edu/EDU/previews/`: `sheet.png`, `D30-*.png`, `base_LF02.png`) · fix passes: 0 (tests: `node scripts/test.mjs tests/edu30-dam.test.ts` 7/7).

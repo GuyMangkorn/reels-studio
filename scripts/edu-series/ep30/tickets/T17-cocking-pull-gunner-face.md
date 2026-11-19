@@ -1,5 +1,5 @@
 # T17 — GUNNER-1 racks the cocking handle and groans at the gun: `new: cocking-pull` and the angry talking face on `man-crop` front three-quarter
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (frames depend on open Q7)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T12 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`; T11's `front34` view), T13 (`cock` anchor and rack keys) · Consumers: B04-SH06
 Model: sonnet, medium
@@ -27,6 +27,10 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 **Open-question dependency (Q7, index O8).** As written B04-SH06 is 24 f (1062–1086). If the user picks the longer emu shot (cut at 1076, the gunner shot 14 f), the head shake (local 12–20) is dropped and the talk runs local 7–13; with the longer gunner shot (cut at 1096) the shake and talk keys stay and the shot holds the grip pose to local 33. Film bumps this ticket to r2 on the answer.
 
 **Judgment for the builder (Hard, arm, hand, face).** One practised pull: the fist closes on the knob, yanks it straight back along the receiver, runs it home, and the hand returns to the grip, all in 8 frames, with the elbow low and the arm chain whole. The anger is at the gun's timing: brows down, a tight frown, a small shake of the head, the eyes never leave the gun. No comic flailing.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). The rack handle rest at the B04-SH06 start camera projects to (663, 961) (T13 r3; the sheet said (674, 987)).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: right wrist on `cock` ± 0.01 m at L 0, 3, 6 and on `grip` from L 8; arm ratio ≤ 1.05 at every frame L 0–8; left wrist on `stock` every frame.

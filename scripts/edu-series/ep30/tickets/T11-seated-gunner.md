@@ -1,5 +1,5 @@
 # T11 — the seated gunner holds the gun in front, back, right-profile and front three-quarter views and jolts with each round
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: figure · Hard: yes (arm, hand)
 Blocked by: T13 (gun anchors `grip`, `stock`), T03 (`proof-cast.tsx` exists) · Consumers: B01-SH01 (front, locked), B02-SH06 (front, small), B03-SH05 (front, edge), B03-SH01 (back + jolt), B04-SH01 (locked LF02), B04-SH03 (right mitten + jolt), B04-SH06 (front three-quarter, through T17), B05-SH01/SH02 (right profile on the truck); T14, T17
 Model: sonnet, medium
@@ -30,6 +30,10 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (front, seated at G1), `projects/edu/EDU/previews/LF02.58933d6b.png` (seated at G1 from the water).
 
 **Judgment for the builder (Hard, arms).** The gunner is competent and calm: back straight in the lean, elbows low and close to the body, both fists closed on the gun in every frame (never released, never floating). In the jolt only the upper body moves; if an arm chain passes 1.05 × bone at the jolt peak, change nothing else: set the ticket `blocked` with the numbers.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** When the proof paints G1, after its `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). The seated gunner's `grip` and `stock` reach is measured to these anchors (B03-SH01 muzzle at (432, 1020) on that camera).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: reach ≤ 0.52 m both arms in all four views on the paddock G1 anchors; arm ratio ≤ 1.05 at j 0 and j 1.

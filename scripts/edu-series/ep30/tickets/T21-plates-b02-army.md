@@ -1,5 +1,5 @@
 # T21 — plates B02-SH03 (one small truck arrives) and B02-SH04 (the line-up: three men, two guns) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (truck stop, salute)
 Blocked by: T03, T09, T12, T13, T14 · Consumers: B02-SH03, B02-SH04 (global 440–591)
 Model: sonnet, medium
@@ -25,6 +25,10 @@ Files: `src/painted/edu30/shots/B02-SH03.tsx`, `src/painted/edu30/shots/B02-SH04
 | Probe leads | B02-SH03: cab height at L 44; B02-SH04: MEREDITH L 0, GUNNER-1 and GUNNER-2 L 44 | T03 probe |
 
 **Judgment for the builder (Hard).** The truck is one small, heavy, old vehicle: it brakes, dips its nose once and settles while its own dust rolls past. The salute is crisp and proud.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T21/`): SH03 L 0, 30, 44, 46, 53; SH04 L 0, 8, 28, 44, 66, 86, 97.

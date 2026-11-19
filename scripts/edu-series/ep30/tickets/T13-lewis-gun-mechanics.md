@@ -1,5 +1,5 @@
 # T13 — the Lewis gun exposes its anchors and moves: recoil, pan turn per round, traverse, the jam nudge and puff, and the cocking-handle rack
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built, blocked on Film's anchor values (questions A1-A4 in Result); code, tests and proof frames done
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (r3, Film: A1–A5 answered, the locked gun wins; no code change and no Boss pass; consumers carry the `paintLewisPanTicks` call and the new anchor numbers)
 Class: prop · Hard: yes (movement)
 Blocked by: T03 (`proof-props.tsx` exists) · Consumers: T11, T12, T14, T17; B01-SH01, B02-SH04, B02-SH06, B03-SH05, B03-SH01, B04-SH01, B04-SH03, B04-SH04, B04-SH06, B05-SH01, B05-SH02
 Model: sonnet, medium
@@ -15,8 +15,8 @@ Files: `src/painted/edu30/props.ts`, `src/painted/edu30/proof-props.tsx` (adds `
 | What | Value | Source |
 | --- | --- | --- |
 | `lewisAnchors(at: V3, heading, o: {elev?; recoil?; cock?})` | world points `muzzle`, `port` (ejection port, receiver right), `pan` (pan centre top), `grip` (pistol grip mid), `stock` (stock comb mid), `cock` (cocking-handle knob, receiver right), plus unit `dir` (barrel); from the same transform as `placeBuild` | ticket |
-| Paddock check | G1 at (0, 0, 0), barrel −z: `muzzle` (0, 0.72, −1.1) ± 0.03, `pan` top (0, 0.97, 0.15) ± 0.03 | b01 B01-SH01, b03 B03-SH01 G1 rows |
-| Dam check | G1 at (−5.6, 0.32, −5.0), barrel +x: `pan` centre (−5.55, 0.98, −5.0), `port` (−5.45, 0.82, −4.95), `cock` (−5.75, 0.80, −4.92), each ± 0.05 | b04 B04-SH04 (SD07), B04-SH06 Staging |
+| Paddock check (r3) | G1 at (0, 0, 0), barrel −z: `muzzle` **(0, 0.586, −0.659)** ± 0.03, `pan` top **(0, 0.650, 0.184)** ± 0.03 (the locked build; the sheet's (0, 0.72, −1.1) and (0, 0.97, 0.15) assumed a 1.1 m gun and a pan 0.97 m up, TF17) | Film r3 (A1) |
+| Dam check (r3) | G1 stays at its LF02 mark (−5.6, 0.32, −5.0), barrel +x: `pan` centre **(−5.784, 0.970, −5.0)**, `port` **(−5.679, 0.857, −4.95)**, `cock` **(−5.769, 0.843, −4.91)**, each ± 0.05 (the locked build); the B04-SH04 lens and the jam stone move −0.23 m x with them (TF18, TF19) | Film r3 (A2) |
 | Handle side | receiver right, as the port (estimate; Boat index O5 covers the ejection side; a change mirrors both) | index O5 |
 | `lewisRecoil(L, rounds)` | `{back, rise}`: k 0 → 0.005 m, 0.3° (0.00524 rad); k 1 → 0.0025 m, 0.15°; k ≥ 2 → 0; the gun body (not the tripod) moves along −dir by `back` and pitches up by `rise` about the tripod head; tripod feet never move | VD30-11 step 3 |
 | Pan turn | `magTurn` = 7.66° × (rounds with round frame ≤ L) (47-round pan): 0° before round 1; B03-SH01 23 rounds → 176.2° at local 68; B04-SH03 (a fresh pan, 0° at local 0) 11 rounds → 84.3° at local 40; one step per round frame | VD30-11 step 3; b03, b04 G1 rows |
@@ -41,9 +41,18 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (gun lo
 
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
-| R30-gun-fire 1 / 2 | gun back a hair and pan one step on 2; tripod feet identical | tripod foot px difference 0; muzzle px shift 1–4 px |
-| R30-gun-jam 0 / 12 / 21 | pan at 84°, nudged to 86° by 12; puff at the port by 12, gone by 21 | pan centre (422 ± 25, 226 ± 25), port (633 ± 25, 624 ± 25) |
-| R30-gun-rack 0 / 3 | handle forward / pulled back | handle (674 ± 25, 987 ± 25) at 0; moves ≥ 20 px at 3 |
+| R30-gun-fire 1 / 2 | gun back a hair and pan one step on 2; tripod feet identical | tripod foot px difference 0; muzzle px shift **0.9–4 px** (r3) |
+| R30-gun-jam 0 / 12 / 21 | pan at 84°, nudged to 86° by 12; puff at the port by 12, gone by 21 | r3, on the moved B04-SH04 eye (−5.68, 1.0, −4.45): pan centre (415 ± 25, 253 ± 25), port (638 ± 25, 545 ± 25) (computed from the built anchors; checked on the plate in T27, the r1 proof camera is not re-run) |
+| R30-gun-rack 0 / 3 | handle forward / pulled back | handle **(663 ± 25, 961 ± 25)** at 0 (r3, the built anchor); moves ≥ 20 px at 3 |
+
+## r3 decisions (Film, 2026-11-19): anchors A1–A5
+- **A1: the locked gun wins.** LF01a and LF02 are user-locked; the gun is not lengthened. Muzzle 0.66 m ahead of the tripod head, gun 1.32 m long. Consequences (TF17), written into the consumer tickets: B03-SH01 muzzle (432, 1020) on its camera (T24), B04-SH03 muzzle (637, 827) (T27), T09 `leanFrom` (0, 0.586, −0.659), T14 G2 muzzle arm 0.66 m (kick peak y ≈ 2.31). Every consumer reads gun points from `lewisAnchors`, never from sheet literals.
+- **A2: G1's position is the tripod centre at the LF02 mark (−5.6, 0.32, −5.0)** and does not move (LF02 lock, GUNNER-1 seated against it). The built anchors are the truth; the B04-SH04 close-up eye moves to (−5.68, 1.0, −4.45) (TF18, T10 r3 and T27) and the jam stone to (−5.63, 0.33, −4.9) (TF19, T10 r3, T05), so the close-up composition is as the sheet drew it.
+- **A3 confirmed:** port at s −0.08, 0.02 m below the axis, 0.05 m right; handle rest s −0.17, 0.03 below, 0.09 right; rack end s −0.29.
+- **A4 confirmed:** ease-out 1 − (1 − u)², ease-in u²; puff circles at 0 / +0.025 / −0.025 m in x; handle drawn only when `cock` is passed (the plates that show the handle pass it: B04-SH06, B04-SH04); jam elevation 0.04 default.
+- **A5:** muzzle shift 0.9–4 px (0.98 passes); rack handle range re-stated at the built (663, 961) ± 25 (passes).
+- **Pan ticks:** `paintLewisPanTicks` accepted as the pan marking. Every consumer that paints the gun calls it right after `placeBuild` (index common rule "Lewis gun" and each consumer's r3 notes: T11, T12, T14, T17, T19, T21–T30).
+- The r1 build passes every r3 row; status `done`.
 
 ## Result (Boss fills)
 Commit: see `git log` on branch `worktree-agent-a72562b1a2e567b2d` (T13 commit) · fix passes used: 0 · Sonnet medium, 19 Nov 2026 · store: `projects/edu/EDU/previews/` `sheet.png`, `pan-sheet.png`, `fire-1..4.png`, `jam-0/8/12/16/21.png`, `rack-0/3/6.png`, `fire-diff-1-2.png` (local `out/edu30-T13/`, logs `out/logs/T13-*.log`).
@@ -74,5 +83,6 @@ Commit: see `git log` on branch `worktree-agent-a72562b1a2e567b2d` (T13 commit) 
 - A3 The ticket gives no local position for `port` and `cock`; the checks were my only guide. I chose port at s -0.08, 0.02 below the axis, 0.05 right of it; handle rest at s -0.17, 0.03 below, 0.09 right (rack end s -0.29, still on the 0.36 m receiver). Confirm or give numbers.
 - A4 Builder choices where the ticket was silent (change on request): ease-out = 1-(1-u)^2 and ease-in = u^2; the three puff circles are spread 0 / +0.025 / -0.025 m along x as they grow (radius and alpha as written); the cocking handle is drawn only when `cock` is passed; jam elevation was left at the default 0.04.
 - A5 Rack row: with the handle at (663, 961) the y is 0.8 px outside the range; widening to +-27 or answering A2/A3 settles it. Fire row: widen the muzzle shift to 0.9-4 px (or accept 0.98).
+- Answered r3 (Film): A1 locked gun wins; A2 G1 stays, lens and stone move; A3, A4 confirmed; A5 ranges re-stated (see r3 decisions).
 
 Thumb/arm checks: N/A (no hands or arms in this ticket).

@@ -1,7 +1,7 @@
 # T07 — the emu head acts: lens turn, blink, nod, two-state talking beak, neck-sac boom puff (and the relief emu)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: figure · Hard: yes (animal face)
-Blocked by: T06 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
+Blocked by: T06 (its r3 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks); shot blocks b01 B01-SH01/SH03 Staging, b02 B02-SH06 Staging, b05 B05-SH04 Staging, b07 B07-SH02 Staging; [emu.ts](../../../../src/painted/edu30/emu.ts) `lid`, `headYaw`, `EMU_POSES.look`; looks.ts `lensYaw`; [arms.ts](../../../../src/painted/edu30/arms.ts) `ArmsOpts.emuPose`.
@@ -29,6 +29,11 @@ Files: `src/painted/edu30/emu.ts`, `src/painted/edu30/arms.ts` (only if `headYaw
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/KP-face.png`, `KP-look.png`; `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TA2.png` (relief emu looking at the lens).
 
 **Judgment for the builder (Hard, face).** The emu's expression is deadpan: eye ring and half lid carry it; never add brows, a smile or a smirk (FACTCHECK-R3 for the bow). The beak opens like a bird's, the lower mandible only, a clear dark gap at 270 px, shut between syllables. The sac is the bird's own throat swelling, not a balloon: bulge on the front of the lower-middle neck, neck outline continuous. Views: front three-quarter (B01-SH03, B04-SH05, B05-SH04, B06-SH02), rear three-quarter with the head turned back (B02-SH06), relief three-quarter (B07-SH02).
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Mixer rule (T06 r3).** Add every new numeric or L3 field of this ticket (beak, sac, blink, nod, lens-turn controls) to `mixEmuPose`, mixing from its `buildEmu` default when one side lacks it, so a gesture eases in; only `stride` and `pads` stay one-sided (taken whole). Tests: `mixEmuPose(a, a, u) = a`, u 0 = a, u 1 = b for each new field.
+- **Wing (T06 r3).** The wing is the r3 plume drawing; startle carries wing 0.15. Every KP still of this ticket is compared with the T06 r3 renders, not r1.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: defaults (`nod` 0, `beak` 0, `sac` 0) give the pre-change build; `blinkLid` sequence; `talkBeak` is exactly 0 or 1 and 0 outside the onset windows.

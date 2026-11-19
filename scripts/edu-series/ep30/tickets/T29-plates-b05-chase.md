@@ -1,5 +1,5 @@
 # T29 — plates B05-SH01 (chase locked to the truck) and B05-SH02 (the barrel bounces at the sky) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (rider arms on a bouncing body, running emus)
 Blocked by: T03, T04, T06, T08, T09, T11, T14 · Consumers: B05-SH01, B05-SH02 (global 1150–1293)
 Model: sonnet, medium
@@ -25,6 +25,10 @@ Files: `src/painted/edu30/shots/B05-SH01.tsx`, `src/painted/edu30/shots/B05-SH02
 | Probe leads | B05-SH01 GUNNER-1 L 0 and 59; B05-SH02 GUNNER-1 L 0, G2 muzzle at L 8 and 11 | T03 probe |
 
 **Judgment for the builder (Hard).** The ground does it: the world bounces around a calm gunner whose fists never leave G2, and the barrel kicks at the sky on each bump. Nobody fumbles. The emus run easily ahead and pull away.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). B05-SH02 G2 kick: see T14 r3 (peak y ≈ 2.31).
 
 ## Proof
 - Stills (`out/edu30-T29/`): SH01 L 0, 15, 30, 59; SH02 L 0, 8, 11, 24, 27, 72, 79, 83.

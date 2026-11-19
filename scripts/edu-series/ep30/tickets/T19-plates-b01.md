@@ -1,5 +1,5 @@
 # T19 — plates B01-SH01, B01-SH02, B01-SH03 (the hook) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (emu head turn and sac, walking extras)
 Blocked by: T03, T07, T08, T09, T11, T14 · Consumers: B01-SH01, B01-SH02, B01-SH03 (global 0–199)
 Model: sonnet, medium
@@ -29,6 +29,10 @@ Files: `src/painted/edu30/shots/B01-SH01.tsx`, `src/painted/edu30/shots/B01-SH02
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (B01-SH01 L 0), `KP-face.png` and `KP-look.png` (B01-SH03, same folder).
 
 **Judgment for the builder (Hard).** B01-SH01: the bird lifts its head slowly and turns to the lens with its feet still; nobody in the crew reacts. B01-SH03: deadpan; only the lid and the throat move. In B01-SH02 nothing hurries; the extras' feet hold their contacts.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T19/`): SH01 L 0, 70, 80, 89; SH02 L 0, 34, 58; SH03 L 0, 7, 34, 50, through `node scripts/stills.mjs src/painted/edu30/shots-index.tsx --gl=angle` (lines `EDU30-B01-SH01 0 out/edu30-T19/s01_L00.png` …).

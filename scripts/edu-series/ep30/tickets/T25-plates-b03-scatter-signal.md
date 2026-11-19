@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium
@@ -25,6 +25,10 @@ Files: `src/painted/edu30/shots/B03-SH02.tsx`, `src/painted/edu30/shots/B03-SH03
 | Probe leads | B03-SH03 EMU-HERO L 0 and 56 | T03 probe |
 
 **Judgment for the builder (Hard).** The split must read with no words at 270 px: one wing points left and the left half peels off left, one wing points right and the right half peels off right, then the commander stands alone looking at the lens. One gesture at a time; stillness between them.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.

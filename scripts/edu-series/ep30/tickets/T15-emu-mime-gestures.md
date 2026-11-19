@@ -1,5 +1,5 @@
 # T15 — EMU-HERO's mime gestures exist: wing flick (both sides), invisible-watch check, foot tap, wing wave (front three-quarter and back)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (B04-SH05 local frames depend on open Q7)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal, movement, wing as a gesturing limb)
 Blocked by: T07 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses the T06 wing rig and T07 head controls) · Consumers: B03-SH03 (flick), B04-SH05 (watch check, foot tap), B05-SH04 (wave, front three-quarter), B06-SH04 (one wave swing, back)
 Model: sonnet, medium
@@ -32,6 +32,11 @@ All `WingPose` values are for the bird's LEFT wing in the creature frame (+x for
 **Open-question dependency (Q7, index O8).** `emuWatchCheck` and `emuFootTap` are keyed in B04-SH05 shot-local frames from the start at global 1086. If Q7 moves the cut to 1076 or 1096, the global frames stay (taps 1126/1133/1140, wing up 1094–1102) and Film re-derives the local frames in r2; with the cut at 1096 the eye flick (1092) and the wing lift start (1094) fall in the gunner shot and are dropped.
 
 **Judgment for the builder (Hard).** These are pantomime gestures by a real-looking bird: one gesture at a time, crisp, then stillness (deadpan). The flick is a quick out-and-back pointing gesture, not a flap. The watch check must read as "looking at a wristwatch" from the pose alone: forearm-like outer segment level across the chest, head tipped down to it, a long still hold. The tap is small and patient: toes only, the foot never lifts off. The wave is a shopkeeper's goodbye, high and friendly, never a shooing or driving-off gesture (FACTCHECK-R2, L21). Views: front (flick), front three-quarter (watch, tap, wave), back (wave swing). Wings and head stay above y 1100 in their shots.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Mixer rule (T06 r3).** Add every gesture field of this ticket (flick, watch, tap, wave) to `mixEmuPose`, mixing from its default (0 / FOLD) when one side lacks it; only `stride` and `pads` stay one-sided. Tests: `mixEmuPose(a, a, u) = a` and both endpoints for each new field.
+- **Wing look (T06 r3).** The mime wing at reach up to 1 uses the r3 plume drawing (drooping seeded plumes, no three-plume tip): at the watch check and the wave it reads as a feathered wing, never a hand or an arm with fingers; Film's look check of the mime stills stays in the index.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: wing tip length at reach 0.8 = 0.73 m and reach 1 = 0.85 m; the planted pads are identical at every frame of `emuFootTap` and `emuWatchCheck`; `emuWingFlick(0)` = `emuWingFlick(56)` apart from lid and head yaw.

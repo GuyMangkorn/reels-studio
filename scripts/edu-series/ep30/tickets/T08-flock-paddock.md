@@ -1,7 +1,7 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (scatter timing depends on open Q8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal movement)
-Blocked by: T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
+Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks, clocks); [flock.ts](../../../../src/painted/edu30/flock.ts) (`EmuMember`, `flockIn`, one build per pose key, `LOD_PX`); the shot blocks named in each row.
@@ -28,6 +28,10 @@ Files: `src/painted/edu30/flock.ts`, `src/painted/edu30/proof-flock.tsx` (adds `
 **Open-question dependency (Q8).** The scatter frames are tied to round 1 (local 2) and L06's "ยิงใส่ฝูง" (local 40); the alternative moves round 1, and `scatter` then takes its startle frame from round 1 + 2.
 
 **Judgment for the builder (Hard).** Planted feet are the test: on dirt every stance foot holds its world position (slip ≤ 0.02 m) and a stopped bird has both feet down. In wheat feet may be hidden by the near stalks but must not slide. The buffet dip and the halves' departures must read as comic precision: the same frame for every bird in the dip, one clean peel-off per half. The heads field must read as many heads popping up, never as floating heads: each neck enters the wheat.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Blocked by T35 (r3).** T35 changes `flock.ts` (`EmuMember.air`, ground shadow) first; build on it. Startle uses the T06 r3 wing 0.15.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-flock.test.ts`: `buffetRow(135)` all six at full peck, none fully down at 134 or 140; `headsField` keeps every member outside the sightline band; `fenceBirds` bodies behind the wire; stance-foot slip ≤ 0.02 m over 30 f for EMU1; frame L alone equals frame L after 0…L.

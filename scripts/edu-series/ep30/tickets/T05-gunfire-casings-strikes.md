@@ -1,7 +1,7 @@
 # T05 — kit gunfire debris: ejected casings, strike spurts, water spouts and splashes
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (B03 casing count depends on open Q8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: capability · Hard: no
-Blocked by: T04 (same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
+Blocked by: T04 (r3 fix pass first; same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`), T10 (r3: `STONE_AT`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); brief [VD30-11](../short/film-brief.md#vd30-11) steps 4, 7 and Continuity; Casings and Strikes rows in b03 B03-SH01 and b04 B04-SH03; b04 B04-SH04 Staging (jam casing).
@@ -24,10 +24,16 @@ Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts`, `src/painted/edu30
 | `paintSpurts(p, c, L, rounds, s: {points: V3[]; kind: 'dust' \| 'mud' \| 'spout'; h: [min, max]; seed})` | round i uses `points[i]`; life 8 f from the round frame: f 0–2 rise to h (seeded in range), f 3–7 fall and spread; dust: 6 streaks `#8a6a48` + 4 chaff flecks `#d8c48a` + puff `#a08a66` alpha 0.4; mud: 6 streaks `#5a4632` + puff alpha 0.3; spout: one column 0.06 m wide `#e8e4d8` alpha 0.85 to h, crown of 4 droplets, plop ring at its base | VD30-11 step 7 |
 | Strike points and heights | B03: 23 seeded points walking from z −14 to z −26 (round i at z −14 − 12 i / 22, x seeded −6..+6), dust, h 0.6–1.2 m, never closer than 4 m to a bird; B04: 11 points along the queue's line on the rim and the shallows between the gun and the queue head (x walking from −1.0 to +1.4, z seeded −4.9..−5.6; the head is at x 3.6 → 3.0), mud on the rim, spout in the water, h 0.4–0.9 m, never closer than 1.5 m to a bird | b03, b04 Strikes rows; CAT02 (no hits) |
 | `paintSplash(p, c, L, at: V3, start, seed)` | crown 0.40 m wide, 0.35 m high at f 2, droplets falling to f 10, `#e8e4d8`, two rings → 0.5 m over 12 f | b04 B04-SH03 Queue row (two hops, splash at local 25) |
-| Keyed path (jam casing) | `casingKeyed(keys: {L; pos: V3; angle}[], L)` linear between keys; B04-SH04 keys: L 13 at the port (−5.45, 0.82, −4.95), L 17 on the stone (−5.4, 0.33, −4.9), bounce apexes L 19 (+0.04 m) and L 21 (rest) | b04 B04-SH04 Staging (SD07) |
+| Keyed path (jam casing) | `casingKeyed(keys: {L; pos: V3; angle}[], L)` linear between keys; B04-SH04 keys (r3): L 13 at the port `lewisAnchors(...).port` (−5.679, 0.857, −4.95), L 17 on the stone top `STONE_AT` + (0, 0.05, 0) = (−5.63, 0.38, −4.9), bounce apexes L 19 (+0.04 m) and L 21 (rest) | b04 B04-SH04 Staging (SD07) |
 | Ejection side | +1 (receiver's right) until Boat answers index O5; a change flips only `side` | index O5 |
 
 **Open-question dependency (Q8).** The B03 casing count is the round count (23 as written); the alternative changes the count only.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Jam casing keys (r3).** L 13 at the port = `lewisAnchors([−5.6, 0.32, −5.0], 0).port` = (−5.679, 0.857, −4.95) (was (−5.45, 0.82, −4.95)); L 17 on the stone top = T10 r3 `STONE_AT` + (0, 0.05, 0) = (−5.63, 0.38, −4.9) (the stone moved with the gun's real port, TF19); bounce apexes L 19 (+0.04 m) and L 21 (rest) unchanged. Read both from `props.ts` / `dam.ts`, not literals.
+- **Haze (T04 r3).** Debris drawn over the smoke keeps its own alpha; T04's haze cap does not apply to casings, spurts or spouts.
+- **Lewis gun (T13 r3).** When this ticket's proof paints a gun, after its `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - `node scripts/test.mjs tests/gunfire.test.ts`: casing i before `rounds[i] + 1` returns nothing; frame L computed alone equals frame L after 0…L (no hidden state); 23 paddock casings rest inside the B03 box; no B03 strike point within 4 m of a `flockIn` bird (seed 31000, the F1 call of T08).

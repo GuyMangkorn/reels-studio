@@ -1,5 +1,5 @@
 # T22 — plate B02-SH06 ("สามคนเหรอ…": EMU-HERO counts the crew, then the crane over a field of rising heads) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (emu face and nods, rising heads, loader hands)
 Blocked by: T03, T07, T08, T09, T11, T12, T13 · Consumers: B02-SH06 (global 592–666)
 Model: sonnet, medium
@@ -23,6 +23,10 @@ Files: `src/painted/edu30/shots/B02-SH06.tsx`
 | Probe leads | EMU-HERO at L 0 and 74; MEREDITH at L 0 | T03 probe |
 
 **Judgment for the builder (Hard).** The count is deadpan: three small nods, one per syllable, then a slow look back to the lens with the left eye. The heads pop up in six quick waves as the camera rises: necks enter the wheat, heads in profile, eyes to the crew. MEREDITH never looks at them; the crew is busy, not foolish.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T22/`): L 0, 7, 10, 30, 44, 52, 58, 64, 74.

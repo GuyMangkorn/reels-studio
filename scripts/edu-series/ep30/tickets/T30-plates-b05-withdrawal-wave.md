@@ -1,5 +1,5 @@
 # T30 — the shared retreat vantage, plate B05-SH03 (withdrawal one) and plate B05-SH04 (EMU-HERO waves the truck off, "ไว้มาใหม่นะ!") are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (wing wave, talking beak)
 Blocked by: T03, T07, T08, T09, T14, T15 · Consumers: B05-SH03, B05-SH04 (global 1294–1433); T32 (vantage helper)
 Model: sonnet, medium
@@ -26,6 +26,11 @@ Files: `src/painted/edu30/vantage.ts` (new), `src/painted/edu30/shots/B05-SH03.t
 | Probe leads | B05-SH03 EMU-HERO L 0 and 93; B05-SH04 EMU-HERO L 0 and 45 | T03 probe |
 
 **Judgment for the builder (Hard).** B05-SH03: stillness; the birds never turn to the lens; the truck shrinks away in cool evening light. B05-SH04: a cheerful shopkeeper's goodbye, one wing high, swinging, the beak moving on the syllables, head toward the departed truck; wing and head stay above the top wire.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **B05-SH04 fence (T09 r3).** Paint the set with T09 `paintPaddockScene` (birds in its `cast` callback, so the fence draws after them; clearing before the fence from the track side) with `wire: {wireW: 2.5, wireCol: '#3e3226'}`; the locked post at x 0 projects near (753, 987). The fifth fence bird (0.95, 0, 5.8) is this ticket's to place (B05-SH03; TF04 back row).
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
 ## Proof
 - Stills (`out/edu30-T30/`): SH03 L 0, 46, 69, 93; SH04 L 0, 6, 10, 14, 30, 42, 45.

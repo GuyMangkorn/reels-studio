@@ -1,7 +1,7 @@
 # T24 — plate B03-SH01, the first full-frame firing beat (VD30-11, 23 rounds from the order), is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (gunner arms and jolt, flock startle and scatter)
-Blocked by: T03, T04, T05, T06, T08, T09, T11, T13, T34 · Consumers: B03-SH01 (global 688–759)
+Blocked by: T03, T04 (r3), T05, T06 (r3), T08, T09 (r3), T11, T13, T34 · Consumers: B03-SH01 (global 688–759)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); shot block [b03.md](../short/scene-sheets/b03.md) B03-SH01 (authoritative; SD13); brief [VD30-11](../short/film-brief.md#vd30-11) (per-round grammar, value, fallback order).
@@ -32,13 +32,19 @@ Files: `src/painted/edu30/shots/B03-SH01.tsx`
 
 **Judgment for the builder (Hard).** Played straight and loud: an impressive gun and a calm crew. The flash core is the lightest value in its frame, wrapped by darker smoke; spurts walk toward the birds and never reach one; the birds startle, bunch and bolt, none is hit or falls. The gunner's fists never leave the gun.
 
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+- **Muzzle and lean (r3).** B03-SH01 muzzle = `lewisAnchors([0, 0, 0], −π/2).muzzle` = (0, 0.586, −0.659), projecting to **(432, 1020)** on the B03-SH01 camera (was (457, 951)); T09 `leanFrom` is that muzzle. The halation (180 px) reaches into the caption band; accepted (picture glow, the caption sits on top).
+- **Gunfire (T04 r3).** Smoke and blast use the r3 haze caps; the frame-max rule accepts a clipped-sky tie.
+
 ## Proof
 - Stills (`out/edu30-T24/`): L 0, 2, 3, 4, 20, 40, 56, 68, 71; `scripts/qa-sheet.sh out/edu30-T24/sheet.png --cols 5 --width 270 out/edu30-T24/s*.png`; `measure-shots.ts B03-SH01 2,68`; overlay diff: render L 2 and L 3 with `tag: true` and check the tag and guides do not move.
 - Clean L 2 through `caption-zone.py`.
 
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
-| L 2 / 3 | white core + halation + pop / half-size warm decay; muzzle above y 1100 | core luma ≥ 250 and the frame max; muzzle (457, 951) ± 30 |
+| L 2 / 3 | white core + halation + pop / half-size warm decay; muzzle above y 1100 | core luma ≥ 250 and the frame max; muzzle (432, 1020) ± 30 (r3, locked gun) |
 | L 4 | birds' heads up | ≥ 80 % of F1 in the startle pose (logged) |
 | L 56 | clumps bolting, spurts short of the birds, casings on the dirt right of G1 | no strike within 4 m of a bird (logged); casings x 0.8..1.5 |
 | L 71 | bolt open, smoke hanging, no shake | shake (dx, dy, rot) = 0 |

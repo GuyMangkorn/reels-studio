@@ -1,5 +1,5 @@
 # T03 — 28 registered EP30 plates exist (stubs) behind one adapter, with a QA still entry, a lead probe, the proof entries and the calibration sheet
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2 built 2026-11-19; r2 fix pass: Q-A, Q-C, Q-D below; Q-B moved to T34)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (r2 built 2026-11-19; r3, Film: CAL emu range re-stated to the built 290 px, no code change and no Boss pass)
 Class: capability · Hard: no
 Blocked by: T01, T02 · Consumers: every plate ticket (T19–T33); every proof composition (T04–T18); Editor (W5.3 composition)
 Model: sonnet, medium
@@ -37,7 +37,7 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
-| CAL 0 | man, emu and gun side by side on one ground line, emu head top level with the man's head top, hat excluded (the brief's joke) | r2: MEREDITH hat-top h **304 ± 10 px** (the kit `man-parted` + slouch hat is about 1.82 m to the hat top; head top 1.70 m = 283 px, hat about 21 px); EMU h 274 ± 15 px; emu head top within ±15 px of y 827 (MEREDITH feet y 1110 − 283); gun length 222 ± 15 px. The cast is not scaled (locked looks) |
+| CAL 0 | man, emu and gun side by side on one ground line, emu head top level with the man's head top, hat excluded (the brief's joke) | r2: MEREDITH hat-top h **304 ± 10 px** (the kit `man-parted` + slouch hat is about 1.82 m to the hat top; head top 1.70 m = 283 px, hat about 21 px); r3: EMU h **290 ± 10 px** measured from the head top to the side-view toe line (bottom y 1115; the old 274 was the tail-on view); emu head top within ±15 px of y 827 (MEREDITH feet y 1110 − 283); gun length 222 ± 15 px. The cast is not scaled (locked looks) |
 | SEQ 0 / 993 / 1086 / 1976 | tag shows B01-SH01 L0 / B04-SH03 L0 / B04-SH05 L0 / B07-SH02 L121 | exact shot and L |
 | B03-SH01 L0 | stub with overscan; tag and guides unscaled | guide line at y 1100 exactly |
 | tests | context map, tsc | 0 errors |
@@ -48,6 +48,10 @@ Files: `src/painted/edu30/shot.tsx` (new), `src/painted/edu30/shots/index.ts` (n
 - **Q-C:** `Grade` removed from `PlateStack` and from the registered `Overlay` (edit both, delete the import if unused).
 - **Q-D:** confirmed: `Shake30.rot` in degrees (T04 `shakeAt` gives `rot` in degrees and the stack writes `rotate(${rot}deg)`); `Reel30` optional `tintAmount`; the probe's extra ` w <px>` for props; CAL ground = plain paddock. Changed: the CAL emu heading π and gun heading 0 (table above).
 - r2 work for Boss: remove Grade (2 lines), set the CAL emu heading to `Math.PI`, update the comment lines in `calibration.ts` and `shot.tsx`, re-run `EDU30-CAL` and `SEQ_0000`, record the new measured numbers. Files touched: `src/painted/edu30/shot.tsx`, `src/painted/edu30/calibration.ts`.
+
+## r3 decision (Film, 2026-11-19): CAL emu height
+- The emu range is re-stated, the emu is not changed: **EMU-HERO h 290 ± 10 px** (280–300), measured from the head top to the lowest foot pixel, which in the side view (heading π) includes the toes at y 1115. The old 274 ± 15 was taken from the tail-on view (heading −π/2), where the toes hide behind the pads. The criterion that carries the brief's joke is the head-top line: emu head top within ± 15 px of y 827 (measured 825, pass). The built r2 numbers (290, 825) pass r3; no Boss pass is needed and the ticket stays `done`.
+- Every later probe that reads an emu's lead height in side or three-quarter view reads it to the toe line, as here.
 
 ## Result (Boss fills)
 Commit: this commit on the Boss worktree branch (see index) · proof sheet: `out/edu30-T03/sheet.png` (store `projects/edu/EDU/previews/sheet.png`, `CAL.png`, `SEQ_*.png`, `B03-SH01_L0.png`) · fix passes: 0.
@@ -66,4 +70,4 @@ Commit: this commit on the Boss worktree branch (from `claude/ep30-continuation-
 Done: `Grade` removed from `PlateStack` and the registered `Overlay` (import deleted); CAL emu heading `Math.PI`; comments in `shot.tsx` and `calibration.ts` updated.
 Measured (`measure-shots.ts CAL 0`): MEREDITH top 806 bottom 1110 h **304** (304 +- 10: pass); EMU-HERO top **825** bottom 1115 h **290** w 189 (head top vs y 827: 2 px, pass; h range 274 +- 15 = 259-289: **out by 1 px, value not followed**, the side view is a taller silhouette than the old tail-on view; no change made); gun length (w) **222** (222 +- 15: pass). Frame viewed: man, emu in side view facing the man, gun on one ground line, emu head top level with the man's hat top. SEQ_0000 tag B01-SH01 G0 L0.
 Checks: `tsc` 8 errors, none in edu30 files (pre-existing test typings); `npm test` 345/350, the 5 failures (loudness, new-shot, render-inputs, segments, store adopt) are store/audio-fixture related and outside this change.
-Question for Film: widen the emu h range to about 275-295 (feet at 1115 include the side-view toes), or change the emu? Decide; Boss changed nothing.
+Question for Film: widen the emu h range to about 275-295 (feet at 1115 include the side-view toes), or change the emu? Decide; Boss changed nothing. (Answered r3: range 290 ± 10 px to the toe line, emu unchanged; see r3 decision.)

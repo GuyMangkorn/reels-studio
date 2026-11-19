@@ -1,5 +1,5 @@
 # T28 — plates B04-SH06 (GUNNER-1 racks the dead gun, "โธ่เอ๊ย…") and B04-SH05 (PB01: EMU-HERO checks an invisible watch, three foot taps) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (shot boundary 1086 depends on open Q7)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (gunner arm and face, emu mime)
 Blocked by: T03, T05, T07, T10, T11, T13, T15, T16, T17 · Consumers: B04-SH06, B04-SH05 (global 1062–1149; play order SH06 then SH05)
 Model: sonnet, medium
@@ -28,6 +28,10 @@ Files: `src/painted/edu30/shots/B04-SH06.tsx`, `src/painted/edu30/shots/B04-SH05
 **Open-question dependency (Q7, index O8).** As written: gunner 1062–1086, emu 1086–1150. If the user picks emu from 1076 (gunner 0.47 s) or gunner to 1096 (emu 1.8 s), T03, T15 and T17 are revised first and this ticket follows at r2; the global frames of the wing lift (1094–1102), the taps (1126, 1133, 1140) and the turn-away (1143) do not change.
 
 **Judgment for the builder (Hard).** B04-SH06: one practised rack and an angry groan at the gun, eyes on the gun, both fists back on the gun by L 8. B04-SH05: deadpan patience: the wing comes up like a wristwatch, a long still read, the head back up, three small taps, the wing down; the queue shuffles off as the narrator starts Plan 3. The wait reads short and the gunners are heard working (the click is off screen).
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). B04-SH06: handle rest at (663, 961) ± 25 on the start camera (T13 r3).
 
 ## Proof
 - Stills (`out/edu30-T28/`): SH06 L 0, 3, 6, 8, 14, 23; SH05 L 0, 6, 12, 18, 30, 38, 40, 47, 54, 60, 63.

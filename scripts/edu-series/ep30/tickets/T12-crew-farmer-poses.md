@@ -1,5 +1,5 @@
 # T12 — the standing and kneeling crew poses and the farmer's gesture exist with their hands and faces decided
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T11 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`), T13 (pan anchor for the loader) · Consumers: B01-SH01 (P30, P34 locked), B02-SH02 (FARMER), B02-SH04 (salute, line-up), B02-SH06 (visor, loader), B03-SH05 (GUNNER-2 P34 at the edge), B06-SH01 (P44 back, shoulder and hat)
 Model: sonnet, medium
@@ -25,6 +25,10 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (MEREDITH, GUNNER-2 front, outfits, hats), `projects/edu/EDU/previews/LF02.58933d6b.png` (crew at the dam).
 
 **Judgment for the builder (Hard, arms, face).** Every hand is a mitten. Name each hand by the character's side and check its screen side against §1 for the view. The salute is crisp and proud (the joke is the size of the army, not the soldiers). The farmer is angry but not cartoon: one clear arm gesture, the arm chain continuous from shoulder to mitten. The loader's hands stay on the pan while it moves; the pan never floats free of both hands.
+
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). The loader seats the pan on `lewisAnchors(...).pan` (paddock G1 at the origin, barrel −z: (0, 0.650, 0.184)).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: arm ratio ≤ 1.05 on every key frame of A, D, F, G; loader reach ≤ 0.52 m both arms with the pan at its seat.

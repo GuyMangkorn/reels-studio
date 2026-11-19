@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -19,8 +19,8 @@ Files: `src/painted/edu30/props.ts`, `src/painted/edu30/proof-props.tsx` (adds `
 | `paintTruckRig(p, c, o)` | `o: {centre; dir: 1 \| −1; pitch?; roll?; riders: 'silhouettes' \| 'chase' \| 'none'; gear: 'cases' \| 'pedestal' \| 'none'; g2Elev?; wheelTurn?; t; seed}`; paints truck + riders + gun in one `{...c, body: truckBody(...)}` pass | ticket |
 | Silhouette riders | cab: MEREDITH head and slouch hat through the cab window; tray: two seated figures (shoulders, heads, hats) at T(−1.2, 1.1, ±0.45); flat fill `#2b241c`; `'cases'` = two gun cases 1.4 × 0.25 × 0.20 m `#5c4a32` on the tray. Used in B01-SH02, B02-SH03, B05-SH03, B06-SH03, B06-SH04 | b02 B02-SH03 Staging |
 | Chase riders (B05-SH01/SH02) | GUNNER-1 full figure, `paintSeatedGunner` view `'right'` (T11) at T(−1.2, 1.1, 0), fists on G2 `grip`/`stock`; GUNNER-2 driving and MEREDITH as cab silhouettes (driver at the right-hand wheel T(1.6, 1.4, −0.45)) | b05 B05-SH01 Staging |
-| G2 pedestal | post T(−0.55, 1.1 … 1.75, −0.1), Ø 0.08 m, `#34332f`; G2 pivot T(−0.55, 1.80, −0.1); muzzle 0.80 m from the pivot; rest elevation 10°, barrel yawed 14° toward −z (muzzle ≈ T(0.21, 1.94, −0.29)) | b05 B05-SH01 (muzzle T(0.2, 2.0, −0.2), estimate) |
-| G2 bump kick | elevation 10° → **50°** at the bump peak → 10°: muzzle peaks at y ≈ 2.41 (Film fix: the sheet's T(0.0, 2.6, 0) is out of reach of a 0.8 m barrel arm; the kick toward the sky is kept) | b05 B05-SH02 Staging |
+| G2 pedestal | post T(−0.55, 1.1 … 1.75, −0.1), Ø 0.08 m, `#34332f`; G2 pivot T(−0.55, 1.80, −0.1); muzzle 0.66 m from the pivot (r3: the locked gun, tripod-head point on the pivot); rest elevation 10°, barrel yawed 14° toward −z (muzzle ≈ T(0.08, 1.91, −0.26), estimate; `lewisAnchors` wins) | b05 B05-SH01 (muzzle T(0.2, 2.0, −0.2), estimate) |
+| G2 bump kick | elevation 10° → **50°** at the bump peak → 10°: muzzle peaks at y ≈ 2.31 (r3, 0.66 m arm; Film fix: the sheet's T(0.0, 2.6, 0) is out of reach of a 0.8 m barrel arm; the kick toward the sky is kept) | b05 B05-SH02 Staging |
 | B01-SH02 drive | dir +1, centre (−7.0 + 13.0 × L / 58, 0, 9.5), L 0–58, pitch 0 | b01 B01-SH02 |
 | B02-SH03 drive | dir +1; cab front x(L) = −16 + 0.3351 L for L ≤ 30; then x(L) = −5.947 + 0.3351 (L − 30) − 0.01197 (L − 30)² to −3.60 at L 44; centre = cab front − 2.6; stop rock pitch keys L 44: 0 → 46: −2.0° → 48: +0.8° → 50: 0 (ease-in-out) | b02 B02-SH03 |
 | B02-SH04 parked | dir +1, cab front x −3.6, z 9.5, still | b02 B02-SH04 |
@@ -39,6 +39,11 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TP3.png` (t
 
 **Judgment for the builder (Hard).** Weight: the truck is heavy and old; the stop dips the nose and settles once. In the chase the world bounces around a calm gunner whose fists never leave G2. The gun kicks only because the ground kicks it; nobody fumbles.
 
+## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
+These override any older value in this ticket that they name.
+- **G2 muzzle (r3, T13 r3 / TF17).** The locked gun mounts with its tripod-head point on the pivot T(−0.55, 1.80, −0.1); the muzzle is `lewisAnchors(...).muzzle`, 0.66 m from the head (was 0.80 m): at rest (elevation 10°, yaw 14° toward −z) about T(0.08, 1.91, −0.26) (estimate; the build value wins). The bump kick keeps 10° → 50° → 10°: the muzzle peaks at y ≈ 1.80 + 0.66 sin 50° = 2.31 (TF10 2.41 → 2.31). Proof row R30-truck-side 8 / 11: muzzle **100–220 px** higher at L 11 than at L 8 (was 120–260, scaled by the shorter arm).
+- **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+
 ## Proof
 - `node scripts/test.mjs tests/edu30-props.test.ts`: `truckBody(c, 0, 0)` is identity; B02-SH03 cab front at L 30 = −5.95 ± 0.01 and L 44 = −3.60 ± 0.01; a rider point and the deck point keep a constant distance at every B05-SH02 frame; B06-SH03 parked x 2.0 at L 45 and L 89.
 - `proof-props.tsx`: `R30-truck-stop` (B02-SH03 camera `eye (−0.2, 0.4, 9.8), yaw −85, pitch 8, f 850, hy 1000`) at L 0, 30, 44, 46, 48, 53; `R30-truck-chase` (B05-SH01 truck-local camera) at L 0, 10, 20; `R30-truck-side` (B05-SH02 camera) at L 8, 11, 16, 72; `R30-truck-vantage` (B05-SH03 start camera) at L 0, 46, 93.
@@ -48,7 +53,7 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TP3.png` (t
 | --- | --- | --- |
 | R30-truck-stop 44 | one small truck stopped close; dust overtaking by 53 | cab height 486 ± 25 px (SD03) |
 | R30-truck-chase 0 / 10 | world tilted, gunner and tray still in frame | GUNNER-1 ≥ 480 px (sheet 497); rider px drift between frames ≤ 1 px |
-| R30-truck-side 8 / 11 | barrel kicked toward the sky at the bump peak | muzzle 120–260 px higher at L 11 than at L 8 |
+| R30-truck-side 8 / 11 | barrel kicked toward the sky at the bump peak | muzzle 100–220 px higher at L 11 than at L 8 (r3) |
 | R30-truck-vantage 0 | truck on the track beyond the fence | truck centre near (1019 ± 40, 898 ± 40) px |
 
 ## Result (Boss fills)
