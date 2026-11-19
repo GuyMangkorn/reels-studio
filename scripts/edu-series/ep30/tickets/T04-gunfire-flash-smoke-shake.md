@@ -1,5 +1,5 @@
 # T04 — kit gunfire effects: round schedule, muzzle flash with halation, smoke haze, muzzle blast and canvas shake
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (B03 round list depends on open Q8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done (Q8 answered: burst from the order, rounds as written)
 Class: capability · Hard: no
 Blocked by: T03 (`proof-fx.tsx` exists) · Consumers: B03-SH01, B04-SH03, B05-SH02 (two single shots); T05
 Model: sonnet, medium
@@ -44,4 +44,22 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (wheat 
 | fx30 / fx75 | haze built / thinning (fx75 is 7 f after the last round); blast cloud on the ground ahead | haze alpha at fx75 ≤ 0.9 × the same puffs' alpha without the fade (fade factor 1 − 7/45 = 0.84, logged) |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built by Boss (Sonnet medium), 2026-11-19, branch `worktree-agent-a58fca69d4e9c2d39` on `3c3d6d3`; commit = the commit that carries this edit (see index). 0 fix passes. Q8: B03 list kept at `roundFrames(2, 23, 3)`.
+- Files: `src/painted/kit/gunfire.ts` (new), `tests/gunfire.test.ts` (new, 10 tests pass), `src/painted/edu30/proof-fx.tsx` (`FX30-fire`, 80 f), `docs/context-map.md` (EP30 entry links the two new files; they left the Pending line). `npx tsc --noEmit` (`out/logs/T04-tsc.log`): no error in these files; the log holds 22 errors in untouched files (`tests/loudness`, `tests/render-options`, ...), present before this ticket. `npm test` (`out/logs/T04-test.log`): 230 pass, 16 fail, all outside this ticket (12 `Cannot find module '@remotion/three'`, 3 `fs.globSync` missing on this Node; the worktree reuses the main checkout's `node_modules`). `tests/gunfire.test.ts` is in the 230.
+- Proof sheet: `out/edu30-T04/sheet.png` (5 full frames, 270 px) and the muzzle crops `out/edu30-T04/crops_s.png` (700 x 500 px crops of fx02, fx03, fx04, fx30, fx75, fx75); both viewed. Store: `projects/edu/EDU/previews/` (`sheet.png`, `crops_s.png`, `fx00` ... `fx75.png`). Measure script `out/edu30-T04/measure.py`, log `out/logs/T04-measure.log`.
+- Measured:
+
+| Frame | Number | Range | Result |
+| --- | --- | --- | --- |
+| fx02 | core bbox (602, 985)-(658, 1040); core max luma 255, 2543 of its 3248 px >= 250; frame max 255 with 2410 of the 6200 max-valued px inside the core bbox | core >= 250 and frame max inside the core bbox | core pass; the frame max is a **tie**: the plain sky is clipped at 255 on its own (fx00, pop 0, no effect: 3775 px at 255; fx02 outside the core: 3790) so the core is not the single lightest value (see Open question 1) |
+| fx03 | core polygon area 606 px vs 2424 px in fx02, ratio 0.25 (the shape at half size, `#ffd27a`) | 20-35 % | pass |
+| fx04 | no flash; 16 x 16 box at the muzzle (622, 1004)-(638, 1020): smoke mean luma 108.7 vs 180.1 in the same box of fx00 (ground) | smoke < ground | pass |
+| fx30 / fx75 | fx75 alpha of puff 22 0.4152 against 0.4917 without the fade, ratio 0.8444 = 1 - 7/45; 23 puffs; blast cloud 2.0 m ahead of the muzzle on the ground visible and grown at fx30 and fx75 | <= 0.9 | pass |
+
+- The proof sheet shows the picture as the numbers are written: the 23 smoke puffs at alpha 0.30 plus the fade-less 0.55 births pile up into a near-opaque dark brown mass (fx75: about 160 px wide, covering the emu's lower half and the gun's muzzle end) and the blast ellipse is a large flat brown pool. Film judges whether that is the intended haze (see Open question 2); no value was changed.
+- Fix passes used: 0 (two corrections during the first build, before proof: `washAt` takes the brush 0-255 opacity scale, so alphas are passed as alpha x 255; the round bloom faces the lens instead of lying in the plane across the barrel, where it was edge-on).
+- Decided where the ticket was silent (nothing else): `roundPhase` returns `{n: -1, k: -1}` before round 1; the flash shapes are three (star, cone, bloom; the ticket text says "4-point star", the forward cone and "round bloom"), picked per round by `hash`; the bloom is a 14-gon facing the lens, star and cone lie in the vertical plane through the barrel (foreshortened when the lens looks along it); the smoke puff circle offsets are +-0.3 of its screen radius; the blast puff is a ground-flat ellipse (height 0.6 of width) on y 0, jittered +-0.3 of its radius, no fade; `blastLean` after the last round is linear from 0.17 over 15 f and is 0 for `distM` outside 1-3; `shakeAt` sums the impulses of rounds still at k 0-2 and returns +0 (never -0) from `stop`; `clip` drops a flash whose muzzle picture point fails the predicate (not a polygon clip). `GUNFIRE_PRESETS` holds the B03-SH01, B04-SH03 and B05-SH02 numbers of the Decided values table. Seeds are the plate's.
+- Open questions for Film (none blocks the ticket; none was decided by Boss):
+  1. fx02 "brightest pixel in the frame is in the core": the CAL morning sky already clips to 255 under the newsreel grade, so the core can tie but never exceed it in a sky-filled frame; B03-SH01 and B04-SH03 plates will hit the same tie where sky shows. Accept the tie, or name a sky value cap.
+  2. Smoke build-up as written (alpha 0.55 to 0.30 per puff, 23 puffs, no cap on the sum) reads as a solid mass, not a haze. Keep, or give a haze alpha cap or a lower per-puff alpha for the 23-round list (the 11-round B04 list builds less).
+  3. `o.clip` for the B04-SH03 water mirror is a centre test; if T10 needs the mirrored flash cut along the shore line, say so and give the polygon test, which this module does not have.

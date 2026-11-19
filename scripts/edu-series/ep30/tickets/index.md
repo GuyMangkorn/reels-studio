@@ -11,7 +11,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T02](T02-newsreel-titles.md) six newsreel title cards | capability | no | — | r2 ready: place tag 48 px, box 967 px | 0 | r1 in ticket |
 | [T03](T03-plate-adapter.md) adapter, 28 stubs, QA entry, probe, proof entries, calibration | capability | no | T01, T02 | r2 ready: Grade removed, CAL ranges and emu heading π (Q-B moved to T34) | 0 | r1 in ticket Result |
 | [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (after its r2) | ready | 0 | — |
-| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | ready | 0 | — |
+| [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | done (Film answers three open questions in Result) | 0 | on branch `worktree-agent-a58fca69d4e9c2d39` |
 | [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8 answered) | 0 | — |
 | [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | ready | 0 | — |
 | [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 | ready | 0 | — |
