@@ -1,5 +1,5 @@
 # T05 — kit gunfire debris: ejected casings, strike spurts, water spouts and splashes
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built, 2 open questions for Film (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: capability · Hard: no
 Blocked by: T04 (r4 fix pass first; same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`), T10 (r3: `STONE_AT`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
 Model: sonnet, medium
@@ -51,4 +51,10 @@ These override any older value in this ticket that they name.
 | L 14 | spout column and splash crown readable at 270 px | spout width ≥ 3 px at 270 px scale |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+- Built 2026-11-19 (Boss, Sonnet medium) on `worktree-agent-a07e395bd5f082c0f` after T04 r4 and T10 r4; commit: this edit. Files: `src/painted/kit/gunfire.ts` (`casingAt`, `restingCasings`, `paintCasing`, `paintCasings`, `paintRing`, `casingKeyed`, `spurtHeight`, `spurtProfile`, `paintSpurts`, `strikePoints`, `paintSplash`; `CasingSpec` carries `port`, `side`, `seed`, `dir` (barrel direction, needed for the gun frame), `ground`, `water`, `box`), `tests/gunfire.test.ts` (18 pass, 6 new), `src/painted/edu30/proof-fx.tsx` (`FX30-debris`, 80 f; G1 at the origin, barrel -z, with T13 pan ticks and recoil).
+- Proof: `out/edu30-T05/sheet.png` (fx03, fx08, fx14, fx22, fx75; viewed) plus crops viewed. Store (`projects/edu/EDU/previews/`): `T05-sheet.png`, `T05-fx03/08/14/22/75.png`, `T05-crop14.png`, `T05-low75.png`.
+- Measured: L 8 spurts alive at heights 0.834, 0.678, 1.085 m (all in 0.6-1.2; 42, 33, 52 px at the full-res peak); L 14 spout width 0.06 m = 20 px full-res = 5.0 px at 270 px (needs >= 3: pass; the spout sits 3.0 m from the lens); no B03 strike point within 4 m of an F1 bird (seed 31000; test). Casings: 23 of 23 rest inside the box by L 98; **at L 75 only 15 of 23 are at rest** (13 at L 71, 16 at L 79) with all the rest still in the air.
+- Values not followed: the L 75 row ("23 casings at rest, all 23 inside the box") cannot hold with this ticket's own ballistics: a casing leaves the port at about 0.54 m with up-speed 2.6-3.1 m/s, so its first flight alone is about 0.7 s (21 f) and the last round (local 68) lands about L 98; B03-SH01 is [688, 760) = 72 f, so the shot ends with 10 casings still falling. The built rest points are all inside the box (test, L 140), but the ticket's L 75 pass range is not met. Not changed because the values are Film's.
+- Choices the ticket left open (implemented as plain defaults, listed for Film): spurt rise is linear to h at f 2 (f 0 = h/3), fall linear to 0 at f 8; dust/mud streak width 0.03 m tapering to 0.015, chaff fleck 0.02 m, puff ellipse radius 0.25 h, no puff fade; the splash crown is five spikes gone by f 6 and its second ring starts 3 f after the first; jam-casing key angles and the casing axis heading are caller values (the test uses 0, 1, 2, 3); the glint frame is the apex rounded to a frame; the second flight turns half a turn.
+- Open questions for Film: (1) L 75 row: move the frame to L 98, or accept casings still falling at the shot end (B03-SH01 ends at L 71 with 13 at rest)? (2) jam casing angles at the four keys (L 13, 17, 19, 21).
+- Fix passes used: 0.
