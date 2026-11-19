@@ -101,3 +101,42 @@ Whisper (large-v3-turbo) transcription of every R2 line file, 0.5 s padded: ever
 4. **Narrator lead silences kept as R1**: L06, L09, L10, L12, L13, L14 carry 0.3-0.5 s of low room noise before the first word (R1 behaviour, approved), so audible gaps before them are 0.5-0.7 s rather than 0.2 s. Say if the user wants them trimmed to a flat 0.2 s (would shorten the total by about 2 s).
 5. **Scene sheets**: every anchor from L19 on changed against SCENE-R1 (timed to R1.1) and the order changed; Film re-times from this table. Editor did not edit scene sheets.
 6. Not heard by ear: user approval of VOICE-R2 (W4.3) covers it.
+
+
+<a id="voice-r21"></a>
+# EDU-EP30-VOICE-R2.1 (voice lock for script R2.2)
+
+Editor, 2026-11-19, for script [EDU-EP30-SCRIPT-R2.2](script.md#r22-changes) (emu L07 and L15 are silent mime beats; L19 and L21 stay spoken). Status: **built and measured, user approval pending (W4.3)**. Replaces VOICE-R2 (kept intact in store `ep30-voice-r2/`; `ep30-voice-r1/` also intact). Build: [voice-lock-build-r2-1.py](voice-lock-build-r2-1.py) (from the R2 builder; no API calls), anchors: `VO_DIR=out/ep30-voice-r2-1 python3 -I vo-anchors.py` (mime lines are printed as silent slots). Store: `projects/edu/EDU/narration/ep30-voice-r2-1/` (`preview.wav`, `timing.json`, `anchors-R2.1.txt`, `lines/`).
+
+## Change vs R2
+
+- L07 and L15 Puck takes removed; each slot is replaced by silence of the same length (L07 27.15-29.43 s, frames 815-883; L15 52.42-53.55 s, frames 1574-1606), so the 0.2 s gaps stay and nothing else moves.
+- Every other line file is a byte copy of the R2 file. Checked: the start and end of all 19 line slots are identical to R2 (timing.json diff empty), and the anchors diff against `anchors-R2.txt` shows only the L07 and L15 rows. Total unchanged.
+- The silent slots are the mime beats for Film's scene sheets: L07 wing wave both ways and flock splits; L15 bow (VD30-05b). Ton may put a SFX/foley bed there; no voice under them.
+
+## Anchors (seconds and 30 fps frames, timeline 0 = L01 file start)
+
+| Line | Speaker | File | Speech on-off (s) | Speech frames | Dur |
+| --- | --- | --- | --- | --- | ---: |
+| Line | Speaker | File | Speech on-off (s) | Speech frames | Dur |
+| L01 | NARR | 0.00-6.05 | 0.06-5.93 | 2-178 | 6.05 |
+| L02 | NARR | 6.25-11.74 | 6.88-11.69 | 206-351 | 5.49 |
+| L03 | FARMER | 11.94-14.35 | 11.94-14.35 | 358-431 | 2.42 |
+| L04 | NARR | 14.55-19.67 | 14.99-19.60 | 450-588 | 5.12 |
+| L19 | EMU | 19.87-22.24 | 19.89-22.22 | 597-667 | 2.36 |
+| L22 | MEREDITH | 22.44-22.76 | 22.44-22.75 | 673-683 | 0.33 |
+| L06 | NARR | 22.96-26.95 | 23.48-26.87 | 704-806 | 3.99 |
+| L07 | EMU | 27.15-29.43 (slot) | mime, silent | 815-883 (slot) | 2.28 |
+| L09 | NARR | 29.63-33.67 | 29.96-33.61 | 899-1008 | 4.04 |
+| L10 | NARR | 33.87-36.05 | 34.20-35.96 | 1026-1079 | 2.19 |
+| L23 | GUNNER | 36.25-38.29 | 36.39-38.27 | 1092-1148 | 2.03 |
+| L12 | NARR | 38.49-43.57 | 38.89-43.50 | 1167-1305 | 5.08 |
+| L13 | NARR | 43.77-46.99 | 44.14-46.77 | 1324-1403 | 3.22 |
+| L21 | EMU | 47.19-48.27 | 47.19-48.24 | 1416-1447 | 1.07 |
+| L14 | NARR | 48.47-52.22 | 48.82-52.18 | 1465-1565 | 3.75 |
+| L15 | EMU | 52.42-53.55 (slot) | mime, silent | 1574-1606 (slot) | 1.13 |
+| L16 | NARR | 53.74-58.81 | 53.77-58.76 | 1613-1763 | 5.06 |
+| L17 | NARR | 59.01-62.69 | 59.02-62.64 | 1771-1879 | 3.68 |
+| L18 | NARR | 62.89-64.91 | 62.90-64.88 | 1887-1946 | 2.02 |
+
+Last speech **64.88 s** (frame 1946); with the 2.0 s hold the short is **66.91 s** (2007 frames; preview.wav 66.905 s), identical to VOICE-R2.

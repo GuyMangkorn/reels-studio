@@ -151,3 +151,19 @@ Reconstructed gunfire, the "ยิง!" music cut, the trigger clicks under L23 
 
 - Gaps unchanged: Trove, NAA MP742/1 17/5/219 and Hansard unopened; who gave which order on 2 Nov is not documented in anything Boat read, hence L22 stays a labelled dramatization.
 - Readiness for Film handoff: **supported** for SCRIPT-R2.1 as written, no must-fix, on the condition that the voice redo (MEREDITH, GUNNER, Puck lines) and the Film brief/scene sheets are re-cut to R2.1; user approval of R2.1 still pending. Not a runtime, audio or picture validation.
+
+---
+
+# EDU-EP30-FACTCHECK-R3
+
+Boat, 2026-11-19. Scope: `EDU-EP30-SCRIPT-R2.2` (short/script.md#r22-changes), the three picture-only rows only. Inputs: research.md (CAT02, F005, F007, F010), the R2.2 table rows for L07, L15 and PB01. No spoken line changed, so the R2 verdicts on the fact lines stand. No new source was opened (none needed for picture-only comedy). Findings are optional unless marked.
+
+| Row | Verdict | Reason | Safer wording or condition (optional) |
+| --- | --- | --- | --- |
+| L07 mime (emu signals, flock splits) | pass | Plain comedy under the "แต่งเติม... ภาพและเสียงจำลอง" label. The scatter fact stays in L06 narration (F007, with no count). No narration or caption says emus signal or coordinate. | Keep it one wing flick each way by the single emu, with no caption and no "tactic" word. Do not add an on-screen plan or arrow overlay that reads as a real diagram of emu behaviour. |
+| L15 mime (bow after L14) | pass | The bow sits in the L15 slot right after L14 (F010) and reads as accepting praise. It does not comment on the withdrawal, which comes at L13 and L16. | Cut away from the bow before L16 starts, and do not hold it into the L16 withdrawal. Keep it to one bow with no smirk or "victory" pose. F010 stays press talk, so the bow adds no claim that he meant it about this fight. |
+| PB01 foot-tap and invisible watch | pass | The watch is invisible, so no clock time or date is painted and dispute 5 (jam day) is untouched. F005 (the jam) is unchanged. The beat sits under L23, which blames the gun's timing. | Do not paint a visible watch, clock, calendar or tally. Do not let the gunners lag or fumble in the frame: keep them working at the gun or groaning at the gun, and make the emu the only one "waiting". The wait must not read as a long delay (that would imply a slow fix, CAT02). Keep the beat short as scripted (about 2.8 s). |
+
+Must-fix: none. Sound: no new sound is implied by the mimes. If Ton adds a foot-tap or wing flick, label it as fictional like the rest of the SFX; none needs a real-recording source.
+
+Readiness: R2.2 picture beats are fact-clean for Film handoff. Uncertainty unchanged: Trove, Hansard and NAA remain unreachable, which affects F009, F010, F012 and the kill numbers but not these three beats.

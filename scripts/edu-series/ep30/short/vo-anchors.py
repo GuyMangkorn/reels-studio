@@ -8,6 +8,8 @@ D = os.environ.get('VO_DIR', 'out/ep30-voice')  # VO_DIR=out/ep30-voice-r2 for V
 fr = lambda t: int(t * 30 + 0.5)
 for l in json.load(open(f'{D}/timing.json'))['lines']:
     k, s = l['line'], l['start']
+    if l.get('mime'):
+        print(f"{k} file {s:.2f} mime, silent (slot {s:.2f}-{s + l['dur']:.2f})"); continue
     pcm = array.array('h', subprocess.check_output(['ffmpeg', '-v', 'error', '-i', f'{D}/lines/{k}.wav', '-f', 's16le', '-ac', '1', '-ar', '16000', '-']))
     e = [max(abs(x) for x in pcm[i:i + 160]) for i in range(0, len(pcm), 160)]
     on = next(i for i in range(len(e)) if all(v > 1500 for v in e[i:i + 4]))
