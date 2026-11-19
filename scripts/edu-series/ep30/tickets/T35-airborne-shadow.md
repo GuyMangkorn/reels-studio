@@ -1,5 +1,5 @@
 # T35 — an airborne emu's shadow stays on the ground (the B04-SH03 hops)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: blocked (one proof range, see Result)
 Class: capability · Hard: no
 Blocked by: T06 (done: `emuHop` returns `{pose, offset}`) · Consumers: T08 (same file `flock.ts`, builds after this), T16 (queue hops), T27 (B04-SH03 hops); any later flier or jumper painted through `paintBeast`
 Model: sonnet, medium
@@ -33,3 +33,17 @@ References: the T06 store still `projects/edu/EDU/previews/KP-hop.png` (shadow l
 | FL30-hop L 3 | both feet off the ground, a smaller, paler shadow on the ground under the bird with a clear gap between pads and shadow | shadow centre y within ± 4 px of the stand frame's; gap pads-to-shadow ≥ 20 px (logged) |
 
 ## Result (Boss fills)
+Commit: this branch's T35 commit (see index) · proof sheet `projects/edu/EDU/previews/T35-sheet.png` (stand-after, L3, L6, L0; also `T35-hop-L00/L03/L06.png`, `T35-stand-before.png`, `T35-stand-after.png`) · fix passes: 0.
+
+Built: `BeastPlace.air` (body offset `ay` in `W`, ring at local y `0.01 - ay`, per-foot at `0.012 - ay`), `EmuMember.air` through `paintEmu`; `FL30-hop` (10 f) and `FL30-stand` (1 f, added for the diff, the ticket named only FL30-hop) in `proof-flock.tsx`; `tests/beast-air.test.ts` (3 tests pass; golden hashes taken from the pre-change `paintBeast`, emu `5b025d09...`, raptor `eed0377c...`); the context-map entry lists the test. `npx tsc`: 22 errors, none in touched files (pre-existing). `npm test`: 277/296 pass, the 19 failures are identical with and without the change (beast-joints HIPPO x3, animation, painted, etc.).
+
+Reading chosen where the ticket was silent: the per-foot contact shadow factor `max(0, 1 - 4 air)` multiplies the wash opacity (150), not the radius; it is skipped at 0.25 m.
+
+Measured (KP camera, `out/logs/T35-measure.ts`):
+| Frame | Number | Range | Result |
+| --- | --- | --- | --- |
+| stand, before vs after the change | mean abs diff 0.0001 | <= 2 | pass |
+| L3 gap pads to shadow top (pad bottom y 1045.1, shadow top 1153.9) | 108.9 px (centre: 150.4) | >= 20 | pass |
+| L3 shadow centre y vs stand frame (1195.5 vs 1146.7) | 48.8 px | within 4 | **not met as written** |
+
+Open question (Film): the shadow-centre range cannot hold. `emuHop` L3 moves the ground point by `side * dist * lat` = 0.3 m toward the camera (heading PI), so a correct ground shadow sits 48.8 px lower on screen than at the stand mark. At the same ground point the shadow centre equals an `air` 0 bird's (the ring only shrinks about its centre). Proposed range: shadow centre y equals that of an air-0 bird at the same ground point, within 4 px (holds by construction, tested through the ring check in `tests/beast-air.test.ts`). Film to confirm or give another range; no code change expected.
