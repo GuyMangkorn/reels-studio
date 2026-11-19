@@ -8,7 +8,8 @@ import {ring, type Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, type YCam} from '../kit/ycam';
 import {camLine, Proof30, stubPaint, type ProofDef} from './shot';
-import {buildLewisGun, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintLewisPanTicks, paintLewisPuff, placeBuild} from './props';
+import {buildLewisGun, lewisAnchors, lewisCock, lewisJamNudge, lewisPanTurn, lewisRecoil, PAN_STEP, paintLewisPanTicks, paintLewisPuff, paintTruckDust, paintTruckRig, placeBuild, truckCam, truckPoint, truckSetCam, truckState} from './props';
+import {wFill, wInk} from '../kit/world';
 
 // T13 (Boss, 2026-11-19): the Lewis gun at the three cameras of its sheet rows. Anchor dots in magenta (muzzle, port, pan, cock), newsreel off.
 const rounds = (first: number, n: number, gap: number) => Array.from({length: n}, (_, i) => first + i * gap);
@@ -56,5 +57,47 @@ const PROOFS: ProofDef[] = [
     paintLewisPanTicks(p, c, 33400, [0, 0, 0], 0, o.magTurn);
   }},
 ];
+
+// T14 (Boss, 2026-11-19): the truck rig at the cameras of its sheet rows. Stub set: sky, ground and wheat-row lines (so a tilting world shows), newsreel off.
+const D = Math.PI / 180;
+const stubSet = (p: Painter, c: YCam) => {
+  stubPaint(p, c);
+  wFill(p, c, 1300, '#8a7253', [[-600, 0, -600], [600, 0, -600], [600, 0, 600], [-600, 0, 600]]);   // ground quad: its far edge is the horizon, so a tilted body camera tilts it
+  for (let z = -30; z <= 30; z += 3) wInk(p, c, 1400 + z, [[-80, 0, z], [80, 0, z]], {closed: false, weight: 1.2, color: '#6a5a3e'});
+  for (let x = -60; x <= 60; x += 6) wInk(p, c, 1500 + x, [[x, 0, 6], [x, 0, 9]], {closed: false, weight: 1.2, color: '#6a5a3e'});
+};
+const STOP_CAM = camLine({eye: [-0.2, 0.4, 9.8], yaw: -85, pitch: 8, f: 850, hy: 1000});
+const ease3 = (u: number) => u * u * (3 - 2 * u);
+const SIDE_CAM = (L: number) => { const st = truckState('B05-SH02', L)!, e = ease3(Math.max(0, Math.min(1, (L - 60) / 23))); return truckCam(st.centre, {eye: [-0.7, 2.0, 2.1 + 0.3 * e], yaw: 0, f: 950, hy: 860}); };
+const VANTAGE = (L: number): YCam => { const e = ease3(L / 93); return camLine({eye: [-1.0 + 0.05 * e, 1.55, 2.4 + 0.15 * e], yaw: 160 + 6 * e, pitch: 0, f: 900, hy: 820}); };
+const rigAt = (shot: 'B02-SH03' | 'B05-SH01' | 'B05-SH02' | 'B05-SH03', L: number, o: {riders: 'silhouettes' | 'chase'; gear: 'cases' | 'pedestal' | 'none'}) => {
+  const st = truckState(shot, L)!;
+  return {st, args: {centre: st.centre, dir: st.dir, pitch: st.pitch, roll: st.roll, riders: o.riders, gear: o.gear, g2Elev: st.g2Elev, wheelTurn: st.wheelTurn, t: L / 30, seed: 14100}};
+};
+PROOFS.push(
+  {id: 'R30-truck-stop', N: 54, cam: () => STOP_CAM, reel: OFF, paint: (p, L, c) => {
+    stubSet(p, c);
+    const {st, args} = rigAt('B02-SH03', L, {riders: 'silhouettes', gear: 'cases'}), at = truckPoint(st.centre, 1, 0, 0, 0), track = (l: number) => truckState('B02-SH03', l);
+    paintTruckDust(p, c, L, track, {part: 'far', truckAt: at});
+    paintTruckRig(p, c, args);
+    paintTruckDust(p, c, L, track, {part: 'near', truckAt: at});
+  }},
+  {id: 'R30-truck-chase', N: 60, cam: (L) => truckCam(truckState('B05-SH01', L)!.centre, {eye: [-3.0, 2.4, 2.2], yaw: 60, pitch: -6, f: 1100, hy: 860}), reel: OFF, paint: (p, L, c) => {
+    const {st, args} = rigAt('B05-SH01', L, {riders: 'chase', gear: 'pedestal'});
+    stubSet(p, truckSetCam(c, st.centre, st.pitch, st.roll));
+    paintTruckRig(p, c, {...args, pitch: 0, roll: 0});
+  }},
+  {id: 'R30-truck-side', N: 84, cam: SIDE_CAM, reel: OFF, paint: (p, L, c) => {
+    stubSet(p, c);
+    const {args} = rigAt('B05-SH02', L, {riders: 'chase', gear: 'pedestal'});
+    paintTruckRig(p, c, args);
+  }},
+  {id: 'R30-truck-vantage', N: 94, cam: VANTAGE, reel: OFF, paint: (p, L, c) => {
+    stubSet(p, c);
+    const {st, args} = rigAt('B05-SH03', L, {riders: 'silhouettes', gear: 'pedestal'});
+    paintTruckDust(p, c, L, (l) => truckState('B05-SH03', l), {part: 'far', truckAt: truckPoint(st.centre, 1, 0, 0, 0)});
+    paintTruckRig(p, c, args);
+  }},
+);
 
 registerRoot(() => createElement(Fragment, null, ...PROOFS.map(Proof30)));

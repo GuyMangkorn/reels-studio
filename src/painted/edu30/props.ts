@@ -1,7 +1,10 @@
+import {washAt} from '../kit/draw';
+import {hash} from '../kit/hash';
 import {mixColor, ring, type Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
-import {paintBox, wFill, wInk, type Box} from '../kit/world';
-import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {flatCircle, paintBox, paintSorted, sphereAt, wFill, wInk, type Box, type Item} from '../kit/world';
+import {camPoint, camUnit, type YBody, type YCam} from '../kit/ycam';
+import {GUNNER1, paintSeatedGunner} from './cast';
 import {add, lerp, mul, newRig, nrm, paintBeast, type Build, type L3} from '../survival/beast';
 
 // EDU-EP30 props (VD30-07, Film W3 look assets 2026-11-19; Boss hardens): `new: lewis-gun` and the bell tent as beast-loft builds (any yaw,
@@ -125,24 +128,52 @@ export const buildBellTent = (o: {r?: number; h?: number; canvas?: string} = {})
 export const placeBuild = (p: Painter | null, c: YCam, B: Build, at: V3, heading: number, o: {seed?: number; sun?: V3; shadowOp?: number; amb?: string; ambK?: number; haze?: number; hazeCol?: string} = {}) =>
   paintBeast(p, c, B, {at: [at[0], at[2]], heading, ground: at[1], seed: o.seed ?? 80000, sun: o.sun, shadowOp: o.shadowOp ?? 70, amb: o.amb, ambK: o.ambK, haze: o.haze, hazeCol: o.hazeCol});
 
-/** A vertical wheel disc in the plane x = const (axle along x), centre `c0`, radius `r`: tyre, rim and hub. */
+/** A vertical wheel disc in the plane x = const (axle along x), centre `c0`, radius `r`: tyre, rim and hub. (The locked LF01a look; the T14 rig uses `sideWheel`.) */
 const wheel = (p: Painter, c: YCam, seed: number, c0: V3, r: number, tyre: string, rim: string) => {
   const ring = (rr: number, dx: number): V3[] => Array.from({length: 18}, (_, i) => [c0[0] + dx, c0[1] + rr * Math.sin((i / 18) * 6.283), c0[2] + rr * Math.cos((i / 18) * 6.283)]);
   wFill(p, c, seed, tyre, ring(r, 0));
   wFill(p, c, seed + 1, rim, ring(r * 0.55, Math.sign(c.x - c0[0]) * 0.02));
   wFill(p, c, seed + 2, mixColor(rim, '#1a1610', 0.5), ring(r * 0.16, Math.sign(c.x - c0[0]) * 0.04));
 };
+/** T14: a wheel with its axle along z (the truck's side faces +-z), tyre width 0.18 m, a hub mark at angle `turn` (rad about +z, `-distance / 0.40` for a wheel rolling toward +x). */
+const sideWheel = (p: Painter, c: YCam, seed: number, c0: V3, r: number, tyre: string, rim: string, turn: number) => {
+  const sg = c.z >= c0[2] ? 1 : -1, ringAt = (rr: number, dz: number, ph = 0): V3[] => Array.from({length: 20}, (_, i) => [c0[0] + rr * Math.cos((i / 20) * 6.283 + ph), c0[1] + rr * Math.sin((i / 20) * 6.283 + ph), c0[2] + dz]);
+  wFill(p, c, seed, mixColor(tyre, '#000000', 0.3), ringAt(r, -sg * 0.09));   // far tyre wall
+  wFill(p, c, seed + 1, tyre, ringAt(r, sg * 0.09));
+  wFill(p, c, seed + 2, rim, ringAt(r * 0.58, sg * 0.1));
+  wFill(p, c, seed + 3, mixColor(rim, '#1a1610', 0.5), ringAt(r * 0.16, sg * 0.11));
+  const q = (rr: number, w: number): V3 => [c0[0] + rr * Math.cos(turn) - w * Math.sin(turn), c0[1] + rr * Math.sin(turn) + w * Math.cos(turn), c0[2] + sg * 0.115];
+  wFill(p, c, seed + 4, '#2a251c', [q(r * 0.16, -0.025), q(r * 0.56, -0.025), q(r * 0.56, 0.025), q(r * 0.16, 0.025)]);
+};
 
 /** 1932 open-cab tray truck, generic (no badges). `at` the ground centre, the cab toward +x when `dir` 1 (toward -x when -1). Boxes are axis
- *  aligned along x. `gun` paints G2 on its pedestal in the tray. */
-export const paintTruck = (p: Painter, c: YCam, seed: number, at: V3, dir: 1 | -1, o: {body?: string; gun?: boolean} = {}) => {
+ *  aligned along x. `gun` paints G2 on its pedestal in the tray. T14 options (all absent = the locked look): `hollow` builds the tray from boards
+ *  (floor, two sides, tail and head boards) so what sits in it shows; `inTray` and `inCab` paint riders and gear in the right painter's order
+ *  (`inTray` between the boards farther and nearer than `trayAt`, `inCab` after the cab body and before its roof); `wheelTurn` (rad) draws the
+ *  side wheels (axle along z) with a hub mark. */
+export type TruckPaintOpts = {body?: string; gun?: boolean; hollow?: boolean; inTray?: () => void; inCab?: () => void; wheelTurn?: number; trayAt?: V3};
+export const paintTruck = (p: Painter, c: YCam, seed: number, at: V3, dir: 1 | -1, o: TruckPaintOpts = {}) => {
   const [x, , z] = at, body = o.body ?? '#55503f', X = (a: number) => x + dir * a;
   const bx = (a0: number, a1: number, y0: number, y1: number, w: number): Box => ({x0: Math.min(X(a0), X(a1)), x1: Math.max(X(a0), X(a1)), y0, y1, z0: z - w, z1: z + w});
-  const near = c.z > z ? 1 : -1;
-  for (const s of [-1, 1]) if (s !== near) { wheel(p, c, seed + 10 + s, [X(-1.5), 0.42, z + s * 0.95], 0.42, '#1d1b18', '#6a6456'); wheel(p, c, seed + 20 + s, [X(1.6), 0.42, z + s * 0.95], 0.42, '#1d1b18', '#6a6456'); }
+  const near = c.z > z ? 1 : -1, wh = (sd: number, s: number, a: number) => {
+    const c0: V3 = [X(a), 0.42, z + s * 0.95];
+    if (o.wheelTurn !== undefined) sideWheel(p, c, sd, c0, 0.42, '#1d1b18', '#6a6456', o.wheelTurn); else wheel(p, c, sd, c0, 0.42, '#1d1b18', '#6a6456');
+  };
+  for (const s of [-1, 1]) if (s !== near) { wh(seed + 10 + s, s, -1.5); wh(seed + 20 + s, s, 1.6); }
   paintBox(p, c, seed + 30, bx(-2.6, 0.7, 0.8, 1.1, 1.0), mixColor(body, '#7a6a4c', 0.35), {}, {ink: true});   // tray deck
-  paintBox(p, c, seed + 50, bx(-2.6, 0.7, 1.1, 1.45, 1.0), mixColor(body, '#7a6a4c', 0.5), {top: 0.25}, {ink: true});   // tray sides (low drop sides)
+  const sideCol = mixColor(body, '#7a6a4c', 0.5);
+  if (!o.hollow) paintBox(p, c, seed + 50, bx(-2.6, 0.7, 1.1, 1.45, 1.0), sideCol, {top: 0.25}, {ink: true});   // tray sides (low drop sides)
+  else {
+    const T = 0.03, boards: {b: Box; at: V3}[] = [
+      {b: {...bx(-2.6, 0.7, 1.1, 1.45, 1.0), z0: z - 1.0, z1: z - 1.0 + T}, at: [X(-0.95), 1.3, z - 1.0]}, {b: {...bx(-2.6, 0.7, 1.1, 1.45, 1.0), z0: z + 1.0 - T, z1: z + 1.0}, at: [X(-0.95), 1.3, z + 1.0]},
+      {b: bx(-2.6, -2.6 + T, 1.1, 1.45, 1.0), at: [X(-2.6), 1.3, z]}, {b: bx(0.67, 0.7, 1.1, 1.45, 1.0), at: [X(0.7), 1.3, z]}];
+    const mid = camDistTo(c, o.trayAt ?? [X(-0.95), 1.1, z]), sorted = boards.map((q) => ({q, d: camDistTo(c, q.at)})).sort((a, b) => b.d - a.d);
+    sorted.filter((e) => e.d > mid).forEach((e, i) => paintBox(p, c, seed + 52 + i * 4, e.q.b, sideCol, {top: 0.25}, {ink: true}));
+    o.inTray?.();
+    sorted.filter((e) => e.d <= mid).forEach((e, i) => paintBox(p, c, seed + 62 + i * 4, e.q.b, sideCol, {top: 0.25}, {ink: true}));
+  }
   paintBox(p, c, seed + 70, bx(0.7, 1.75, 0.75, 1.75, 0.85), body, {}, {ink: true});   // cab body
+  o.inCab?.();
   paintBox(p, c, seed + 90, bx(0.65, 1.8, 2.05, 2.12, 0.9), mixColor(body, '#1a1610', 0.3), {}, {ink: true});   // cab roof (open sides)
   for (const s of [-1, 1]) wFill(p, c, seed + 110 + s, '#2a2620', [[X(0.72), 1.75, z + s * 0.86], [X(0.76), 1.75, z + s * 0.86], [X(0.76), 2.05, z + s * 0.86], [X(0.72), 2.05, z + s * 0.86]]);   // roof posts
   paintBox(p, c, seed + 130, bx(1.75, 2.6, 0.7, 1.35, 0.55), body, {top: -0.1}, {ink: true});   // bonnet
@@ -150,9 +181,10 @@ export const paintTruck = (p: Painter, c: YCam, seed: number, at: V3, dir: 1 | -
   for (const s of [-1, 1]) paintBox(p, c, seed + 170 + s * 3, bx(1.2, 2.6, 0.62, 0.7, 0.98 * 1), mixColor(body, '#1a1610', 0.3), {}, {});   // running board / mudguard line
   const hl = camPoint(c, [X(2.7), 1.25, z + near * 0.42]);
   if (hl) wInk(p, c, seed + 190, [[X(2.7), 1.25, z + near * 0.42], [X(2.74), 1.25, z + near * 0.42]], {weight: 3, color: '#d8d0b8'});
-  for (const s of [-1, 1]) if (s === near) { wheel(p, c, seed + 200 + s, [X(-1.5), 0.42, z + s * 0.95], 0.42, '#1d1b18', '#6a6456'); wheel(p, c, seed + 210 + s, [X(1.6), 0.42, z + s * 0.95], 0.42, '#1d1b18', '#6a6456'); }
+  for (const s of [-1, 1]) if (s === near) { wh(seed + 200 + s, s, -1.5); wh(seed + 210 + s, s, 1.6); }
   if (o.gun) placeBuild(p, c, buildLewisGun({tripod: false, elev: 0.08}), [X(-1.2), 1.45, z], dir > 0 ? Math.PI : 0, {seed: seed + 300, shadowOp: 0});
 };
+const camDistTo = (c: YCam, v: V3) => Math.hypot(v[0] - c.x, v[2] - c.z);
 
 export const unitDir = (a: V3, b: V3): L3 => nrm([b[0] - a[0], b[1] - a[1], b[2] - a[2]]);
 
@@ -175,4 +207,173 @@ export const paintGear = (p: Painter, c: YCam, seed: number, o: {sheet: V3; box:
     wFill(p, c, seed + 42 + k * 3, GUN_PX.magRim, ring(0.04, y + 0.021));
   }
   if (o.bag) { const g = camPoint(c, o.bag); if (g) wFill(p, c, seed + 60, '#b8a47c', Array.from({length: 12}, (_, i) => { const t = (i / 12) * 6.283; return [o.bag![0] + 0.22 * Math.cos(t), 0.08 + 0.08 * Math.sin(t) * 0.5, o.bag![2] + 0.14 * Math.sin(t)] as V3; })); }
+};
+
+
+// ---- T14: the 1932 truck rig (Boss, 2026-11-19). Space T = space P axes translated to the truck's ground centre (a along the truck, + = the cab end
+// when dir 1; y up; z across, +z the truck's right when dir 1); a truck with dir -1 is the same truck turned about (a, z) -> (-a, -z).
+const T14_FPS = 30, TRUCK_WHEEL_R = 0.4;
+/** World point of the truck-local point T(a, y, z). */
+export const truckPoint = (centre: V3, dir: 1 | -1, a: number, y: number, z: number): V3 => [centre[0] + dir * a, centre[1] + y, centre[2] + dir * z];
+const nz = (v: number) => v + 0;   // no negative zero
+/** Rigid pose of the truck as a `YCam.body`: pivot = `centre` (on the ground), `pitch` rad about world z (+ = nose up for a truck whose nose is +x), `roll` rad about world x
+ *  (+ = the truck's left side down for dir 1; `paintTruckRig` passes `pitch * dir` and `roll * dir`). Row-major, v -> o + m (v - o); (0, 0) is the identity. */
+export const truckBody = (centre: V3, pitch: number, roll: number): YBody => {
+  const cp = Math.cos(pitch), sp = Math.sin(pitch), a = -roll, ca = Math.cos(a), sa = Math.sin(a);
+  const Rz = [cp, -sp, 0, sp, cp, 0, 0, 0, 1], Rx = [1, 0, 0, 0, ca, -sa, 0, sa, ca];
+  const m = [0, 1, 2].flatMap((i) => [0, 1, 2].map((j) => nz(Rx[i * 3] * Rz[j] + Rx[i * 3 + 1] * Rz[3 + j] + Rx[i * 3 + 2] * Rz[6 + j])));
+  return {o: centre, m};
+};
+/** The inverse pose (transpose), for the set of a camera that rides the truck (B05-SH01). */
+export const invertBody = (b: YBody): YBody => ({o: b.o, m: [0, 1, 2].flatMap((i) => [0, 1, 2].map((j) => b.m[j * 3 + i]))});
+/** Camera for a set painted around a truck-locked camera: `c` is the truck-local camera in world metres (`truckCam`), its `body` the inverse truck pose, so the world tilts and the riders stay still. */
+export const truckSetCam = (c: YCam, centre: V3, pitch: number, roll: number): YCam => ({...c, body: invertBody(truckBody(centre, pitch, roll))});
+/** A camera given in truck-local metres (dir 1 truck, no pitch or roll): world eye = centre + local eye; yaw/pitch in degrees as the sheet camera lines. */
+export const truckCam = (centre: V3, o: {eye: V3; yaw: number; pitch?: number; f: number; hy: number}): YCam =>
+  ({x: centre[0] + o.eye[0], y: centre[1] + o.eye[1], z: centre[2] + o.eye[2], yaw: (o.yaw * Math.PI) / 180, pitch: ((o.pitch ?? 0) * Math.PI) / 180, f: o.f, hy: o.hy});
+
+export type TruckShotId = 'B01-SH02' | 'B02-SH03' | 'B02-SH04' | 'B05-SH01' | 'B05-SH02' | 'B05-SH03' | 'B06-SH03' | 'B06-SH04';
+export type TruckState = {centre: V3; dir: 1 | -1; pitch: number; roll: number; g2Elev: number; wheelTurn: number};
+const G2_REST = (10 * Math.PI) / 180, D = Math.PI / 180;
+const smooth = (u: number) => u * u * (3 - 2 * u);
+type Key = [frame: number, value: number, ease?: 'out'];
+/** Keyed value at frame L; each segment eases by the ease of the key it ends on (default ease-in-out); constant outside the keys. */
+const keyed = (L: number, keys: Key[]): number => {
+  if (L <= keys[0][0]) return keys[0][1];
+  for (let i = 1; i < keys.length; i++) if (L <= keys[i][0]) {
+    const u = (L - keys[i - 1][0]) / (keys[i][0] - keys[i - 1][0]);
+    return keys[i - 1][1] + (keys[i][1] - keys[i - 1][1]) * (keys[i][2] === 'out' ? easeOut(u) : smooth(u));
+  }
+  return keys[keys.length - 1][1];
+};
+/** B05-SH01 seeded bumps: one every 12-18 f, strength s 0.6-1.0, roll sign seeded. */
+export const bumpsB05Sh01 = (seed = 14000): {k: number; s: number; rs: 1 | -1}[] => {
+  const out: {k: number; s: number; rs: 1 | -1}[] = [];
+  let k = -9;   // the gap runs from 9 f before L 0, so the first bump (L 3-9) is under way at the R30-truck-chase L 10 proof frame
+  for (let i = 0; i < 10; i++) { k += 12 + Math.floor(hash(seed + i * 5) * 7); out.push({k, s: 0.6 + 0.4 * hash(seed + i * 5 + 1), rs: hash(seed + i * 5 + 2) < 0.5 ? -1 : 1}); }
+  return out;
+};
+const wheelTurnOf = (x: number, x0: number) => nz(-(x - x0) / TRUCK_WHEEL_R);
+/** Drive schedule of every truck shot (T14 Decided values), a pure function of the shot-local frame; null = the truck is absent. */
+export const truckState = (shot: TruckShotId, L: number, seed = 14000): TruckState | null => {
+  const base = (x: number, o: Partial<TruckState> & {x0: number}): TruckState => ({centre: [x, 0, 9.5], dir: o.dir ?? 1, pitch: o.pitch ?? 0, roll: o.roll ?? 0, g2Elev: o.g2Elev ?? G2_REST, wheelTurn: wheelTurnOf(x, o.x0)});
+  switch (shot) {
+    case 'B01-SH02': return base(-7 + (13 * L) / 58, {x0: -7});
+    case 'B02-SH03': {
+      const l = Math.min(L, 44), front = l <= 30 ? -16 + 0.3351 * l : -5.947 + 0.3351 * (l - 30) - 0.01197 * (l - 30) ** 2;   // held at the L 44 value after the stop
+      return base(front - 2.6, {x0: -18.6, pitch: keyed(L, [[44, 0], [46, -2 * D], [48, 0.8 * D], [50, 0]])});
+    }
+    case 'B02-SH04': return base(-3.6 - 2.6, {x0: -6.2});
+    case 'B05-SH01': {
+      let pitch = 0, roll = 0, elev = 0;
+      for (const b of bumpsB05Sh01(seed)) {
+        const sh = keyed(L - b.k, [[0, 0], [3, 1], [6, -0.5], [9, 0]]);
+        pitch += 1.5 * D * b.s * sh; roll += 1.0 * D * b.s * b.rs * sh; elev += 15 * D * keyed(L - b.k, [[0, 0], [3, 1], [9, 0]]);
+      }
+      return base(-17 + (12 * L) / 59, {x0: -17, pitch, roll, g2Elev: G2_REST + elev});
+    }
+    case 'B05-SH02': {
+      let pitch = 0, elev = 0;
+      for (const k of [8, 24, 38, 52, 66]) {
+        pitch += keyed(L - k, [[0, 0], [3, 3 * D], [6, -2 * D], [8, 0]]);
+        elev += keyed(L - k, [[0, 0], [3, 40 * D, 'out'], [8, 0]]);
+      }
+      return base(-5 + (5 * L - (L * L) / 166) / T14_FPS, {x0: -5, pitch, g2Elev: G2_REST + elev});
+    }
+    case 'B05-SH03': return base(-2 + (37 * L) / 93, {x0: -2});
+    case 'B06-SH03': {
+      if (L < 27) return null;
+      if (L < 59) return base(30 - 28 * easeOut(unit((L - 27) / 18)), {x0: 30, dir: -1});
+      const j = Math.min(5, Math.floor((L - 59) / 6));
+      return j === 1 || j === 3 ? null : base(2, {x0: 30, dir: 1});
+    }
+    case 'B06-SH04': {
+      const t = L / T14_FPS, ta = 10 / T14_FPS, a = 12 / ta;
+      return base(t <= ta ? 2 + 0.5 * a * t * t : 2 + 0.5 * a * ta * ta + 12 * (t - ta), {x0: 2});
+    }
+  }
+};
+
+const SIL = '#2b241c';
+/** A flat-fill rider silhouette (shoulders, head, slouch hat) sitting at the world seat point `at`. */
+const paintSilhouette = (p: Painter, c: YCam, seed: number, at: V3, o: {shoulders: boolean}) => {
+  const flat = {top: 0, bottom: 0, front: 0, back: 0, left: 0, right: 0};
+  if (o.shoulders) paintBox(p, c, seed, {x0: at[0] - 0.14, x1: at[0] + 0.14, y0: at[1] + 0.35, y1: at[1] + 0.62, z0: at[2] - 0.25, z1: at[2] + 0.25}, SIL, flat);
+  const h = sphereAt(c, [at[0], at[1] + 0.78, at[2]], 0.105);
+  if (h) p.flat(SIL, ring(h.x, h.y, h.r, h.r, 14));
+  const br = flatCircle(c, [at[0], at[1] + 0.86, at[2]], 0.2);
+  if (br.length > 2) p.flat(SIL, br);
+  const cr = sphereAt(c, [at[0], at[1] + 0.92, at[2]], 0.095);
+  if (cr) p.flat(SIL, ring(cr.x, cr.y - cr.r * 0.1, cr.r, cr.r * 0.7, 14));
+};
+
+export type TruckRigOpts = {centre: V3; dir: 1 | -1; pitch?: number; roll?: number; riders: 'silhouettes' | 'chase' | 'none'; gear: 'cases' | 'pedestal' | 'none'; g2Elev?: number; wheelTurn?: number; t: number; seed: number; magTurn?: number};
+/** G2 pivot (tripod-head point) in space T and its rest yaw (T13 r3: muzzle 0.66 m from the pivot). */
+export const G2_PIVOT: V3 = [-0.55, 1.8, -0.1];
+const G2_YAW = (-14 * Math.PI) / 180;
+/** Paints the truck, its crew and G2 in one rigid pass: every part uses `{...c, body: truckBody(...)}`. Returns the camera used, the G2 anchors in unrotated world metres (`lewisAnchors`), the muzzle as a picture point and the gunner result. */
+export const paintTruckRig = (p: Painter, c: YCam, o: TruckRigOpts) => {
+  const {centre, dir} = o, pitch = o.pitch ?? 0, roll = o.roll ?? 0, cb: YCam = pitch || roll ? {...c, body: truckBody(centre, pitch * dir, roll * dir)} : c;
+  const P = (a: number, y: number, z: number) => truckPoint(centre, dir, a, y, z);
+  const pivot = P(...G2_PIVOT), elev = o.g2Elev ?? G2_REST, heading = G2_YAW + (dir < 0 ? Math.PI : 0), gunAt: V3 = [pivot[0], pivot[1] - 0.56, pivot[2]];
+  const an = lewisAnchors(gunAt, heading, {elev});
+  let gunner = null as ReturnType<typeof paintSeatedGunner>;
+  const paintG2 = () => {
+    paintBox(p, cb, o.seed + 400, {x0: pivot[0] - 0.04, x1: pivot[0] + 0.04, y0: 1.1, y1: 1.75, z0: pivot[2] - 0.04, z1: pivot[2] + 0.04}, '#34332f', {top: 0, bottom: 0, front: 0, back: 0.1, left: 0.15, right: 0.2});
+    placeBuild(p, cb, buildLewisGun({elev, tripod: false}), gunAt, heading, {seed: o.seed + 410, shadowOp: 0});
+    paintLewisPanTicks(p, cb, o.seed + 420, gunAt, heading, o.magTurn ?? 0, {elev});
+  };
+  const inTray = () => {
+    if (o.riders === 'chase') {
+      paintG2();
+      gunner = paintSeatedGunner(p, cb, GUNNER1, P(-1.2, 1.1, 0), {view: 'right', grip: an.grip, stock: an.stock, t: o.t, seed: o.seed + 430});
+      return;
+    }
+    const items: Item[] = [];
+    if (o.riders === 'silhouettes') for (const s of [-1, 1]) items.push({at: P(-1.2, 1.1, s * 0.45), draw: () => paintSilhouette(p, cb, o.seed + 440 + s * 7, P(-1.2, 1.1, s * 0.45), {shoulders: true})});
+    if (o.gear === 'pedestal') items.push({at: pivot, draw: paintG2});
+    if (o.gear === 'cases') for (const s of [-1, 1]) {
+      const m = P(-0.05, 1.1, s * 0.33);
+      items.push({at: m, draw: () => paintBox(p, cb, o.seed + 460 + s * 5, {x0: m[0] - 0.7, x1: m[0] + 0.7, y0: 1.1, y1: 1.3, z0: m[2] - 0.125, z1: m[2] + 0.125}, '#5c4a32', {}, {ink: true})});
+    }
+    paintSorted(p, cb, items);
+  };
+  const inCab = () => {
+    if (o.riders === 'silhouettes') paintSilhouette(p, cb, o.seed + 470, P(1.6, 1.12, -0.45), {shoulders: false});
+    if (o.riders === 'chase') for (const s of [-1, 1]) paintSilhouette(p, cb, o.seed + 470 + s * 7, P(1.6, 1.12, s * 0.45), {shoulders: false});
+  };
+  paintTruck(p, cb, o.seed, centre, dir, {hollow: true, inTray, inCab, wheelTurn: o.wheelTurn ?? 0, trayAt: P(-0.95, 1.1, 0)});
+  return {cam: cb, anchors: an, muzzle: camPoint(cb, an.muzzle), gunner};
+};
+
+export type DustPuff = {at: V3; r: number; alpha: number; seed: number};
+/** Dust puffs alive at frame L behind a truck driven by `track` (T14): one per 2 frames at each rear wheel while the truck moves; radius 0.3 -> 1.5 m and alpha 0.40 -> 0 over 30 f; velocity
+ *  0.3 x the truck's velocity at birth plus seeded +-0.2 m/s; once the truck is stopped a puff's velocity decays x0.92 per frame (so the cloud rolls on past it). Pure in L. */
+export const truckDustPuffs = (L: number, track: (L: number) => TruckState | null, seed = 14500): DustPuff[] => {
+  const speedAt = (f: number): V3 | null => { const a = track(f), b = track(f + 1); return a && b ? [(b.centre[0] - a.centre[0]) * T14_FPS, 0, (b.centre[2] - a.centre[2]) * T14_FPS] : null; };
+  const moving = (f: number) => { const v = speedAt(f); return !!v && Math.hypot(v[0], v[2]) > 0.05; };
+  const factor = (f: number) => { if (moving(f)) return 1; let n = 1; while (n < 40 && !moving(f - n)) n++; return 0.92 ** n; };
+  const out: DustPuff[] = [];
+  for (let b = Math.max(0, L - 29); b <= L; b++) {   // a puff aged 30 f has alpha 0
+    if (b % 2 || !moving(b)) continue;
+    const st = track(b)!, v = speedAt(b)!;
+    for (const s of [-1, 1]) {
+      const sd = seed + b * 13 + s * 5, jx = (hash(sd) * 2 - 1) * 0.2, jz = (hash(sd + 1) * 2 - 1) * 0.2, vel: V3 = [0.3 * v[0] + jx, 0, 0.3 * v[2] + jz];
+      const at0 = truckPoint(st.centre, st.dir, -1.5, 0, s * 0.95), at: V3 = [at0[0], 0, at0[2]];
+      for (let f = b; f < L; f++) { const k = factor(f) / T14_FPS; at[0] += vel[0] * k; at[2] += vel[2] * k; }
+      const u = (L - b) / 30, r = 0.3 + 1.2 * u;
+      out.push({at: [at[0], 0.15 + 0.5 * r, at[2]], r, alpha: 0.4 * (1 - u), seed: sd});
+    }
+  }
+  return out;
+};
+/** Paints the dust of `truckDustPuffs` as plain `#b08a62` circles, far to near. `part` splits it around the truck for painter's order: 'far' (farther than `truckAt`, before the truck) and 'near' (after it); absent = all. */
+export const paintTruckDust = (p: Painter, c: YCam, L: number, track: (L: number) => TruckState | null, o: {seed?: number; part?: 'far' | 'near'; truckAt?: V3} = {}) => {
+  const ref = o.truckAt ? camDistTo(c, o.truckAt) : 0;
+  truckDustPuffs(L, track, o.seed).filter((q) => !o.part || (camDistTo(c, q.at) > ref) === (o.part === 'far')).sort((a, b) => camDistTo(c, b.at) - camDistTo(c, a.at)).forEach((q) => {
+    const m = camPoint(c, q.at);
+    if (!m || q.alpha <= 0) return;
+    const R = q.r * camUnit(c, q.at);
+    washAt(p, q.seed, '#b08a62', q.alpha * 255, ring(m[0], m[1], R, R, 16), 0, 0);
+  });
 };

@@ -1,5 +1,5 @@
 # T14 — the 1932 truck drives, stops, turns about, bounces as one rigid body with its riders and G2 on a pedestal, trailing dust
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, three proof rows open (Q1 cab height, Q2 gunner height, Q3 dust; Film answers in Result) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (movement, riders' arms)
 Blocked by: T13 (same files `props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`), T11 (seated gunner right profile) · Consumers: B01-SH02, B02-SH03, B02-SH04 (parked), B05-SH01, B05-SH02, B05-SH03, B06-SH03, B06-SH04
 Model: sonnet, medium
@@ -57,4 +57,38 @@ These override any older value in this ticket that they name.
 | R30-truck-vantage 0 | truck on the track beyond the fence | truck centre near (1019 ± 40, 898 ± 40) px |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T14 commit) · fix passes used: 0 · Sonnet medium, 20 Nov 2026 · proof sheet: store `projects/edu/EDU/previews/T14-sheet.png` (24 frames), `T14-chase-sheet.png`, `T14-hands-side-11.png`, per-frame `T14-stop-*`, `T14-chase-*`, `T14-side-*`, `T14-vantage-*` (local `out/edu30-T14/`, logs `out/logs/T14-*.log`).
+
+**Built** (`src/painted/edu30/props.ts`, `proof-props.tsx`, `tests/edu30-props.test.ts`):
+- `truckPoint`, `truckBody(centre, pitch, roll)` (identity at 0, 0; `paintTruckRig` passes `pitch * dir`, `roll * dir`), `invertBody`, `truckSetCam` (set camera for a truck-locked camera), `truckCam` (truck-local camera in world metres).
+- `truckState(shot, L)`: every drive schedule of the table (B01-SH02, B02-SH03, B02-SH04, B05-SH01 with `bumpsB05Sh01`, B05-SH02, B05-SH03, B06-SH03 incl. time-lapse jumps, B06-SH04); returns `{centre, dir, pitch, roll, g2Elev, wheelTurn}` or null when the truck is absent.
+- `paintTruckRig(p, c, o)`: one `{...c, body}` pass for truck, silhouettes / chase GUNNER-1 and G2 on the pedestal (post, `placeBuild` of the locked gun, then `paintLewisPanTicks` in the next slot); returns `{cam, anchors (lewisAnchors), muzzle (picture point), gunner}`. The muzzle is `lewisAnchors(...).muzzle`, 0.66 m from the pivot (rest 10 deg: T(0.08, 1.91, -0.26); 50 deg: y 2.31, tested).
+- `truckDustPuffs` / `paintTruckDust(p, c, L, track, {part, truckAt})`; `part` 'far' / 'near' splits the cloud around the truck for painter's order.
+- `paintTruck` got opt-in options (`hollow`, `inTray`, `inCab`, `wheelTurn`, `trayAt`); with none of them it draws exactly the locked look as before (LF01a path unchanged by construction).
+- Proof entries `R30-truck-stop`, `-chase`, `-side`, `-vantage` as written (stub set: sky, ground quad, wheat-row lines).
+
+**Tests** `node scripts/test.mjs tests/edu30-props.test.ts`: 17/17 pass (identity; cab front L 30 -5.95 and L 44 -3.60 ± 0.01; rider/deck/pivot distances constant at all 84 B05-SH02 frames; pitch keys 3, -2; G2 10 -> 50 -> 10 and muzzle y 2.31; B05-SH01 bump gaps 12-18, peak 1.5 x s; chase rider drift 0 px over 60 f; B06-SH03 parked 2.0 at L 45 and L 89, absent / present states; dust pure, radius and alpha, decay after the stop). `npx tsc`: no new errors (existing `three` / `hippo` errors from the shared node_modules). `npm test`: 301 pass, 19 fail, all environment (missing `three`, store), none in my files.
+
+**Measured against the Proof table**
+| Row | Number | Pass range | Result |
+| --- | --- | --- | --- |
+| R30-truck-stop 44 | front low (ground under the radiator) y 1225, centre x 542 (sheet 1223, 541: match); roof front edge y 785 (sheet 737); height **440** px | 486 ± 25 | **fail** (21 px short): see Q1 |
+| R30-truck-chase 0 / 10 | GUNNER-1 **444** px (top to bottom, 452 to the hat crown); rider drift 0 px at L 0, 10, 20 (and 0..59); arm ratios r/l 1.000 on every still (worst 1.000 over L 0..59 step 3 and L 0..83 step 2) | ≥ 480; ≤ 1 px | **fail** on height (36 px short): see Q2; drift pass |
+| R30-truck-side 8 / 11 | muzzle y 894.4 -> 738.2: **156.2 px** higher | 100-220 | pass |
+| R30-truck-vantage 0 | truck centre (1019, 898) | 1019 ± 40, 898 ± 40 | pass |
+| R30-truck-stop 53 | dust behind the rear wheels only (puff x -9.3 to -7.6, cab front -3.6) | dust overtaking the cab | **fail**: see Q3 |
+
+Hand line: GUNNER-1 right mitten on the stock, left mitten on the grip (T11's `paintSeatedGunner` as is); thumb check: right: kit mitten, no thumb drawn, pending T36 (flat fist with thumb); left: same. Arm check: GUNNER-1 right: attached ok (viewed `T14-hands-side-11.png`), arm ratio <= 1.05 on all stills (1.000).
+
+**Where I followed the ticket literally but a value could not be met (return to Film)**
+- **Q1 cab height 486 ± 25 (SD03).** With centre = cab front - 2.6 and the locked truck (roof 2.12, 5.2 m), the stopped truck measures 440 px. The sheet's own two numbers (front low 1223 and roof 737) fit a truck whose leading edge stops about 0.4 m closer (reference a = 2.2: centre = front - 2.2 gives front low 1229, roof 739, height 490). Ask: change `centre = cab front - 2.6` to `- 2.2` (or the cab front to -3.2), or widen the row to 440 ± 25.
+- **Q2 GUNNER-1 >= 480 px (sheet 497).** The camera, position T(-1.2, 1.1, 0) and depth (2.78 m, unit 396 px/m) match the sheet, but the built T11 figure is 1.12 m top to bottom (444 px), not the sheet's 1.25 m. B05-SH02 (f 950) gives 495 px. Ask: move the gunner about 0.16 m toward the lens, or change the row to >= 440.
+- **Q3 dust "rolls past the stopped cab".** Velocity 0.3 x truck velocity decaying x0.92 per frame after the stop carries a puff at most about 0.1 m past the rear wheel (cab front is 4.1 m ahead of it). Ask: puff velocity factor (about 0.8 x the truck's would reach the cab) or an extra drift.
+
+**Choices I had to make where the ticket was silent (flag if wrong)**
+- Locked `paintTruck` wheels are discs in the plane x = const (axle along the truck), which show as discs from the front and edge-on from the side. The rig draws side wheels (axle along z, tyre width 0.18 m) through the new `wheelTurn` path; `paintTruck` without it keeps the old wheels (LF01a unchanged). Film may want the default fixed too.
+- The rig always builds a hollow tray (floor, two side boards and tail and head boards 0.03 m thick, 1.1 to 1.45 m) instead of the locked solid slab, so riders and G2 show.
+- Cab figures: MEREDITH (silhouettes mode) at T(1.6, y, -0.45), head y 1.90; in chase mode GUNNER-2 at z -0.45 and MEREDITH at z +0.45 (kept as written: the ticket's driver seat z -0.45 is the truck's left when the cab is +x, i.e. a left-hand-drive reading; the camera side is the truck's right). Gun cases: centre T(-0.05, 1.1, ±0.33). Silhouette: flat `#2b241c` shoulders box, head sphere r 0.105, brim r 0.2, crown.
+- B05-SH01 bump gaps count from L -9 (first bump at L 6 for the default seed 14000), so a bump is under way at the L 10 proof frame; L 0 is level (the table's bump starts could not give a tilt at both L 0 and L 10). G2 returns to 10 deg at k + 9 (the table gives only 10 -> 25 -> 10); B05-SH02 pitch +3 / -2 and elevation 10/50/10 as written.
+- B06-SH03: dir -1 from arrival (L 27..58 parked at 2.0 from L 45), dir +1 from the first jump state (L 59).
+- Dust: puff centre y = 0.15 + 0.5 r; one disc per puff (`washAt`, plain). Dust frames: the chase frame ground is a stub ground quad (the world tilt is slight, 1.5 deg peaks).
