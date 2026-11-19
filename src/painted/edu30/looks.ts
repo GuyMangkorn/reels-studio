@@ -5,7 +5,7 @@ import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Pt} from '../kit/painter';
 import {paintCrew, paintSeatedGunner, GUNNER1, GUNNER2, MEREDITH} from './cast';
 import {paintEmu, flockIn, paintFarFlock, type EmuMember} from './flock';
-import {EMU_POSES} from './emu';
+import {EMU_POSES, emuHop, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
 import {CLEARING, setNoClearing, paintKpPatch, paintWheatRidges, paintCamp, paintClearing, paintFarmhouse, paintFence, paintGum, paintNearStalks, paintPadGround, paintPadSky, paintScrub, paintWheatTexture, SUN, type PadLight} from './paddock';
 import {withSquash} from '../kit/figure-at';
 import {buildLewisGun, paintGear, paintTruck, placeBuild} from './props';
@@ -241,6 +241,14 @@ export const LOOK_DEFS: Record<string, () => LookDef> = {
       setNoClearing(false);
     }};
   },
+  /** T06 proof: KP-stand with the wing at FOLD (must equal KP-stand: the folded wing hides in the plumage) */
+  'KP-fold': kp('fold', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.stand({wing: WING_FOLD}), scale: 1, seed: 36000, hero: true}), 'stand'),
+  // T06 reaction stills: startle, duck, hop (f 3 of emuHop, side +1, 0.6 m), flap (the duck pose with wing w 0.9), flap-back (the same at heading -pi/2, back to the lens)
+  'KP-startle': kp('startle', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.startle(), scale: 1, seed: 36000, hero: true}), 'startle'),
+  'KP-duck': kp('duck', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.duck(), scale: 1, seed: 36000, hero: true}), 'duck'),
+  'KP-hop': kp('hop', () => { const {pose, offset} = emuHop(3, {side: 1, dist: 0.6}); return {at: [KP_AT[0] + offset[2] * Math.sin(Math.PI), offset[1], KP_AT[2] - offset[2] * Math.cos(Math.PI)], heading: Math.PI, pose, scale: 1, seed: 36000, hero: true}; }, 'hop'),
+  'KP-flap': kp('flap', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap'),
+  'KP-flap-back': kp('flap-back', () => ({at: KP_AT, heading: -Math.PI / 2, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap back'),
   'KP-look': kp('look', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.look(lensYaw(KP_AT, Math.PI)), scale: 1, seed: 36000, hero: true}), 'look to lens'),
 };
 

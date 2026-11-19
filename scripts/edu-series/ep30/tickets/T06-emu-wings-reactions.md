@@ -1,5 +1,5 @@
 # T06 — the emu has two-segment wings, a pose mixer, gait contact and the reaction poses (startle, duck-flap, hop)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
 Class: figure · Hard: yes (animal, movement)
 Blocked by: T03 (both write `looks.ts`) · Consumers: B03-SH01 (startle), B04-SH03 (duck-flap, hop); T07, T15 (wing rig, mixer), T08, T16 (gait contact)
 Model: sonnet, medium
@@ -46,4 +46,26 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/KP-EMU-sheet.png`,
 The proof sheet goes to Film for a look check before T08 and T16 use the reactions (Boss records the sheet path in Result; Film answers in the index Look checks).
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see the branch tip `T06` commit (EDU-EP30 T06) · proof sheet: `out/edu30-T06/sheet.png` (KP-stand, KP-startle, KP-duck, KP-hop, KP-flap, KP-flap-back); archived with the stills and `fold-diff.png` to the store `projects/edu/EDU/previews/` (`sheet.png`, `KP-startle.png`, `KP-duck.png`, `KP-hop.png`, `KP-flap.png`, `KP-flap-back.png`, `KP-fold.png`, `fold-diff.png`) · fix passes used: 0
+
+Measured (Sonnet, 19 Nov 2026):
+| Frame | Number | Range | Result |
+| --- | --- | --- | --- |
+| KP-stand (T06) vs store KP-stand | mean abs pixel difference 0.0002 (gray, 0-255) | <= 2 | pass |
+| KP-fold (KP-stand with `wing: WING_FOLD`) vs KP-stand | mean abs 0.004; one small wing point (about 12 px) shows under the mop edge, see `fold-diff.png` | <= 2 | pass |
+| KP-flap, KP-flap-back tuft | 86.1 px left and right (logged by the test) | 80-110 | pass |
+| KP-startle head top | 1.776 m | >= 1.75 | pass |
+| KP-hop f 3 lowest pad y | 0.40 m (body 0.25 m + pad 0.15 m) | >= 0.15 | pass |
+| `node scripts/test.mjs tests/edu30-emu.test.ts` | 9 of 9 pass (mixer, gait slip <= 0.02, pre-change hash of five builds, wing lengths 0.24 / 0.85, startle, duck-flap, hop planted pads, tuft px) | all | pass |
+
+Notes and the values read as follows (Film may revise):
+- **FOLD and `buildEmu({})`.** The ticket asks both that `wing` default to FOLD and that `buildEmu({})` equal the pre-change build. Built as: `wing` absent draws no wing at all (identical vertex output, five builds hashed), and `wing: WING_FOLD` draws a wing that hides in the mop. The mixer takes a missing wing as FOLD.
+- **Root inset.** FOLD root z is pulled 0.02 m inside (0.19); the inset fades to 0 as the wing goes out so FLAP_OUT keeps its stated tip (0.06, 0.94, 0.44).
+- **Sheet orientation.** The flat's width vector is not in the ticket: in the flank plane at FOLD, turning vertical (seen from behind) as the wing goes out.
+- **Hop pads.** Hop returns `{pose, offset}` (creature frame, +z the bird's left; add `offset` to `at`, including the y arc). The pad `lift` is carried in the pads' y (0.15 m relative to the body) because `pads` override `lift`. The pads land at the stand pads, both together.
+- **Hop shadow.** The body arc is `at[1]`, so the painted shadow rides up with the bird (paintBeast puts it at `ground + 0.01`); T16 and T27 need a ground-level shadow on the hop frames (a `flock.ts` change, not in this ticket's Files).
+- **Easing between wing keys** (duck-flap w, hop w) is linear; the ticket names ease-out only for the pose mixes.
+- Extra helpers exported for T07, T08, T15, T16: `emuPads`, `gaitPhase`, `wingMix`, `emuStartle`, `emuDuckFlap`, `emuHop`, `WING_FOLD`, `WING_FLAP_OUT`, and wing anchors `wingRoot/Wrist/Tip` L and R. Extra look `KP-fold`.
+- Mixer rule for a field only one pose has (`stride`, `pads`): taken whole from that side. T07 and T15 add their fields to `mixEmuPose`.
+- Hard-ticket checks: no hand or arm is drawn; planted pads slip 0 m across f 0-16 of the duck-flap and f <= 0 and f >= 6 of the hop; tuft and bib unchanged (hero: true on every KP still).
+- `npm test`: 229 of 245 pass; the 16 failures are this worktree's missing `@remotion/three` and store media (not touched by T06; no edu30 test fails). `tsc` shows only the same missing-module errors (none in `src/painted/edu30` or the T06 test). Film's look check of the sheet is still pending.

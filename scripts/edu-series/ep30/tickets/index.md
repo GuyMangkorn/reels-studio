@@ -13,7 +13,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T34](T34-canvas-style-hook.md) `canvasStyle` hook: registered plate gets newsreel filter, weave, shake, 1.05 overscan | capability | no | T03 (after its r2) | ready | 0 | — |
 | [T04](T04-gunfire-flash-smoke-shake.md) kit gunfire: flash, halation, pop, smoke, blast, shake | capability | no | T03 | done (Film answers three open questions in Result) | 0 | on branch `worktree-agent-a58fca69d4e9c2d39` |
 | [T05](T05-gunfire-casings-strikes.md) kit gunfire debris: casings, spurts, spouts, splash | capability | no | T04 | ready (Q8 answered) | 0 | — |
-| [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | ready | 0 | — |
+| [T06](T06-emu-wings-reactions.md) emu wing rig, mixer, gait contact, startle/duck-flap/hop | figure | yes | T03 | done (look check pending) | 0 | T06 commit on the Boss branch |
 | [T07](T07-emu-head-face.md) emu head: lens turn, blink, nod, beak-talk, sac, relief emu | figure | yes | T06 | ready | 0 | — |
 | [T08](T08-flock-paddock.md) flock in the paddock: buffet, extras, heads field, scatter, burst, halves, fence birds, slow line | movement | yes | T07 | ready (Q8 answered) | 0 | — |
 | [T09](T09-paddock-states.md) paddock states, ruts, high view, fence from the track | set | no | T03 | ready | 0 | — |
@@ -80,7 +80,7 @@ Every ticket links here. A ticket's own value wins over this section.
 
 | Ticket | Proof | Film's answer |
 | --- | --- | --- |
-| T06 | reaction stills (startle, duck-flap, hop) | pending |
+| T06 | reaction stills (startle, duck-flap, hop): `out/edu30-T06/sheet.png`, store `projects/edu/EDU/previews/sheet.png` | pending (Film to answer before T08 and T16) |
 | T15 | mime stills and the watch strip (wing at high reach) | pending |
 
 ## Film fixes to fold into the next scene-sheet revision
