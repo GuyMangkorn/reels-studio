@@ -1,7 +1,7 @@
 # T16 — the queue at the dam walks the shore, steps in unison, flinches and re-forms under fire, stares, and turns away
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: movement · Hard: yes (animal movement)
-Blocked by: T10 (r3: `QUEUE_PATH`, `queuePoint` with the wading y), T35 (hop `air`), T08 (same files `flock.ts`, `proof-flock.tsx`, `tests/edu30-flock.test.ts`) · Consumers: B04-SH02, B04-SH03, B04-SH05 (no queue bird is in B04-SH01, SH04 or SH06)
+Blocked by: T10 (r4: the 0.6 m ease at each waterline crossing; r3: `QUEUE_PATH`, `queuePoint` with the wading y), T35 (hop `air`), T08 (same files `flock.ts`, `proof-flock.tsx`, `tests/edu30-flock.test.ts`) · Consumers: B04-SH02, B04-SH03, B04-SH05 (no queue bird is in B04-SH01, SH04 or SH06)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks, clocks); b04 Space D continuity (SD06), B04-SH02, B04-SH03 Queue row, B04-SH05 Queue row; T06 (`duck`, duck-flap, `emuHop`), T07 (`emuLensYaw`), T10 (`queuePoint`, `sAtRimX`).
@@ -30,6 +30,10 @@ These override any older value in this ticket that they name.
 - **Wading (T10 r3).** On the east-shore leg where the path lies over the water (z < about −8), T10 r3 `queuePoint` returns y = 0.30 (the water surface). Each bird there is painted standing on that surface, then a water-tone ellipse 0.14 × 0.05 m (`DAM` water lit colour) at each foot after the bird hides the feet (ankle-deep), plus a 0.25 m ripple ring per foot-down on the ambient clock. Planted-foot slip ≤ 0.02 m still applies.
 - **Hop (T35).** The two B04-SH03 hops place `at` on the ground and pass `emuHop`'s `offset[1]` as `air`; the shadow stays on the ground and shrinks per T35.
 - **Wing (T06 r3).** The duck-flap uses the drooping r3 FLAP_OUT.
+
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **T10 r4.** `queuePoint` eases y from the bank to the water over 0.6 m before each crossing; the bird's body follows `queuePoint` y with no extra smoothing, and the feet hide from the water surface on (ankle-deep).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-flock.test.ts`: positions 1.4 m apart along the path at B04-SH02 L 0; at L 45 every visible bird mid-step and at L 49 all landed; stance slip ≤ 0.02 m over B04-SH02 L 49–68; no bird within 1.5 m of a strike point (B04-SH03, T05 points).

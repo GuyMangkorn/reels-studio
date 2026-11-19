@@ -1,7 +1,7 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
-Blocked by: T03, T04 (r3), T05, T06 (r3), T10 (r3), T11, T13, T16, T34, T35 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
+Blocked by: T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35 (done), T36 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); shot blocks [b04.md](../short/scene-sheets/b04.md) B04-SH03 and B04-SH04 (authoritative; SD07, SD08); brief [VD30-11](../short/film-brief.md#vd30-11) (Stop, Value).
@@ -36,6 +36,14 @@ These override any older value in this ticket that they name.
 - **Hop (T35).** The two hops pass `air`; the shadows stay on the water/ground.
 - **Gunfire (T04 r3).** Smoke and blast use the r3 haze caps; tie rule as T04 r3.
 
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **Smoke (T04 r4).** Per-circle α_c, the B04-SH03 11-round list; smoke cover ≤ 0.45 and blast (mud) ≤ 0.40 at SH03 L 42 (Proof row added).
+- **T34 carry-over.** Registered plate vs QA stack at SH03 L 10 (k 0) MAD ≤ 2 with the shake translate in the wrapper style, and at L 42 shake 0 in the style; lead probe equal to the QA stack ± 1 px (Proof row added).
+- **Mitten (T36).** `GUNNER-1 RIGHT hand, fist on grip, shows back, fingers screen left (into frame)` → thumb screen down, drawn with `flatFist`; thumb check read on the picture.
+- **Hops (T35 done).** `air` = `emuHop` offset y; the shadow centre equals an `air` 0 bird at the same ground point ± 4 px.
+- **No flash mirror (TF20)**: confirmed with the user told (index R4); not asked back.
+
 ## Proof
 - Stills (`out/edu30-T27/`): SH03 L 0, 10, 11, 19, 25, 40, 42, 43, 46; SH04 L 0, 8, 12, 17, 21.
 - `scripts/qa-sheet.sh out/edu30-T27/sheet.png --cols 7 --width 270 out/edu30-T27/s*.png`; `measure-shots.ts B04-SH03 10` and `B04-SH04 12`; clean SH03 L 10 and SH04 L 12 through `caption-zone.py`.
@@ -46,6 +54,7 @@ These override any older value in this ticket that they name.
 | SH03 L 25 | two splashes in the shallows, the line bunched | 2 splashes; no bird within 1.5 m of a strike |
 | SH03 L 42 / 43 | no flash, no shake on either; smoke and queue still move | shake 0; smoke centroid moves ≥ 1 px between 42 and 43 |
 | SH04 L 12 / 21 | puff at the port / casing at rest on the stone | pan (415, 253) ± 25, port (638, 545) ± 25 (r3); stone (674, 1361) ± 25 |
+| SH03 L 10 / L 42 (r4) | registered = QA stack; smoke a haze | L 10 MAD ≤ 2 with the shake translate present, L 42 shake 0 in the style; smoke cover ≤ 0.45, blast ≤ 0.40 at L 42; lead probe ± 1 px |
 
 ## Result (Boss fills)
 Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked

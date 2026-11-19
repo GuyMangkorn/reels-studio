@@ -1,7 +1,7 @@
 # T24 — plate B03-SH01, the first full-frame firing beat (VD30-11, 23 rounds from the order), is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plate) · Hard: yes (gunner arms and jolt, flock startle and scatter)
-Blocked by: T03, T04 (r3), T05, T06 (r3), T08, T09 (r3), T11, T13, T34 · Consumers: B03-SH01 (global 688–759)
+Blocked by: T03, T04 (r4), T05, T06 (r4), T08, T09 (r4, done), T11, T13, T34, T36 · Consumers: B03-SH01 (global 688–759)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); shot block [b03.md](../short/scene-sheets/b03.md) B03-SH01 (authoritative; SD13); brief [VD30-11](../short/film-brief.md#vd30-11) (per-round grammar, value, fallback order).
@@ -38,6 +38,13 @@ These override any older value in this ticket that they name.
 - **Muzzle and lean (r3).** B03-SH01 muzzle = `lewisAnchors([0, 0, 0], −π/2).muzzle` = (0, 0.586, −0.659), projecting to **(432, 1020)** on the B03-SH01 camera (was (457, 951)); T09 `leanFrom` is that muzzle. The halation (180 px) reaches into the caption band; accepted (picture glow, the caption sits on top).
 - **Gunfire (T04 r3).** Smoke and blast use the r3 haze caps; the frame-max rule accepts a clipped-sky tie.
 
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **Smoke (T04 r4).** Per-circle α_c; smoke cover ≤ 0.45 and blast ≤ 0.40 in the densest 16 × 16 box at L 30 and L 71 (Proof row added).
+- **T34 carry-over.** This is the first plate that sets `shake` and paints leads: the registered plate vs the QA stack at L 2 (a k 0 frame) MAD ≤ 2 with the shake translate in the wrapper style, and the lead probe equal to the QA stack ± 1 px (Proof row added).
+- **Fists (T36).** GUNNER-1 back view: both `Arm.exact` fists with `flatFist`; thumb lines as T36's back row (RIGHT screen left, LEFT screen right).
+- **Lean.** T09's `lean` uses the `lewisAnchors` muzzle (0, 0.586, −0.659) (T09 r4).
+
 ## Proof
 - Stills (`out/edu30-T24/`): L 0, 2, 3, 4, 20, 40, 56, 68, 71; `scripts/qa-sheet.sh out/edu30-T24/sheet.png --cols 5 --width 270 out/edu30-T24/s*.png`; `measure-shots.ts B03-SH01 2,68`; overlay diff: render L 2 and L 3 with `tag: true` and check the tag and guides do not move.
 - Clean L 2 through `caption-zone.py`.
@@ -49,6 +56,7 @@ These override any older value in this ticket that they name.
 | L 56 | clumps bolting, spurts short of the birds, casings on the dirt right of G1 | no strike within 4 m of a bird (logged); casings x 0.8..1.5 |
 | L 71 | bolt open, smoke hanging, no shake | shake (dx, dy, rot) = 0 |
 | L 2 vs L 3 overlay | tag and guides fixed while the canvas shakes | overlay pixel diff 0 outside the canvas |
+| L 30 / L 71 (r4) | smoke a haze, legs and muzzle readable; registered = QA stack | smoke cover ≤ 0.45, blast ≤ 0.40 (T04 measure); L 2 registered vs QA MAD ≤ 2 with the shake translate present; lead probe ± 1 px |
 
 ## Result (Boss fills)
 Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked

@@ -1,5 +1,5 @@
 # T09 — the paddock set has continuous light, eaten and stubble states, blast lean, track ruts, a high view that does not stripe, and the fence seen from the track
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: blocked on one row (P30-fence-rev top-wire contrast at x 501, question Q-E in Result; everything else built and measured; r3 fix pass: high view without ridge rows, P2 measured on a bare variant, B05-SH04 wire weight, `paintPaddockScene` for the plates; Q-A to Q-D answered in the r3 decisions; r1 built)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: done (r4 Film: Q-E answered, the wire contrast is measured between posts at x 420 = 140, pass; no Boss pass; r3 built and measured; r3 fix pass: high view without ridge rows, P2 measured on a bare variant, B05-SH04 wire weight, `paintPaddockScene` for the plates; Q-A to Q-D answered in the r3 decisions; r1 built)
 Class: set · Hard: no
 Blocked by: T03 (`proof-paddock.tsx` exists) · Consumers: every space-P shot (B01, B02, B03, B05, B06)
 Model: sonnet, medium
@@ -39,7 +39,7 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (defaul
 | P30-P2 | paddock and far flock from high, no regular stripes, no arc rows | viewed (no stripes or arcs); the number is taken on **P30-P2-bare** (r3: same camera, eaten 0, no flock marks, no gums, farmhouse or camp): row-mean luma over **y 450–1500**, linear trend removed, peak-to-peak ≤ 12 (0–255) |
 | P30-P3-m 0 / 0.5 / 1 | shadows swing from short NE-cast to long +x-cast; wheat shortens to stubble | fence-post shadow length at m 1 ≥ 2.5 × at m 0 (logged px) |
 | P30-ruts | two dark ruts on the track | 2 ruts detected in the track band |
-| P30-fence-rev | wires in front of the test posts, top wire near (501, 1033), the locked post at x 0 near (753, 987) (r3: (1020, 991) was a typo; posts stand at multiples of 3 m) | both within ± 30 px; r3: top-wire contrast ≥ 20 luma against the 6 px above and below it at x 501 |
+| P30-fence-rev | wires in front of the test posts, top wire near (501, 1033), the locked post at x 0 near (753, 987) (r3: (1020, 991) was a typo; posts stand at multiples of 3 m) | both within ± 30 px; r3: top-wire contrast ≥ 20 luma against the 6 px above and below it; r4: measured at **x 420** (a column between posts; r3 measured 44 vs 184, contrast 140: pass). Where the wire crosses a post or a dark body no contrast is required |
 
 ## r3 decisions (Film, 2026-11-19)
 - **Q-A (P2 measure).** The stripes are judged on the picture and measured on a bare variant: `P30-P2-bare` (ground and wheat only) over y 450–1500, range ≤ 12 kept. The patch, flock and gums are scene content, not stripes. The arc rows of the near ridges in r1's P30-P2 (y ≈ 900–1480) are the same artefact as the far stripes, so the high view drops the ridge rows at every distance (table).
@@ -51,6 +51,14 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (defaul
 - **`eaten` as an addition** accepted: the locked rectangle applies only when `eaten` is not passed; every plate passes it through `paintPaddockScene`.
 - **P3 midpoint shadow** (m 0.5 shorter than m 0) accepted: the time-lapse passes noon.
 - r3 work for Boss: high view without ridge rows; `P30-P2-bare`; `paintFence` `{wireW, wireCol}`; move and export `paintPaddockScene` (with the c.z > 6 order); re-run P30-LF01 (≤ 2), P30-P2, P30-P2-bare, P30-fence-rev (wire 2.5 px) and a default-options `paintPaddockScene` vs the LF01a baseline; record the numbers in Result.
+
+## r4 decisions (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+Viewed: store `EDU-EP30-T09-r3/T09r3-fence-rev.png`, `T09r3-p2.png`, `T09r3-p2-bare.png` at 270 px: wires read in front of the posts and across the paddock; P2 has no stripes or arcs.
+- **Q-E: (a) with (c).** A 4 mm dark wire in front of a dark bird is, in a real photograph, nearly invisible where it crosses the body; it reads against the paddock between the birds, and the draw order (wire after the birds, r3 test) is what puts the birds behind the fence. A lighter wire or a halo for one view would paint something the fence does not have. The check moves to x 420 (contrast 140, pass). The x 501 reading (10) is logged, not a range.
+- **For T30 (B05-SH04 plate):** the wire check is taken at a column between the fence birds; across a bird body no contrast is required. "No body pixel in front of the wire" stays as T30 writes it.
+- The span fallback for wires with an end behind the lens (Boss's defect fix, `wire` option only) is accepted as built; the locked stroke list is unchanged.
+- `P30-lean` on the r1 muzzle: accepted for this proof; T24 passes the `lewisAnchors` muzzle as T09's `lean` row says.
+- T09 is done; no r4 Boss pass.
 
 ## Result (Boss fills)
 ### r3 fix pass 1 (Boss, Sonnet medium, 2026-11-19)

@@ -1,5 +1,5 @@
 # T34 — a registered plate can restyle the shared canvas (newsreel filter, weave, shake, 1.05 overscan) through an optional `canvasStyle` hook
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2 Film: items (1)–(3) of the Result accepted; the shake and lead-probe rows are proven on the first real plates, T24 and T27, see r2 decisions)
 Class: capability · Hard: no
 Blocked by: T03 (r2 fix pass first: both write `edu30/shot.tsx`) · Consumers: every registered EP30 plate; blocks T24 and T27 (see index)
 Model: sonnet, medium
@@ -37,6 +37,12 @@ References: none (no look change; the QA stack picture is the reference).
 | B01-SH01 L 0 | newsreel look (sepia, no scale) | mean difference ≤ 2 |
 | B07-SH01 L 4 | strength about 0.6: partly tinted | mean difference ≤ 2 |
 | B01-SH01 L 0 titles-free frame | no vignette double: single `NewsreelOverlay` vignette | corner luma equals the QA stack ± 3 |
+
+## r2 decisions (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+- **(1) Shake and (3) lead probe: proven in T24 and T27.** Both need a plate that sets `shake` and paints leads; the stubs do neither. The synthetic-shake test and the MAD ≤ 2 frames prove the hook; T24 (B03-SH01) and T27 (B04-SH03) each carry a T34 row in their Proof tables: registered vs QA stack at a round's k 0 frame, MAD ≤ 2 with the shake translate in the wrapper style, and the lead probe equal to the QA stack ± 1 px.
+- **(2) Title on B03-SH01 L 40:** accepted (the comparison holds with the title on both frames).
+- **(4) `ShotContext & {fps}`, (5) source-pattern test, (6) scratch venv:** accepted.
+- **Files:** `src/painted/edu30/registered-index.tsx` is listed in Build Files (new, proof entry `EDU30-REG-<shot id>`); `docs/context-map.md`'s EP30 entry names it (checked at `6904070`).
 
 ## Result (Boss fills)
 - Commit: see the branch tip (`git log --grep T34`), worktree branch `worktree-agent-ae4ad9dbac4269975`, on `claude/ep30-continuation-493a12` at `8bbfa0d`.

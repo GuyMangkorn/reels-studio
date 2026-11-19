@@ -1,7 +1,7 @@
 # T12 — the standing and kneeling crew poses and the farmer's gesture exist with their hands and faces decided
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: figure · Hard: yes (arm, hand, face)
-Blocked by: T11 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`), T13 (pan anchor for the loader) · Consumers: B01-SH01 (P30, P34 locked), B02-SH02 (FARMER), B02-SH04 (salute, line-up), B02-SH06 (visor, loader), B03-SH05 (GUNNER-2 P34 at the edge), B06-SH01 (P44 back, shoulder and hat)
+Blocked by: T36 (r4: the flat thumbed fist; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`, after T11), T11 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`), T13 (pan anchor for the loader) · Consumers: B01-SH01 (P30, P34 locked), B02-SH02 (FARMER), B02-SH04 (salute, line-up), B02-SH06 (visor, loader), B03-SH05 (GUNNER-2 P34 at the edge), B06-SH01 (P44 back, shoulder and hat)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks); [hand-drawing skill](../../../../.claude/skills/hand-drawing/SKILL.md) §1–3, §7, §8; [pose sheet](../../../../docs/character-proportion-principles.md#cp-p-pose-sheet) P01, P21, P30, P34, P41, P44 ([kit/poses.ts](../../../../src/painted/kit/poses.ts), [kit/poses-more.ts](../../../../src/painted/kit/poses-more.ts): P34, P41, P44 have front and profile only); [edu30/cast.ts](../../../../src/painted/edu30/cast.ts) `paintCrew`; [kit/head.ts](../../../../src/painted/kit/head.ts) face `look`, `open`.
@@ -29,6 +29,10 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (MEREDI
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). The loader seats the pan on `lewisAnchors(...).pan` (paddock G1 at the origin, barrel −z: (0, 0.650, 0.184)).
+
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **Fists (T36).** Every closed hand on the crew and the farmer that is not a locked LF01a/LF02 call (the loader on the pan, the P44 shoulder hand, the salute's far fist where it shows) sets `flatFist: true` with its `fist` side; the thumb check is read on the picture. Locked B01-SH01 P30 and P34 keep the oval (`thumb check: <hand>: locked oval (LF01a)`). Look check of T36's fist first (index Look checks).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: arm ratio ≤ 1.05 on every key frame of A, D, F, G; loader reach ≤ 0.52 m both arms with the pan at its seat.

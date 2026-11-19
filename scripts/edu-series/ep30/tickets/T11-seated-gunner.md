@@ -1,5 +1,5 @@
 # T11 — the seated gunner holds the gun in front, back, right-profile and front three-quarter views and jolts with each round
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, 1 open question for Film (thumb rows; see Result) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: done (r4 Film: every built row accepted; the thumb rows move to the new kit ticket **T36**, which re-renders this ticket's proofs with a thumbed fist and records the thumb check; see r4 decisions) · r3: Film notes added (TICKETS-R3)
 Class: figure · Hard: yes (arm, hand)
 Blocked by: T13 (gun anchors `grip`, `stock`), T03 (`proof-cast.tsx` exists) · Consumers: B01-SH01 (front, locked), B02-SH06 (front, small), B03-SH05 (front, edge), B03-SH01 (back + jolt), B04-SH01 (locked LF02), B04-SH03 (right mitten + jolt), B04-SH06 (front three-quarter, through T17), B05-SH01/SH02 (right profile on the truck); T14, T17
 Model: sonnet, medium
@@ -44,7 +44,19 @@ These override any older value in this ticket that they name.
 | --- | --- | --- |
 | C30-gunner-front vs LF01a crop | unchanged seated gunner | visual match at 270 px; lead within ± 5 % of LF01a's 311 px |
 | C30-gunner-back j 0 / j 1 | fists on grip and stock; shoulders shifted back at j 1 | shoulder shift 0.012–0.018 m (logged); arm ratio ≤ 1.05 |
-| C30-gunner-right, C30-gunner-34 | near right arm, fist on the grip | `thumb check: GUNNER-1 RIGHT: <side> ok` and `arm check: GUNNER-1 r/l: attached ok` for every view; C30-gunner-34 lead 593 ± 30 px |
+| C30-gunner-right, C30-gunner-34 | near right arm, fist on the grip | `thumb check: GUNNER-1 RIGHT: <side> ok` (r4: recorded by T36 on its re-render) and `arm check: GUNNER-1 r/l: attached ok` for every view; C30-gunner-34 lead 593 ± 30 px **to the visible top (hat crown)** (r4; 572.1 px: pass) |
+| reach at the jolt peak (r4) | fists stay on grip and stock at j 1 | world reach ≤ 1.05 × 0.52 = 0.546 m and arm ratio ≤ 1.05 (r3: 0.523 m, ratio 1.042: pass) |
+
+## r4 decisions (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+Viewed: store `T11-sheet.png` items `T11-34-j0`, `T11-right-j0`, `T11-back-j1` at 270 px: fists close on grip and stock, elbows low, the gunner calm and leaning in; every hand is a plain skin oval with no thumb.
+1. **Thumb: (c), a new kit fist for the unshaped path (T36).** Story first: GUNNER-1 is competent, both fists closed on the gun in every frame; a closed fist is what says it. The project rule for that hand is [UT14](../../../../docs/user-taste.md) (a closed fist is a round shape with the thumb across and two or three short strokes) and the [hand-drawing skill](../../../../.claude/skills/hand-drawing/SKILL.md#7-thumb-check-before-reporting-a-frame-requirement) §7 requires the picture to show the thumb side; a plain oval meets neither, so (a) is out. (b) changes the locked figure look (form shading, folds; Boss saw it break the LF01a match). The kit already has the fist shape (`draw.ts` `fistParts`, used by the shaped path); T36 draws it flat in the unshaped path as an opt-in, centred on the grip. T36 also re-renders this ticket's four proofs with it and writes the thumb-check lines, so T11 itself needs no Boss pass.
+2. **Locked frames keep the oval.** B01-SH01 L 0 (LF01a) and B04-SH01 L 0 (LF02 R4) call the W3 depth arms without `grip`/`stock` and are not opted in; at their size (lead 311 px) the hand is about 12 px and the lock wins. Their thumb-check line is `thumb check: GUNNER-1 RIGHT/LEFT: locked oval (LF01a / LF02)`.
+3. **B04-SH03 right forearm and mitten** (T27): the hand line stays `RIGHT hand, fist on grip, shows back, fingers screen left (into frame)` → thumb screen down; it uses T36's fist, so T27 adds T36 to its blockers.
+4. **3/4 lead: the visible top.** Range 563–623 read to the hat crown, as every lead in these tickets reads the visible top unless a row names the head (common rules, man height: the probe with the hat is 1.074 × the head-top figure). 572.1 px passes; no lean change.
+5. **B04-SH06 face projection moves (TF21).** With the 0.225 rad lean the 3/4 face starts at about (530, 690) (was (445, 682)); the end point by the same shift ≈ (492, 695) (estimate). T17 and T28 use these; the acceptance rows (face above y 1100, GUNNER-1 593–624 px) are unchanged. Folded into the next sheet revision.
+6. **Right-view proof: confirmed as built** (G1 at the seat + 0.85 m along +x, y 1.1, heading 0; the eye read as absolute (−0.7, 2.0, 2.1)). This is the proof rig only; the truck numbers for B05-SH01/SH02 come from T14.
+7. **Reach at j 1: bound 1.05 × 0.52 = 0.546 m** with arm ratio ≤ 1.05 (the Proof row above); the 0.52 m row is the rest pose after the lean. Measured 0.523 m and 1.042: pass.
+8. **Deviations 1 and 2 accepted** (picture-plane lean in front, back and 3/4; the jolt as a turn about the hips with the head moving 1.6–1.8 × the shoulder). Hips and legs fixed, as built.
 
 ## Result (Boss fills)
 Commit: see `git log` on branch `worktree-agent-ae7df9aae85bf5ba7` (T11 commit; started from `claude/ep30-continuation-493a12` at `8bbfa0d`) · fix passes used: 0 · Sonnet medium, 19 Nov 2026 · store: `projects/edu/EDU/previews/T11-sheet.png` (8 frames, 270 px), `T11-{front,back,right,34}-j{0,1}.png` (full frames), `T11-hf-*.png` and `T11-crop*.png` (full-size crops); local `out/edu30-T11/`, logs `out/logs/T11-*.log`. (A first archive run left the same bytes under the bare names `front-j0.png` etc. in `previews/`; ignore those.)

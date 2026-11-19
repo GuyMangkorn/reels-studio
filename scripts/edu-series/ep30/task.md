@@ -1,10 +1,10 @@
 # Tasks — EP30
 
-Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate tickets EDU-EP30-TICKETS-R3: decisions on the merged Boss results T01–T04, T06, T09, T10, T13 at `9a64214`; before: W5.1t TICKETS-R1/R2 from SCENE-R2)
+Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate tickets EDU-EP30-TICKETS-R4: decisions on the merged Boss r3 round T04, T06, T09, T10, T11, T34, T35 at `6904070`; before: TICKETS-R3 at `9a64214`)
 
 ## EDU-EP30-SHORT
 
-**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R3](tickets/index.md): r3 fix passes T04, T06, T09, T10, and T11, T34, T35 (new; T35 built 2026-11-19, blocked only on Film confirming one proof range, see its Result); coordinator publishes ROWS-R7 (review page: pending). **Next:** Film's look check of the T06 r3 sheet (before T08, T16); T05, T07, T12, T14 as their blockers land; Ton's cue sheet is done; then the plates and the Draft
+**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R4](tickets/index.md): r4 fix passes T04 (per-circle smoke alpha), T06 (flap-back wing, bib-to-neck blend), T10 (waterline ease), new T36 (unshaped fist with thumb) and T14; coordinator publishes ROWS-R7 (review page: pending) and shows the user the T06 r4 neck before/after crop (touches the approved emu). **Next:** Film's look checks of the T06 r4 sheet (before T08, T16) and the T36 fist (before T12); T05, T07 as T04 r4 and T06 r4 land; then T08, T15, T12, T16, T17, T18; Ton's cue sheet is done; then the plates and the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -43,7 +43,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate ticket
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R2](short/scene-sheets/index.md), 28 shots, **1977 frames (65.90 s)**, ready-for-dev, on SCRIPT-R2.2 + VOICE-R2.2; rows EDU-EP30-ROWS-R7 timed, 2026-11-19 (review page: pending). Supersedes SCENE-R1 (26 shots, 2012 frames, VOICE-R1)
   - [x] W5.1t Film plate tickets — [EDU-EP30-TICKETS-R1](tickets/index.md) (now R3, 35 tickets, 2026-11-19) from SCENE-R2 + BRIEF-R3, 33 tickets (T01–T18 assets/capabilities, T19–T33 plates over all 28 shots), all `ready`, none `needs-input`; Q7 and Q8 carried as dependencies (index table); Film fixes TF01–TF15 queued for the next sheet revision; SCENE-R1 tickets deleted, 2026-11-19
-  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R3](tickets/index.md) (T10 r3 built 2026-11-19 by Boss on branch worktree-agent-abf4fc4be77222240: wading y, stone, B04-SH04 eye; proof store projects/edu/EDU/previews/T10-dam-shore-path-r3/; Film to read the 0.20 m y-step note in its Result) (**8/35 tickets built: 4 done** (T01 r2, T02 r2, T03 r2 + Film r3, T13 + Film r3), **4 built with an r3 fix pass ready** (T04 smoke/blast caps, T06 wing look fix, T09 high view/wire/`paintPaddockScene`, T10 wading/stone/eye); dispatchable now: T04 r3, T06 r3, T09 r3, T10 r3, T11, T34, T35 (new airborne-shadow ticket); Film fixes TF16–TF20 queued for the next sheet revision; one ticket per fresh Boss invocation, Sonnet medium; status in the ticket index)
+  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R4](tickets/index.md) (**11/36 tickets built: 8 done** (T01 r2, T02 r2, T03 r2 + Film r3, T09 r3 + Film r4, T11 + Film r4, T13 + Film r3, T34 + Film r2, T35 + Film r2), **3 built with an r4 fix pass ready** (T04 per-circle smoke alpha, T06 flap-back wing and neck blend, T10 waterline ease); new T36 (unshaped fist with thumb, from the T11 thumb question); dispatchable now: T04 r4, T06 r4, T10 r4, T36, T14; Film fixes TF16–TF21 queued for the next sheet revision; TF20 B04-SH03 flash mirror removed, the user was told and has not asked for it back; one ticket per fresh Sonnet medium Boss invocation, 2026-11-19)
   - [x] W5.2s Ton sounds and cue sheet (90 cues, 67 sounds: 66 generated + filed, 1 library = 4 cue uses; `scripts/edu-series/ep30/sound-cues.json` for SCENE-R2; episode lock waits for `src/videos/edu-ep30/`, `short/sound-lock.py`; not listened; [notes](short/sound-notes.md))
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)

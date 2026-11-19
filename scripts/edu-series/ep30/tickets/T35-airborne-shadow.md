@@ -1,5 +1,5 @@
 # T35 — an airborne emu's shadow stays on the ground (the B04-SH03 hops)
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: blocked (one proof range, see Result)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: done (r2 Film: the proposed shadow-centre range adopted, the contact-shadow reading confirmed; no Boss pass)
 Class: capability · Hard: no
 Blocked by: T06 (done: `emuHop` returns `{pose, offset}`) · Consumers: T08 (same file `flock.ts`, builds after this), T16 (queue hops), T27 (B04-SH03 hops); any later flier or jumper painted through `paintBeast`
 Model: sonnet, medium
@@ -30,7 +30,12 @@ References: the T06 store still `projects/edu/EDU/previews/KP-hop.png` (shadow l
 | Frame | What must be visible | Measured number and its pass range |
 | --- | --- | --- |
 | FL30-hop stand frame vs the same frame rendered from the checkout before the change | unchanged | mean abs pixel difference ≤ 2 |
-| FL30-hop L 3 | both feet off the ground, a smaller, paler shadow on the ground under the bird with a clear gap between pads and shadow | shadow centre y within ± 4 px of the stand frame's; gap pads-to-shadow ≥ 20 px (logged) |
+| FL30-hop L 3 | both feet off the ground, a smaller, paler shadow on the ground under the bird with a clear gap between pads and shadow | r2: shadow centre equals that of an `air` 0 bird at the **same ground point** (`at` + the hop's x, z offset) within 4 px (the stand-mark comparison is dropped: the hop moves the ground point 0.3 m toward the lens); gap pads-to-shadow ≥ 20 px (logged; r1 108.9 px: pass) |
+
+## r2 decisions (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+- **Shadow centre range: adopted as proposed.** A sideways hop moves the bird over the ground, so its shadow must follow the ground point, not stay at the take-off mark; at the same ground point the ring only shrinks about its centre, which the ring test in `tests/beast-air.test.ts` (ring world y `ground + 0.01` at the body's x, z) proves. Viewed: store `T35-hop-L00.png`, `T35-hop-L03.png` (shadow on the ground under the airborne bird, smaller and paler). The 48.8 px reading is logged, not a range.
+- **Per-foot contact shadow `max(0, 1 − 4 × air)` scales the wash opacity: confirmed.** A contact shadow fades as the foot leaves the ground; its size follows the foot. Gone at 0.25 m as written.
+- Done; T08, T16 and T27 use `air` as the Hop use row says.
 
 ## Result (Boss fills)
 Commit: this branch's T35 commit (see index) · proof sheet `projects/edu/EDU/previews/T35-sheet.png` (stand-after, L3, L6, L0; also `T35-hop-L00/L03/L06.png`, `T35-stand-before.png`, `T35-stand-after.png`) · fix passes: 0.

@@ -1,5 +1,5 @@
 # T17 — GUNNER-1 racks the cocking handle and groans at the gun: `new: cocking-pull` and the angry talking face on `man-crop` front three-quarter
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T12 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`; T11's `front34` view), T13 (`cock` anchor and rack keys) · Consumers: B04-SH06
 Model: sonnet, medium
@@ -31,6 +31,11 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17). The rack handle rest at the B04-SH06 start camera projects to (663, 961) (T13 r3; the sheet said (674, 987)).
+
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **TF21 (T11 r4).** With T11's 0.225 rad lean, the 3/4 face at B04-SH06 start sits at about (530, 690) (was (445, 682)) and at the end ≈ (492, 695) (estimate); measure both and log them. Acceptance unchanged (face above y 1100, GUNNER-1 593–624 px to the hat crown).
+- **Fist (T36 through T12).** The right fist on the knob and back on the grip and the left fist on the stock use `flatFist: true`; the thumb check is read on the picture.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: right wrist on `cock` ± 0.01 m at L 0, 3, 6 and on `grip` from L 8; arm ratio ≤ 1.05 at every frame L 0–8; left wrist on `stock` every frame.

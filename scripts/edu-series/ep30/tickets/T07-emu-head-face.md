@@ -1,7 +1,7 @@
 # T07 — the emu head acts: lens turn, blink, nod, two-state talking beak, neck-sac boom puff (and the relief emu)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: figure · Hard: yes (animal face)
-Blocked by: T06 (its r3 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
+Blocked by: T06 (its r4 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules) (Hard-ticket checks); shot blocks b01 B01-SH01/SH03 Staging, b02 B02-SH06 Staging, b05 B05-SH04 Staging, b07 B07-SH02 Staging; [emu.ts](../../../../src/painted/edu30/emu.ts) `lid`, `headYaw`, `EMU_POSES.look`; looks.ts `lensYaw`; [arms.ts](../../../../src/painted/edu30/arms.ts) `ArmsOpts.emuPose`.
@@ -34,6 +34,10 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/KP-face.png`, `KP-
 These override any older value in this ticket that they name.
 - **Mixer rule (T06 r3).** Add every new numeric or L3 field of this ticket (beak, sac, blink, nod, lens-turn controls) to `mixEmuPose`, mixing from its `buildEmu` default when one side lacks it, so a gesture eases in; only `stride` and `pads` stay one-sided (taken whole). Tests: `mixEmuPose(a, a, u) = a`, u 0 = a, u 1 = b for each new field.
 - **Wing (T06 r3).** The wing is the r3 plume drawing; startle carries wing 0.15. Every KP still of this ticket is compared with the T06 r3 renders, not r1.
+
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **T06 r4.** FLAP_OUT moves closer to the flank (tip (0.010, 0.812, 0.319)), plume tones 0.15 / 0.35 at 0.030 m, and the hero bib blends into the neck over u 0.40–0.50: T07's head and neck keys (lens turn, nod, beak-talk, sac) build on that neck colour; re-take any hero hash after T06 r4. Build after the T06 r4 commit (same files).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: defaults (`nod` 0, `beak` 0, `sac` 0) give the pre-change build; `blinkLid` sequence; `talkBeak` is exactly 0 or 1 and 0 outside the onset windows.

@@ -1,7 +1,7 @@
 # T05 — kit gunfire debris: ejected casings, strike spurts, water spouts and splashes
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: capability · Hard: no
-Blocked by: T04 (r3 fix pass first; same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`), T10 (r3: `STONE_AT`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
+Blocked by: T04 (r4 fix pass first; same files `kit/gunfire.ts`, `tests/gunfire.test.ts`, `proof-fx.tsx`; uses `roundPhase`), T10 (r3: `STONE_AT`) · Consumers: B03-SH01, B04-SH03, B04-SH04 (jam casing), B04-SH06 and B04-SH05 (casings at rest)
 Model: sonnet, medium
 
 Read first: [common rules](index.md#common-rules); brief [VD30-11](../short/film-brief.md#vd30-11) steps 4, 7 and Continuity; Casings and Strikes rows in b03 B03-SH01 and b04 B04-SH03; b04 B04-SH04 Staging (jam casing).
@@ -34,6 +34,10 @@ These override any older value in this ticket that they name.
 - **Jam casing keys (r3).** L 13 at the port = `lewisAnchors([−5.6, 0.32, −5.0], 0).port` = (−5.679, 0.857, −4.95) (was (−5.45, 0.82, −4.95)); L 17 on the stone top = T10 r3 `STONE_AT` + (0, 0.05, 0) = (−5.63, 0.38, −4.9) (the stone moved with the gun's real port, TF19); bounce apexes L 19 (+0.04 m) and L 21 (rest) unchanged. Read both from `props.ts` / `dam.ts`, not literals.
 - **Haze (T04 r3).** Debris drawn over the smoke keeps its own alpha; T04's haze cap does not apply to casings, spurts or spouts.
 - **Lewis gun (T13 r3).** When this ticket's proof paints a gun, after its `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+
+## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+These override any older value in this ticket that they name.
+- **T04 r4.** The smoke puff's five circles each take α_c = 1 − (1 − α)^(1/5) (T04 r4 decision 1); T05 adds no smoke of its own. Build after the T04 r4 commit (same files).
 
 ## Proof
 - `node scripts/test.mjs tests/gunfire.test.ts`: casing i before `rounds[i] + 1` returns nothing; frame L computed alone equals frame L after 0…L (no hidden state); 23 paddock casings rest inside the B03 box; no B03 strike point within 4 m of a `flockIn` bird (seed 31000, the F1 call of T08).
