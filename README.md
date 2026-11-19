@@ -38,9 +38,10 @@ npm start
 
 Studio opens the compositions declared under `src/videos/`, grouped in one folder per episode. The baseline demo expects local `public/narration.mp3` plus the committed amplitude envelope in `src/amplitude.json`. To generate its Niwat Thai narration at +5%, `npm run narration` requires Python with `edge-tts==7.3.1` and sends the demo subtitle text to the TTS provider. For a silent custom preview, pass `narration: null` as an input prop.
 
-### Claude Code / Codex setup
+<a id="claude-code--codex-setup"></a>
+### Claude Code / Codex / Cursor setup
 
-Both harnesses use `AGENTS.md`, the shared [project skills](.agents/skills/editorial/SKILL.md) and the [synced role instructions](docs/coordinator.md#coordinator-and-agent-parity). Claude Code imports `AGENTS.md` through `CLAUDE.md`.
+These harnesses use `AGENTS.md`, the shared [project skills](.agents/skills/editorial/SKILL.md) and the [synced role instructions](docs/coordinator.md#coordinator-and-agent-parity). Claude Code imports `AGENTS.md` through `CLAUDE.md`; Cursor loads `AGENTS.md` directly and role agents from [`.cursor/agents/`](.cursor/agents/film.md) (regenerate with `python3 -I scripts/cursor-agents.py` after editing a Claude role).
 
 - **MCP registration** uses `.mcp.json` in Claude Code, with absolute paths and first-open approval. Codex uses [`.codex/config.toml`](.codex/config.toml) in a trusted checkout. Start a fresh session after a config change and run `codex mcp list` from the repo root to confirm both servers are registered.
 - **audio-studio MCP** generates sound. Install [audio-studio-mcp](https://github.com/kanaworksai-hue/audio-studio-mcp) with its `install.sh` under `~/Developer/audio-studio-mcp`. For a different install path, edit `.mcp.json` for Claude Code or set `REELS_AUDIO_STUDIO_DIR` in the Codex launch environment. Generations go to `$REELS_STORE/library/sound/_raw`. Claude Code sets the path as `AUDIO_STUDIO_OUTPUT_DIR` in `.mcp.json`.

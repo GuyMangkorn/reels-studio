@@ -5,7 +5,7 @@ This repository produces Thai Shorts and long-form videos. Remotion owns the tim
 ## Language and rule conventions
 
 - **Language:** author agent instructions, workflows, technical notes, briefs, handoffs, shot sheets and QA in **English** with stable English IDs. Keep audience-facing Thai (narration, dialogue, subtitles, on-screen text, language-specific examples) unchanged. Reply to the user in their language.
-- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Boss (บอส), Ton (ต้น), Editor. Configs live in `.codex/agents/` (Codex) and `.claude/agents/` (Claude Code); see [parity](docs/coordinator.md#coordinator-and-agent-parity).
+- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Boss (บอส), Ton (ต้น), Editor. Configs live in `.codex/agents/` (Codex), `.claude/agents/` (Claude Code) and generated `.cursor/agents/` (Cursor; `python3 -I scripts/cursor-agents.py`); see [parity](docs/coordinator.md#coordinator-and-agent-parity).
 - **Rule levels:** **Requirement** is mandatory within its stated scope. **Default** is a normal choice that a brief or scene handoff may override with a recorded reason. **Reference** is explanation or examples. **Design/proposed** needs implementation and verification before runtime use.
 - **Runtime status** is separate: `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with checkout/revision and evidence. Inspect the active checkout before claiming a capability exists.
 - **One home per rule:** keep each rule in its authoritative document and link to it elsewhere. When moving or translating a section, update references and preserve old heading anchors. Keep historical evidence dated and scoped.
@@ -44,7 +44,7 @@ These apply to every role; agent configs link here instead of repeating them.
 <a id="coordinator-and-agent-parity"></a><a id="coordinator-duties"></a>
 ## Coordinator and agent parity
 
-The **coordinator** is the chat session the user talks to (Claude Code or Codex). **Requirement:** before coordinating a deliverable, invoking a role agent or editing a role config, the coordinator reads [docs/coordinator.md](docs/coordinator.md) (duties, selection, publishing and reading the review page, publish folder, fix rounds, invocation rules AI01–AI08, AI12 and AI14, role-config parity). Role agents do not read it.
+The **coordinator** is the chat session the user talks to (Claude Code, Codex or Cursor). **Requirement:** before coordinating a deliverable, invoking a role agent or editing a role config, the coordinator reads [docs/coordinator.md](docs/coordinator.md) (duties, selection, publishing and reading the review page, publish folder, fix rounds, invocation rules AI01–AI08, AI12 and AI14, role-config parity). Role agents do not read it.
 
 Role configs describe roles. They install no automatic runner and authorize no cross-chat messaging. A role agent never invokes the next role on its own.
 

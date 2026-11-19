@@ -47,6 +47,14 @@ test('ZCode role agents match Claude (python3 -I scripts/zcode-agents.py)', () =
   assert.equal(realpathSync('.agents/mcp.json'), realpathSync('.mcp.json'), '.agents/mcp.json links to .mcp.json');
 });
 
+test('Cursor role agents match Claude (python3 -I scripts/cursor-agents.py)', () => {
+  for (const role of roles) {
+    const match = readFileSync(`.cursor/agents/${role}.md`, 'utf8').match(/^---\nname: (.+)\ndescription: "(.+)"\n(?:model: .+\n)?---\n\n([\s\S]+)$/);
+    assert.ok(match, `.cursor/agents/${role}.md exists with name/description(/model) front matter`);
+    assert.deepEqual({name: match[1], description: match[2], instructions: match[3].trim()}, readClaude(role), role);
+  }
+});
+
 test('every document an agent references exists', () => {
   for (const role of roles) {
     for (const doc of new Set(readClaude(role).instructions.match(/docs\/[a-z-]+\.md|\.agents\/skills\/[a-z-]+\/SKILL\.md/g) ?? [])) assert.ok(existsSync(doc), `${role} references missing ${doc}`);
