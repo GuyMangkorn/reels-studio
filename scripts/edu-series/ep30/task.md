@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate ticket
 
 ## EDU-EP30-SHORT
 
-**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R3](tickets/index.md): r3 fix passes T04, T06, T09, T10, and T11, T34, T35 (new); coordinator publishes ROWS-R7 (review page: pending). **Next:** Film's look check of the T06 r3 sheet (before T08, T16); T05, T07, T12, T14 as their blockers land; Ton's cue sheet is done; then the plates and the Draft
+**Now:** dispatch Boss (one fresh Sonnet medium invocation per ticket, parallel worktrees) on the dispatchable tickets of [EDU-EP30-TICKETS-R3](tickets/index.md): r3 fix passes T04, T06, T09, T10, and T34, T35 (new); T11 built 19 Nov 2026 (thumb-row question open for Film); coordinator publishes ROWS-R7 (review page: pending). **Next:** Film's look check of the T06 r3 sheet (before T08, T16); T05, T07, T12, T14 as their blockers land; Ton's cue sheet is done; then the plates and the Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -43,7 +43,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Film (W5.2 plate ticket
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R2](short/scene-sheets/index.md), 28 shots, **1977 frames (65.90 s)**, ready-for-dev, on SCRIPT-R2.2 + VOICE-R2.2; rows EDU-EP30-ROWS-R7 timed, 2026-11-19 (review page: pending). Supersedes SCENE-R1 (26 shots, 2012 frames, VOICE-R1)
   - [x] W5.1t Film plate tickets — [EDU-EP30-TICKETS-R1](tickets/index.md) (now R3, 35 tickets, 2026-11-19) from SCENE-R2 + BRIEF-R3, 33 tickets (T01–T18 assets/capabilities, T19–T33 plates over all 28 shots), all `ready`, none `needs-input`; Q7 and Q8 carried as dependencies (index table); Film fixes TF01–TF15 queued for the next sheet revision; SCENE-R1 tickets deleted, 2026-11-19
-  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R3](tickets/index.md) (**8/35 tickets built: 4 done** (T01 r2, T02 r2, T03 r2 + Film r3, T13 + Film r3), **4 built with an r3 fix pass ready** (T04 smoke/blast caps, T06 wing look fix, T09 high view/wire/`paintPaddockScene`, T10 wading/stone/eye); dispatchable now: T04 r3, T06 r3, T09 r3, T10 r3, T11, T34, T35 (new airborne-shadow ticket); Film fixes TF16–TF20 queued for the next sheet revision; one ticket per fresh Boss invocation, Sonnet medium; status in the ticket index)
+  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R3](tickets/index.md) (**9/35 tickets built: 4 done, T11 built with 1 open Film question** (T01 r2, T02 r2, T03 r2 + Film r3, T13 + Film r3), **4 built with an r3 fix pass ready** (T04 smoke/blast caps, T06 wing look fix, T09 high view/wire/`paintPaddockScene`, T10 wading/stone/eye); dispatchable now: T04 r3, T06 r3, T09 r3, T10 r3, T34, T35 (new airborne-shadow ticket); Film fixes TF16–TF20 queued for the next sheet revision; one ticket per fresh Boss invocation, Sonnet medium; status in the ticket index)
   - [x] W5.2s Ton sounds and cue sheet (90 cues, 67 sounds: 66 generated + filed, 1 library = 4 cue uses; `scripts/edu-series/ep30/sound-cues.json` for SCENE-R2; episode lock waits for `src/videos/edu-ep30/`, `short/sound-lock.py`; not listened; [notes](short/sound-notes.md))
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
