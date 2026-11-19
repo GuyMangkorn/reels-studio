@@ -1,5 +1,5 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6)
+Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
 Class: movement · Hard: yes (animal movement)
 Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
@@ -52,4 +52,22 @@ These override any older value in this ticket that they name.
 | render time | — | one 60-bird half-size frame time logged |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit `COMMIT` (branch `worktree-agent-a3187762f86199def`, on `4f81e77`) · fix passes used: 0 · Boss, Sonnet medium, 2026-11-20.
+Proof: store `projects/edu/EDU/previews/T08-sheet.png` (18 frames, 5 cols, 270 px) and the frames `T08-<comp>-<L>.png` in the same folder; tests `node scripts/test.mjs tests/edu30-flock.test.ts` 13/13 pass; `tsc` has no edu30 error; `npm test` 340 pass / 19 fail, none in edu30 (12 are the missing `@remotion/three` in this worktree, HIPPO joints stack overflow, media/loudness/store tests).
+Built in `flock.ts`: `paddockExtras`, `emu1State`, `buffetRow`, `headsField`, `scatter`, `burst` (+ `paintBurstDust`), `halves` (+ `halvesDust`), `fenceBirds` (+ `fenceCountB06`, `emuFront`), `slowLine` (+ `slowDust`), `blendPoses`, `footEvents`, `paintFlock`, `strideForAdvance`; `EmuPaint.lod` forces a detail level. `proof-flock.tsx`: FL30-buffet, -heads, -scatter, -burst, -halves, -fence, -slow, -cost.
+| Row | Measured | Verdict |
+| --- | --- | --- |
+| buffet 135 | 6 of 6 at pitch -0.18, head y 0.416-0.435 m (<= 0.5); 134 and 140 not fully down | met |
+| EMU1 | contacts L 4/34 left, 19/49 right (feet down on those frames, in swing the frame before); stance slip 0.0000 m | met |
+| heads | 36 members, sightline band min 0.96 m (>= 0.9), hero circle min 1.21 m, spacing min 0.70 m, all heads y 1.6 at L 73, crew bbox overlap 0 px at the start and end camera (library rejects heads that touch the crew box + 6 px) | met |
+| scatter | 4 clumps, min separation 13.9 m at L 60 (>= 4); nobody down; hero = the bird nearest (12, 0, -32), seed 36000 | met |
+| fence | body front 0.575 m, all nine states <= z 5.92; hero stays at z 5.3; wire painted over the birds, none in front | met |
+| slowLine | hero contacts L 12, 54, 96, both feet down L 109 (right foot swing compressed L 100-109); stance slip 0.0000 m; z -4.6 to -3.8007 at L 109 | met |
+| render time | FL30-cost (scatter(44) 40 rig birds + 20 far silhouettes), one frame at 1080x1920: whole `stills.mjs` run 13.9 s; half size not measured (`stills.mjs` CLI has no scale option); a 36-bird heads frame at near detail exceeded the 180 s still timeout, so the heads field paints `lod: 'far'`; a 9-bird fence frame at near detail also timed out (191 s), proof uses the five birds of B05-SH04 | logged |
+Values I could not follow (Film to decide):
+1. **halves exit:** "left half x <= 6.0 at L 22, right half x >= 18.0 at L 38" cannot hold at 5.5 m/s (needs about 17 m/s). Built at 5.5 m/s over 4 f: left half x max 9.88 at L 22, right half x min 14.48 at L 38. Frame exit at the sheet camera (half width about 2.7 m at depth 4.5 m) is earlier; FL30-halves 14/30 read as asked (left half away, hero alone at L 30, right half leaving). Film: keep the speed and change the numbers, or give a speed.
+2. **burst "all past the frame edges by L 45":** at 6-8 m/s the top camera still holds 34 of 40 birds at L 45. Built as stated.
+3. **slowLine "40 % cycle speed":** read as the contact frames L 12/54/96 (period 42 f) at 0.22 m/s, so the stride is 0.185 m (very short steps, stance static).
+4. **peck quantisation 1/16 vs slip <= 0.02:** named walkers (EMU1, extras, halves, slowLine) use exact phase; crowd birds (scatter, burst) quantise to 1/16, so run slip there is untested (up to about 0.06 m).
+5. **burst groups:** the six groups take each bird's scatter heading +-60 deg, snapped to 15+60k deg; hero group = the hero and the 10 birds nearest (12, 0, -32), heading toward it. `halves` returns the 10 birds only; the hero at (12, 0, -32) is painted by the plate (T15 mime).
+Other limits: walk to run snap at the bolt is blended over 3 f by `blendPoses`; heads proof overpaints wheat ridges per z band, so some sitting bodies show above the stalks in the proof (the plate T-ticket interleaves properly); scatter birds are 20-40 px high at the sheet camera (z -30..-60 at f 900), as the ticket places them; neck seams ignored per R6 until T37.
