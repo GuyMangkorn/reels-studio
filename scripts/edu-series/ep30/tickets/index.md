@@ -64,7 +64,7 @@ Both answers keep the scene-sheet values: **Q7** PB01 length as written (gunner 
 | Q7 — PB01 on-screen length | [O8](../short/scene-sheets/index.md#dependencies-and-open-items) (SD14) | gunner B04-SH06 [1062, 1086), emu B04-SH05 [1086, 1150) | T03 (two shot-table rows), T15 (B04-SH05 local keys), T16 (turn-away local key), T17 (shot length: shake/talk keys), T28 (both plates) |
 | Q8 — B03 burst from the order vs the narrator's "ยิง" | [O9](../short/scene-sheets/index.md#dependencies-and-open-items) (SD13) | B03-SH05 [667, 688); 23 rounds at B03-SH01 local 2 … 68 | T03 (two rows), T04 (B03 round list), T05 (casing count), T08 (scatter keys), T13 (pan total), T18 (hold length), T23, T24 |
 
-## User question Q-R5-1 (open, R5): where the T06 neck rows run
+## User question Q-R5-1 (answered 2026-11-20: (a) fold into T07 on Sonnet, own commit): where the T06 neck rows run
 
 T06 has used its two fix passes (r3, r4); the [fix-pass cap](../../../../.agents/skills/plate-tickets/SKILL.md#coordinator-dispatch) gives the next choice to the user. The coordinator asks with the structured-question tool and shows `projects/edu/EDU/previews/T06r4-neck-before-after.png` (and `T06r4-neck-startle-after.png`):
 - **(a) Recommended: fold rows N1–N4 into T07 on Sonnet.** T07 edits the same file (`emu.ts`) next anyway; the rows are one constant (blend start 0.40 → 0.15) plus a measured fallback; own commit inside T07. Also confirms the widened blend (u 0.15–0.50) the user was offered, which repaints the KP-EMU hero's pale bib over more of the lower neck front.
