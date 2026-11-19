@@ -36,7 +36,7 @@ Why this file exists: in WDG-EP01-SHORT one look frame went through seven painte
 - **UT08 — Female bodies carry clear cues** (waist, hips, bust). Evidence: char_base lineup (29 Oct 2026).
 
 <a id="ut-simple-hands"></a>
-- **UT14 — Hands stay simple.** No drawn fingers. An open hand is a rounded quad or diamond mitten with the thumb as a separate lobe and two or three short strokes marking the fingers; a closed fist is a round shape with the thumb across and the same short strokes. Evidence: char_base mitten hands (29 Oct 2026); ZCONDO2 kit frames r4 ("มือไม่ต้องเป็นนิ้ว ๆ ... มีเส้นขีด ๆ แบ่งนิ้วพอแล้ว", 3 Nov 2026).
+- **UT14 — Hands stay simple.** No drawn fingers, at figure scale and in close shots (1–1.5 m). **Exceptions (user, 18 Nov 2026):** POV shots always use the five-finger 3D hand; a non-POV shot may use it when Film decides the fingers must read ([hand-drawing skill](../.claude/skills/hand-drawing/SKILL.md#4-scale-mitten-or-five-fingers)). An open hand is a rounded quad or diamond mitten with the thumb as a separate lobe and two or three short strokes marking the fingers; a closed fist is a round shape with the thumb across and the same short strokes. Evidence: char_base mitten hands (29 Oct 2026); ZCONDO2 kit frames r4 ("มือไม่ต้องเป็นนิ้ว ๆ ... มีเส้นขีด ๆ แบ่งนิ้วพอแล้ว", 3 Nov 2026).
 
 ## Horror and monsters
 

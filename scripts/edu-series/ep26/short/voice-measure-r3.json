@@ -1,0 +1,543 @@
+{
+ "deliverable": "EDU-EP26-SHORT",
+ "step": "W4 audio rebuild",
+ "script_revision": "EDU-EP26-SCRIPT-R3",
+ "measure_revision": "EDU-EP26-VOICE-R3",
+ "date": "2026-11-18",
+ "timing_status": "rebuilt audio measured; anchor onsets from a Whisper re-run on the rebuilt narration (decoded 16 kHz float array); not listened",
+ "assembly": "L01..L20 minus L09, L11; 0.20 s digital silence gaps; per-line files from lines-nx105 unchanged (NARR x1.05, MARCUS L05/L10/L14/L16 x1.08 and L03 x1.15 as before)",
+ "totals": {
+  "speech_end_s": 61.133,
+  "closing_hold_s": 2.0,
+  "runtime_s": 63.133,
+  "target_s": "50-60",
+  "over_target_s": 3.133,
+  "over_target_pct_of_60": 5.2,
+  "narr_speech_s": 37.96,
+  "character_speech_s": 19.77,
+  "gaps_s": 3.4,
+  "r2_runtime_s": 70.152,
+  "saved_vs_r2_s": 7.019
+ },
+ "strong_joke_gap_L01_L04": {
+  "L01_end_s": 4.464,
+  "L04_lid_onset_s": 14.3,
+  "gap_end_to_onset_s": 9.84,
+  "rule": "< 10 s"
+ },
+ "gap_L14_L17": {
+  "L14_punch_onset_s": 40.5,
+  "L14_end_s": 42.047,
+  "L17_start_s": 48.184,
+  "L17_vespasian_onset_s": 49.46,
+  "L17_tax_onset_s_low_confidence": 49.18,
+  "gap_L14_end_to_L17_start_s": 6.14,
+  "gap_L14_end_to_L17_vespasian_onset_s": 7.41,
+  "gap_L14_onset_to_L17_vespasian_onset_s": 8.96
+ },
+ "low_confidence_anchors": [
+  "L05:ไหนี่มันฉี่",
+  "L15:เหรียญแรก",
+  "L17:ภาษีฉี่"
+ ],
+ "lines": {
+  "L01": {
+   "line": "L01",
+   "speaker": "NARR",
+   "start_s": 0.0,
+   "end_s": 4.464,
+   "dur_s": 4.464,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ช่างซักผ้าโรมัน ซักผ้าด้วยฉี่ ใช่ ฉี่ ฟังไม่ผิดหรอก",
+   "file": "lines-r3/L01.wav",
+   "anchors": {
+    "ใช่ ฉี่": {
+     "on_s": 2.6,
+     "end_s": 3.56,
+     "match": 1.0,
+     "old_on_s": 2.59,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 0.0
+  },
+  "L02": {
+   "line": "L02",
+   "speaker": "NARR",
+   "start_s": 4.664,
+   "end_s": 7.855,
+   "dur_s": 3.19,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "วันนี้เป็นวันแรกของมาร์คุส และยังไม่มีใครบอกเขา",
+   "file": "lines-r3/L02.wav",
+   "anchors": {
+    "วันนี้เป็นวันแรก": {
+     "on_s": 4.9,
+     "end_s": 5.74,
+     "match": 1.0,
+     "old_on_s": 4.91,
+     "low_confidence": false
+    },
+    "ยังไม่มีใครบอกเขา": {
+     "on_s": 6.7,
+     "end_s": 7.94,
+     "match": 1.0,
+     "old_on_s": 6.7,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 4.664
+  },
+  "L03": {
+   "line": "L03",
+   "speaker": "MARCUS",
+   "start_s": 8.055,
+   "end_s": 11.801,
+   "dur_s": 3.746,
+   "atempo": 1.15,
+   "narr_atempo": null,
+   "text": "ผมจะทำให้เสื้อตัวนี้ขาวที่สุดในโรม ด้วยสองมือนี้เลยครับ",
+   "file": "lines-r3/L03.wav",
+   "anchors": {
+    "ผมจะทำให้เสื้อ": {
+     "on_s": 7.94,
+     "end_s": 8.8,
+     "match": 1.0,
+     "old_on_s": 8.05,
+     "low_confidence": false
+    },
+    "ขาวที่สุด": {
+     "on_s": 9.08,
+     "end_s": 9.98,
+     "match": 1.0,
+     "old_on_s": 9.06,
+     "low_confidence": false
+    },
+    "ด้วยสองมือ": {
+     "on_s": 8.58,
+     "end_s": 11.32,
+     "match": 0.9,
+     "old_on_s": 8.59,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 8.055
+  },
+  "L04": {
+   "line": "L04",
+   "speaker": "NARR",
+   "start_s": 12.001,
+   "end_s": 17.015,
+   "dur_s": 5.014,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "รุ่นพี่ยิ้ม ยื่นไหให้ใบหนึ่ง ฝาเปิดปุ๊บ กลิ่นมาถึงก่อนคำอธิบาย",
+   "file": "lines-r3/L04.wav",
+   "anchors": {
+    "ยื่นไหให้ใบหนึ่ง": {
+     "on_s": 12.96,
+     "end_s": 14.3,
+     "match": 0.94,
+     "old_on_s": 12.96,
+     "low_confidence": false
+    },
+    "ฝาเปิดปุ๊บ": {
+     "on_s": 14.3,
+     "end_s": 15.18,
+     "match": 1.0,
+     "old_on_s": 14.29,
+     "low_confidence": false
+    },
+    "กลิ่นมาถึงก่อน": {
+     "on_s": 15.18,
+     "end_s": 16.3,
+     "match": 1.0,
+     "old_on_s": 15.19,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 12.001
+  },
+  "L05": {
+   "line": "L05",
+   "speaker": "MARCUS",
+   "start_s": 17.215,
+   "end_s": 20.468,
+   "dur_s": 3.253,
+   "atempo": 1.08,
+   "narr_atempo": null,
+   "text": "พี่… ไหนี่มันฉี่ใช่ไหม",
+   "file": "lines-r3/L05.wav",
+   "anchors": {
+    "ไหนี่มันฉี่": {
+     "on_s": 18.34,
+     "end_s": 20.0,
+     "match": 0.73,
+     "old_on_s": 18.33,
+     "low_confidence": true
+    }
+   },
+   "old_start_s": 17.215
+  },
+  "L06": {
+   "line": "L06",
+   "speaker": "SENIOR",
+   "start_s": 20.668,
+   "end_s": 22.973,
+   "dur_s": 2.306,
+   "atempo": 1.15,
+   "narr_atempo": null,
+   "text": "ของดีนะ ใส่เยอะ ๆ ไม่ต้องเกรงใจ",
+   "file": "lines-r3/L06.wav",
+   "anchors": {
+    "ของดีนะ": {
+     "on_s": 20.6,
+     "end_s": 21.3,
+     "match": 1.0,
+     "old_on_s": 20.67,
+     "low_confidence": false
+    },
+    "ไม่ต้องเกรงใจ": {
+     "on_s": 22.24,
+     "end_s": 22.92,
+     "match": 0.85,
+     "old_on_s": 22.27,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 20.668
+  },
+  "L07": {
+   "line": "L07",
+   "speaker": "NARR",
+   "start_s": 23.173,
+   "end_s": 25.368,
+   "dur_s": 2.195,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "มาร์คุสคิดว่านี่แย่สุดแล้ว ผิดจ้ะ",
+   "file": "lines-r3/L07.wav",
+   "anchors": {
+    "ผิดจ้ะ": {
+     "on_s": 24.76,
+     "end_s": 25.34,
+     "match": 1.0,
+     "old_on_s": 24.81,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 23.173
+  },
+  "L08": {
+   "line": "L08",
+   "speaker": "NARR",
+   "start_s": 25.568,
+   "end_s": 30.65,
+   "dur_s": 5.082,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "สองมือที่สัญญาไว้ เปลี่ยนเป็นสองเท้า ลงไปยืนในอ่าง ย่ำผ้าในน้ำผสมฉี่",
+   "file": "lines-r3/L08.wav",
+   "anchors": {
+    "สองมือที่สัญญาไว้": {
+     "on_s": 25.34,
+     "end_s": 26.72,
+     "match": 1.0,
+     "old_on_s": 25.57,
+     "low_confidence": false
+    },
+    "เปลี่ยนเป็นสองเท้า": {
+     "on_s": 26.72,
+     "end_s": 27.84,
+     "match": 1.0,
+     "old_on_s": 26.7,
+     "low_confidence": false
+    },
+    "ย่ำผ้า": {
+     "on_s": 28.94,
+     "end_s": 29.68,
+     "match": 1.0,
+     "old_on_s": 26.11,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 25.568
+  },
+  "L10": {
+   "line": "L10",
+   "speaker": "MARCUS",
+   "start_s": 30.85,
+   "end_s": 34.549,
+   "dur_s": 3.699,
+   "atempo": 1.08,
+   "narr_atempo": null,
+   "text": "แม่ครับ… ผมสมัครงานผิดร้านแน่เลย",
+   "file": "lines-r3/L10.wav",
+   "anchors": {
+    "แม่ครับ": {
+     "on_s": 30.84,
+     "end_s": 31.44,
+     "match": 1.0,
+     "old_on_s": 33.94,
+     "low_confidence": false
+    },
+    "สมัครงานผิดร้าน": {
+     "on_s": 32.58,
+     "end_s": 33.46,
+     "match": 1.0,
+     "old_on_s": 35.63,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 33.91
+  },
+  "L12": {
+   "line": "L12",
+   "speaker": "NARR",
+   "start_s": 34.749,
+   "end_s": 37.306,
+   "dur_s": 2.557,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ตกเย็น ลูกค้ามารับ ยกเสื้อขึ้นส่องแดด",
+   "file": "lines-r3/L12.wav",
+   "anchors": {
+    "ตกเย็น": {
+     "on_s": 34.6,
+     "end_s": 35.18,
+     "match": 1.0,
+     "old_on_s": 41.77,
+     "low_confidence": false
+    },
+    "ส่องแดด": {
+     "on_s": 36.46,
+     "end_s": 37.34,
+     "match": 0.86,
+     "old_on_s": 43.47,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 41.768
+  },
+  "L13": {
+   "line": "L13",
+   "speaker": "CUSTOMER",
+   "start_s": 37.506,
+   "end_s": 39.377,
+   "dur_s": 1.871,
+   "atempo": 1.15,
+   "narr_atempo": null,
+   "text": "ขาวดีนะ ใช้อะไรซักเนี่ย",
+   "file": "lines-r3/L13.wav",
+   "anchors": {
+    "ขาวดีนะ": {
+     "on_s": 37.34,
+     "end_s": 38.22,
+     "match": 1.0,
+     "old_on_s": 44.52,
+     "low_confidence": false
+    },
+    "ใช้อะไรซัก": {
+     "on_s": 38.22,
+     "end_s": 39.02,
+     "match": 0.9,
+     "old_on_s": 45.38,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 44.525
+  },
+  "L14": {
+   "line": "L14",
+   "speaker": "MARCUS",
+   "start_s": 39.577,
+   "end_s": 42.047,
+   "dur_s": 2.471,
+   "atempo": 1.15,
+   "narr_atempo": null,
+   "text": "เอ่อ… สูตรลับของร้านครับ",
+   "file": "lines-r3/L14.wav",
+   "anchors": {
+    "สูตรลับของร้าน": {
+     "on_s": 40.5,
+     "end_s": 41.8,
+     "match": 0.93,
+     "old_on_s": 47.52,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 46.596
+  },
+  "L15": {
+   "line": "L15",
+   "speaker": "NARR",
+   "start_s": 42.247,
+   "end_s": 45.362,
+   "dur_s": 3.115,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ได้ค่าแรงเหรียญแรก มาร์คุสรีบยกขึ้นมาดม",
+   "file": "lines-r3/L15.wav",
+   "anchors": {
+    "เหรียญแรก": {
+     "on_s": 42.98,
+     "end_s": 43.62,
+     "match": 0.78,
+     "old_on_s": 50.0,
+     "low_confidence": true
+    },
+    "ยกขึ้นมาดม": {
+     "on_s": 44.76,
+     "end_s": 45.3,
+     "match": 1.0,
+     "old_on_s": 51.59,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 49.266
+  },
+  "L16": {
+   "line": "L16",
+   "speaker": "MARCUS",
+   "start_s": 45.562,
+   "end_s": 47.984,
+   "dur_s": 2.421,
+   "atempo": 1.15,
+   "narr_atempo": null,
+   "text": "ไม่มีกลิ่น… รอดแล้ว",
+   "file": "lines-r3/L16.wav",
+   "anchors": {
+    "ไม่มีกลิ่น": {
+     "on_s": 46.02,
+     "end_s": 46.72,
+     "match": 1.0,
+     "old_on_s": 53.1,
+     "low_confidence": false
+    },
+    "รอดแล้ว": {
+     "on_s": 47.04,
+     "end_s": 47.88,
+     "match": 0.86,
+     "old_on_s": 54.38,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 52.582
+  },
+  "L17": {
+   "line": "L17",
+   "speaker": "NARR",
+   "start_s": 48.184,
+   "end_s": 51.473,
+   "dur_s": 3.289,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ตลกคือ จักรพรรดิเวสปาเซียนเก็บภาษีฉี่จริง ๆ",
+   "file": "lines-r3/L17.wav",
+   "anchors": {
+    "เวสปาเซียน": {
+     "on_s": 49.46,
+     "end_s": 50.1,
+     "match": 1.0,
+     "old_on_s": 56.44,
+     "low_confidence": false
+    },
+    "ภาษีฉี่": {
+     "on_s": 49.18,
+     "end_s": 50.98,
+     "match": 0.71,
+     "old_on_s": 56.19,
+     "low_confidence": true
+    }
+   },
+   "old_start_s": 55.203
+  },
+  "L18": {
+   "line": "L18",
+   "speaker": "NARR",
+   "start_s": 51.673,
+   "end_s": 54.732,
+   "dur_s": 3.059,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ลูกชายบ่น เขาเลยเอาเหรียญจ่อจมูกลูก ถามว่าเหม็นไหม",
+   "file": "lines-r3/L18.wav",
+   "anchors": {
+    "เหรียญจ่อจมูก": {
+     "on_s": 52.24,
+     "end_s": 53.46,
+     "match": 0.85,
+     "old_on_s": 59.25,
+     "low_confidence": false
+    },
+    "เหม็นไหม": {
+     "on_s": 54.3,
+     "end_s": 54.72,
+     "match": 0.88,
+     "old_on_s": 61.32,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 58.692
+  },
+  "L19": {
+   "line": "L19",
+   "speaker": "NARR",
+   "start_s": 54.932,
+   "end_s": 58.222,
+   "dur_s": 3.289,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "ลูกบอกไม่ เขาก็บอก นั่นแหละ ได้มาจากฉี่",
+   "file": "lines-r3/L19.wav",
+   "anchors": {
+    "ลูกบอกไม่": {
+     "on_s": 55.0,
+     "end_s": 56.2,
+     "match": 1.0,
+     "old_on_s": 62.01,
+     "low_confidence": false
+    },
+    "ได้มาจากฉี่": {
+     "on_s": 57.54,
+     "end_s": 58.18,
+     "match": 1.0,
+     "old_on_s": 64.55,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 61.951
+  },
+  "L20": {
+   "line": "L20",
+   "speaker": "NARR",
+   "start_s": 58.422,
+   "end_s": 61.133,
+   "dur_s": 2.711,
+   "atempo": 1.0,
+   "narr_atempo": 1.05,
+   "text": "เงินน่ะไม่มีกลิ่นหรอก… แต่มาร์คุสยังมี",
+   "file": "lines-r3/L20.wav",
+   "anchors": {
+    "ไม่มีกลิ่นหรอก": {
+     "on_s": 58.74,
+     "end_s": 59.66,
+     "match": 1.0,
+     "old_on_s": 65.76,
+     "low_confidence": false
+    },
+    "แต่มาร์คุสยังมี": {
+     "on_s": 60.12,
+     "end_s": 61.0,
+     "match": 0.87,
+     "old_on_s": 67.04,
+     "low_confidence": false
+    }
+   },
+   "old_start_s": 65.441
+  }
+ },
+ "gemini_requests_this_step": 0
+}

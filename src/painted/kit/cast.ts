@@ -76,7 +76,10 @@ export type Arm = {to: Pt; out?: number; via?: Pt; behind?: 'upper' | 'all'; toC
   /** With `open`: hide the thumb lobe (mitten outline without it), e.g. a hand clamped over the mouth where the thumb is behind the palm. */
   noThumb?: boolean;
   /** Draw the arm without its hand (the arm ends at `to`): a five-finger macro hand from the gesture kit is painted there instead (`hand-gestures.ts`, `mid-hands.ts`). Absent = the hand as before. */
-  noHand?: boolean};
+  noHand?: boolean;
+  /** `to` and `via` are picture projections of world points (a five-finger 3D hand or a world anchor sits on `to`): a three-quarter body does
+   *  not pull them toward its centre (the turn remap for front-pose targets). Absent = remapped as before. EDU-EP26 draft fix B, 19 Nov 2026. */
+  exact?: boolean};
 export type Prop =
   | {kind: 'torch'; angle: number; on: number}
   | {kind: 'phone'}
@@ -180,6 +183,11 @@ export type FigPose = {
   runMix?: number;
   /** Front view, standing legs only (EDU-EP15 shot 2 knee kicks): flex per leg in degrees, `r`/`l` = the character's right/left (screen left/right). The thigh shortens by cos(hip), the shank folds by hip+knee; the other fields stay as the standing leg. Absent = straight legs. */
   legKick?: {r?: {hip: number; knee: number}; l?: {hip: number; knee: number}};
+  /** Back view, standing legs only (EDU-EP26 B03-SH04 step down into the tub, draft fix B, 19 Nov 2026): per leg (`r`/`l` = the character's
+   *  right/left, screen right/left from behind) the ankle rises this much (body metres, the units of the figure's own leg; at most 1.6 x the
+   *  thigh) and the leg folds two-bone with its knee forward (a little out to that side), so one foot stays up on a ledge while the body lowers on the other.
+   *  Absent = the standing leg as before. */
+  footLift?: {r?: number; l?: number};
   /** Ground shadow held at its own floor spot (picture px `g`, `unit` px per metre) with opacity factor `k` 0..1, for a figure drawn scaled about a point (EDU-EP05 shrink: the shadow fades instead of riding the shrinking card). Absent = under the feet. */
   shadowFloor?: {g: Pt; unit: number; k: number};
   /** Neck in the face skin tone with a soft jaw shade and no outline, flaring into the collar (default absent = the VD18 shaded neck block, grey beside a lit face). EDU-EP01 W5.4. */
@@ -666,7 +674,7 @@ export const drawFigure = (p: Painter, def: CastDef, g: Pt, unit: number, pose: 
       const E: Pt = [(Sh[0] + T[0]) / 2, (Sh[1] + T[1]) / 2 + 0.015 * unit];
       return {Sh, E, T, cam: Math.max(0, Math.min(1, a0.toCam ?? 0)) * kp, finger: a0.finger, noHand: a0.noHand};
     }
-    const a = a0 && pose.quarter ? {...a0, to: qx(a0.to), via: a0.via && qx(a0.via)} : a0;
+    const a = a0 && pose.quarter && !a0.exact ? {...a0, to: qx(a0.to), via: a0.via && qx(a0.via)} : a0;
     if (!a && mode?.kind === 'run') return runArm(s, Sh);
     const T = a?.via ? a.to : reachTo(Sh, a?.to ?? hang(s), Lpx);
     const E = a?.via ?? (a ? ikElbow(Sh, T, Lpx, a.out ?? (profile ? -dir : s)) : ([lerp(Sh[0], T[0], 0.5) + (profile ? -dir * 0.02 * unit : s * 0.02 * unit), lerp(Sh[1], T[1], 0.5)] as Pt));

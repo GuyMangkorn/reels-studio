@@ -1,0 +1,99 @@
+{
+ "LF04": {
+  "hash": "bb6d5c816dd8fe2e",
+  "result": "pass",
+  "findings": [
+   "A-M: disgusted face reads cross/angry, not smelling (painter-listed)",
+   "A-M: left arm bends out as a stiff rod, right arm hangs straight (UT06)",
+   "H-M: smell wisps faint against warm drapes (UT02)"
+  ]
+ },
+ "LF05": {
+  "hash": "cd92e34ffaead37a",
+  "result": "fail",
+  "findings": [
+   "R-C: tubs read as pale slabs; treading in water is not legible, no ripple or water mass (UT01, UT02)",
+   "P-C: top quarter plain plaster flat fill (UT12, UT12a) and bottom quarter empty beige with stray triangle shards; water line meets caption band (painter-listed)",
+   "A-M: Marcus arms flung out as stiff rods (UT06)"
+  ]
+ },
+ "LF06": {
+  "hash": "f9a3f30343dda0c0",
+  "result": "fail",
+  "findings": [
+   "A-C: 3D grey forearm does not join the sleeve/cuff, seam shows as a detached tube (painter-listed; UT06)",
+   "H-M: coin is small between 3D fingers and partly hidden (UT02)",
+   "A-M: Marcus profile head is cropped and large with no nose, Titus right arm a straight rod"
+  ]
+ },
+ "LF07": {
+  "hash": "3c23fbf300ea85d4",
+  "result": "fail",
+  "findings": [
+   "H-C: coin in Marcus's raised hand is about 20 px and reads as a ball or lollipop; the line is about Marcus still holding it (UT02, painter-listed)",
+   "A-M: raised arm is a stiff rod",
+   "P-M: top 40% is empty sky (UT03 not violated, sky is lit)"
+  ]
+ },
+ "TH-WA": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "R-M: no Marcus, hero (Rawat) tiny in centre; floor flat orange (UT12)"
+  ]
+ },
+ "TH-WB": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "R-M: table dominates, Marcus very small (UT13)"
+  ]
+ },
+ "TH-WC": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "A-M: Rawat torso is a plain plank the colour of the tub, reads unclothed"
+  ]
+ },
+ "TH-IA": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "R-M: both figures small in a wide room (UT13)"
+  ]
+ },
+ "TH-IB": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "A-M: Marcus long dark hair reads as a woman's bob; coin to nose readable"
+  ]
+ },
+ "TH-SA": {
+  "hash": null,
+  "result": "pass",
+  "findings": []
+ },
+ "TH-SB": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "R-M: woman tiny in the distance, pinch not readable"
+  ]
+ },
+ "KP-MARCUS": {
+  "hash": null,
+  "result": "pass",
+  "findings": [
+   "A-M: salute pose hand is a blob, no finger strokes"
+  ]
+ },
+ "KP-MARCUS-CLOSE": {
+  "hash": null,
+  "result": "fail",
+  "findings": [
+   "H-C: coin hidden behind the 3D fingers in the pinch close-up (painter-listed)"
+  ]
+ }
+}

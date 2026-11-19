@@ -1,6 +1,6 @@
 ---
 name: hand-drawing
-description: Hands without a flipped thumb or a swapped arm, from the rig's mitten to the five-finger close-up: which arm is on which screen side, which face of the hand shows, where the thumb goes, the gesture kit (point, pinch, grip, thumbs-up ...), the first-person (POV) and close-shot (1–1.5 m) hand kits with props, and the thumb check before a frame is reported. Use when drawing, posing, reviewing or fixing any hand, arm gesture or hand close-up (มือ, นิ้วโป้ง, แบมือ, หลังมือ).
+description: Hands without a flipped thumb or a swapped arm, from the rig's mitten to the five-finger close-up: which arm is on which screen side, which face of the hand shows, where the thumb goes, the gesture kit (point, pinch, grip, thumbs-up ...), the first-person (POV) and close-shot (1–1.5 m) hand kits with props, the thumb check before a frame is reported, and the arm-chain check (hand attached, bone length, reach, stepping). Use when drawing, posing, reviewing or fixing any hand, arm gesture, arm anatomy or hand close-up (มือ, นิ้วโป้ง, แบมือ, หลังมือ, แขนหลุด).
 ---
 
 # Hand drawing
@@ -57,8 +57,9 @@ A fist shows its back (the knuckles) unless the shot turns the curled fingers to
 
 ## 4. Scale: mitten or five fingers
 
-- **Figure scale** (full figure, 2 m or more: fingers would be about 11 px wide, too small to read): the mitten of [UT14](../../../docs/user-taste.md) (no drawn fingers). Set its thumb with `mittenThumbSide`.
-- **Close shot, 1–1.5 m** (thigh-up, so hands at rest stay in the frame; fingers about 20–30 px): the five-finger hand on the rig arm, from the close-shot kit (section 6). User, 18 Nov 2026.
+- **Figure scale and close shot** (full figure, or close/medium-close at 1–1.5 m: fingers are too small to read, about 11 px at 2 m): the mitten of [UT14](../../../docs/user-taste.md) (no drawn fingers). Set its thumb with `mittenThumbSide`.
+- **Close shot, 1–1.5 m** (thigh-up, so hands at rest stay in the frame; fingers about 20–30 px): the mitten by default. Film may choose the five-finger 3D hand (`Hands3D` via `midHands3D`, close-shot kit, section 6) for a shot that truly needs to read fingers (counting, pinching, gripping), and records the reason per row. Not POV. User, 18 Nov 2026.
+- **First person (POV):** always the five-finger 3D hand (`Hands3D`, section 6). User, 18 Nov 2026.
 - **Close-up** (the hand or its action is the subject: pressing, pinching, counting, holding): the five-finger 3D hand from the gesture kit. Use it whenever the shot names the fingers.
 
 ## 5. The gesture kit (five-finger close-ups)
@@ -97,3 +98,19 @@ For every shot with a visible hand, before the frame goes into a handoff or a re
 4. Arms: the character's right arm is on the screen side section 1 gives for the view. Check it in the same pass, including after a turn (front → back flips it).
 
 A frame that fails the thumb check goes back to the step that made it. Pass it only after the fix is re-rendered and checked again.
+
+## 8. Arm chain and body contact (Requirement; user, 19 Nov 2026)
+
+A hand is only as good as the arm that carries it. The EP26 draft review ([build-notes, draft fix round B](../../../scripts/edu-series/ep26/build-notes.md#draft-fix-round-b-boss-anatomy-and-staging-19-nov-2026)) found these faults the thumb check does not catch.
+
+**Symptoms to look for:** a hand detached from its forearm (a gap or offset at the wrist), an arm longer than the other or than the body allows, a limb that bends the wrong way or hangs limp like a paralysed arm, a hand that jumps between two frames, a held object floating beside the hands, a figure gliding instead of stepping.
+
+**Rules:**
+
+1. **Arm meets a 3D hand or a world point:** when a painted arm must end on a projected point (the wrist of a `Hands3D` hand, a held prop, a pole), set `Arm.exact` on that arm ([cast.ts](../../../src/painted/kit/cast.ts) front and three-quarter path, [back.ts](../../../src/painted/kit/back.ts) back path). Without it, a three-quarter body pulls `to`/`via` toward its centre and a back view mirrors them, so the arm ends off the wrist (front three-quarter 54–75 degrees and back three-quarter views are where this shows).
+2. **Bone length:** keep every arm within 1.05 × its bone after posing ([fit-arms.ts](../../../src/painted/kit/fit-arms.ts) `fitArms`; arm bone about 0.26 m per segment on the 4-head rig). Measure it per frame through the motion, not only on the key poses.
+3. **One chain, every frame:** build shoulder → elbow → wrist → hand as one solved chain each frame (two-bone elbow, a pole that eases between poses). Never merge a separately solved hand or floating forearm into the rig, and never switch a hand between two targets in one frame.
+4. **Reach and support:** check a target is inside reach before staging it (shoulder height + 2 × bone; Marcus: 1.12 + 0.52 = 1.64 m). A body that steps, sits or lowers carries its weight on a bending leg with the other foot lifting and landing; arms go out for balance. Stage the prop or the camera to the reach, not the arm to the prop.
+5. **Hidden limbs:** when a wall, a tub rim or another figure hides a limb, keep the visible part attached and continuous (repaint the occluder over it, or use a depth occluder for a 3D hand), and let a cue in the picture (ripples, cloth, a contact shadow) carry what is hidden.
+
+**Check (before a frame goes into a handoff):** render stills every 2–4 frames through each arm or body motion and view them as a qa-sheet (`scripts/qa-sheet.sh`), plus a full-size crop at the wrist for every 3D hand. Record the measured arm ratio (max × bone) and `arm check: <character> <side>: attached ok` in the QA notes. A frame that fails goes back to the step that made it, as in section 7.

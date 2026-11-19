@@ -1,0 +1,164 @@
+[
+ {
+  "line": "L01",
+  "speaker": "NARR",
+  "start_s": 0.0,
+  "end_s": 4.464,
+  "dur_s": 4.464,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L02",
+  "speaker": "NARR",
+  "start_s": 4.664,
+  "end_s": 7.855,
+  "dur_s": 3.19,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L03",
+  "speaker": "MARCUS",
+  "start_s": 8.055,
+  "end_s": 11.801,
+  "dur_s": 3.746,
+  "atempo": 1.15,
+  "narr_atempo": null
+ },
+ {
+  "line": "L04",
+  "speaker": "NARR",
+  "start_s": 12.001,
+  "end_s": 17.015,
+  "dur_s": 5.014,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L05",
+  "speaker": "MARCUS",
+  "start_s": 17.215,
+  "end_s": 20.468,
+  "dur_s": 3.253,
+  "atempo": 1.08,
+  "narr_atempo": null
+ },
+ {
+  "line": "L06",
+  "speaker": "SENIOR",
+  "start_s": 20.668,
+  "end_s": 22.973,
+  "dur_s": 2.306,
+  "atempo": 1.15,
+  "narr_atempo": null
+ },
+ {
+  "line": "L07",
+  "speaker": "NARR",
+  "start_s": 23.173,
+  "end_s": 25.368,
+  "dur_s": 2.195,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L08",
+  "speaker": "NARR",
+  "start_s": 25.568,
+  "end_s": 30.65,
+  "dur_s": 5.082,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L10",
+  "speaker": "MARCUS",
+  "start_s": 30.85,
+  "end_s": 34.549,
+  "dur_s": 3.699,
+  "atempo": 1.08,
+  "narr_atempo": null
+ },
+ {
+  "line": "L12",
+  "speaker": "NARR",
+  "start_s": 34.749,
+  "end_s": 37.306,
+  "dur_s": 2.557,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L13",
+  "speaker": "CUSTOMER",
+  "start_s": 37.506,
+  "end_s": 39.377,
+  "dur_s": 1.871,
+  "atempo": 1.15,
+  "narr_atempo": null
+ },
+ {
+  "line": "L14",
+  "speaker": "MARCUS",
+  "start_s": 39.577,
+  "end_s": 42.047,
+  "dur_s": 2.471,
+  "atempo": 1.15,
+  "narr_atempo": null
+ },
+ {
+  "line": "L15",
+  "speaker": "NARR",
+  "start_s": 42.247,
+  "end_s": 45.362,
+  "dur_s": 3.115,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L16",
+  "speaker": "MARCUS",
+  "start_s": 45.562,
+  "end_s": 47.984,
+  "dur_s": 2.421,
+  "atempo": 1.15,
+  "narr_atempo": null
+ },
+ {
+  "line": "L17",
+  "speaker": "NARR",
+  "start_s": 48.184,
+  "end_s": 51.473,
+  "dur_s": 3.289,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L18",
+  "speaker": "NARR",
+  "start_s": 51.673,
+  "end_s": 54.732,
+  "dur_s": 3.059,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L19",
+  "speaker": "NARR",
+  "start_s": 54.932,
+  "end_s": 58.222,
+  "dur_s": 3.289,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ },
+ {
+  "line": "L20",
+  "speaker": "NARR",
+  "start_s": 58.422,
+  "end_s": 61.133,
+  "dur_s": 2.711,
+  "atempo": 1.0,
+  "narr_atempo": 1.05
+ }
+]
