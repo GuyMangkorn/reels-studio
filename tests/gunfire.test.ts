@@ -118,3 +118,80 @@ test('single shots: B05-SH02 rounds [72, 79] are each a k 0 flash frame, halo 16
   const r = GUNFIRE_PRESETS.B05_SH02.rounds as unknown as number[];
   assert.deepEqual(roundPhase(72, r), {n: 0, k: 0}); assert.deepEqual(roundPhase(79, r), {n: 1, k: 0}); assert.equal(GUNFIRE_PRESETS.B05_SH02.halo, 160);
 });
+
+// EDU-EP30-SHORT ticket T05 r4: casings, strikes, spouts, splash.
+import {casingAt, casingKeyed, paintCasings, paintSpurts, paintSplash, restingCasings, spurtHeight, spurtProfile, strikePoints, type CasingSpec} from '../src/painted/kit/gunfire';
+import {flockIn} from '../src/painted/edu30/flock';
+import {STONE_AT} from '../src/painted/edu30/dam';
+import {lewisAnchors} from '../src/painted/edu30/props';
+
+const PORT03 = lewisAnchors([0, 0, 0], -Math.PI / 2).port;
+const SPEC03: CasingSpec = {port: PORT03, side: 1, seed: 8100, dir: [0, 0, -1], ground: () => 0, box: {x: [0.8, 1.5], z: [-0.2, 0.4]}};
+
+test('casings: none before rounds[i] + 1; frame L alone equals frame L after 0..L', () => {
+  for (const i of [0, 7, 22]) {
+    assert.equal(casingAt(i, B03[i], B03, SPEC03), null);
+    assert.ok(casingAt(i, B03[i] + 1, B03, SPEC03));
+  }
+  const lone = casingAt(5, 40, B03, SPEC03);
+  for (let L = 0; L <= 40; L++) casingAt(5, L, B03, SPEC03);
+  assert.deepEqual(casingAt(5, 40, B03, SPEC03), lone);
+});
+
+test('casings: leave the port with up 2.6-3.1 m/s, rest once, 23 paddock casings rest inside the B03 box', () => {
+  for (let i = 0; i < 23; i++) {
+    const a = casingAt(i, B03[i] + 1, B03, SPEC03)!, b = casingAt(i, B03[i] + 2, B03, SPEC03)!;
+    assert.deepEqual(a.pos, PORT03); assert.equal(a.state, 'air');
+    const vy = (b.pos[1] - a.pos[1]) * 30 + (0.5 * 9.81) / 30;
+    assert.ok(vy > 2.55 && vy < 3.15, `vy ${vy}`);
+    const end = casingAt(i, 140, B03, SPEC03)!;
+    assert.equal(end.state, 'rest');
+    assert.ok(end.pos[0] >= 0.8 && end.pos[0] <= 1.5 && end.pos[2] >= -0.2 && end.pos[2] <= 0.4, `box ${end.pos}`);
+    assert.deepEqual(casingAt(i, 200, B03, SPEC03)!.pos, end.pos);
+  }
+  assert.equal(restingCasings(B03, SPEC03).length, 23);
+  let n = 0;
+  for (let L = 0; L < 140; L++) if (casingAt(3, L, B03, SPEC03)?.glint) n++;
+  assert.equal(n, 1);
+});
+
+test('casings: a first contact inside the water is sunk; the side flips the ejection direction', () => {
+  const wet: CasingSpec = {...SPEC03, box: undefined, water: {y: 0, inside: () => true}};
+  assert.equal(casingAt(2, 140, B03, wet)!.state, 'sunk');
+  const spec: CasingSpec = {...SPEC03, box: undefined, side: -1};
+  assert.ok(casingAt(0, 140, B03, spec)!.pos[0] < PORT03[0]);
+});
+
+test('painters: casings, spurts and splash draw plain fills and nothing outside their life', () => {
+  const r = recorder(); paintCasings(r.p, CAM, 1, B03, SPEC03); assert.equal(r.fills.length, 0);
+  const r2 = recorder(); paintCasings(r2.p, CAM, 75, B03, SPEC03); assert.ok(r2.fills.length >= 23 * 2);
+  const pts: [number, number, number][] = B03.map((_, i) => [i * 0.1, 0, -10]);
+  const r3 = recorder(); paintSpurts(r3.p, CAM, 12, B03, {points: pts, kind: 'dust', h: [0.6, 1.2], seed: 5}); assert.ok(r3.fills.length > 0);
+  const r4 = recorder(); paintSpurts(r4.p, CAM, 200, B03, {points: pts, kind: 'dust', h: [0.6, 1.2], seed: 5}); assert.equal(r4.fills.length, 0);
+  const r5 = recorder(); paintSplash(r5.p, CAM, 4, [1, 0, -3], 2, 3); assert.ok(r5.fills.length > 0);
+  const r6 = recorder(); paintSplash(r6.p, CAM, 40, [1, 0, -3], 2, 3); assert.equal(r6.fills.length, 0);
+  assert.equal(spurtProfile(2), 1); assert.equal(spurtProfile(8), 0);
+});
+
+test('strikes: B03 walks z -14 to -26, h 0.6-1.2 m, none within 4 m of an F1 bird (seed 31000)', () => {
+  const birds = flockIn(31000, 40, [-30, 30], [-60, -30]).map((m) => m.at);
+  const {points} = strikePoints({count: 23, seed: 9100, minDist: 4, x: [-6, 6], z: (i) => -14 - (12 * i) / 22, ground: () => 0, avoid: birds});
+  assert.equal(points.length, 23);
+  points.forEach((q, i) => {
+    assert.ok(Math.abs(q[2] - (-14 - (12 * i) / 22)) < 1e-9); assert.ok(q[0] >= -6 && q[0] <= 6);
+    for (const b of birds) assert.ok(Math.hypot(b[0] - q[0], b[2] - q[2]) >= 4);
+    const h = spurtHeight({points, kind: 'dust', h: [0.6, 1.2], seed: 9200}, i);
+    assert.ok(h >= 0.6 && h <= 1.2);
+  });
+});
+
+test('jam casing keys: linear between the keys, built port and moved stone', () => {
+  const port = lewisAnchors([-5.6, 0.32, -5.0], 0).port;
+  const top: [number, number, number] = [STONE_AT[0], STONE_AT[1] + 0.05, STONE_AT[2]];
+  assert.ok(Math.abs(port[0] + 5.679) < 0.002 && Math.abs(port[1] - 0.857) < 0.002 && Math.abs(port[2] + 4.95) < 0.002, `${port}`);
+  assert.ok(Math.abs(top[0] + 5.63) < 1e-9 && Math.abs(top[1] - 0.38) < 1e-9 && Math.abs(top[2] + 4.9) < 1e-9);
+  const keys = [{L: 13, pos: port, angle: 0}, {L: 17, pos: top, angle: 1}, {L: 19, pos: [top[0], top[1] + 0.04, top[2]] as [number, number, number], angle: 2}, {L: 21, pos: top, angle: 3}];
+  assert.deepEqual(casingKeyed(keys, 13).pos, port); assert.deepEqual(casingKeyed(keys, 17).pos, top);
+  assert.ok(Math.abs(casingKeyed(keys, 19).pos[1] - (top[1] + 0.04)) < 1e-9); assert.deepEqual(casingKeyed(keys, 30).pos, top);
+  assert.ok(Math.abs(casingKeyed(keys, 15).pos[1] - (port[1] + top[1]) / 2) < 1e-9);
+});
