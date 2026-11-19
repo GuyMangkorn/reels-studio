@@ -55,8 +55,8 @@ test('gaitAdvance: the stance foot slips <= 0.02 m over its stance frames (walk 
   }
 });
 
-test('buildEmu without a wing is the pre-change build (the locked looks)', () => {
-  const cases: [EmuPose, string][] = [[{}, 'c09ecc02f487'], [{hero: true}, '0a28aaa44eb7'], [EMU_POSES.walk(0.3), 'bb4a41ff4900'], [EMU_POSES.run(0.62), 'f757bc8e71a4'], [EMU_POSES.bow({hero: true}), '9a11ece329ed']];
+test('buildEmu without a wing is the pre-change build (T07 r5 N3: neck rings 13 -> 25 re-took the five hashes; before: c09ecc02f487 0a28aaa44eb7 bb4a41ff4900 f757bc8e71a4 9a11ece329ed)', () => {
+  const cases: [EmuPose, string][] = [[{}, '0df8d23bc2ac'], [{hero: true}, '84528929a51c'], [EMU_POSES.walk(0.3), 'f3ccf6c2391c'], [EMU_POSES.run(0.62), '63f251991bac'], [EMU_POSES.bow({hero: true}), '881391ee213c']];
   for (const [o, h] of cases) assert.equal(hash(buildEmu(o)), h);
 });
 
@@ -135,18 +135,18 @@ test('T06 r3: a wing is drawn as seeded plumes (no solid flat), the same build t
   assert.equal(flats(buildEmu(o)) - flats(buildEmu({})), 14);   // 7 plumes a wing, no solid flat, no tip fan
 });
 
-test('T06 r4: the hero bib blends into the neck colour over u 0.40-0.50 (no luma step at u 0.5); non-hero and u < 0.40 unchanged', () => {
+test('T06 r5 N1: the hero bib blends into the neck colour over u 0.15-0.50 (no luma step at u 0.5); non-hero and u < 0.15 unchanged', () => {
   const luma = (c: string) => { const m = c.match(/[0-9a-f]{2}/gi)!.slice(-3).map((h) => parseInt(h, 16)); return 0.299 * m[0] + 0.587 * m[1] + 0.114 * m[2]; };
   const col = (hero: boolean) => buildEmu({hero}).parts.find((q) => q.bone === 'neck')!.col as (u: number, sd: number) => string;
   const h = col(true), n = col(false);
   let worst = 0;
-  for (let i = 0; i < 100; i++) worst = Math.max(worst, Math.abs(luma(h(0.4 + (i + 1) * 0.0015, -0.5)) - luma(h(0.4 + i * 0.0015, -0.5))), Math.abs(luma(h(0.5 + (i + 1) * 0.0005, -0.5)) - luma(h(0.5 + i * 0.0005, -0.5))));
+  for (let i = 0; i < 100; i++) worst = Math.max(worst, Math.abs(luma(h(0.15 + (i + 1) * 0.0035, -0.5)) - luma(h(0.15 + i * 0.0035, -0.5))), Math.abs(luma(h(0.5 + (i + 1) * 0.0005, -0.5)) - luma(h(0.5 + i * 0.0005, -0.5))));
   const step = Math.abs(luma(h(0.4999, -0.5)) - luma(h(0.5001, -0.5)));
-  console.log(`T06 r4 neck luma step at u 0.5: ${step.toFixed(2)}; worst neighbouring-sample luma step ${worst.toFixed(2)}; h(0.5) = ${h(0.5, -0.5)} vs non-hero ${n(0.5, -0.5)}`);
+  console.log(`T06 r5 neck luma step at u 0.5: ${step.toFixed(2)}; worst neighbouring-sample luma step ${worst.toFixed(2)}; h(0.5) = ${h(0.5, -0.5)} vs non-hero ${n(0.5, -0.5)}`);
   assert.ok(step <= 8, `step ${step}`);
   assert.equal(h(0.5, -0.5), n(0.5, -0.5));
-  assert.equal(h(0.3, -0.5), buildEmu({hero: true}).parts.find((q) => q.bone === 'neck')!.col(0.3, -0.5));
-  assert.notEqual(h(0.3, -0.5), n(0.3, -0.5));   // the bib below u 0.40 is still the bib
+  assert.equal(h(0.1, -0.5), buildEmu({hero: true}).parts.find((q) => q.bone === 'neck')!.col(0.1, -0.5));
+  assert.notEqual(h(0.1, -0.5), n(0.1, -0.5));   // the bib below u 0.15 is still the bib
   assert.equal(h(0.45, 0.5), n(0.45, 0.5));       // the back of the neck was never the bib
 });
 

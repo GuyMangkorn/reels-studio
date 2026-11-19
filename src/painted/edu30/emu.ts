@@ -134,13 +134,13 @@ export const buildEmu = (o: EmuPose = {}): Build => {
   const hj: L3 = o.head ?? [0.42, 1.6 + bob, 0];
   const nm: L3 = o.neckMid ?? lerp(nb, hj, 0.5);
   const neck = R.bone('neck', root, 'neck.base', nb);
-  const nk = spline([{p: nb, a: 0.1, b: 0.1}, {p: lerp(nb, nm, 0.5), a: 0.072, b: 0.075}, {p: nm, a: 0.056, b: 0.058}, {p: lerp(nm, hj, 0.6), a: 0.044, b: 0.046}, {p: hj, a: 0.04, b: 0.042}], 3);
+  const nk = spline([{p: nb, a: 0.1, b: 0.1}, {p: lerp(nb, nm, 0.5), a: 0.072, b: 0.075}, {p: nm, a: 0.056, b: 0.058}, {p: lerp(nm, hj, 0.6), a: 0.044, b: 0.046}, {p: hj, a: 0.04, b: 0.042}], 6);
   const nmix = (u: number) => Math.max(0, Math.min(1, (u - 0.3) / 0.35));   // feathered base -> bare blue-grey skin, a soft blend (no collar edge)
   R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: (u, sd) => {
     const neckCol = mixColor(tc(EMU_PX.neckFeather), sd > 0.4 ? EMU_PX.skinDark : EMU_PX.skin, nmix(u));
     if (!(o.hero && u < 0.5 && sd < -0.1)) return neckCol;
     const bibCol = mixColor(EMU_PX.bib, EMU_PX.skin, nmix(u) * 0.6);
-    return u < 0.40 ? bibCol : mixColor(bibCol, neckCol, (u - 0.40) / 0.10);   // r4: the bib fades into the neck colour over u 0.40-0.50 (no step at u 0.5)
+    return u < 0.15 ? bibCol : mixColor(bibCol, neckCol, (u - 0.15) / 0.35);   // r5 N1: the bib fades into the neck colour over u 0.15-0.50 (no step at u 0.5)
   }});
   for (let i = 0; i < 9; i++) for (const g of [1, -1]) {   // neck-base ruff
     const u = 0.05 + i * 0.045, r = hsh(++fk), a = onLoft(nk, u, g * 0.95, 0), b = onLoft(nk, u + 0.04, g * 0.95, 0);
