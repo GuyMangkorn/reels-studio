@@ -140,3 +140,41 @@ Editor, 2026-11-19, for script [EDU-EP30-SCRIPT-R2.2](script.md#r22-changes) (em
 | L18 | NARR | 62.89-64.91 | 62.90-64.88 | 1887-1946 | 2.02 |
 
 Last speech **64.88 s** (frame 1946); with the 2.0 s hold the short is **66.91 s** (2007 frames; preview.wav 66.905 s), identical to VOICE-R2.
+
+
+<a id="voice-r22"></a>
+# EDU-EP30-VOICE-R2.2 (voice lock for script R2.2, tightened mime slots)
+
+Editor, 2026-11-19. Status: **built and measured; approved by the user (2026-11-19, structured question) as VOICE-R2.1 with the mime slots tightened** (W4.3). Replaces VOICE-R2.1 (kept intact in store `ep30-voice-r2-1/`; `ep30-voice-r2/` and `ep30-voice-r1/` also intact). Build: [voice-lock-build-r2-2.py](voice-lock-build-r2-2.py) (from the R2.1 builder; no API calls), anchors: `VO_DIR=out/ep30-voice-r2-2 python3 -I vo-anchors.py`. Store: `projects/edu/EDU/narration/ep30-voice-r2-2/` (`preview.wav`, `timing.json`, `anchors-R2.2.txt`, `lines/`).
+
+## Change vs R2.1
+
+- L07 silent slot **2.28 s to 1.50 s** (two wing flicks and the split need about 1.5 s; floor 1.3 s) and L15 silent slot **1.13 s to 0.90 s**, by cutting silence at the slot end. The 0.2 s gap before the next line is unchanged.
+- Every other line file is a byte copy of the R2.1 file; the anchor rows up to and including L06 are identical to R2.1, every row after L07 moved earlier by 0.78 s (L09 to L14) and 1.01 s (L16 to L18).
+- Silent slots stay the mime beats for Film: L07 wing wave both ways and flock splits (frames 815-860); L15 bow, VD30-05b (frames 1549-1576). Ton may put a SFX/foley bed there; no voice under them.
+
+## Anchors (seconds and 30 fps frames, timeline 0 = L01 file start)
+
+| Line | Speaker | File | Speech on-off (s) | Speech frames | Dur |
+| --- | --- | --- | --- | --- | ---: |
+| L01 | NARR | 0.00-6.05 | 0.06-5.93 | 2-178 | 6.05 |
+| L02 | NARR | 6.25-11.74 | 6.88-11.69 | 206-351 | 5.49 |
+| L03 | FARMER | 11.94-14.35 | 11.94-14.35 | 358-431 | 2.42 |
+| L04 | NARR | 14.55-19.67 | 14.99-19.60 | 450-588 | 5.12 |
+| L19 | EMU | 19.87-22.24 | 19.89-22.22 | 597-667 | 2.36 |
+| L22 | MEREDITH | 22.44-22.76 | 22.44-22.75 | 673-683 | 0.33 |
+| L06 | NARR | 22.96-26.95 | 23.48-26.87 | 704-806 | 3.99 |
+| L07 | EMU | 27.15-28.65 (slot) | mime, silent | 815-860 (slot) | 1.50 |
+| L09 | NARR | 28.85-32.89 | 29.18-32.83 | 875-985 | 4.04 |
+| L10 | NARR | 33.09-35.28 | 33.42-35.18 | 1003-1055 | 2.19 |
+| L23 | GUNNER | 35.48-37.51 | 35.62-37.50 | 1069-1125 | 2.03 |
+| L12 | NARR | 37.71-42.79 | 38.11-42.72 | 1143-1282 | 5.08 |
+| L13 | NARR | 42.99-46.22 | 43.36-45.99 | 1301-1380 | 3.22 |
+| L21 | EMU | 46.42-47.49 | 46.42-47.47 | 1393-1424 | 1.07 |
+| L14 | NARR | 47.69-51.44 | 48.04-51.40 | 1441-1542 | 3.75 |
+| L15 | EMU | 51.64-52.54 (slot) | mime, silent | 1549-1576 (slot) | 0.90 |
+| L16 | NARR | 52.74-57.81 | 52.77-57.76 | 1583-1733 | 5.06 |
+| L17 | NARR | 58.01-61.68 | 58.02-61.64 | 1741-1849 | 3.68 |
+| L18 | NARR | 61.88-63.90 | 61.89-63.87 | 1857-1916 | 2.02 |
+
+Last speech **63.87 s** (frame 1916); with the 2.0 s hold the short is **65.90 s** (1977 frames; preview.wav 65.904 s), 1.01 s shorter than VOICE-R2.1 (66.91 s, 2007 frames).

@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
 
 ## EDU-EP30-SHORT
 
-**Now:** EDU-EP30-VOICE-R2 built and measured (Editor, 66.91 s, user approval pending, W4.3); Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.1 (stopped half-done on R1). **Next:** user approves VOICE-R2 (W4.3), then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
+**Now:** Film re-boards brief/storyboard/rows/scene sheets/tickets on R2.2 and VOICE-R2.2, then Boss/Ton. **Next:** user approves VOICE-R2 (W4.3), then W5 Film timed sheets and tickets, Boss plates, Ton sounds, Draft
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -22,7 +22,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
   - [x] W1.8 User approval of SCRIPT-R2.1 as written, "ยิง!" echo kept (user, 2026-11-19, structured question)
   - [x] W1.9 Preaw script R2.2 (EDU-EP30-SCRIPT-R2.2, user option D 2026-11-19): EMU L19/L21 stay spoken; L07 and L15 become silent mime beats in their old slots (L07 wing signal + flock split, L15 KP-EMU bow VD30-05b); new picture-only PB01 foot-tap/invisible watch answering GUNNER L23; 5 spoken character lines; ~66.9 s est. (VOICE-R2 slots kept); no fact line changed
   - [x] W1.10 Boat note on the L07, L15 and PB01 rows (picture-only; no fact rows affected) — short/script.md#r22-changes
-  - [ ] W1.11 User approval of SCRIPT-R2.2 — pending
+  - [x] W1.11 User approval of SCRIPT-R2.2 as written (2026-11-19, structured question), with the note to tighten the silent emu mime slots (done in VOICE-R2.2)
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief (text) — [EDU-EP30-BRIEF-R1](short/film-brief.md), 2026-11-19
   - [x] W2.2 Film storyboard rows (review-rows.json) — [EDU-EP30-BOARD-R1](short/storyboard.md) / EDU-EP30-ROWS-R1, 26 shots untimed, 2026-11-19
@@ -37,7 +37,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-19, Preaw (W1.9 SCRIPT-R2.2
   - [x] W4.2a VOICE-R1 approved by the user (67.07 s, 2026-11-19, structured question); superseded by R2 after the script R2.1 dialogue pass
   - [x] W4.2 (R2) Narration for SCRIPT-R2.1 built and measured — EDU-EP30-VOICE-R2 ([short/voice-lock.md](short/voice-lock.md#voice-r2)): 19 lines, MEREDITH Alnilam, GUNNER Umbriel, EMU Puck, L16–L18 take D; speech ends 64.88 s, total 66.91 s with the 2.0 s hold; store `projects/edu/EDU/narration/ep30-voice-r2/`, 2026-11-19
   - [x] W4.2 (R2.1) VOICE-R2.1 built for SCRIPT-R2.2 — [short/voice-lock.md](short/voice-lock.md#voice-r21): L07 and L15 emu takes removed to silent mime slots (frames 815–883, 1574–1606), every other line and the 66.91 s / 2007 f total unchanged; store `projects/edu/EDU/narration/ep30-voice-r2-1/`, 2026-11-19
-  - [ ] W4.3 User approves VOICE-R2.1 (66.91 s; supersedes the VOICE-R2 approval) — pending
+  - [x] W4.3 User approved VOICE-R2.1 with the mime slots tightened (2026-11-19, structured question) -> VOICE-R2.2 built ([short/voice-lock.md](short/voice-lock.md#voice-r22)): L07 slot 2.28 to 1.50 s, L15 1.13 to 0.90 s, total 65.90 s / 1977 f; store `projects/edu/EDU/narration/ep30-voice-r2-2/`
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R1](short/scene-sheets/index.md), 26 shots, 2012 frames (67.07 s), ready-for-dev; rows EDU-EP30-ROWS-R6 timed, 2026-11-19 (review page: pending)
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
