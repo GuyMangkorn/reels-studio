@@ -7,7 +7,7 @@ import {registerRoot} from 'remotion';
 import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import type {YCam} from '../kit/ycam';
-import {GUNNER1, paintSeatedGunner, type GunnerView} from './cast';
+import {GUNNER1, paintGunnerFists, paintSeatedGunner, type GunnerView} from './cast';
 import {CAM_LF01} from './looks';
 import {buildLewisGun, lewisAnchors, lewisRecoil, paintLewisPanTicks, placeBuild} from './props';
 import {camLine, Proof30, stubPaint, type ProofDef} from './shot';
@@ -35,7 +35,9 @@ const gunnerProof = (d: GunnerProof): ProofDef => ({id: d.id, N: 2, cam: () => d
   const {o, a, jolt} = gunnerProofAt(d, L);
   const gun = () => { placeBuild(p, c, buildLewisGun(o), d.gun, d.heading, {seed: 33300}); paintLewisPanTicks(p, c, 33400, d.gun, d.heading, 0, o); };
   const man = () => paintSeatedGunner(p, c, GUNNER1, d.seat, {view: d.view, grip: a.grip, stock: a.stock, jolt, t: 1.2, seed: 33200});
-  if (d.gunFirst) { gun(); man(); } else { man(); gun(); }
+  const fists = () => paintGunnerFists(p, c, GUNNER1, d.seat, {view: d.view, grip: a.grip, stock: a.stock, jolt, t: 1.2, seed: 33200});
+  // T36 r2: the front gun is nearer the lens than the gunner, so the fists are repainted over the grip and stock.
+  if (d.gunFirst) { gun(); man(); } else { man(); gun(); if (d.view === 'front') fists(); }
 }});
 
 const PROOFS: ProofDef[] = GUNNER_PROOFS.map(gunnerProof);

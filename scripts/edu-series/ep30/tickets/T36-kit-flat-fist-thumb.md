@@ -1,5 +1,5 @@
 # T36 — an unshaped kit figure can close a thumbed fist on a held point (the GUNNER-1 grip and stock), and T11's proofs show the thumb
-Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: ready — r2 fix pass (r5 Film look check, 2026-11-20: fix on two items: the flat fist is too long and reads as a bun or paw in the large back view, and in the front view the grip is painted over the fist; thumb sides and the front fist size accepted; see r2 decisions; r1 built 2026-11-20, tests 4/4)
+Deliverable: EDU-EP30-SHORT · Revision: r2 · Status: r2 built, awaiting Film look check — r2 fix pass (r5 Film look check, 2026-11-20: fix on two items: the flat fist is too long and reads as a bun or paw in the large back view, and in the front view the grip is painted over the fist; thumb sides and the front fist size accepted; see r2 decisions; r1 built 2026-11-20, tests 4/4)
 Class: capability · Hard: yes (hand)
 Blocked by: T11 (done; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: T11 (proof re-render), T12, T17, T18 (crew fists, the cocking pull, the order chop), T24 (B03-SH01 back view), T27 (B04-SH03 right forearm and mitten), T29 (B05-SH01/SH02 right profile), T22, T23 (through T12); any later unshaped figure holding a prop
 Model: sonnet, medium
@@ -91,3 +91,25 @@ thumb check (rule, code `mittenThumbSide` and picture agree): GUNNER-1 RIGHT and
 3. Fist-centre error is 3.3 px in the back view (0.0037 hu at 880 px/m, inside the 0.01 hu bound; the ticket's 3 px applies to the front view, 0.84 px).
 
 **Repo checks.** `tsc`: 22 errors, none in changed files (missing `three` / `@remotion/three` types in this checkout, test typing already in `ea37ad9`). `npm test`: 295 pass, 20 fail, all in modules this ticket does not touch (12 need `@remotion/three`, which is not installed in the shared `node_modules`; `beast-joints` hippo "Maximum call stack"; store adopt; loudness); the context-map test failed on my new test until the map entry was added and passes now. Fix passes used: 0. Open: Film's look check (fist reads as a closed fist, not a paw or a ball) before T12.
+
+
+### Result r2 (Boss, 2026-11-20)
+Commit: see `git log` (T36 r2). Files: `kit/draw.ts` (`flatFistAt` scaled 0.825 along, origin `T - 0.037 hu`), `kit/cast.ts` and `kit/back.ts` (new `Arm.onFlatFist` redraw hook; `fill`/`fillA` take an optional painter, default unchanged), `edu30/cast.ts` (`paintGunnerFists`), `edu30/proof-cast.tsx` (`C30-gunner-front`: `man(); gun(); fists()`), `tests/kit-flat-fist.test.ts` (bbox row, new test d). `tests/edu30-cast.test.ts` 4/4. Store `projects/edu/EDU/previews/`: `T36r2-sheet.png`, `T36r2-gunner-{front,back,right,34}-j{0,1}.png`, `T36r2-crop-*.png` (540 px). Logs `out/logs/T36r2-*.log`.
+
+| Row | Measured |
+| --- | --- |
+| F1 | bbox 0.080 x 0.068 hu at six angles, both sides (pass 0.080 x 0.069 +- 0.003); centre -0.0003 hu from `T`; reach past `T` <= 0.040 hu; thumb side and 3 creases unchanged |
+| F2 | test d: `paintGunnerFists` strokes are a subset of the man's (same splines) for all four views; none without grip and stock. Front 540 crop: the repainted fist is opaque skin, no grip pixel in the fist (checked by eye, not a pixel count). The grip shows above the RIGHT fist only: its lower end lies inside the fist (r1 crop: the grip ended at the hand's lower edge), so "above and below" is not reachable without moving the grip |
+| F3 | hashes equal r1: `man-crop` front `39e4b2d3867d`, `man-parted` back `ef68705b3b89`, `man-elder` right `73a01e4ee318`, LF01a gunner `8ac3d266aa4a`; other views' painting order unchanged |
+
+Per hand (px at proof scale; thumb line in measured wording; centre error to the projected point):
+| Frame | Hand | Thumb check | Fist px | Centre err px | Thumb offset px |
+| --- | --- | --- | --- | --- | --- |
+| front j0/j1 | RIGHT / LEFT | down ok / up ok | 22.8 x 19.3 | 0.84 | (-2.3, 5.7) / (3.6, -5.0) |
+| back j0/j1 | RIGHT / LEFT | up ok / right ok | 88.7 x 74.8 (aspect 1.19, r1 1.42) | 3.27 | (-1.5, -23.8) / (23.4, 4.9) |
+| right j0/j1 | RIGHT / LEFT | up ok / right ok | 36.6 x 30.8 | 1.35 | (-0.1, -9.8) / (8.8, 4.5) |
+| 3/4 j0/j1 | RIGHT / LEFT | up ok / down ok | 38.6 x 32.5 | 1.42 | (5.7, -8.7) / (3.2, 9.9) |
+
+Thumb crease about 10 px against finger strokes about 4.5 px in front (as r1); longer strokes elsewhere. Checks: `tsc` 22 errors, none in changed files (`three` types missing); `npm test` 316 pass / 19 fail, all in modules not touched (12 need `@remotion/three`, hippo joints, store adopt, loudness). Fix passes used: 1.
+
+Open for Film: **C30-gunner-34** also paints the gun after the man (`gunFirst: false`), so the grip is drawn across the near RIGHT fist there as the front view did (T36r2-crop-34-j0). R2 names the front view only, so it is unchanged; one line (`fists()` for `front34`) fixes it. T27 does not use the 3/4 view; T11's real shots should call `paintGunnerFists` after the gun whenever the gun paints later.

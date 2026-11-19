@@ -129,8 +129,13 @@ export const fistParts = (o: Pt, ang: number, k: number, side: 1 | -1) => {
   const thumbCrease: Pt[] = Q([[0.03, 0.034], [0.046, 0.024], [0.064, 0.016]]);
   return {back, fingers: [] as Pt[][], creases, thumbCrease, knuckleRow: [] as Pt[], thumb: [] as Pt[], nail: [] as Pt[]};
 };
-/** T36 (EDU-EP30): the `fistParts` fist centred on a held point `T`: the origin steps back 0.045 hu along the forearm direction `ang`, so the fist (0.093 hu long, centre u ~ 0.045) sits on `T` and reaches at most 0.05 hu past it. */
-export const flatFistAt = (T: Pt, ang: number, k: number, side: 1 | -1) => fistParts([T[0] - 0.045 * k * Math.cos(ang), T[1] - 0.045 * k * Math.sin(ang)], ang, k, side);
+/** T36 r2 (EDU-EP30): the `fistParts` fist centred on a held point `T`, rounder: scaled 0.825 along the forearm direction `ang` (0.097 -> 0.080 hu along, 0.069 hu across). The origin steps back 0.037 hu so the centre sits on `T`; it reaches at most 0.05 hu past it. */
+export const FLAT_FIST_ALONG = 0.825;
+export const flatFistAt = (T: Pt, ang: number, k: number, side: 1 | -1) => {
+  const c = Math.cos(ang), s = Math.sin(ang), o: Pt = [T[0] - 0.037 * k * c, T[1] - 0.037 * k * s], F = fistParts(o, ang, k, side);
+  const sc = (pt: Pt): Pt => { const d = ((pt[0] - o[0]) * c + (pt[1] - o[1]) * s) * (FLAT_FIST_ALONG - 1); return [pt[0] + d * c, pt[1] + d * s]; };
+  return {...F, back: F.back.map(sc), creases: F.creases.map((cr) => cr.map(sc)), thumbCrease: F.thumbCrease.map(sc)};
+};
 /**
  * An open hand at `o` (the wrist), HL1: one smooth mitten outline, the four-finger mass 0.064 wide with a round tip at 0.124, the thumb a rounded lobe of the
  * same outline on the `side` edge, angled out and forward, with a V notch to the fingers; three short strokes at the finger end, one crease at the thumb root.
