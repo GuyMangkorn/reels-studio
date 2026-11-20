@@ -1,5 +1,5 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T16 done) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (built 2026-11-20, awaiting Film look check; see Result) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35 (done), T36 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
@@ -53,7 +53,7 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **Queue shadows (TF37).** `shadowOp: 45` for every queue bird.
 - **Bunching (TF36).** B04-SH03 bunches at the front only (birds 0–5 stop L 12–28, bird 6 closes to 1.0 m L 24–28); birds 2 and 4 hop and land at L 25 (splash crowns from L 27).
-- **Caption zone (TF46).**
+- **Caption zone (TF46).** `--band 1150:1344 --max-mean 0.80 --max-p95 0.99` (index TF46).
 
 ## Proof
 - Stills (`out/edu30-T27/`): SH03 L 0, 10, 11, 19, 25, 40, 42, 43, 46; SH04 L 0, 8, 12, 17, 21.
@@ -68,4 +68,20 @@ These override any older value in this ticket that they name.
 | SH03 L 10 / L 42 (r4) | registered = QA stack; smoke a haze | L 10 MAD ≤ 2 with the shake translate present, L 42 shake 0 in the style; smoke cover ≤ 0.45, blast ≤ 0.40 at L 42; lead probe ± 1 px |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built 2026-11-20 (Boss, Sonnet medium, worktree branch `worktree-agent-a783cee3a1281584f`, merged `claude/ep30-continuation-493a12` at `0e100d1` first) · commit: this commit (see index) · fix passes: 0 · files `src/painted/edu30/shots/B04-SH03.tsx`, `B04-SH04.tsx` only.
+Proof (store `projects/edu/EDU/previews/`, all `T27-` prefixed, 21 files): `T27-sheet.png` (SH03 L 0, 10, 11, 19, 25, 27, 40, 42, 43, 46; SH04 L 0, 8, 12, 17, 21; viewed), `T27-s03_L*.png` / `T27-s04_L*.png` (guides and tag on), `T27-c03_L10.png`, `T27-c03_L42.png`, `T27-c04_L12.png` (clean), `T27-r03_L10.png`, `T27-r03_L42.png` (registered). Logs `out/logs/T27-*.log`.
+Built SH03: T10 `paintDam`, T16 `queue(L, 'B04-SH03')` + far mass + wade + `queueSplashes` (`shadowOp` 45), T05 11 strikes (x -1.0 to +1.4, z -4.9..-5.6, minDist 1.5 against `queueAvoid`; mud on dry points, spout on wet), T04 mud blast, T05 casings (water spec, `southBankY`/`overWater`), GUNNER-1 back view + G1 (T13 recoil, `lewisPanTurn` ticks) + `paintGunnerFists` after the gun, smoke, flash + 260 px halation (no mirror), pop and T34 shake (stop 42). SH04: `paintDam` with `nearSlope`, `paintStone`, G1 at the 11-round pan + `lewisJamNudge`, T04 smoke at L + 47, `paintLewisPuff`, `casingKeyed` r5 keys with `paintCasing` from L 13. Plates read every gun point from `lewisAnchors`.
+Measured vs rows:
+- SH03 L 10 core luma: 255 in the 40 x 40 box at the muzzle (clean frame; row >= 250, sky tie allowed): pass. Muzzle (`measure-shots.ts`) (633, 832) at L 10, (632, 833) at L 42; row (637, 827) +-30: pass (5 px). Receiver/port (987, 883).
+- SH03 L 25: two splashes (`queueSplashes()` = 2, crown from L 27, rings from L 25); nearest bird to any strike point 2.04 m at L 25 and 1.60 m over L 0-46 (row >= 1.5 m): pass. Frames viewed: the splash crowns and rings are small and sit at the far shore edge at x about 230 (bunched front birds at x 250-310).
+- SH03 L 42 / 43: shake (0, 0, 0) at both (L 10: 5.45, -7.24, 0.4 deg); smoke centroid (analytic, capped alpha-weighted puffs through the stack camera) (572.0, 819.0) at L 42 -> (568.0, 818.0) at L 43 = 4.0 px (row >= 1 px): pass. No flash on either (viewed). Queue moves (T16).
+- SH04 L 12 / 21: pan (415, 253), port (638, 545) at both (row +-25): pass (0 px); stone (674, 1361) (row +-25): pass (probe of `STONE_AT`: (673.9, 1360.7)). Puff at the port at L 12 and 17, casing at rest on the stone at L 21 (viewed). No hand, no face.
+- r4 row: registered `EDU30-REG-B04-SH03` vs QA clean stack MAD **0.00048** at L 10 (shake translate in the wrapper) and **0.00034** at L 42 (row <= 2): pass; L 42 shake 0 in the style. Smoke cover bound 1 - e^-0.60 = **0.451** and blast **0.393** at L 42 (analytic from the capped alpha sums; row <= 0.45 and <= 0.40: smoke is 0.001 over as an upper bound, same as T24; pixel cover not measured, T04's `measure.py` is not in this checkout). Lead probe: QA path only, equal to the registered plate by shared `def.paint`/`stackCam`/`canvasStyleOf`.
+- Caption zone (TF46 flags `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`): SH03 L 10 clean mean 0.714, p95 0.984, pass; SH04 L 12 clean mean 0.61, p95 0.627, pass.
+Thumb check: GUNNER-1 RIGHT hand: not visible (see value 1); arm check: GUNNER-1 right: not drawn in frame, not measured.
+Values not followed (need Film):
+1. **Right forearm and fist entering from the right edge: not visible.** The locked gun puts the grip at (1171, 1026) and the stock at (1876, 997) on the stack camera, past the 1080 px edge, and the seat (-6.2, 0.36, -4.75) projects to x 1990. The man is painted (T11 back view, `paintGunnerFists` after the gun) but nothing of him lands in frame, so the T36 thumb check cannot be read on the picture. Not moved. Film: move the camera or accept no hand in SH03.
+2. **Strikes: only 1 of 11 is a water spout.** The decided z range -4.9..-5.6 is on the dry rim except for one point (the waterline at these x is about z -5.65, `overWater`), so ten strikes are mud spurts and one a spout; the "spouts in the shallows" reads as one. Not changed. Film: widen z to about -6.0 for the spouts.
+3. **Smoke cover 0.451 vs <= 0.45** (upper bound, as T24).
+4. Casing positions `southBankY` was passed as `(x, z)`; fixed in the plate to `(_x, z) => southBankY(z)` before the proof.
+Checks: `npx tsc --noEmit -p .` no error in the two files (8 existing errors in tests, unrelated); `node scripts/test.mjs tests/painted-canvas-style.test.ts` 5 / 5; full `npm test` not run (known failing set, machine load, disk 99 % full).
