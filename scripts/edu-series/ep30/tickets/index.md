@@ -29,7 +29,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10 (r4), T08 (done, R8), T35 | ready, **dispatchable** (Q7 answered; r3 notes: wading, hop `air`; r4 notes: waterline ease) | 0 | — |
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12 (done, R8), T13 | built, awaiting Film look check (r4 as built; measured below the sheet rows in the ticket Result) | 0 | d1086a0 |
 | [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
-| [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready, **dispatchable** (all blockers done) | 0 | — |
+| [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | done (built 2026-11-20; sheet-number deviations in its Result for Film) | 0 | T19 commit on `worktree-agent-afb938a7302c89054` |
 | [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | ready, **dispatchable** (r2 notes: farmer point as built, line ≤ 60 px) | 0 | — |
 | [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | built 2026-11-20 (Boss, Sonnet medium), awaiting Film look check; SH03 cab 440 px vs 486 ± 25 (T14 geometry, see Result) | 0 | — |
 | [T22](T22-plate-b02-sh06-heads.md) plate B02-SH06 | set | yes | T03, T07, T08, T09, T11, T12, T13 | ready, **dispatchable** (r7 notes: wheat interleave, LOD cap, held pan) | 0 | — |

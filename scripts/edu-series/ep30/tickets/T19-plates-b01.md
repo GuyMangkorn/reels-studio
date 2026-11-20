@@ -1,5 +1,5 @@
 # T19 — plates B01-SH01, B01-SH02, B01-SH03 (the hook) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (emu head turn and sac, walking extras)
 Blocked by: T03, T07, T08, T09, T11, T14 · Consumers: B01-SH01, B01-SH02, B01-SH03 (global 0–199)
 Model: sonnet, medium
@@ -47,4 +47,25 @@ These override any older value in this ticket that they name.
 | B01-SH03 L 7 / 34 | blink shut / throat swollen | head + neck 515 → 609 ± 30 px; head top < 1100 at every proof frame |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built 2026-11-20 (Boss, Sonnet medium), on `bf9d664`; commit = the T19 commit on branch `worktree-agent-afb938a7302c89054`. Fix passes used: 0 (one self-correction before the first proof: the crew paints after `paintPaddockScene`, not inside its `cast`, because the clearing paints over `cast` content when the camera is north of the fence). Files: the three shot files only.
+Proof, store `projects/edu/EDU/previews/` (all T19-prefixed, `sheet.png` untouched): `T19-sheet.png` (13 frames at 270 px), `T19-s01_L{00,70,80,89}.png`, `T19-s02_L{00,34,58}.png`, `T19-s03_L{00,07,34,50}.png`, `T19-clean_s0{1,2,3}_L00.png`, `T19-cmp-LF01a.png` (store LF01a beside SH01 L0 and L70), `T19-cmp-KPface.png` (store KP-face beside SH03 L0), `T19-s01_L89_head.png` (head crop), `T19-measure.txt`.
+Checks: `tsc` shows no error in the three files (errors exist only in other tests); `npm test` 477 pass, 9 fail, none from these files (HIPPO joints x3, loudness, new-shot, render-inputs, segments, store adopt, and the known T24 r5 test (d) on B03-SH01).
+Built: B01-SH01 = own crew pass in LF01a order (T11 `paintSeatedGunner` with `lewisAnchors` grip and stock; gun, then T13 `paintLewisPanTicks`, then T36 `paintGunnerFists`; GUNNER-2 P34; MEREDITH P30; gear) after `paintPaddockScene`; EMU-HERO = `HERO_LF01` mixed to `EMU_POSES.look(0)` L70-80, then `emuLookTurn` L80-88 to `emuLensYaw`; the truck is not painted (out of view). B01-SH02 = `paintPaddockScene` + `paintTruckRig` (silhouettes, cases) with far and near dust + `paddockExtras`. B01-SH03 = `EMU_POSES.look` with `blinkLid(L-6, .32)` and `emuSac(L)`.
+| Row | Measured | Range | Result |
+| --- | --- | --- | --- |
+| SH01 L0 MEREDITH | 541 px (x 944) | 541 +-20 | pass; matches LF01a at 270 px (`T19-cmp-LF01a.png`) |
+| SH01 L89 EMU left edge | head column x 163; body and feet reach x about 50 (inside the frame, not cut) | >= 120 | head passes, **body left edge about 50 < 120** |
+| SH01 L89 MEREDITH | 603 px (x 983) | >= 480 | pass |
+| SH01 L89 EMU | 642 px (top 507, feet 1149) | 586 +-30 | **fail by 26 px** (see below) |
+| SH02 L0 / L58 EMU1 | 567 / 479 px (L34 peck 375) | >= 480 | L0 pass; **L58 479, 1 px under** |
+| SH02 truck width | 109 / 121 / 128 px (L0 / 34 / 58), readable as a truck at 270 px | >= 100 | pass |
+| SH02 truck x | 510 / 404 / 314 | 512 -> 212 +-30 | L0 pass; **L58 314, 102 px off** (see below) |
+| SH03 head + neck (head top to the `neck.base` joint) | 756 (L0), 764 (L7), 887 (L34), 939 (L50) | 515 -> 609 +-30 | **fail** (see below) |
+| SH03 head top | 448 / 447 / 420 / 408 | < 1100 | pass; equals the locked KP-face head top (about 446) |
+| `caption-zone.py`, clean L0 | SH01 mean 0.716 p95 0.853; SH02 0.667 / 0.933; SH03 0.598 / 0.898 | pass flag | all three `pass: false` (light sand ground fills the band; the Editor's caption stroke covers it) |
+Values I could not follow (sheet or ticket numbers that disagree with the sheet's own camera lines or the locked emu; camera, pose and staging kept as decided):
+- **SH01 L89 EMU 586 +-30:** the locked `look(0)` pose is 1.75 m to the head top (measured side-on at 10 m; the ticket says 1.70), and at the sheet camera it measures 642 px (sheet head top 540 and feet 1126; ours 507 and 1149, the probe bottom is the toe line). The body left edge about 50 follows from the same bird in the LF01a frame (tail already near x 80 at L0).
+- **SH02:** EMU1 centre x 468 -> 562 in the sheet is true only for yaw about 180; the decided camera (eye 6.0, -30, yaw 200) puts EMU1 at x about 127 at L0. The sheet's truck x 512 -> 212 holds at L0 with yaw 200 but at L58 yaw 194 gives 314 (212 needs yaw 200). Film to correct the sheet projection.
+- **SH03 head + neck 515 -> 609:** at the decided camera (about 1.0 m to the chest) the head top is 448 and the `neck.base` joint 1204 (sheet head top 493, neck base 1008). The head top matches the locked KP-face frame (same lens), so the plate follows the look. If Film means the visible neck-to-bib junction (about y 1000 to 1080 in the still), head top to it is about 550 to 630.
+- Hard checks: EMU-HERO tuft visible in SH01 and SH03; GUNNER-1 fists painted by `paintGunnerFists` over grip and stock; thumb check: GUNNER-1 right: not measured on screen, left: not measured on screen (crew still, mitten fists from the T11 solve, viewed at 270 px only); arm check: GUNNER-1 front: attached ok (viewed); the emu's pads come from the stance default and no mixed pose sets pads, so the feet do not move across L0-89 (not measured numerically).
+- Not verified: seek parity with `EDU30-SEQ` frame 120 (not run); the SH02 foreground wheat bars are the T09 ridge look at this low camera (heavier than the T09 p3 proof) and were not tuned; SH03 blink (L7) is visible only at full size.
