@@ -67,8 +67,9 @@ const FLOCK_PROOFS: ProofDef[] = [
     paintEmu(p, c, {at: HEADS_HERO, heading: Math.PI / 2, pose: EMU_POSES.stand(), scale: 1, seed: 36000, hero: true}, sun);
   })},
   {id: 'FL30-scatter', N: 72, cam: () => SCATTER_CAM, reel: NO_REEL, paint: (p, L, c) => world(p, c, {far: FAR}, () => paintFlock(p, c, scatter(L), sun))},
-  {id: 'FL30-burst', N: 50, cam: burstCam, reel: NO_REEL, paint: (p, L, c) => world(p, c, {far: FAR}, () => { paintBurstDust(p, c, L); paintFlock(p, c, burst(L), sun); })},
-  {id: 'FL30-halves', N: 40, cam: HALVES_CAM, reel: NO_REEL, paint: (p, L, c) => world(p, c, {}, () => {
+  // T08 r5 B4: FL30-burst paints the 40 burst birds and their dust only, no far mass.
+  {id: 'FL30-burst', N: 50, cam: burstCam, reel: NO_REEL, paint: (p, L, c) => world(p, c, {}, () => { paintBurstDust(p, c, L); paintFlock(p, c, burst(L), sun); })},
+  {id: 'FL30-halves', N: 41, cam: HALVES_CAM, reel: NO_REEL, paint: (p, L, c) => world(p, c, {}, () => {
     paintFlock(p, c, [...halves(L), {at: [12, 0, -32], heading: Math.PI / 2, pose: EMU_POSES.stand(), scale: 1, seed: 36000, hero: true}], sun); halvesDust(p, c, L);
   })},
   {id: 'FL30-fence', N: 1, cam: () => FENCE_CAM, reel: NO_REEL, paint: (p, _L, c) => world(p, c, {light: 1, eaten: 0.7, stubble: 0.4, verge: true, wire: {wireW: 2.5, wireCol: '#3e3226'}}, () => paintFlock(p, c, fenceBirds({n: 5, truck: [-8, 0, 9.5]}), sun))},

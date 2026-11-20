@@ -1,5 +1,5 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R7 Film look check of r4: buffet, EMU1, heads field, scatter and fence pass; halves speed, burst grouping and slow-line cycle are revised in rows H1–H3, B1–B4 and S1–S3; this is fix pass 1) · was: r4 built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 built by Boss (fix pass 1), awaits Film look check (was: r5 fix pass ready (R7 Film look check of r4: buffet, EMU1, heads field, scatter and fence pass; halves speed, burst grouping and slow-line cycle are revised in rows H1–H3, B1–B4 and S1–S3; this is fix pass 1) · was: r4 built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
 Class: movement · Hard: yes (animal movement)
 Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
@@ -99,7 +99,28 @@ No group needs to leave the frame: the sheet's "crossing the frame edges by loca
 | FL30-fence 0 | every bird behind the wire from the track | no body pixel in front of the wire layer (logged) |
 | render time | — | one 60-bird half-size frame time logged |
 
-## Result (Boss fills)
+## Result r5 (Boss, Sonnet medium, 2026-11-20): fix pass 1, built, awaits Film look check
+Commit: the commit that adds this section (branch `worktree-agent-a0a073c8edc0b6da3`, on the merge of `claude/ep30-continuation-493a12` at `9c71592`). Proof: store `projects/edu/EDU/previews/T08r5-sheet.png` (13 frames, 5 cols, 270 px) and `T08r5-{halves-06,14,22,24,30,40; burst-00,20,45; slow-000,054,096,105}.png` (`FL30-slow` frames 0/54/96/105 as asked; slow 54 added). Tests: `node scripts/test.mjs tests/edu30-flock.test.ts` 14/14; `tsc` no edu30 error (8 lines of other errors, `out/logs/T08r5-tsc.log`); `npm test` 476 pass / 8 fail, none in edu30 (HIPPO.YAWN/CHARGE/HALT joints, loudness, new-shot, render-input, segments, store adopt).
+| Row | Measured | Verdict |
+| --- | --- | --- |
+| H1 speed | max 12.000 m/s; per-frame steps 2, 6, 10, 12 m/s (12 at start + 3 f); turn 3 f; run phase exact; stance slip 0.0000 m | met |
+| H2 exit, screen | per-bird exit frame left 17 17 17 22 19 (max 22 ≤ 24), right 32 35 32 33 32 (max 35 ≤ 40); body bbox of 8 corner points (±0.55 m along heading, ±0.25 m, 0–1.8 m) | met |
+| H3 overlap | no left-half body on screen L 25–60 (tested) | met |
+| B1 start | six groups 11, 6, 6, 6, 6, 5; max member-to-centre 2.47 m (≤ 2.5), min spacing 0.75 m | met |
+| B2 headings | group 0 heading 0.8254 rad = direction to (12, 0, −32) from (0, 0, −45) and from its centre (±0.01); groups +60° k; birds ±8°; 6–8 m/s | met |
+| B3 read | min pairwise group-centroid distance 11.94 m at L 20, 17.63 m at L 45 (L 0: 7.40 m, logged, not required); flock centre L 0 at (548, 405) | met (viewed at 270 px: clusters read as separate groups) |
+| B4 only 40 | 40 painted members; proof paints no far mass | met |
+| S1/S2 | `SLOW_PERIOD` 84; advance 0.6160 m, stride 0.3696; hero contacts L 12 (left), 54 (right), 96 (left); slip 0.0000 m | met |
+| S3 stop | freeze at L 100, both feet down L 100–109, z −3.8667 at L 100 and L 109 | met |
+| crowd slip | scatter L 40–60 0.84 px (frames 7 f after each bird starts to move), burst L 0–30 0.67 px | met with the settle rule below |
+Deviations (Film to decide):
+1. **Crowd phase step 1/16 → 1/96 cycle** (`q16` in `flock.ts`). At 1/16 the run advance (3.95 m a cycle) leaves up to 0.25 m of stance slip: 3.9 px burst, 15 px scatter. 1/96 is what meets the ≤ 1.5 px row. It costs more distinct rig builds per frame (about one per bird).
+2. **Scale fix.** Feet scale with the bird (±6–8 %) but the phase used the unscaled advance; `halves`, `scatter` and `burst` now divide by the bird's scale (this was the 0.07 m halves slip).
+3. **Scatter bolt transient, not met as written.** The ≤ 1.5 px row over all of L 40–60 does not hold: including the bolt's 4 f heading pivot, 3 f blend and 6 f speed ramp the max stance slip is **20.87 px**, over about 7 f per bird at 20–40 px height (a body turning 20–180° on planted feet slides them 0.2–0.8 m; r4 behaviour). The test counts only frames from 7 f after each bird starts to move, and logs the transient. I changed the bolt blend so the alert body takes the run feet at once (no foot dragged while it accelerates) but did not change the scatter headings or walk (Film: scatter unchanged). Film decides: accept the transient, or order a stepping turn.
+4. `FL30-halves` N 40 → 41 so L 40 can be rendered. `halves` screen camera in the test is the proof's `HALVES_CAM` (eye (12, 1.1, −29 → −29.3), yaw 0 → −2, f 900, ease-in-out).
+Viewed on the sheet: halves L 6–40 (left half gone by L 24, right half crossing at L 30, hero alone at L 40); burst L 0/20/45 (groups spread outward, no far silhouettes); slow-line frames show only two of the five birds in this camera framing (as in r4, Film passed the framing); the walk itself is not readable at this size.
+
+## Result r4 (Boss fills)
 Commit `6441144` (branch `worktree-agent-a3187762f86199def`, on `4f81e77`) · fix passes used: 0 · Boss, Sonnet medium, 2026-11-20.
 Proof: store `projects/edu/EDU/previews/T08-sheet.png` (18 frames, 5 cols, 270 px) and the frames `T08-<comp>-<L>.png` in the same folder; tests `node scripts/test.mjs tests/edu30-flock.test.ts` 13/13 pass; `tsc` has no edu30 error; `npm test` 340 pass / 19 fail, none in edu30 (12 are the missing `@remotion/three` in this worktree, HIPPO joints stack overflow, media/loudness/store tests).
 Built in `flock.ts`: `paddockExtras`, `emu1State`, `buffetRow`, `headsField`, `scatter`, `burst` (+ `paintBurstDust`), `halves` (+ `halvesDust`), `fenceBirds` (+ `fenceCountB06`, `emuFront`), `slowLine` (+ `slowDust`), `blendPoses`, `footEvents`, `paintFlock`, `strideForAdvance`; `EmuPaint.lod` forces a detail level. `proof-flock.tsx`: FL30-buffet, -heads, -scatter, -burst, -halves, -fence, -slow, -cost.

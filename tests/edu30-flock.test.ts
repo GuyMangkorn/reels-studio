@@ -3,10 +3,10 @@ import assert from 'node:assert/strict';
 import {emuPads, gaitAdvance, type EmuPose} from '../src/painted/edu30/emu';
 import {
   buffetRow, burst, burstGroups, burstHeroGroup, emu1State, emuFront, fenceBirds, fenceCountB06, FENCE_Z, halves, HALVES_HERO, headsField, HEADS_CAM, HEADS_CREW, HEADS_HERO,
-  paddockExtras, scatter, scatterHero, slowLine, strideForAdvance, SLOW_HERO, type EmuMember,
+  paddockExtras, scatter, scatterHero, slowLine, strideForAdvance, SLOW_HERO, SLOW_PERIOD, SLOW_V, SLOW_STOP, HALF_SPEED, BURST_O, BURST_DISC, burstCentre, BURST_HEADINGS, SC_TARGET, type EmuMember,
 } from '../src/painted/edu30/flock';
 
-// EDU-EP30-SHORT ticket T08 r4: flock motion in the paddock. Positions, headings, pose values and keys only; no stroke or pixel hash of a painted emu (T37 re-takes the neck ring).
+// EDU-EP30-SHORT ticket T08 r5 (r4 + rows H1-H3, B1-B4, S1-S3): flock motion in the paddock. Positions, headings, pose values and keys only; no stroke or pixel hash of a painted emu (T37 re-takes the neck ring).
 const log = (...a: unknown[]) => console.log('T08', ...a);
 const world = (m: EmuMember, pad: [number, number, number]) => [m.at[0] + Math.cos(m.heading) * pad[0] * m.scale + Math.sin(m.heading) * pad[2] * m.scale, m.at[2] + Math.sin(m.heading) * pad[0] * m.scale - Math.cos(m.heading) * pad[2] * m.scale] as [number, number];
 const slip = (frames: EmuMember[], foot: 0 | 1) => {
@@ -92,26 +92,78 @@ test('scatter: pure frames, a startle order, clumps apart, nobody down', () => {
   assert.ok(scatter(9).every((m) => m.pose.head && m.pose.head[1] > 1.6), 'all startled (head up) by 9');
 });
 
-test('burst: continues scatter(71), six groups, hero group of 11 toward (12, 0, -32), speed 6-8 m/s', () => {
-  const b0 = burst(0), s71 = scatter(71);
-  b0.forEach((m, i) => assert.ok(Math.hypot(m.at[0] - s71[i].at[0], m.at[2] - s71[i].at[2]) < 1e-9));
+test('burst (B1-B4): six tight groups from L 0, group 0 toward (12, 0, -32), speed 6-8 m/s, centroids >= 8 m apart, only the 40', async () => {
+  const {camLine} = await import('../src/painted/edu30/shot');
+  const {camPoint} = await import('../src/painted/edu30/../kit/ycam');
+  const b0 = burst(0), gr = burstGroups(), cen = (ms: EmuMember[], k: number) => { const q = ms.filter((_, i) => gr[i] === k); return [q.reduce((s, m) => s + m.at[0], 0) / q.length, q.reduce((s, m) => s + m.at[2], 0) / q.length]; };
+  const wrap = (a: number) => Math.atan2(Math.sin(a), Math.cos(a));
+  assert.equal(b0.length, 40);
+  log('burst painted emu members', b0.length);
+  assert.deepEqual([0, 1, 2, 3, 4, 5].map((k) => gr.filter((g) => g === k).length), [11, 6, 6, 6, 6, 5]);
   assert.equal(burstHeroGroup().length, 11);
-  assert.ok(burstHeroGroup().includes(scatterHero()));
-  assert.equal(new Set(burstGroups()).size <= 6, true);
+  assert.ok(burstHeroGroup().includes(scatterHero()) && b0[scatterHero()].hero && b0[scatterHero()].seed === 36000);
+  let maxR = 0, minSp = 9;
+  b0.forEach((m, i) => { const c = burstCentre(gr[i]); maxR = Math.max(maxR, Math.hypot(m.at[0] - c[0], m.at[2] - c[2])); b0.forEach((q, j) => { if (j > i && gr[i] === gr[j]) minSp = Math.min(minSp, Math.hypot(m.at[0] - q.at[0], m.at[2] - q.at[2])); }); });
+  log('burst L0 max member-to-centre m', maxR.toFixed(2), 'min in-group spacing m', minSp.toFixed(2));
+  assert.ok(maxR <= BURST_DISC + 1e-9 && minSp >= 0.7 - 1e-9);
+  const dirToMark = Math.atan2(SC_TARGET[2] - BURST_O[2], SC_TARGET[0] - BURST_O[0]), c0 = burstCentre(0), dirFromCentre = Math.atan2(SC_TARGET[2] - c0[2], SC_TARGET[0] - c0[0]);
+  log('burst group 0 heading rad', BURST_HEADINGS[0].toFixed(4), 'direction to mark', dirToMark.toFixed(4), 'from its centre', dirFromCentre.toFixed(4));
+  assert.ok(Math.abs(BURST_HEADINGS[0] - dirToMark) <= 0.01 && Math.abs(BURST_HEADINGS[0] - dirFromCentre) <= 0.01);
+  [1, 2, 3, 4, 5].forEach((k) => assert.ok(Math.abs(wrap(BURST_HEADINGS[k] - BURST_HEADINGS[0] - (k * Math.PI) / 3)) < 1e-9));
+  b0.forEach((m, i) => assert.ok(Math.abs(wrap(m.heading - BURST_HEADINGS[gr[i]])) <= (8 * Math.PI) / 180 + 1e-9));
+  const cc = camPoint(camLine({eye: [0, 18, 10], yaw: 0, pitch: -48, f: 800, hy: 860}), [b0.reduce((t, m) => t + m.at[0], 0) / 40, 0, b0.reduce((t, m) => t + m.at[2], 0) / 40]) as [number, number];
+  log('burst L0 flock centroid on screen', cc.map(Math.round).join(','));
+  assert.ok(Math.abs(cc[0] - 540) <= 60 && Math.abs(cc[1] - 400) <= 60);
   const a = burst(10), z = burst(20);
   a.forEach((m, i) => { const v = Math.hypot(z[i].at[0] - m.at[0], z[i].at[2] - m.at[2]) / (10 / 30); assert.ok(v >= 6 - 1e-6 && v <= 8 + 1e-6, `speed ${v}`); });
-  const h = burst(45), hi = scatterHero();
-  log('burst hero L45', h[hi].at.map((n) => +n.toFixed(1)).join(','), 'hero group mean heading deg', (burstHeroGroup().reduce((s, i) => s + (Math.atan2(HALVES_HERO[2] - burst(0)[i].at[2], HALVES_HERO[0] - burst(0)[i].at[0]) * 180) / Math.PI, 0) / 11).toFixed(0));
+  for (const L of [0, 20, 45]) {
+    const c = [0, 1, 2, 3, 4, 5].map((k) => cen(burst(L), k));
+    let mn = 99; for (let i = 0; i < 6; i++) for (let j = i + 1; j < 6; j++) mn = Math.min(mn, Math.hypot(c[i][0] - c[j][0], c[i][1] - c[j][1]));
+    log(`burst L${L} min pairwise group-centroid distance m`, mn.toFixed(2));
+    if (L > 0) assert.ok(mn >= 8 - 1e-9);
+  }
 });
 
-test('halves: 10 birds, two halves leave one at a time and never run through the hero', () => {
+test('halves (H1-H3): 12 m/s over 3 f, slip <= 0.02 m, each half leaves its screen edge in turn, never through the hero', async () => {
+  const {camLine} = await import('../src/painted/edu30/shot');
+  const {camPoint} = await import('../src/painted/edu30/../kit/ycam');
   const x = (L: number, side: 'l' | 'r') => halves(L).slice(side === 'l' ? 0 : 5, side === 'l' ? 5 : 10).map((m) => m.at[0]);
   assert.ok(halves(0).every((m) => Math.abs(m.heading - Math.PI / 2) < 1e-9 && m.at[2] < -33 + 0.4 && m.at[2] > -35.4));
   assert.ok(halves(0).slice(0, 5).every((m) => m.at[0] >= 10.4 - 1e-9 && m.at[0] <= 11.9 + 1e-9) && halves(0).slice(5).every((m) => m.at[0] >= 12.1 - 1e-9 && m.at[0] <= 13.6 + 1e-9));
   for (let L = 0; L <= 60; L++) halves(L).forEach((m) => assert.ok(Math.hypot(m.at[0] - HALVES_HERO[0], m.at[2] - HALVES_HERO[2]) > 0.8, `clear of hero at ${L}`));
   assert.ok(x(6, 'l').every((v, i) => Math.abs(v - halves(0)[i].at[0]) < 1e-9), 'left half stands to L 6');
   assert.ok(x(22, 'r').every((v, i) => Math.abs(v - halves(0)[5 + i].at[0]) < 1e-9), 'right half stands to L 22');
-  log('halves L22 left x max', Math.max(...x(22, 'l')).toFixed(2), 'L38 right x min', Math.min(...x(38, 'r')).toFixed(2));
+  // H1: speed 12.0 at start + 3 f (per bird)
+  const sp = (i: number, L: number) => { const a = halves(L - 1)[i], b = halves(L)[i]; return Math.hypot(b.at[0] - a.at[0], b.at[2] - a.at[2]) * 30; };
+  let vmax = 0;
+  for (let L = 1; L <= 60; L++) for (let i = 0; i < 10; i++) vmax = Math.max(vmax, sp(i, L));
+  log('halves max speed m/s', vmax.toFixed(3));
+  assert.ok(Math.abs(vmax - HALF_SPEED) < 1e-6);
+  const starts: number[] = [];
+  for (let i = 0; i < 10; i++) { let L0 = 0; while (sp(i, ++L0) < 1e-9); starts.push(L0); assert.ok(sp(i, L0) < sp(i, L0 + 1) && sp(i, L0 + 1) < sp(i, L0 + 2) && sp(i, L0 + 2) < sp(i, L0 + 3) && Math.abs(sp(i, L0 + 3) - HALF_SPEED) < 1e-6, `bird ${i} ramp 2, 6, 10, 12 m/s`); }
+  log('halves first moving frame per bird', starts.join(' '));
+  let worst = 0;
+  for (let i = 0; i < 10; i++) { const fr = Array.from({length: 40}, (_, k) => halves(starts[i] + 3 + k)[i]); worst = Math.max(worst, slip(fr, 0), slip(fr, 1)); }
+  log('halves stance slip m', worst.toFixed(4));
+  assert.ok(worst <= 0.02);
+  // H2: screen exit at the B03-SH03 camera of each frame
+  const ei = (t: number) => { const q = Math.max(0, Math.min(1, t)); return q * q * (3 - 2 * q); };
+  const cam = (L: number) => { const u = ei(L / 40); return camLine({eye: [12.0, 1.1, -29.0 - 0.3 * u], yaw: -2 * u, pitch: 0, f: 900, hy: 860}); };
+  const bbox = (m: EmuMember, L: number) => {
+    const ux = Math.cos(m.heading), uz = Math.sin(m.heading), pts: [number, number, number][] = [];
+    for (const a of [-0.55, 0.55]) for (const l of [-0.25, 0.25]) for (const y of [0, 1.8 * m.scale]) pts.push([m.at[0] + ux * a * m.scale - uz * l, y, m.at[2] + uz * a * m.scale + ux * l]);
+    const q = pts.map((v) => camPoint(cam(L), v)).filter(Boolean) as [number, number][];
+    return [Math.min(...q.map((v) => v[0])), Math.max(...q.map((v) => v[0]))];
+  };
+  const exits: number[] = [];
+  for (let i = 0; i < 10; i++) {
+    const left = i < 5; let ex = -1;
+    for (let L = 60; L >= 0; L--) { const b = bbox(halves(L)[i], L); if (left ? b[1] < 0 : b[0] > 1080) ex = L; else break; }
+    exits.push(ex);
+  }
+  log('halves screen exit frame per bird (left 0-4, right 5-9)', exits.join(' '), 'max left', Math.max(...exits.slice(0, 5)), 'max right', Math.max(...exits.slice(5)));
+  assert.ok(exits.slice(0, 5).every((e) => e >= 0 && e <= 24) && exits.slice(5).every((e) => e >= 0 && e <= 40));
+  for (let L = 25; L <= 60; L++) halves(L).slice(0, 5).forEach((m) => assert.ok(bbox(m, L)[1] < 0, `left half off screen at ${L}`));
 });
 
 test('fenceBirds: every body front stays behind the wire; nine by B06-SH03 local 90', () => {
@@ -125,17 +177,57 @@ test('fenceBirds: every body front stays behind the wire; nine by B06-SH03 local
   assert.ok(!t2[0].pose.headYaw && t[0].pose.headYaw !== undefined);
 });
 
-test('slowLine: hero contacts L 12, 54, 96, both feet down at L 109, five abreast', () => {
+test('slowLine (S1-S3): 84 f cycle, hero contacts L 12, 54, 96 on alternating feet, frozen with both feet down L 100-109', () => {
   const pads = (L: number) => emuPads(slowLine(L)[SLOW_HERO].pose);
   const down = (L: number, foot: 0 | 1) => pads(L)[foot][1] < 1e-9;
-  assert.ok(!down(11, 0) && down(12, 0) && !down(53, 0) && down(54, 0) && !down(95, 0) && down(96, 0));
-  for (const L of [109, 110, 120]) assert.ok(down(L, 0) && down(L, 1), `both down at ${L}`);
+  assert.equal(SLOW_PERIOD, 84);
+  assert.ok(!down(11, 0) && down(12, 0) && !down(53, 1) && down(54, 1) && !down(95, 0) && down(96, 0), 'contacts 12 (L foot), 54 (R foot), 96 (L foot)');
+  for (const L of [100, 105, 109, 110, 120]) assert.ok(down(L, 0) && down(L, 1), `both down at ${L}`);
+  const p100 = slowLine(100)[SLOW_HERO];
+  for (const L of [101, 105, 109, 120]) { const m = slowLine(L)[SLOW_HERO]; assert.deepEqual(m.at, p100.at); assert.deepEqual(m.pose, p100.pose); }
+  log('slowLine hero z at L 100/109', p100.at[2].toFixed(4), slowLine(109)[SLOW_HERO].at[2].toFixed(4));
+  assert.ok(Math.abs(p100.at[2] + 3.8667) < 1e-3 && SLOW_STOP === 100);
+  const adv = gaitAdvance(slowLine(0)[0].pose.stride as number);
+  log('slowLine advance per cycle m', adv.toFixed(4), 'stride', (slowLine(0)[0].pose.stride as number).toFixed(4));
+  assert.ok(Math.abs(adv - (SLOW_V * 84) / 30) < 1e-9 && Math.abs(adv - 0.616) < 1e-9);
   assert.equal(slowLine(0).length, 5);
   assert.deepEqual(slowLine(0).map((m) => m.at[0]), [-4.6, -3.0, -1.4, 0.6, 2.2]);
   assert.ok(Math.abs(slowLine(0)[0].at[2] + 4.6) < 1e-9 && Math.abs(slowLine(109)[0].at[2] + 3.8) < 2e-3);
-  const s = slip(Array.from({length: 30}, (_, k) => slowLine(12 + k)[SLOW_HERO]), 0);
+  const fr = Array.from({length: 89}, (_, k) => slowLine(12 + k)[SLOW_HERO]);
+  const s = Math.max(slip(fr, 0), slip(fr, 1));
   log('slowLine hero stance slip m', s.toFixed(4));
   assert.ok(s <= 0.02);
+});
+
+test('crowd quantisation: max stance slip on screen <= 1.5 px (scatter at the B03-SH01 camera L 40-60, burst at the B03-SH02 camera L 0-30)', async () => {
+  const {camLine} = await import('../src/painted/edu30/shot');
+  const {camPoint} = await import('../src/painted/edu30/../kit/ycam');
+  const scCam = camLine({eye: [0.4, 1.0, 1.65], yaw: -3, pitch: 0, f: 900, hy: 860});
+  const buCam = (L: number) => camLine({eye: [0, 18 + 2 * (L / 45), 10], yaw: 0, pitch: -48, f: 800, hy: 860});
+  // `settled`: only frames 7 f after the bird starts to move (the bolt's 4 f turn, 3 f blend and 6 f speed ramp are transients, logged apart: a foot cannot stay put while the body pivots, or is carried off, under it)
+  const measure = (fn: (L: number) => EmuMember[], cam: (L: number) => ReturnType<typeof camLine>, a: number, b: number, settled: boolean) => {
+    const fr = Array.from({length: b - a + 3}, (_, k) => fn(a - 2 + k));
+    let worst = 0;
+    for (let i = 0; i < fr[0].length; i++) {
+      let start = 2; if (settled) { while (start < fr.length && Math.hypot(fr[start][i].at[0] - fr[start - 1][i].at[0], fr[start][i].at[2] - fr[start - 1][i].at[2]) < 1e-9) start++; start += 7; }
+      for (const foot of [0, 1] as (0 | 1)[]) {
+        let run: [number, number][] = [];
+        for (let k = start; k < fr.length; k++) {
+          const m = fr[k][i], pad = emuPads(m.pose)[foot];
+          if (pad[1] < 1e-9) run.push(world(m, pad)); else run = [];
+          if (run.length > 1) {
+            const c = cam(a - 2 + k), P = (w: [number, number]) => camPoint(c, [w[0], 0, w[1]]);
+            const q0 = P(run[0]), q1 = P(run[run.length - 1]);
+            if (q0 && q1) worst = Math.max(worst, Math.hypot(q1[0] - q0[0], q1[1] - q0[1]));
+          }
+        }
+      }
+    }
+    return worst;
+  };
+  const ws = measure(scatter, () => scCam, 40, 60, true), wb = measure(burst, buCam, 0, 30, false);
+  log('crowd stance slip px (scatter: frames 7 f after the bolt starts): scatter L40-60', ws.toFixed(2), 'burst L0-30', wb.toFixed(2), '| scatter incl. the bolt pivot and ramp:', measure(scatter, () => scCam, 40, 60, false).toFixed(2));
+  assert.ok(ws <= 1.5 && wb <= 1.5);
 });
 
 test('frame L alone equals frame L after 0..L (every helper)', () => {
@@ -153,7 +245,7 @@ test('no pose lays a bird down: pitch, bob and height stay upright in every help
   }
 });
 
-test('headsField at the end camera: no head or neck overlaps the crew bounding box (px); burst frame-exit measure', async () => {
+test('headsField at the end camera: no head or neck overlaps the crew bounding box (px)', async () => {
   const {camLine} = await import('../src/painted/edu30/shot');
   const {camPoint} = await import('../src/painted/edu30/../kit/ycam');
   const cam = camLine({eye: [2.4, 3.2, -12.2], yaw: 190, pitch: -16, f: 950, hy: 860});
@@ -168,7 +260,4 @@ test('headsField at the end camera: no head or neck overlaps the crew bounding b
   });
   log('heads crew bbox px', crew.map((n) => Math.round(n)).join(','), 'overlap px2', Math.round(overlap));
   assert.equal(overlap, 0);
-  const bc = camLine({eye: [0, 20, 10], yaw: 0, pitch: -48, f: 800, hy: 860});
-  const inFrame = burst(45).filter((m) => { const q = camPoint(bc, [m.at[0], 0.6, m.at[2]]); return q && q[0] > -50 && q[0] < 1130 && q[1] > -50 && q[1] < 1970; }).length;
-  log('burst L45 birds still in frame', inFrame, 'of 40');
 });
