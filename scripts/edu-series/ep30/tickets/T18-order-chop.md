@@ -45,7 +45,7 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 
 ## Result (Boss fills)
 Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
-Commit (this branch, see index) · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question; **two values could not be followed exactly (below), Film to rule at the look check**.
+Commit 125da8f · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question; **two values could not be followed exactly (below), Film to rule at the look check**.
 - Proof: store `projects/edu/EDU/previews/T18-sheet-chop.png` (L 0, 4, 5, 6, 7, 12), `T18-hands-L0-L7.png` (540 px frames L 0 and L 7), frames `T18-chop-NN.png` (`C30-chop` in `proof-cast.tsx`: paddock, newsreel off, camera eye (-2.0, 0.75, -1.2) yaw 148 to (-1.95, 0.75, -1.05) yaw 150, pitch 10, f 1000, hy 860, ease-in-out over L 0-20).
 - Code: `cast.ts` adds pose `chop` (`solveCrewPose`; `chopU`, `chopTalk`, `CHOP_*` keys, a thumb nub on the open mitten) and R9-1 `CrewSolveOpts.loaderLean`; `proof-cast.tsx` adds `C30-chop`, `CHOP`, `chopCam`; tests in `tests/edu30-cast.test.ts` (19 pass; the T11/T36/T12/T17 stroke-hash tests are unchanged).
 - Measured: L 0 mitten centre (434, 620) vs guide (470, 591): within 36 / 29 px; L 7 mitten (254, 718) vs guide (250, 712): within 4 / 6 px; arm ratio max 1.000 over L 0-20 (<= 1.05); wrist reach max 0.518 m (<= 0.52); elbow flexion 34.5 deg at L 0 to 10.1 deg at L 7 (near straight, `ikElbow` keeps a hair of bend); chop ease-in (`t^2`: u 0.11, 0.44, 1 at L 5, 6, 7); lean 0 to -0.04 rad (screen left, toward the point) with the chop; left arm P01 hang; mouth open 0.3 / 0.8 / 0.5 / 0.2 / 0 per the table; gaze screen left (-0.8, -0.1).
