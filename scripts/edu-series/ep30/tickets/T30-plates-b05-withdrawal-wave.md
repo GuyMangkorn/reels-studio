@@ -1,5 +1,5 @@
 # T30 — the shared retreat vantage, plate B05-SH03 (withdrawal one) and plate B05-SH04 (EMU-HERO waves the truck off, "ไว้มาใหม่นะ!") are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built (Boss 2026-11-20, awaiting Film look check) · was: ready, dispatchable (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (wing wave, talking beak)
 Blocked by: T03, T07, T08, T09, T14, T15 · Consumers: B05-SH03, B05-SH04 (global 1294–1433); T32 (vantage helper)
 Model: sonnet, medium
@@ -53,4 +53,24 @@ These override any older value in this ticket that they name.
 | SH04 L 45 | wing folded, head still toward the truck; birds behind the wire | no body pixel in front of the wire layer |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T30 commit) · fix passes used: 0 · Sonnet medium, 20 Nov 2026 · proof: store `projects/edu/EDU/previews/T30-sheet.png` (11 frames, 270 px), `T30-zoom.png` (SH03 L 0, SH04 L 10, L 45 at 540 px), per-frame `T30-s03_L<L>.png`, `T30-s04_L<L>.png`, clean `T30-clean-c03_L69.png`, `T30-clean-c04_L14.png` (local `out/edu30-T30/`, logs `out/logs/T30-*.log`). `npx tsc`: 8 error lines, none in the three files (environment `three` / `hippo`).
+
+**Built** (`vantage.ts` new, `B05-SH03.tsx`, `B05-SH04.tsx`): `VANTAGE_CAM(shot, L)` for the three shots (values as the table, smoothstep over the shot), `paintVantageSet` (T09 `paintPaddockScene` from inside, `cast` hook), `fenceLine(count, o)` (T08 `fenceBirds`). SH03: light 1, eaten 0.7, stubble 0.4, cool tint (tintMix 1); truck T14 drive with silhouettes, G2 pedestal at rest, far and near dust; five birds back view, heads follow the truck x 0.3 (T08 `truck` option). SH04: T09 camera and set with `wire {2.5, '#3e3226'}`, birds in `cast` (fence after them), hero `emuWingWave(L)`, F2-F4 `stand({headYaw: 0.5})`, no truck.
+
+**Measured against the Proof table** (`measure-shots.ts`, px)
+
+| Row | Number | Pass range | Result |
+| --- | --- | --- | --- |
+| SH03 L 0 EMU-HERO | 523 (top 775, bottom 1299); L 93 543; x 694 -> 605 | 529 +- 30 | pass |
+| SH03 L 0 truck | centre x 1019 (ground y 1040), tray mid (1101, 900), cab roof (757, 746) | (1019, 898) +- 40 | pass (x exact, body y 900) |
+| SH03 L 69 title | viewed `T30-s03_L93.png`: title box y about 292-464 at 1920 px; at L 69 the adapter title is not yet drawn (it appears by L 93); truck out of frame left (x -1032) | y 300-475 | about pass (box top about 8 px above, estimated off a 270 px tile); L 69 itself shows no title: Editor / T02 adapter timing, not this ticket |
+| SH04 L 10 EMU-HERO | 779 tall (top 634 at the wing, bottom 1413); head top 694 at L 0 (712 tall at L 0) | 617-670 | **fail, 60-110 px taller** |
+| SH04 L 10 wing tip | (663, 674); at L 6 / 14 (871, 786) / (869, 785) | x 740-880, y 620-760 | **fail at L 10: x 663 is 77 px left of range** (the -20 degree swing key); y 674 inside; L 6 and 14 x inside but y 786 is 26 px below |
+| SH04 L 45 | wing folded (tip (588, 1075)); no body pixel in front of the wire (fence paints after the birds; viewed `T30-s04_L45.png`) | no body pixel in front of the wire | pass |
+| SH04 wing and head above the wire and y 1100 (L 6-42) | tip y 674-786, head y 744, top wire y about 1033 | above | pass |
+| Caption zone (TF46 thresholds, band 1150:1344, mean <= 0.80, p95 <= 0.99; the ticket's R9 line was empty, T23's TF46 line used) | SH03 L 69 0.501 / 0.721, SH04 L 14 0.510 / 0.649 | pass | pass |
+
+**Deviations and values I could not follow**
+1. **Render budget (LOD).** Five near-LOD fence birds paint about 270 000 brush ops each (1.37 M for the plate, against 0.3-0.47 M for the other EMU plates); the still then times out at the 180 s `stills.mjs` limit on this machine (two attempts, SH03 L 0 and SH04 L 0). The hero stays `lod: 'near'`; the four other birds paint `lod: 'far'` (8 k ops, no feather texture, same shape). They read flatter and darker than the hero in the 540 px zoom. If Film wants near detail on all five, the plate needs a cheaper near build (T08/T06) or a longer still timeout.
+2. **SH04 EMU-HERO height and wing-tip x** are outside the Film ranges above while the sheet acceptance ("EMU-HERO >= 480 px", wing above the wire and above y 1100) holds. The hero is at the decided (-0.5, 0, 5.3) with the decided camera, so the 617-670 and x 740-880 numbers come from the projection-tool estimate, not the built emu (about 1.95 m to the tuft). Not redesigned.
+3. SH04 hero's head reads mostly toward the lens with a slight turn right (T15 `headYaw` 0.61 as built); the wing renders as a few thin feather strokes (T15 as built, R9 accepted).
