@@ -1,5 +1,5 @@
 # T29 — plates B05-SH01 (chase locked to the truck) and B05-SH02 (the barrel bounces at the sky) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built (Film look check pending) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (rider arms on a bouncing body, running emus)
 Blocked by: T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 · Consumers: B05-SH01, B05-SH02 (global 1150–1293)
 Model: sonnet, medium
@@ -46,4 +46,26 @@ These override any older value in this ticket that they name.
 | SH02 L 72 | single flash at the muzzle, pointed at the sky, no strike | one flash core; GUNNER-1 565 ± 30 px |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T29 commit) · fix passes used: 0 · Sonnet medium, 20 Nov 2026 · proof: store `projects/edu/EDU/previews/T29-sheet.png` (12 frames, 270 px), `T29-zoom.png` (SH01 L 0 and 30, SH02 L 72 at 540 px) and per-frame `T29-s1_<L>.png`, `T29-s2_<L>.png` (local `out/edu30-T29/`, logs `out/logs/T29-*.log`). `npx tsc`: 22 error lines, none in the two shot files (environment `three` / `hippo`).
+
+**Built** (`B05-SH01.tsx`, `B05-SH02.tsx`; no other file): space P, light 0, eaten 0.6, stubble 0 through `paintPaddockScene`; truck rig through `paintTruckRig` with `riders 'chase'`, `gear 'pedestal'` and `truckState` / `truckDustFor` / `paintTruckDust`. SH01: the world (set, dust, emus) paints through `truckSetCam` (body-tilted), the rig through the level truck camera, so riders never move; 14 runners (seed 36400) at T x 6 to about 16, z -0.6 to -2.6, 5.5-6.5 m/s, phase `gaitPhase(f, v, run stride)`, `paintPuffs` + `footEvents` per footfall, wings 0.15 flap mix as T08's burst. SH02: level `truckCam` that eases 0.3 m back over L 60-83, rig pitched by `truckState`, two single flashes `paintMuzzleFlash` (T04 `B05_SH02`: rounds 72 / 79, halo 160) along `lewisAnchors().dir`, no smoke, no strike; 6 runners (seed 36450) at 5.5 m/s. Title "แผน 3" comes from the adapter (T02). Faces: kit `neutral`; the T14 rig paints the T11 mitten fists (T36 `flatFist` is not wired into `paintTruckRig`, see below).
+
+**Measured against the Proof table** (`measure-shots.ts`, px)
+
+| Row | Number | Pass range | Result |
+| --- | --- | --- | --- |
+| SH01 L 0 / 15 GUNNER-1 height | 444 / 444 | 497 ± 25 | **fail** (28 px short) |
+| SH01 rider drift | head x 198 at L 0, 15, 30, 45, 59: 0 px | <= 1 px | pass |
+| SH01 L 59 GUNNER-1 | 444 | probe lead (no range) | measured |
+| SH02 L 8 -> 11 muzzle | y 894 -> 738: 156 px higher | 120-260 | pass |
+| SH02 L 72 flash | one white core + halation at the muzzle, pointed at the sky, no strike (viewed `T29-s2_72.png`); L 79 one star flash | one core | pass |
+| SH02 L 72 GUNNER-1 | 460 (L 0 and 8: 495; L 79: 438) | 565 ± 30 | **fail** |
+| SH01 L 0 caption zone (clean frame) | mean 0.425, p95 0.802, `pass: false` at the script defaults | no range in the ticket | measured |
+
+**Values I could not follow (return to Film)**
+- **GUNNER-1 heights.** The camera and seat position match the sheet, but the T11 seated figure is 1.12 m top to bottom, not 1.25 m (T14 Q2). SH01 gives 444 px vs 497 ± 25, SH02 495 at L 0 / 460 at the L 72 shot (the figure is foreshortened by the pitch there) vs 565 ± 30. The cast is not scaled and the position is fixed by the ticket; a change belongs in T11 or the rows. T14 r4 already settled the same figure at >= 430.
+- **SH02 emus.** The ticket puts all 6 at T (6, 0, -6) at L 0, which projects beyond the right edge (x 1326, as the sheet says) and they only pull away, so none could "cross the right third" into frame. I made the leader the T (6, 0, -6) bird and put the others 0.9-3.8 m behind it (T x 2.2-5.1, z -6 +/- 0.7): they start inside the right third and none remain at L 72 (viewed). Flip back if Film wants all six outside the frame at L 0.
+- **SH01 nearest emu.** The sheet's nearest emu (742, 850) falls behind the cab (roof from x 625); only the far runners show right of the cab, as in the sheet geometry.
+- **Caption zone.** The SH01 L 0 frame fails the default caption-zone numbers (mean 0.425): the truck cab and dark road fill the band. No pass range in the ticket; Film to judge.
+- **Thumb.** No thumb drawn (T11 mitten). T36 `flatFist` on the near right fist (r4 note) needs a `paintTruckRig` hook in `props.ts` (T14's file, outside this ticket's Files): ask Film for a one-line T14 change if the thumb must show in the chase.
+
