@@ -13,3 +13,10 @@
 - **T37 changed shared creatures visibly:** AS-HIPPO-R1 feet and lower legs are now closed rounded tubes (user kept it, 2026-11-20); LF03's top-left supporter limb lost its kink. A later EP18 re-edit renders with the new feet.
 - **Render cost of near-detail emus:** 36 near birds (heads field) > 180 s per still; 9 near fence birds 191 s; one 60-bird scatter frame (40 rig + 20 far) about 13.9 s per `stills.mjs` run. Plates cap near detail (T22, T32 r7 notes). Proposed TL item: a `--scale` option for `scripts/stills.mjs` so half-size cost can be measured (T08 could not).
 - **Kit intake items (W8.4):** an open mitten with a thumb for the unshaped kit (T12 note 1); arms behind the back in the kit back view, `kit/back.ts` (T12 note 4, now repainted in `edu30/cast.ts`).
+
+## T33 (Boss, 2026-11-20)
+- **Scroll word is not in the plate:** `AUSTRALIA` on the scroll is the DOM overlay `ReliefWord` in `look.tsx`; the plate stack has no hook for it, so B07-SH01/SH02 scrolls are blank. Editor or a later ticket needs a scene-level overlay if the word is wanted in the cut (AV01-AV03 say nothing else is overlaid).
+- **Paving under the bed:** B07-SH01 adds `wFill(41790, '#bfae8c')` in front of the wattle bed; without it the crane's first frames showed bare paper below the wall foot.
+- **SH02 reel:** `DEFAULT_REEL` has strength 1; plates outside the old filter must return `strength: 0` explicitly.
+- **Caption zone:** sunlit sandstone gives caption-zone mean 0.6-0.7 (limit 0.25) in both shots; LF03 is the same locked wall.
+- **Render cost under load:** a single SH01 L 100 still took 183 s at load average 15-45 and hit the harness timeout; run stills lists in the background and count only `s*.png` when waiting.

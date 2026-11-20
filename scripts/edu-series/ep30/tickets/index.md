@@ -43,7 +43,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T30](T30-plates-b05-withdrawal-wave.md) retreat vantage + plates B05-SH03, SH04 | set | yes | T03, T07, T08, T09, T14, T15 | ready (r4 notes: wire contrast between birds) | 0 | — |
 | [T31](T31-plates-b06-tanks-bow.md) plates B06-SH01, SH02 (L15 mime) | set | yes | T03, T06, T07, T08, T09, T12 | ready, **dispatchable** (r2 notes: slow-walk read at plate size) | 0 | — |
 | [T32](T32-plates-b06-timelapse-withdrawal.md) plates B06-SH03, SH04 | set | yes | T30, T01, T03, T08, T09, T14, T15 | ready (r7 notes: fence-bird LOD) | 0 | — |
-| [T33](T33-plates-b07-arms.md) plates B07-SH01, SH02 | set | yes | T01, T03, T07 | ready, **dispatchable** | 0 | — |
+| [T33](T33-plates-b07-arms.md) plates B07-SH01, SH02 | set | yes | T01, T03, T07 | built 2026-11-20 (awaiting Film look check; emu 785 px vs row 630-705, caption-zone mean 0.6-0.7) | 0 | this commit |
 
 37 tickets: 22 asset/capability (T01–T18, T34–T37), 15 plate tickets covering all 28 shots once. `needs-input`: none. Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15, with T37 (`survival/beast.ts`, hash re-takes in `tests/edu30-emu.test.ts`) before T07 r6; `flock.ts`/`proof-flock.tsx` T35 → T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T36 → T12 → T17 → T18 (T36 also `kit/cast.ts`, `kit/back.ts`); `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; `dam.ts` T10 alone; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32).
 
