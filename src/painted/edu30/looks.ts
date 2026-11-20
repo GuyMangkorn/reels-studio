@@ -8,7 +8,7 @@ import {paintEmu, flockIn, paintFarFlock, type EmuMember} from './flock';
 import {EMU_POSES, type EmuPose, blinkLid, emuFootTap, emuHop, emuLensYaw, emuWatchCheck, emuWingFlick, emuWingWave, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
 import {CLEARING, setNoClearing, paintKpPatch, paintWheatRidges, paintCamp, paintClearing, paintFarmhouse, paintFence, paintGum, paintNearStalks, paintPadGround, paintPadSky, paintScrub, paintWheatTexture, SUN, type PadLight} from './paddock';
 import {withSquash} from '../kit/figure-at';
-import {buildLewisGun, paintGear, paintTruck, placeBuild} from './props';
+import {buildLewisGun, paintGear, paintLewisPanTicks, paintTruck, placeBuild} from './props';
 import type {NewsreelTint} from './newsreel';
 import {DAM, paintDam, southBankY} from './dam';
 import {paintArms, paintArmsSky, paintSandstoneWall, paintWattleBed} from './arms';
@@ -135,23 +135,25 @@ export const LF02_MARKS = {mer: onBank(-1.25, -4.95), g2: onBank(-3.6, -4.95), g
 const armRel = (sh: Pt, u: number, via: Pt, to: Pt, d = 1) => ({via: [sh[0] + d * via[0] * u, sh[1] - via[1] * u] as Pt, to: [sh[0] + d * to[0] * u, sh[1] - to[1] * u] as Pt});
 /** The LF02 crew, far to near. `mirror`: paint their reflections in the water instead (flipped about the waterline under each mark, toned
  *  toward the water, no lead measure). */
-export const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false) => {
+export const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false, L?: number) => {
   const sun = SUN.morning, m = LF02_MARKS, view = 'right' as const;
   const sh = (def: CastDef, at: V3, body: Record<string, number>, side: 'r' | 'l') => shoulderPoint(def, camPoint(c, at)!, camUnit(c, at), {view, ...body}, side);
   const tint = mirror ? {to: DAM.reflection, u: 0.7} : undefined, rec = (name: string, a: Parameters<typeof lead>[2]) => { if (!mirror) lead(id, name, a); };
   const flip = (at: V3, draw: () => void) => { if (!mirror) { draw(); return; } const w = camPoint(c, [at[0], DAM.water, at[2]]); if (w) withSquash(p, w, -1, draw); };
   // MEREDITH (lead): deep crouch at the water's edge (P35 body), near (right) arm straight out across the water and a little up: "there".
+  // T26 breath idle: chest and shoulders rise 0.006 m on a 75 f sine, seeded phase per man; arm targets keep the unrisen shoulder so hands and heads stay fixed. L absent = the locked LF02 still.
+  const rise = (ph: number) => (L === undefined ? {} : {rise: 0.006 * Math.sin(2 * Math.PI * (L / 75 + ph))});
   const merBody = {squat: 1, bend: 0.3};
   // GUNNER-2: half crouch, taller in silhouette; near (right) hand on the hip, elbow back; far hand shading the eyes (P09 + P30 in profile).
   const g2Body = {squat: 0.45, bend: 0.12};
   const items: {at: V3; f: () => void}[] = [
-    {at: m.gun, f: () => flip(m.gun, () => { placeBuild(p, c, buildLewisGun({elev: 0.02}), m.gun, -Math.PI / 2 + 0.55, {seed: 37300, sun}); })},
+    {at: m.gun, f: () => flip(m.gun, () => { placeBuild(p, c, buildLewisGun({elev: 0.02}), m.gun, -Math.PI / 2 + 0.55, {seed: 37300, sun}); if (L !== undefined) paintLewisPanTicks(p, c, 37310, m.gun, -Math.PI / 2 + 0.55, 0, {elev: 0.02}); })},
     {at: m.g1, f: () => flip(m.g1, () => { const s = sh(GUNNER1, m.g1, {floorSit: 1}, 'r'), u = camUnit(c, m.g1);
-      rec('GUNNER-1', paintCrew(p, c, GUNNER1, m.g1, {view, pose: 'P33', t, tint, seed: 37200, hat: 'slouch', fig: {floorSit: 1, rArm: armRel(s, u, [0.2, -0.2], [0.42, -0.08]), lArm: armRel(s, u, [0.22, -0.22], [0.46, -0.12])}})); })},
+      rec('GUNNER-1', paintCrew(p, c, GUNNER1, m.g1, {view, pose: 'P33', t, tint, seed: 37200, hat: 'slouch', fig: {floorSit: 1, ...rise(0.31), rArm: armRel(s, u, [0.2, -0.2], [0.42, -0.08]), lArm: armRel(s, u, [0.22, -0.22], [0.46, -0.12])}})); })},
     {at: m.g2, f: () => flip(m.g2, () => { const s = sh(GUNNER2, m.g2, g2Body, 'r'), u = camUnit(c, m.g2);
-      rec('GUNNER-2', paintCrew(p, c, GUNNER2, m.g2, {view, t, tint, seed: 37400, hat: 'slouch', fig: {...g2Body, rArm: armRel(s, u, [-0.14, -0.22], [0.03, -0.41]), lArm: armRel(s, u, [0.2, 0.12], [0.12, 0.34])}})); })},
+      rec('GUNNER-2', paintCrew(p, c, GUNNER2, m.g2, {view, t, tint, seed: 37400, hat: 'slouch', fig: {...g2Body, ...rise(0.67), rArm: armRel(s, u, [-0.14, -0.22], [0.03, -0.41]), lArm: armRel(s, u, [0.2, 0.12], [0.12, 0.34])}})); })},
     {at: m.mer, f: () => flip(m.mer, () => { const s = sh(MEREDITH, m.mer, merBody, 'r'), u = camUnit(c, m.mer);
-      rec('MEREDITH', paintCrew(p, c, MEREDITH, m.mer, {view, pose: 'P35', t, tint, seed: 37100, hat: 'slouch', fig: {...merBody, rArm: {...armRel(s, u, [0.28, 0.02], [0.58, 0.1]), finger: true}}})); })},
+      rec('MEREDITH', paintCrew(p, c, MEREDITH, m.mer, {view, pose: 'P35', t, tint, seed: 37100, hat: 'slouch', fig: {...merBody, ...rise(0.05), rArm: {...armRel(s, u, [0.28, 0.02], [0.58, 0.1]), finger: true}}})); })},
   ];
   items.sort((a, b) => Math.hypot(b.at[0] - c.x, b.at[2] - c.z) - Math.hypot(a.at[0] - c.x, a.at[2] - c.z)).forEach((it) => it.f());
 };
