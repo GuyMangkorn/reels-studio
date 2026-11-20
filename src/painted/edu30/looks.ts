@@ -5,10 +5,10 @@ import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Pt} from '../kit/painter';
 import {paintCrew, paintSeatedGunner, GUNNER1, GUNNER2, MEREDITH} from './cast';
 import {paintEmu, flockIn, paintFarFlock, type EmuMember} from './flock';
-import {EMU_POSES} from './emu';
+import {EMU_POSES, type EmuPose, blinkLid, emuFootTap, emuHop, emuLensYaw, emuWatchCheck, emuWingFlick, emuWingWave, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
 import {CLEARING, setNoClearing, paintKpPatch, paintWheatRidges, paintCamp, paintClearing, paintFarmhouse, paintFence, paintGum, paintNearStalks, paintPadGround, paintPadSky, paintScrub, paintWheatTexture, SUN, type PadLight} from './paddock';
 import {withSquash} from '../kit/figure-at';
-import {buildLewisGun, paintGear, paintTruck, placeBuild} from './props';
+import {buildLewisGun, paintGear, paintLewisPanTicks, paintTruck, placeBuild} from './props';
 import type {NewsreelTint} from './newsreel';
 import {DAM, paintDam, southBankY} from './dam';
 import {paintArms, paintArmsSky, paintSandstoneWall, paintWattleBed} from './arms';
@@ -39,8 +39,8 @@ const DEG = Math.PI / 180;
 export const yawTo = (from: V3, to: V3) => Math.atan2(to[0] - from[0], -(to[2] - from[2]));
 
 // ------------------------------------------------------------------ space P set stack
-type PadOpts = {light?: PadLight; eaten?: number; flock?: EmuMember[]; far?: {n: number; x: [number, number]; z: [number, number]}; stalks?: V3[]; truck?: V3 | null; texture?: [number, number]};
-const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
+export type PadOpts = {light?: PadLight; eaten?: number; flock?: EmuMember[]; far?: {n: number; x: [number, number]; z: [number, number]}; stalks?: V3[]; truck?: V3 | null; texture?: [number, number]};
+export const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
   const light = o.light ?? 'morning', sun = SUN[light];
   paintPadSky(p, c, light);
   paintScrub(p, c, 30100, 300);
@@ -63,7 +63,7 @@ const paintPaddock = (p: Painter, c: YCam, o: PadOpts, cast: () => void) => {
 };
 
 /** G1 crew at the gun position (space P, all facing -z), sorted far to near by the caller's camera. */
-const crewAtGun = (p: Painter, c: YCam, id: string, t: number, o: {hero?: EmuMember; extra?: EmuMember[]; gear?: boolean} = {}) => {
+export const crewAtGun = (p: Painter, c: YCam, id: string, t: number, o: {hero?: EmuMember; extra?: EmuMember[]; gear?: boolean} = {}) => {
   type It = {at: V3; f: () => void};
   const sun = SUN.morning;
   const items: It[] = [
@@ -84,7 +84,7 @@ const EYE_LF01: V3 = [-3.2, 0.95, -3.4];
 export const CAM_LF01: YCam = {x: EYE_LF01[0], y: EYE_LF01[1], z: EYE_LF01[2], yaw: 134.5 * DEG, pitch: 6 * DEG, f: 1450, hy: 640};
 /** EMU-HERO beside the gun, facing -x, neck lowered so its head is just in front of the muzzle with its left eye to the bore (birds look
  *  with one eye): the hook's "inspecting the barrel". BOARD-R1 had it at (+0.6, 0, -1.6) screen right; W3 moves it so the lens sees it. */
-const HERO_LF01: EmuMember = {at: [0.75, 0, -0.95], heading: Math.PI, pose: {head: [0.7, 0.68, 0], neckMid: [0.52, 1.02, 0], headDir: [1, -0.08, 0], pitch: -0.06}, scale: 1, seed: 34000, hero: true};
+export const HERO_LF01: EmuMember = {at: [0.75, 0, -0.95], heading: Math.PI, pose: {head: [0.7, 0.68, 0], neckMid: [0.52, 1.02, 0], headDir: [1, -0.08, 0], pitch: -0.06}, scale: 1, seed: 34000, hero: true};
 const lf01 = (amount: number, id: string) => (): LookDef => {
   const c = CAM_LF01, t = 1.2;
   return {shot: 'B01-SH01 frame 0 (L01)', cam: c, t, paper: '#efe6d0', reel: {tint: 'warm', amount}, caption: 'ออสเตรเลียเคยส่งทหาร\nพร้อมปืนกลไปรบกับนกอีมู…', paint: (p) => {
@@ -127,7 +127,7 @@ const tP3 = (): LookDef => {
  *  lens behind the crew (three backs, the water a thin grazing band that read as a road) failed two viewer checks. */
 const EYE_LF02: V3 = [0.5, 0.85, -6.4];
 export const CAM_LF02: YCam = {x: EYE_LF02[0], y: EYE_LF02[1], z: EYE_LF02[2], yaw: -110 * DEG, pitch: 0, f: 950, hy: 810};
-const onBank = (x: number, z: number): V3 => [x, southBankY(z), z];
+export const onBank = (x: number, z: number): V3 => [x, southBankY(z), z];
 /** LF02 crew marks (ground from `southBankY`): all three at the waterline: MEREDITH nearest (the lead), GUNNER-2, GUNNER-1 seated at G1.
  *  West of the queue's path: the queue (B04-SH02) comes in from the east approach along the shore and its head stops at (3.0, 0.6, -5.2). */
 export const LF02_MARKS = {mer: onBank(-1.25, -4.95), g2: onBank(-3.6, -4.95), g1: onBank(-6.2, -4.75), gun: onBank(-5.6, -5.0)};
@@ -135,23 +135,25 @@ export const LF02_MARKS = {mer: onBank(-1.25, -4.95), g2: onBank(-3.6, -4.95), g
 const armRel = (sh: Pt, u: number, via: Pt, to: Pt, d = 1) => ({via: [sh[0] + d * via[0] * u, sh[1] - via[1] * u] as Pt, to: [sh[0] + d * to[0] * u, sh[1] - to[1] * u] as Pt});
 /** The LF02 crew, far to near. `mirror`: paint their reflections in the water instead (flipped about the waterline under each mark, toned
  *  toward the water, no lead measure). */
-const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false) => {
+export const crewAtDam = (p: Painter, c: YCam, id: string, t: number, mirror = false, L?: number) => {
   const sun = SUN.morning, m = LF02_MARKS, view = 'right' as const;
   const sh = (def: CastDef, at: V3, body: Record<string, number>, side: 'r' | 'l') => shoulderPoint(def, camPoint(c, at)!, camUnit(c, at), {view, ...body}, side);
   const tint = mirror ? {to: DAM.reflection, u: 0.7} : undefined, rec = (name: string, a: Parameters<typeof lead>[2]) => { if (!mirror) lead(id, name, a); };
   const flip = (at: V3, draw: () => void) => { if (!mirror) { draw(); return; } const w = camPoint(c, [at[0], DAM.water, at[2]]); if (w) withSquash(p, w, -1, draw); };
   // MEREDITH (lead): deep crouch at the water's edge (P35 body), near (right) arm straight out across the water and a little up: "there".
+  // T26 breath idle: chest and shoulders rise 0.006 m on a 75 f sine, seeded phase per man; arm targets keep the unrisen shoulder so hands and heads stay fixed. L absent = the locked LF02 still.
+  const rise = (ph: number) => (L === undefined ? {} : {rise: 0.006 * Math.sin(2 * Math.PI * (L / 75 + ph))});
   const merBody = {squat: 1, bend: 0.3};
   // GUNNER-2: half crouch, taller in silhouette; near (right) hand on the hip, elbow back; far hand shading the eyes (P09 + P30 in profile).
   const g2Body = {squat: 0.45, bend: 0.12};
   const items: {at: V3; f: () => void}[] = [
-    {at: m.gun, f: () => flip(m.gun, () => { placeBuild(p, c, buildLewisGun({elev: 0.02}), m.gun, -Math.PI / 2 + 0.55, {seed: 37300, sun}); })},
+    {at: m.gun, f: () => flip(m.gun, () => { placeBuild(p, c, buildLewisGun({elev: 0.02}), m.gun, -Math.PI / 2 + 0.55, {seed: 37300, sun}); if (L !== undefined) paintLewisPanTicks(p, c, 37310, m.gun, -Math.PI / 2 + 0.55, 0, {elev: 0.02}); })},
     {at: m.g1, f: () => flip(m.g1, () => { const s = sh(GUNNER1, m.g1, {floorSit: 1}, 'r'), u = camUnit(c, m.g1);
-      rec('GUNNER-1', paintCrew(p, c, GUNNER1, m.g1, {view, pose: 'P33', t, tint, seed: 37200, hat: 'slouch', fig: {floorSit: 1, rArm: armRel(s, u, [0.2, -0.2], [0.42, -0.08]), lArm: armRel(s, u, [0.22, -0.22], [0.46, -0.12])}})); })},
+      rec('GUNNER-1', paintCrew(p, c, GUNNER1, m.g1, {view, pose: 'P33', t, tint, seed: 37200, hat: 'slouch', fig: {floorSit: 1, ...rise(0.31), rArm: armRel(s, u, [0.2, -0.2], [0.42, -0.08]), lArm: armRel(s, u, [0.22, -0.22], [0.46, -0.12])}})); })},
     {at: m.g2, f: () => flip(m.g2, () => { const s = sh(GUNNER2, m.g2, g2Body, 'r'), u = camUnit(c, m.g2);
-      rec('GUNNER-2', paintCrew(p, c, GUNNER2, m.g2, {view, t, tint, seed: 37400, hat: 'slouch', fig: {...g2Body, rArm: armRel(s, u, [-0.14, -0.22], [0.03, -0.41]), lArm: armRel(s, u, [0.2, 0.12], [0.12, 0.34])}})); })},
+      rec('GUNNER-2', paintCrew(p, c, GUNNER2, m.g2, {view, t, tint, seed: 37400, hat: 'slouch', fig: {...g2Body, ...rise(0.67), rArm: armRel(s, u, [-0.14, -0.22], [0.03, -0.41]), lArm: armRel(s, u, [0.2, 0.12], [0.12, 0.34])}})); })},
     {at: m.mer, f: () => flip(m.mer, () => { const s = sh(MEREDITH, m.mer, merBody, 'r'), u = camUnit(c, m.mer);
-      rec('MEREDITH', paintCrew(p, c, MEREDITH, m.mer, {view, pose: 'P35', t, tint, seed: 37100, hat: 'slouch', fig: {...merBody, rArm: {...armRel(s, u, [0.28, 0.02], [0.58, 0.1]), finger: true}}})); })},
+      rec('MEREDITH', paintCrew(p, c, MEREDITH, m.mer, {view, pose: 'P35', t, tint, seed: 37100, hat: 'slouch', fig: {...merBody, ...rise(0.05), rArm: {...armRel(s, u, [0.28, 0.02], [0.58, 0.1]), finger: true}}})); })},
   ];
   items.sort((a, b) => Math.hypot(b.at[0] - c.x, b.at[2] - c.z) - Math.hypot(a.at[0] - c.x, a.at[2] - c.z)).forEach((it) => it.f());
 };
@@ -184,23 +186,25 @@ const tD2 = (): LookDef => {
 const EYE_LF03: V3 = [-0.3, 2.6, 4.5];
 /** B07-SH01 end: the whole coat of arms in frame, kangaroo left, emu right, sunlit sandstone, blue sky (no newsreel layer). */
 export const CAM_LF03: YCam = {x: EYE_LF03[0], y: EYE_LF03[1], z: EYE_LF03[2], yaw: 0, pitch: 20 * DEG, f: 1200, hy: 760};
-const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
+/** The word on the B07 scroll (LF03 values), shared by the look stills and the B07 plates. */
+export const ARMS_WORD = {at: [0, 2.94, 0.17] as V3, text: 'AUSTRALIA', h: 0.13};
+export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number, emuLid = 0.15) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: ARMS_WORD, paint: (p) => {
   MEASURE[id] = [];
   paintArmsSky(p, c);
   paintSandstoneWall(p, c, 41000);
   paintWattleBed(p, c, 41800);
-  const r = paintArms(p, c, 42000, emuYaw === undefined ? {} : {emuPose: EMU_POSES.stand({head: [0.36, 1.62, 0], headYaw: emuYaw, lid: 0.15})});
+  const r = paintArms(p, c, 42000, emuYaw === undefined ? {} : {emuPose: EMU_POSES.stand({head: [0.36, 1.62, 0], headYaw: emuYaw, lid: emuLid})});
   lead(id, 'EMU-RELIEF', r.emu);
   lead(id, 'ROO-RELIEF', r.roo);
 }});
 /** Thumbnail A2: the B07-SH02 push-in end on the emu supporter, head turned to the lens (the callback of B01-SH03). */
 const EYE_A2: V3 = [0.95, 3.9, 2.4];
-const CAM_A2: YCam = {x: EYE_A2[0], y: EYE_A2[1], z: EYE_A2[2], yaw: 4 * DEG, pitch: 16 * DEG, f: 1000, hy: 900};
+export const CAM_A2: YCam = {x: EYE_A2[0], y: EYE_A2[1], z: EYE_A2[2], yaw: 4 * DEG, pitch: 16 * DEG, f: 1000, hy: 900};
 
 // ------------------------------------------------------------------ KP-EMU key poses (look check), plain paddock ground, caption band shown
-const KP_EYE: V3 = [0, 1.05, 2.5];
+export const KP_EYE: V3 = [0, 1.05, 2.5];
 const KP_CAM: YCam = {x: KP_EYE[0], y: KP_EYE[1], z: KP_EYE[2], yaw: 0, pitch: 0, f: 1000, hy: 760};
-const kp = (name: string, member: () => EmuMember, caption: string) => (): LookDef => ({shot: `KP-EMU ${name}`, cam: KP_CAM, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption, paint: (p) => {
+export const kp = (name: string, member: () => EmuMember, caption: string) => (): LookDef => ({shot: `KP-EMU ${name}`, cam: KP_CAM, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption, paint: (p) => {
   const c = KP_CAM, id = `KP-${name}`;
   setNoClearing(true);
   MEASURE[id] = [];
@@ -214,9 +218,20 @@ const kp = (name: string, member: () => EmuMember, caption: string) => (): LookD
   setNoClearing(false);
 }});
 /** Head yaw that turns the head toward the lens, held `off` rad short of square (a three-quarter look reads the bill; square-on reads as an owl). */
-const lensYaw = (at: V3, heading: number, off = 0.45) => { const toCam = Math.atan2(KP_EYE[2] - at[2], KP_EYE[0] - at[0]); let d = toCam - heading; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return -d - Math.sign(-d) * off; };
-const KP_AT: V3 = [0, 0, -0.2];
+const lensYaw = (at: V3, heading: number, off = 0.45) => emuLensYaw(at, heading, {x: KP_EYE[0], y: KP_EYE[1], z: KP_EYE[2]}, off);
+export const KP_AT: V3 = [0, 0, -0.2];
 
+/** B01-SH03 close camera (head and neck fill the upper half, front three-quarter) with a pose override: KP-face and the T07 head stills. */
+const kpFace = (id: string, o: Partial<EmuPose>) => (): LookDef => {
+  const c: YCam = {x: 0.1, y: 1.58, z: 1.05, yaw: 0, pitch: -2 * DEG, f: 1000, hy: 640};
+  return {shot: `KP-EMU ${id} (B01-SH03 close)`, cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สองรอบ', paint: (p) => {
+    MEASURE[id] = [];
+    setNoClearing(true);
+    paintPadSky(p, c); paintScrub(p, c, 30100, 300); paintPadGround(p, c, 30300, {eaten: 0}); paintWheatRidges(p, c, 30600, {r0: 6});
+    lead(id, 'EMU-HERO', paintEmu(p, c, {at: [0, 0, -0.2], heading: Math.PI / 2 - 0.4, pose: EMU_POSES.stand(o), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
+    setNoClearing(false);
+  }};
+};
 export const LOOK_DEFS: Record<string, () => LookDef> = {
   LF01a: lf01(1, 'LF01a'),
   LF01b: lf01(0.45, 'LF01b'),
@@ -226,21 +241,47 @@ export const LOOK_DEFS: Record<string, () => LookDef> = {
   TD2: tD2,
   LF03: armsLook(CAM_LF03, 'LF03', 'B07-SH01 end (L17)', 'ส่วนนกอีมู อยู่บนตราแผ่นดินออสเตรเลีย\nมาตั้งแต่ปี 1908'),
   TA2: armsLook(CAM_A2, 'TA2', 'thumb A2 · B07-SH02 push-in end, relief emu looks to the lens', 'ไม่เคยถอยสักรอบ', -1.25),
+  // T07 r6 proof stills: blink frame 0 (lid 0.8) on the KP-face camera; the relief emu blink at B07-SH02 local 54-57 on the TA2 camera (blinkLid base 0.15)
+  'KP-blink08': () => kpFace('KP-blink08', {lid: blinkLid(0, 0.32), headYaw: 0.25})(),
+  ...Object.fromEntries([54, 55, 56, 57].map((l) => [`TA2-blink${l}`, armsLook(CAM_A2, `TA2-blink${l}`, `B07-SH02 relief blink local ${l}`, 'ไม่เคยถอยสักรอบ', -1.25, blinkLid(l - 54, 0.15))])),
   'KP-stand': kp('stand', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.stand(), scale: 1, seed: 36000, hero: true}), 'stand'),
   'KP-walk': kp('walk', () => ({at: KP_AT, heading: Math.PI + 0.25, pose: EMU_POSES.walk(0.3), scale: 1, seed: 36000, hero: true}), 'walk'),
   'KP-peck': kp('peck', () => ({at: KP_AT, heading: Math.PI - 0.35, pose: EMU_POSES.peck(), scale: 1, seed: 36000, hero: true}), 'peck'),
   'KP-run': kp('run', () => ({at: [0.2, 0, -0.6], heading: 0.2, pose: EMU_POSES.run(0.62), scale: 1, seed: 36000, hero: true}), 'run'),
   'KP-bow': kp('bow', () => ({at: KP_AT, heading: Math.PI / 2 - 0.5, pose: EMU_POSES.bow(), scale: 1, seed: 36000, hero: true}), 'bow'),
-  'KP-face': (): LookDef => {   // B01-SH03 close: head and neck fill the upper half, front three-quarter, deadpan half-lid
-    const c: YCam = {x: 0.1, y: 1.58, z: 1.05, yaw: 0, pitch: -2 * DEG, f: 1000, hy: 640}, id = 'KP-face';
-    return {shot: 'KP-EMU face (B01-SH03 close)', cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สองรอบ', paint: (p) => {
+  'KP-face': kpFace('KP-face', {lid: 0.32, headYaw: 0.25}),
+  // T07 head stills on the KP-face camera: open beak, neck-sac boom (sac 1), blink frame 1 (lid 1.0), nod peak (0.04 m), look back over the shoulder (B02-SH06 mark, camera at local 44)
+  'KP-beak': kpFace('KP-beak', {lid: 0.32, headYaw: 0.25, beak: 1}),
+  'KP-sac': kpFace('KP-sac', {lid: 0.32, headYaw: 0.25, sac: 1}),
+  'KP-blink': kpFace('KP-blink', {lid: blinkLid(1, 0.32), headYaw: 0.25}),
+  'KP-nod': kpFace('KP-nod', {lid: 0.32, headYaw: 0.25, nod: 0.04}),
+  'KP-lookback': (): LookDef => {
+    const c: YCam = {x: 2.2, y: 1.55, z: -10.6, yaw: 190 * DEG, pitch: -2 * DEG, f: 1000, hy: 860}, id = 'KP-lookback', at: V3 = [1.0, 0, -8.0], heading = Math.PI / 2;
+    return {shot: 'KP-EMU lookback (B02-SH06 local 44)', cam: c, t: 0, paper: '#efe6d0', reel: {tint: 'warm', amount: 1}, caption: 'สามคนเหรอ', paint: (p) => {
       MEASURE[id] = [];
       setNoClearing(true);
       paintPadSky(p, c); paintScrub(p, c, 30100, 300); paintPadGround(p, c, 30300, {eaten: 0}); paintWheatRidges(p, c, 30600, {r0: 6});
-      lead(id, 'EMU-HERO', paintEmu(p, c, {at: [0, 0, -0.2], heading: Math.PI / 2 - 0.4, pose: EMU_POSES.stand({lid: 0.32, headYaw: 0.25}), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
+      lead(id, 'EMU-HERO', paintEmu(p, c, {at, heading, pose: EMU_POSES.stand({lid: 0.3, headYaw: emuLensYaw(at, heading, c)}), scale: 1, seed: 36000, hero: true}, {sun: SUN.morning}));
       setNoClearing(false);
     }};
   },
+  /** T06 proof: KP-stand with the wing at FOLD (must equal KP-stand: the folded wing hides in the plumage) */
+  'KP-fold': kp('fold', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.stand({wing: WING_FOLD}), scale: 1, seed: 36000, hero: true}), 'stand'),
+  // T06 reaction stills: startle, duck, hop (f 3 of emuHop, side +1, 0.6 m), flap (the duck pose with wing w 0.9), flap-back (the same at heading -pi/2, back to the lens)
+  'KP-startle': kp('startle', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.startle(), scale: 1, seed: 36000, hero: true}), 'startle'),
+  'KP-duck': kp('duck', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.duck(), scale: 1, seed: 36000, hero: true}), 'duck'),
+  'KP-hop': kp('hop', () => { const {pose, offset} = emuHop(3, {side: 1, dist: 0.6}); return {at: [KP_AT[0] + offset[2] * Math.sin(Math.PI), offset[1], KP_AT[2] - offset[2] * Math.cos(Math.PI)], heading: Math.PI, pose, scale: 1, seed: 36000, hero: true}; }, 'hop'),
+  'KP-flap': kp('flap', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap'),
+  'KP-flap-back': kp('flap-back', () => ({at: KP_AT, heading: -Math.PI / 2, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap back'),
+  // T15 mime gestures: wing flick right at L 8 and left at L 24 (heading pi/2, front to the lens), watch check at L 25 (3pi/4), foot tap at L 38 (watch pose + toes up), wave at L 10 (3pi/4) and from behind at L 39 (-pi/2)
+  'KP-flick-r': kp('flick-r', () => ({at: KP_AT, heading: Math.PI / 2, pose: emuWingFlick(8), scale: 1, seed: 36000, hero: true}), 'flick right'),
+  'KP-flick-l': kp('flick-l', () => ({at: KP_AT, heading: Math.PI / 2, pose: emuWingFlick(24), scale: 1, seed: 36000, hero: true}), 'flick left'),
+  'KP-watch': kp('watch', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWatchCheck(25), scale: 1, seed: 36000, hero: true}), 'watch'),
+  'KP-tap': kp('tap', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: {...emuWatchCheck(38), ...emuFootTap(38)}, scale: 1, seed: 36000, hero: true}), 'tap'),
+  'KP-wave': kp('wave', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWingWave(10), scale: 1, seed: 36000, hero: true}), 'wave'),
+  'KP-wave-back': kp('wave-back', () => ({at: KP_AT, heading: -Math.PI / 2, pose: emuWingWave(39, {back: true}), scale: 1, seed: 36000, hero: true}), 'wave back'),
+  // T15 watch-check motion strip frames: KP-watch-8, -12, -16, -18, -38, -40, -58 (heading 3pi/4)
+  ...Object.fromEntries([8, 12, 16, 18, 38, 40, 58].map((L) => [`KP-watch-${L}`, kp(`watch-${L}`, () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWatchCheck(L), scale: 1, seed: 36000, hero: true}), `watch L${L}`)])),
   'KP-look': kp('look', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.look(lensYaw(KP_AT, Math.PI)), scale: 1, seed: 36000, hero: true}), 'look to lens'),
 };
 

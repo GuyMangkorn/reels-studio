@@ -41,7 +41,68 @@ export type DamOpts = {
   windmill?: [number, number, number];
   /** paints reflections of the cast into the water (after the water and the set reflections, before the ripples and the bank) */
   reflect?: () => void;
+  /** B04-SH06 / SH05 / SH02 / SH04 lenses on the inner slope (eye z -2.8..-5.0): the slope within 4 m of the camera footprint is painted close (T10) */
+  nearSlope?: boolean;
+  /** T26: ambient seconds; the windmill wheel turns 0.25 rev/s and the ripple dashes drift and breathe. Absent = the locked LF02 still. */
+  ambient?: number;
 };
+// ------------------------------------------------------------------ T10: east approach, queue path, reflection helper, jam stone, near slope
+/** Top height of the south bank at x: 1.2 m crest to x 10.5, ramps to the low approach (0.5 m) at x 12, level to x 16, ramps down to the ground at x 17.5. */
+export const bankTop = (x: number) => x <= 10.5 ? DAM.crest : x < 12 ? DAM.crest + (0.5 - DAM.crest) * ((x - 10.5) / 1.5) : x <= 16 ? 0.5 : x < 17.5 ? 0.5 * (1 - (x - 16) / 1.5) : 0;
+const EAST_X0 = 10.5;
+/** The queue's path, far to near (b04 Space D continuity SD06): the trodden track, the east approach, the east shore, then the rim to the gun end. */
+export const QUEUE_PATH: V3[] = [[70, 0, -70], [40, 0, -45], [14.8, 0.5, -20], [14.5, 0.45, -12], [14.5, 0.40, -5.2], [8.0, 0.33, -4.9], [-3.0, 0.33, -4.9]];
+const QP = QUEUE_PATH.slice().reverse();   // from the gun end
+const QS: number[] = QP.reduce<number[]>((a, v, i) => { a.push(i === 0 ? 0 : a[i - 1] + Math.hypot(v[0] - QP[i - 1][0], v[1] - QP[i - 1][1], v[2] - QP[i - 1][2])); return a; }, []);
+/** Total arc length of the path (m). */
+export const QUEUE_LEN = QS[QS.length - 1];
+const qSeg = (s: number) => { const t = Math.max(0, Math.min(QUEUE_LEN, s)); let i = 0; while (i < QP.length - 2 && QS[i + 1] < t) i++; return {i, u: (t - QS[i]) / (QS[i + 1] - QS[i])}; };
+/** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). y is the water surface (DAM.water) wherever the point is over water (the east-shore wade, r3 Q-1), else the bank height. */
+const qXZ = (s: number): [number, number] => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; return [a[0] + (b[0] - a[0]) * u, a[2] + (b[2] - a[2]) * u]; };
+const EASE_LEN = 0.6, EASE_STEP = 0.01;
+/** Wet flags every 0.01 m of arc length; the dry side of each waterline crossing eases to the surface over EASE_LEN (r4). */
+let QWETC: boolean[] | null = null;
+const qWet = () => QWETC ??= Array.from({length: Math.floor(QUEUE_LEN / EASE_STEP) + 1}, (_, k) => { const [x, z] = qXZ(k * EASE_STEP); return overWater(x, z); });
+const wetDist = (s: number) => { const k = Math.round(s / EASE_STEP), n = Math.ceil(EASE_LEN / EASE_STEP); const W = qWet(); for (let d = 0; d <= n; d++) if (W[k - d] || W[k + d]) return d * EASE_STEP; return EASE_LEN; };
+/** Position at arc length s (m) from the gun end (-3.0, 0.33, -4.9) back along the path (clamped). y is the water surface (DAM.water) wherever the point is over water (the east-shore wade, r3 Q-1); over the EASE_LEN (0.6 m) of arc on the dry side of each waterline crossing it eases linearly from the bank height to the surface (r4), else the bank height. */
+export const queuePoint = (s: number): V3 => { const {i, u} = qSeg(s), a = QP[i], b = QP[i + 1]; const x = a[0] + (b[0] - a[0]) * u, z = a[2] + (b[2] - a[2]) * u; const bank = a[1] + (b[1] - a[1]) * u; if (overWater(x, z)) return [x, DAM.water, z]; const w = wetDist(Math.max(0, Math.min(QUEUE_LEN, s))) / EASE_LEN; return [x, DAM.water + (bank - DAM.water) * w, z]; };
+/** Unit tangent at arc length s, pointing away from the gun end (the way back along the path). */
+export const queueTangent = (s: number): V3 => { const {i} = qSeg(s), a = QP[i], b = QP[i + 1], l = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]); return [(b[0] - a[0]) / l, (b[1] - a[1]) / l, (b[2] - a[2]) / l]; };
+/** Arc length of the rim point at world x (rim segment x 8.0 .. -3.0): x 4.6 -> 7.6, x 1.6 -> 4.6. */
+export const sAtRimX = (x: number) => x + 3.0;
+/** Wet rim extension along the east shore: the waterline points of the east bay (the R4 rim is the south part). */
+const RIM_EAST_N = 4;
+
+/** Mirror of a world point in the water surface. */
+export const reflect = (v: V3): V3 => [v[0], 2 * DAM.water - v[1], v[2]];
+/** True where world (x, z) lies over the water (inside the waterline loop). */
+export const overWater = (x: number, z: number) => pointIn(SHORE, [x, z]);
+/** Clip test for a mirrored point (from `reflect`): drawn only where its (x, z) is over water. */
+export const reflectClip = (v: V3) => overWater(v[0], v[2]);
+/** Reflection tone (R4). */
+export const REFLECT_TONE = DAM.reflection;
+
+/** The jam stone: one flat stone 0.14 x 0.10 x 0.05 m, lit `#8d806d`, shade `#5f5547`, centred at `at` (B04-SH04, SD07). */
+export const STONE_AT: V3 = [-5.63, 0.33, -4.9];
+export const paintStone = (p: Painter, c: YCam, at: V3 = STONE_AT, seed = 0) => {
+  paintBox(p, c, seed, {x0: at[0] - 0.07, x1: at[0] + 0.07, y0: at[1], y1: at[1] + 0.05, z0: at[2] - 0.05, z1: at[2] + 0.05}, '#8d806d', {front: 0.3, back: 0.3, left: 0.3, right: 0.3, bottom: 0.3}, {ink: false});
+};
+/** B04 lens eyes (start, then end where the sheet moves) whose clearance over the ground is tested; `DAM_CAMS` are the four slope-lens camera lines of the proof. */
+const D = Math.PI / 180;
+export const B04_EYES: Record<string, V3[]> = {
+  'B04-SH06': [[-4.6, 1.45, -3.9], [-4.68, 1.45, -3.95]], 'B04-SH05': [[-1.6, 1.15, -4.75]], 'B04-SH02': [[1.5, 1.1, -4.25]], 'B04-SH04': [[-5.68, 1.0, -4.45]],
+  'B04-SH01': [[0.5, 0.85, -6.4], [0.22, 0.85, -6.3]], 'B04-SH03': [[-6.3, 0.92, -5.75]],
+};
+export const DAM_CAMS = {
+  queue: {x: 1.5, y: 1.1, z: -4.25, yaw: 75 * D, pitch: 0, f: 900, hy: 820} as YCam,
+  sh05: {x: -1.6, y: 1.15, z: -4.75, yaw: 89.3 * D, pitch: -2 * D, f: 950, hy: 860} as YCam,
+  jam: {x: -5.68, y: 1.0, z: -4.45, yaw: -5 * D, pitch: -32 * D, f: 1100, hy: 860} as YCam,
+  sh06: {x: -4.6, y: 1.45, z: -3.9, yaw: -57 * D, pitch: -12 * D, f: 950, hy: 800} as YCam,
+};
+/** Crew withdrawal marks, for the record (nothing painted). */
+export const CREW_WITHDRAWN = {meredith: [-7.2, 0.9, -3.6] as V3, gunner2: [-6.4, 0.7, -4.0] as V3};
+/** GUNNER-1 aim: B04-SH01 0.55 rad as LF02, firing barrel along +x (B04-SH03 ... SH06). */
+export const G1_AIM = {sh01: 0.55, fire: [1, 0, 0] as V3};
 export const DAM_TREES: [number, number, number][] = [[-3.6, -13, 6.5], [4.2, -17, 7.5]];
 
 export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => {
@@ -58,7 +119,18 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
   for (let i = 0; i <= 24; i++) { const x = -26 + i * (52 / 24); nb.push([x, DAM.northCrest * (0.75 + 0.4 * h(i)), DAM.northZ - 0.5 * Math.sin(i)]); }
   wFill(p, c, seed + 60, DAM.earthShade, [...nb, [26, 0, DAM.northZ - 4], [-26, 0, DAM.northZ - 4]]);
   wFill(p, c, seed + 61, DAM.spoil, [...nb, [26, DAM.water, DAM.waterZ[1] - 1], [-26, DAM.water, DAM.waterZ[1] - 1]]);
-  paintWindmill(p, c, seed + 300, [mill[0], 0, mill[1]], mill[2]);
+  // the trodden queue track (T10): bare mud 2.5 m wide from the far east down to the east approach, claw-mark dashes along it
+  {
+    const tr = QUEUE_PATH.slice(0, 3), edge = (sg: number): V3[] => tr.map((v, i): V3 => { const w = tr[Math.min(i + 1, 2)], u = tr[Math.max(i - 1, 0)], dx = w[0] - u[0], dz = w[2] - u[2], l = Math.hypot(dx, dz); return [v[0] - sg * 1.25 * (dz / l), v[1] + 0.02, v[2] + sg * 1.25 * (dx / l)]; });
+    wFill(p, c, seed + 250, '#6e5a44', [...edge(1), ...edge(-1).reverse()]);
+    for (let k = 0; k < 40; k++) {
+      const t = k / 40, a = tr[1], b = tr[2], lat = (h(k * 3 + 1) - 0.5) * 1.8, d = Math.hypot(b[0] - a[0], b[2] - a[2]), ux = (b[0] - a[0]) / d, uz = (b[2] - a[2]) / d;
+      const q: V3 = [a[0] + (b[0] - a[0]) * t - uz * lat, 0.03 + 0.5 * t, a[2] + (b[2] - a[2]) * t + ux * lat];
+      wInk(p, c, seed + 260 + k, [[q[0] - ux * 0.25, q[1], q[2] - uz * 0.25], [q[0] + ux * 0.25, q[1], q[2] + uz * 0.25]], {closed: false, weight: 1.2, color: '#4e3f2e'});
+    }
+  }
+  const wheelT = ((o.ambient ?? 0) * 0.25 * 2 * Math.PI) / 1.6;   // the wheel's `t * 1.6` rad: 0.25 rev/s
+  paintWindmill(p, c, seed + 300, [mill[0], 0, mill[1]], mill[2], wheelT);
   // the water: the white sky mirrored (pale, brightest far off), muddier and darker toward the near shore
   wFill(p, c, seed + 200, DAM.nearWater, SHORE.map(at(DAM.water)));
   wWash(p, c, seed + 201, DAM.skyWater, 90, waterBeyond(-7.5, 0.001), 0.35, 0.2);
@@ -67,18 +139,18 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
   const nbR = nb.map(([x, y, z]): V3 => [x, 2 * DAM.water - y * 0.8, z]);
   const north = SHORE.filter(([x, z]) => z < -24.5 && x > -22 && x < 8).map(at(DAM.water + 0.003));
   wWash(p, c, seed + 203, DAM.reflection, 55, [...north, ...nbR.filter(([x]) => x > -22 && x < 8).map(([x, y, z]): V3 => [x, y, Math.max(z, -26.5)]).reverse()], 0.25, 0.2);
-  paintWindmill(p, c, seed + 1300, [mill[0], 0, mill[1]], mill[2], 0, DAM.water);
+  paintWindmill(p, c, seed + 1300, [mill[0], 0, mill[1]], mill[2], wheelT, DAM.water);
   trees.forEach(([x, z, ht], i) => paintDeadTree(p, c, seed + 1500 + i * 20, [x, DAM.water, z], ht, DAM.water));
   o.reflect?.();
   // ripple lines: short dashes square to the lens (they read level on screen), pale and dark, rings round the trunks
   const rx = Math.cos(c.yaw), rz = Math.sin(c.yaw);
   for (let k = 0; k < 34; k++) {
-    const z = -6.2 - h(k * 7) * 17, x0 = -20 + h(k * 3) * 34, w = 0.8 + h(k * 5) * 2.4;
+    const rp = o.ambient === undefined ? 0 : Math.sin(2 * Math.PI * (o.ambient / 3 + h(k * 19))), z = -6.2 - h(k * 7) * 17, x0 = -20 + h(k * 3) * 34 + 0.12 * rp, w = (0.8 + h(k * 5) * 2.4) * (1 + 0.18 * rp);
     if (!pointIn(SHORE, [x0, z]) || !pointIn(SHORE, [x0 + w * rx, z + w * rz])) continue;
     wInk(p, c, seed + 2000 + k, [[x0, DAM.water + 0.004, z], [x0 + w * rx, DAM.water + 0.004, z + w * rz]], {closed: false, weight: 1.1, color: k % 3 ? DAM.skyWaterFar : DAM.reflection});
   }
   for (let k = 0; k < 90; k++) {   // near water: short ripple dashes, pale and a few dark, breaking the reflections
-    const z = -5.55 - h(k * 11 + 3) * 3.4, x0 = -5 + h(k * 13 + 1) * 8.2, w = 0.2 + h(k * 17) * 0.5;
+    const rp = o.ambient === undefined ? 0 : Math.sin(2 * Math.PI * (o.ambient / 2.4 + h(k * 23))), z = -5.55 - h(k * 11 + 3) * 3.4, x0 = -5 + h(k * 13 + 1) * 8.2 + 0.06 * rp, w = (0.2 + h(k * 17) * 0.5) * (1 + 0.25 * rp);
     if (!pointIn(SHORE, [x0, z + 0.1]) || !pointIn(SHORE, [x0 + w * rx, z + w * rz + 0.1])) continue;
     wInk(p, c, seed + 2050 + k, [[x0, DAM.water + 0.004, z], [x0 + w * rx, DAM.water + 0.004, z + w * rz]], {closed: false, weight: 1.6, color: k % 3 ? DAM.skyWaterFar : mixColor(DAM.reflection, DAM.nearWater, 0.4)});
   }
@@ -93,24 +165,36 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
   }
   for (let i = 0; i < SHORE_SOUTH_N - 1; i++) {
     const [xa, za] = SHORE[i], [xb, zb] = SHORE[i + 1];
-    wFill(p, c, seed + 400 + i, DAM.inner, [[xa, DAM.water, za], [xb, DAM.water, zb], [xb, DAM.crest, DAM.crestZ[0]], [xa, DAM.crest, DAM.crestZ[0]]]);
+    wFill(p, c, seed + 400 + i, DAM.inner, [[xa, DAM.water, za], [xb, DAM.water, zb], [xb, bankTop(xb), DAM.crestZ[0]], [xa, bankTop(xa), DAM.crestZ[0]]]);
   }
   // the wet rim: a thin dark band at the waterline, and two dry "bathtub rings" higher up the slope where the water stood before the drought
   const rim = (dz: number, dy: number) => SHORE.slice(0, SHORE_SOUTH_N).map(([x, z]): V3 => [x, DAM.water + dy, z + dz]);
   const rimA = rim(-0.02, 0.001), rimB = rim(0.035, 0.015);
   wFill(p, c, seed + 440, mixColor(DAM.mud, DAM.inner, 0.25), [...rimA, ...rimB.slice().reverse()]);
+  // the rim along the east shore (0.25 m, same colour), from the south shore round the bay
+  {
+    const east = SHORE.slice(SHORE_SOUTH_N - 1, SHORE_SOUTH_N + RIM_EAST_N), side = (dx: number): V3[] => east.map(([x, z]): V3 => [x + dx, DAM.water + 0.001, z]);
+    wFill(p, c, seed + 441, mixColor(DAM.mud, DAM.inner, 0.25), [...side(-0.25), ...side(0).reverse()]);
+  }
   for (const [k, f] of [[0, 0.3], [1, 0.62]] as const) {
     const line = SHORE.slice(0, SHORE_SOUTH_N).map(([x, z]): V3 => { const zz = z + (DAM.crestZ[0] - z) * f; return [x, DAM.water + (DAM.crest - DAM.water) * f, zz + 0.12 * Math.sin(x * 0.9 + k)]; });
     for (let j = 0; j + 4 < line.length; j += 4) wInk(p, c, seed + 460 + k * 40 + j, line.slice(j, j + 5), {closed: false, weight: 1.4, color: mixColor(DAM.inner, DAM.mud, 0.3)});
   }
-  for (const [k, x0, x1] of [[0, -24, -8], [1, -8, 8], [2, 8, 14]] as const) {
+  for (const [k, x0, x1] of [[0, -24, -8], [1, -8, 8], [2, 8, EAST_X0]] as const) {
     wFill(p, c, seed + 410 + k, DAM.earth, [[x0, DAM.crest, DAM.crestZ[0]], [x1, DAM.crest, DAM.crestZ[0]], [x1, DAM.crest, DAM.crestZ[1]], [x0, DAM.crest, DAM.crestZ[1]]]);
     wFill(p, c, seed + 420 + k, DAM.earthShade, [[x0, DAM.crest, DAM.crestZ[1]], [x1, DAM.crest, DAM.crestZ[1]], [x1, 0, 0], [x0, 0, 0]]);
   }
-  // east end of the bank: it ramps down to the low approach where the queue walks in (x 14..17)
-  wFill(p, c, seed + 430, DAM.earth, [[14, DAM.crest, DAM.crestZ[0]], [14, DAM.crest, DAM.crestZ[1]], [17.5, 0.5, -1.6], [17.5, 0.5, -3.4]]);
-  wFill(p, c, seed + 431, DAM.earthShade, [[14, DAM.crest, DAM.crestZ[1]], [14, 0, 0], [17.5, 0, -0.4], [17.5, 0.5, -1.6]]);
-  wFill(p, c, seed + 432, DAM.inner, [[14, DAM.crest, DAM.crestZ[0]], [17.5, 0.5, -3.4], [15.2, DAM.water, -8.8], [13.4, DAM.water, -6.4]]);
+  // east end of the bank (T10): the crest ends at x 10.5, ramps to the low approach (0.5 m) at x 12, stays level to x 16, ramps to the ground at x 17.5
+  {
+    const xs = [EAST_X0, 12, 16, 17.5], cz = DAM.crestZ;
+    for (let k = 0; k < 3; k++) {
+      const xa = xs[k], xb = xs[k + 1], ya = bankTop(xa), yb = bankTop(xb);
+      wFill(p, c, seed + 430 + k, DAM.earth, [[xa, ya, cz[0]], [xb, yb, cz[0]], [xb, yb, cz[1]], [xa, ya, cz[1]]]);
+      wFill(p, c, seed + 433 + k, DAM.earthShade, [[xa, ya, cz[1]], [xb, yb, cz[1]], [xb, 0, 0], [xa, 0, 0]]);
+    }
+    wFill(p, c, seed + 436, DAM.inner, [[12, 0.5, cz[0]], [16.6, 0.5, cz[0]], [16.4, DAM.water, -12.2], [15.2, DAM.water, -8.8], [13.4, DAM.water, -6.4], [12, DAM.water, SHORE[SHORE_SOUTH_N - 1][1]]]);
+    wFill(p, c, seed + 437, DAM.inner, [[EAST_X0, DAM.crest, cz[0]], [12, 0.5, cz[0]], [12, DAM.water, SHORE[SHORE_SOUTH_N - 1][1]], [EAST_X0, DAM.water, SHORE[SHORE_SOUTH_N - 1][1]]]);
+  }
   // crest: a ragged inner lip of clods and dry tussocks (the crew's cover), and clods along the outer lip
   for (let i = 0; i < 60; i++) {
     const inner = i % 2 === 0, x = -12 + (i >> 1) * 0.85 + h(i) * 0.4, z = inner ? DAM.crestZ[0] + 0.1 + h(i * 3) * 0.2 : DAM.crestZ[1] - 0.05 - h(i * 3) * 0.25, s = camPoint(c, [x, DAM.crest, z]);
@@ -125,6 +209,40 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
     if (!s) continue;
     const u = camUnit(c, [x, y, z]), r = (0.03 + 0.04 * h(i)) * u;
     hardFill(p, seed + 700 + i, mixColor(DAM.earthShade, '#3a281a', 0.2 + 0.25 * h(i * 2)), Array.from({length: 8}, (_, k) => { const a = (k / 8) * 6.283; return [s[0] + r * 1.3 * Math.cos(a), s[1] + r * 0.6 * Math.sin(a)] as Pt; }));
+  }  if (o.nearSlope) paintNearSlope(p, c, seed + 3000);
+};
+
+/** Near inner slope (T10, B04-SH06 and the other lenses on the slope): within 4 m of the camera footprint the slope is a lit plain fill, a few washes, 60 seeded clods and dry tussock marks,
+ *  the two bathtub rings continued to the lens in short pieces, and the wet rim at the waterline. */
+const NEAR_R = 4;
+const paintNearSlope = (p: Painter, c: YCam, seed: number) => {
+  const x0 = c.x - NEAR_R, x1 = c.x + NEAR_R, zw = (x: number) => { let best = -5.3; for (let i = 0; i < SHORE_SOUTH_N; i++) if (Math.abs(SHORE[i][0] - x) < 0.3) best = SHORE[i][1]; return best; };
+  const xs = Array.from({length: 17}, (_, i) => x0 + (i / 16) * (x1 - x0));
+  const strip = (f0: number, f1: number): V3[] => {   // between slope fractions f0 and f1 (0 waterline, 1 crest)
+    const lo = xs.map((x): V3 => { const zz = zw(x), z = zz + (DAM.crestZ[0] - zz) * f0; return [x, southBankY(z) + 0.004, z]; });
+    const hi = xs.map((x): V3 => { const zz = zw(x), z = zz + (DAM.crestZ[0] - zz) * f1; return [x, southBankY(z) + 0.004, z]; });
+    return [...lo, ...hi.reverse()];
+  };
+  const lit = mixColor(DAM.inner, DAM.earthLit, 0.5);
+  wFill(p, c, seed, lit, strip(0.02, 1));
+  for (let k = 0; k < 6; k++) wWash(p, c, seed + 1 + k, k % 2 ? DAM.earthLit : DAM.inner, 40, strip(0.05 + k * 0.15, 0.22 + k * 0.15), 0.1, 0.2);
+  // the two bathtub rings and the wet rim, piece by piece so they reach the lens
+  for (const [k, f] of [[0, 0.3], [1, 0.62]] as const) {
+    const line = xs.map((x): V3 => { const zz = zw(x), z = zz + (DAM.crestZ[0] - zz) * f + 0.12 * Math.sin(x * 0.9 + k); return [x, southBankY(z) + 0.005, z]; });
+    for (let j = 0; j + 1 < line.length; j++) wInk(p, c, seed + 20 + k * 20 + j, line.slice(j, j + 2), {closed: false, weight: 1.6, color: mixColor(DAM.inner, DAM.mud, 0.3)});
+  }
+  wFill(p, c, seed + 60, mixColor(DAM.mud, DAM.inner, 0.25), [...xs.map((x): V3 => [x, DAM.water + 0.002, zw(x) - 0.02]), ...xs.slice().reverse().map((x): V3 => [x, DAM.water + 0.003, zw(x) + 0.23])]);
+  // 60 seeded clods (0.04-0.12 m) and dry tussock marks, farthest first
+  const items = Array.from({length: 60}, (_, i) => {
+    const x = x0 + h(i * 5 + 1) * (x1 - x0), zz = zw(x), z = zz + (DAM.crestZ[0] - zz) * (0.08 + 0.9 * h(i * 9 + 2));
+    return {i, x, z, y: southBankY(z), d: Math.hypot(x - c.x, z - c.z)};
+  }).filter((q) => q.d < NEAR_R).sort((a, b) => b.d - a.d);
+  for (const {i, x, y, z} of items) {
+    const s = camPoint(c, [x, y, z]);
+    if (!s) continue;
+    const u = camUnit(c, [x, y, z]), r = (0.04 + 0.08 * h(i * 7 + 3)) * u;
+    hardFill(p, seed + 100 + i, i % 3 ? DAM.earthShade : DAM.spoil, Array.from({length: 9}, (_, k) => { const a = Math.PI + (k / 8) * Math.PI; return [s[0] + r * 1.4 * Math.cos(a), s[1] + r * Math.sin(a)] as Pt; }));
+    if (i % 3 === 0) for (let j = 0; j < 5; j++) inkLine(p, seed + 200 + i * 6 + j, [[s[0] + (j - 2) * 0.03 * u, s[1]], [s[0] + (j - 2) * 0.07 * u, s[1] - (0.08 + 0.1 * h(i + j)) * u]], {closed: false, weight: Math.max(0.9, u * 0.006), color: '#8a7448', still: true});
   }
 };
 

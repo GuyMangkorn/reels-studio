@@ -1,0 +1,1036 @@
+{
+ "deliverable": "EDU-EP30-SHORT",
+ "sceneSheets": "EDU-EP30-SCENE-R2",
+ "video": "src/videos/edu-ep30",
+ "sources": [
+  "src/videos/edu-ep30",
+  "scripts/edu-series/ep30/short/sound-mix.py"
+ ],
+ "fps": 30,
+ "durationFrames": 1977,
+ "cues": [
+  {
+   "cue": "BED-01",
+   "shot": "B01-SH01",
+   "frame": 0,
+   "brief": "Faint mechanical projector whirr with soft clatter, small room, loop; says \"old film\". Whirr only under every 1932 shot [0,1737).",
+   "id": "mechanical_projector-whirr-bed_01",
+   "origin": "generated",
+   "durationFrames": 1737,
+   "note": "Loop to frame 1737; planned silences keep this bed alone."
+  },
+  {
+   "cue": "AMB-P-01",
+   "shot": "B01-SH01",
+   "frame": 0,
+   "brief": "Dry steady hiss of wind through ripe wheat, open plain, loop, a far raven.",
+   "id": "outdoor_wheat-wind-plain_01",
+   "origin": "generated",
+   "durationFrames": 868,
+   "note": "[0,868); the B02-SH06 rustle swell at 652-670 is part of this bed."
+  },
+  {
+   "cue": "B01-SH01-mus01",
+   "shot": "B01-SH01",
+   "frame": 0,
+   "brief": "MUS-01 march intro: snare roll from 0, brass sting at frame 47 (\"ปืนกล\"), cut dead at 106 (\"ถอนทัพ\").",
+   "id": "stinger_newsreel-march-intro_01",
+   "origin": "generated",
+   "durationFrames": 106,
+   "note": "Sting lands at file 1.57 s = frame 47; the file ends at 106 (3.53 s)."
+  },
+  {
+   "cue": "B01-SH01-grunt",
+   "shot": "B01-SH01",
+   "frame": 72,
+   "brief": "Curious emu grunt, low throaty hm-oomph, close, dry, 0.4 s; instantly silly.",
+   "id": "creature_emu-curious-grunt_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-SH02-putter",
+   "shot": "B01-SH02",
+   "frame": 90,
+   "brief": "Far truck putter pulling away, 40 m, dry open air, very low, out by local 40.",
+   "id": "vehicle_truck-1930s-putter-away_01",
+   "origin": "generated",
+   "durationFrames": 60
+  },
+  {
+   "cue": "B01-SH02-step1",
+   "shot": "B01-SH02",
+   "frame": 94,
+   "brief": "Heavy padded three-toed emu step on dry stalks, mid-close, slow, low.",
+   "id": "creature_emu-step-padded_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-SH02-step2",
+   "shot": "B01-SH02",
+   "frame": 109,
+   "brief": "Heavy padded three-toed emu step on dry stalks, mid-close, slow, low.",
+   "id": "creature_emu-step-padded_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-SH02-step3",
+   "shot": "B01-SH02",
+   "frame": 124,
+   "brief": "Heavy padded three-toed emu step on dry stalks, mid-close, slow, low.",
+   "id": "creature_emu-step-padded_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-SH02-step4",
+   "shot": "B01-SH02",
+   "frame": 139,
+   "brief": "Heavy padded three-toed emu step on dry stalks, mid-close, slow, low.",
+   "id": "creature_emu-step-padded_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B01-SH03-boom",
+   "shot": "B01-SH03",
+   "frame": 178,
+   "brief": "Emu boom: deep drumming dum-dum-dum from an inflated neck sac, close, dry, 0.7 s, absurdly calm; under the whirr.",
+   "id": "creature_emu-boom_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH01-mus02",
+   "shot": "B02-SH01",
+   "frame": 200,
+   "brief": "MUS-02 jaunty march enters on the cut, medium energy; stops under the fanfare at 473.",
+   "id": "bed_newsreel-march-jaunty_01",
+   "origin": "generated",
+   "durationFrames": 273
+  },
+  {
+   "cue": "B02-SH01-gate",
+   "shot": "B02-SH01",
+   "frame": 206,
+   "brief": "Soft projector gate clack for the title, 0.15 s.",
+   "id": "mechanical_projector-shutter-click_01",
+   "origin": "library",
+   "fit": "Library file is a single tiny dry film-projector shutter click, 0.25 s: the same source, action, material and space as Film's soft projector gate clack (0.15 s, small room, dry); a new generation (ep30-gate-clack candidates) measured no closer."
+  },
+  {
+   "cue": "B02-SH01-pecks",
+   "shot": "B02-SH01",
+   "frame": 300,
+   "brief": "Pecking crunches: dry wheat stalks snapping and beak clacks, several birds, close, crisp, quick, appetising; runs to the bell.",
+   "id": "foley_wheat-peck-loop_01",
+   "origin": "generated",
+   "durationFrames": 51
+  },
+  {
+   "cue": "B02-SH01-bell",
+   "shot": "B02-SH01",
+   "frame": 351,
+   "brief": "Brass hotel counter bell tapped once, bright, 0.6 s ring, cheeky, as the word ends.",
+   "id": "ui_brass-counter-bell_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH02-peck",
+   "shot": "B02-SH02",
+   "frame": 395,
+   "brief": "One emu peck crunch behind the farmer, same family as the pecks.",
+   "id": "foley_wheat-peck-single_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH03-truck",
+   "shot": "B02-SH03",
+   "frame": 440,
+   "brief": "1930s four-cylinder truck engine approaching and idling down, squeaky drum brakes at local 40.",
+   "id": "vehicle_truck-1930s-arrive-brakes_01",
+   "origin": "generated",
+   "durationFrames": 75
+  },
+  {
+   "cue": "B02-SH03-fanfare",
+   "shot": "B02-SH03",
+   "frame": 473,
+   "brief": "Grand brass fanfare that sputters: three pompous notes, a cracked note and a tuba blat, 0.8 s; MUS-02 stops under it; blat ends by 497.",
+   "id": "comedy_brass-fanfare-sputter_01",
+   "origin": "generated",
+   "durationFrames": 24
+  },
+  {
+   "cue": "B02-SH04-drum1",
+   "shot": "B02-SH04",
+   "frame": 496,
+   "brief": "Parade snare and bass drum hit together, dry, close, 0.3 s, deadpan.",
+   "id": "comedy_parade-drum-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH04-drum2",
+   "shot": "B02-SH04",
+   "frame": 527,
+   "brief": "Parade snare and bass drum hit together, dry, close, 0.3 s, deadpan.",
+   "id": "comedy_parade-drum-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH04-drum3",
+   "shot": "B02-SH04",
+   "frame": 560,
+   "brief": "Parade snare and bass drum hit together, dry, close, 0.3 s, deadpan.",
+   "id": "comedy_parade-drum-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B02-SH06-mus02b",
+   "shot": "B02-SH06",
+   "frame": 592,
+   "brief": "MUS-02 re-enters dipped about 20 dB under L19 so the count lands dry; runs to 660.",
+   "id": "bed_newsreel-march-reentry_01",
+   "origin": "generated",
+   "durationFrames": 68
+  },
+  {
+   "cue": "B02-SH06-beak",
+   "shot": "B02-SH06",
+   "frame": 625,
+   "brief": "One small unimpressed beak click, very close, 0.08 s, deadpan; the only effect under L19.",
+   "id": "creature_emu-beak-click_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B03-SH05-roll-hit",
+   "shot": "B02-SH06",
+   "frame": 660,
+   "brief": "MUS-02 snare roll crescendo (660-667) into a brass-and-snare tutti hit that cuts dead on \"ยิง!\" at 673; no decay.",
+   "id": "stinger_march-roll-hit_01",
+   "origin": "generated",
+   "durationFrames": 13,
+   "note": "File is 13 frames; it ends at 673 exactly. Owned by B03-SH05."
+  },
+  {
+   "cue": "B03-SH01-burst",
+   "shot": "B03-SH01",
+   "frame": 690,
+   "brief": "Lewis gun burst: 23 sharp cracks exactly 0.100 s apart, open plain, mic 2-3 m behind; the viewer should flinch. Full 690-704 and 718-726 (before and in the pause of \"แผนแรก\"), ducked about 6 dB under the words, full again from 756.",
+   "id": "impact_lewis-burst-plain-23_01",
+   "origin": "generated",
+   "durationFrames": 80,
+   "note": "Attack at about 20 ms into the file: place the file start on frame 690 (first crack 690, 23rd crack 756). Natural tail 0.45 s runs into the ring."
+  },
+  {
+   "cue": "B03-SH01-gate",
+   "shot": "B03-SH01",
+   "frame": 704,
+   "brief": "Title gate clack tucked under the burst.",
+   "id": "mechanical_projector-shutter-click_01",
+   "origin": "library",
+   "fit": "Library file is a single tiny dry film-projector shutter click, 0.25 s: the same source, action, material and space as Film's soft projector gate clack (0.15 s, small room, dry); a new generation (ep30-gate-clack candidates) measured no closer."
+  },
+  {
+   "cue": "B03-SH01-casings",
+   "shot": "B03-SH01",
+   "frame": 692,
+   "brief": "Light brass cases flicking out, tinkling on hard dry dirt and stalks, close right, 2.4 s.",
+   "id": "foley_brass-casings-dirt_01",
+   "origin": "generated",
+   "durationFrames": 54
+  },
+  {
+   "cue": "B03-SH01-startle1",
+   "shot": "B03-SH01",
+   "frame": 692,
+   "brief": "Startled emus, ripple of low alarmed grunts and wing rustles, 30-50 m away, 1 s.",
+   "id": "creature_emu-flock-startled-plain_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B03-SH01-startle2",
+   "shot": "B03-SH01",
+   "frame": 728,
+   "brief": "Second take as the clumps bolt.",
+   "id": "creature_emu-flock-startled-plain_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B03-SH01-bolt",
+   "shot": "B03-SH01",
+   "frame": 758,
+   "brief": "Lewis bolt slamming back and holding open, one heavy steel clack, very close, dry, final.",
+   "id": "mechanical_lewis-bolt-open_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B03-SH01-ring",
+   "shot": "B03-SH01",
+   "frame": 758,
+   "brief": "Faint high ear-ring with the plain's dry echo dying under it, 1.2 s decay; sudden emptiness; carries into B03-SH02.",
+   "id": "tension_ear-ring-tail_01",
+   "origin": "generated",
+   "durationFrames": 36
+  },
+  {
+   "cue": "B03-SH02-scatter",
+   "shot": "B03-SH02",
+   "frame": 774,
+   "brief": "Many heavy feet thudding off in different directions, stalks snapping, feather flutter, wide stereo, 1.5 s.",
+   "id": "creature_emu-flock-scatter_01",
+   "origin": "generated",
+   "durationFrames": 48
+  },
+  {
+   "cue": "B03-SH03-whistle-up",
+   "shot": "B03-SH03",
+   "frame": 815,
+   "brief": "Emu signal, up-slide: cheeky slide-whistle glide with wing 1 (815-821).",
+   "id": "comedy_slide-whistle-cheeky-up_01",
+   "origin": "generated",
+   "note": "Mime beat: the only emu voice; no vocal sound."
+  },
+  {
+   "cue": "B03-SH03-whistle-down",
+   "shot": "B03-SH03",
+   "frame": 831,
+   "brief": "Emu signal, down-slide with wing 2 (831-837).",
+   "id": "comedy_slide-whistle-cheeky-down_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B03-SH03-wing1",
+   "shot": "B03-SH03",
+   "frame": 816,
+   "brief": "Crisp dry papery wing-flap swish, left.",
+   "id": "creature_emu-wing-flick_01",
+   "origin": "generated",
+   "pan": "left"
+  },
+  {
+   "cue": "B03-SH03-wing2",
+   "shot": "B03-SH03",
+   "frame": 832,
+   "brief": "Crisp dry papery wing-flap swish, right.",
+   "id": "creature_emu-wing-flick_01",
+   "origin": "generated",
+   "pan": "right"
+  },
+  {
+   "cue": "B03-SH03-patter1",
+   "shot": "B03-SH03",
+   "frame": 818,
+   "brief": "Fast patter of five sets of clawed feet running off, panned out left, 0.8 s.",
+   "id": "creature_emu-feet-patter-off_01",
+   "origin": "generated",
+   "pan": "left"
+  },
+  {
+   "cue": "B03-SH03-patter2",
+   "shot": "B03-SH03",
+   "frame": 834,
+   "brief": "Fast patter of feet running off, panned out right.",
+   "id": "creature_emu-feet-patter-off_01",
+   "origin": "generated",
+   "pan": "right"
+  },
+  {
+   "cue": "B04-SH01-gate",
+   "shot": "B04-SH01",
+   "frame": 868,
+   "brief": "Title gate clack.",
+   "id": "mechanical_projector-shutter-click_01",
+   "origin": "library",
+   "fit": "Library file is a single tiny dry film-projector shutter click, 0.25 s: the same source, action, material and space as Film's soft projector gate clack (0.15 s, small room, dry); a new generation (ep30-gate-clack candidates) measured no closer."
+  },
+  {
+   "cue": "B04-SH01-mus04",
+   "shot": "B04-SH01",
+   "frame": 868,
+   "brief": "MUS-04 ambush vamp: sneaky low pizzicato strings and muted tuba; ducks 12 dB at 1003, stops dead at 1035.",
+   "id": "tension_ambush-pizzicato-vamp_01",
+   "origin": "generated",
+   "durationFrames": 167
+  },
+  {
+   "cue": "B04-SH01-amb-d",
+   "shot": "B04-SH01",
+   "frame": 868,
+   "brief": "Water lapping at the earth bank with a slow dry windmill creak every 2 s (first near local 10); low throughout to 1150.",
+   "id": "water_dam-lap-windmill_01",
+   "origin": "generated",
+   "durationFrames": 282
+  },
+  {
+   "cue": "B04-SH02-shuffle",
+   "shot": "B04-SH02",
+   "frame": 924,
+   "brief": "Orderly many-bird shuffle, padded footsteps in a slow almost marching rhythm, mid-distance, dry.",
+   "id": "foley_emu-column-shuffle_01",
+   "origin": "generated",
+   "durationFrames": 69
+  },
+  {
+   "cue": "B04-SH02-unison",
+   "shot": "B04-SH02",
+   "frame": 965,
+   "brief": "The unison step: one combined soft thump-shuffle of many feet, 0.3 s, comic precision.",
+   "id": "foley_emu-unison-step_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH03-burst",
+   "shot": "B04-SH03",
+   "frame": 1003,
+   "brief": "Lewis gun burst, closer: 11 cracks exactly 0.100 s apart, wetter slap off water and earth bank, ends dead on the last crack (1033) with no tail; ducked about 6 dB under the words.",
+   "id": "impact_lewis-burst-wet-11_01",
+   "origin": "generated",
+   "durationFrames": 36,
+   "note": "Attack at about 18 ms; last crack at file 1.000 s = frame 1033; file ends 1.07 s."
+  },
+  {
+   "cue": "B04-SH03-casings",
+   "shot": "B04-SH03",
+   "frame": 1005,
+   "brief": "Hot brass pinging on a dry earth slope and plopping with a tiny hiss into shallow water, close, 1 s.",
+   "id": "foley_brass-casings-water_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH03-strikes",
+   "shot": "B04-SH03",
+   "frame": 1005,
+   "brief": "Rounds slapping into mud and shallow water along the shore, small wet thuds and splashes 8-15 m away, low.",
+   "id": "water_rounds-strike-mud_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH03-startle",
+   "shot": "B04-SH03",
+   "frame": 1005,
+   "brief": "A few sharp low emu grunts, wing flaps, two splashes as birds hop into the shallows, 6-10 m, 1 s.",
+   "id": "creature_emu-flock-startled-dam_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH03-ring",
+   "shot": "B04-SH03",
+   "frame": 1035,
+   "brief": "Softer ear ring, 9-frame decay, gone by 1044. No cooling ticks.",
+   "id": "tension_ear-ring-dam_01",
+   "origin": "generated",
+   "durationFrames": 9
+  },
+  {
+   "cue": "B04-SH04-click",
+   "shot": "B04-SH04",
+   "frame": 1052,
+   "brief": "Steel bolt stopping short, one dry deflating click on dead silence, very close, 0.2 s.",
+   "id": "mechanical_gun-jam-click_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH04-puff",
+   "shot": "B04-SH04",
+   "frame": 1052,
+   "brief": "Soft smoke puff fff, 0.3 s.",
+   "id": "mechanical_gun-smoke-puff_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH04-tinkle",
+   "shot": "B04-SH04",
+   "frame": 1057,
+   "brief": "Single bright brass casing tinkle on stone, bounces, 0.3 s.",
+   "id": "foley_brass-casing-tinkle_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH06-rack",
+   "shot": "B04-SH06",
+   "frame": 1062,
+   "brief": "Lewis cocking handle yanked back and run home, steel on steel, clean and practised, 0.17 s; done by 1067.",
+   "id": "mechanical_lewis-cocking-rack_01",
+   "origin": "generated",
+   "durationFrames": 5
+  },
+  {
+   "cue": "B04-SH05-click",
+   "shot": "B04-SH05",
+   "frame": 1092,
+   "brief": "One more hopeless dry trigger click off screen, softer, 1.5 m off-axis, 0.1 s, in L23's pause 1091-1093.",
+   "id": "mechanical_gun-jam-click-offaxis_01",
+   "origin": "generated",
+   "note": "PB01 mime beat; no music."
+  },
+  {
+   "cue": "B04-SH05-tick",
+   "shot": "B04-SH05",
+   "frame": 1106,
+   "brief": "Tiny dry wristwatch tick-tick (1106, 1109) as the wing settles, very close, about 18 dB under the voice; Editor may drop it if it masks \"ตอนนี้\" (O10).",
+   "id": "mechanical_watch-tick-pair_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH05-tap1",
+   "shot": "B04-SH05",
+   "frame": 1126,
+   "brief": "Patient clawed foot tap on packed wet dirt, soft thud with a tiny claw click, close, unhurried; clear of L23 and L12.",
+   "id": "creature_emu-foot-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH05-tap2",
+   "shot": "B04-SH05",
+   "frame": 1133,
+   "brief": "Patient clawed foot tap on packed wet dirt, soft thud with a tiny claw click, close, unhurried; clear of L23 and L12.",
+   "id": "creature_emu-foot-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B04-SH05-tap3",
+   "shot": "B04-SH05",
+   "frame": 1140,
+   "brief": "Patient clawed foot tap on packed wet dirt, soft thud with a tiny claw click, close, unhurried; clear of L23 and L12.",
+   "id": "creature_emu-foot-tap_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH01-gate",
+   "shot": "B05-SH01",
+   "frame": 1150,
+   "brief": "Title gate clack.",
+   "id": "mechanical_projector-shutter-click_01",
+   "origin": "library",
+   "fit": "Library file is a single tiny dry film-projector shutter click, 0.25 s: the same source, action, material and space as Film's soft projector gate clack (0.15 s, small room, dry); a new generation (ep30-gate-clack candidates) measured no closer."
+  },
+  {
+   "cue": "B05-SH01-mus05",
+   "shot": "B05-SH01",
+   "frame": 1150,
+   "brief": "MUS-05 fast bouncy brass galop about 140 bpm, the first music since \"ยิง!\"; deflates into the tuba slide.",
+   "id": "action_galop-chase_01",
+   "origin": "generated",
+   "durationFrames": 200
+  },
+  {
+   "cue": "B05-SH01-engine",
+   "shot": "B05-SH01",
+   "frame": 1150,
+   "brief": "Truck engine labouring in low gear, four-cylinder petrol at high revs, rattling tray chains; loop to 1294 and under B05-SH02.",
+   "id": "mechanical_truck-engine-labouring-loop_01",
+   "origin": "generated",
+   "durationFrames": 144
+  },
+  {
+   "cue": "B05-SH01-run",
+   "shot": "B05-SH01",
+   "frame": 1150,
+   "brief": "Emu running feet low under the engine, heavy three-toed runners on a dirt track, many, mid-distance (loop to 1294).",
+   "id": "foley_emu-flock-run-loop_01",
+   "origin": "generated",
+   "durationFrames": 144
+  },
+  {
+   "cue": "B05-SH02-spring1",
+   "shot": "B05-SH02",
+   "frame": 1218,
+   "brief": "Old steel leaf-spring creak and chassis bang, close, short, comic but real.",
+   "id": "vehicle_leaf-spring-creak-bang_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-spring2",
+   "shot": "B05-SH02",
+   "frame": 1234,
+   "brief": "Old steel leaf-spring creak and chassis bang, close, short, comic but real.",
+   "id": "vehicle_leaf-spring-creak-bang_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-spring3",
+   "shot": "B05-SH02",
+   "frame": 1248,
+   "brief": "Old steel leaf-spring creak and chassis bang, close, short, comic but real.",
+   "id": "vehicle_leaf-spring-creak-bang_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-spring4",
+   "shot": "B05-SH02",
+   "frame": 1262,
+   "brief": "Old steel leaf-spring creak and chassis bang, close, short, comic but real.",
+   "id": "vehicle_leaf-spring-creak-bang_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-spring5",
+   "shot": "B05-SH02",
+   "frame": 1276,
+   "brief": "Old steel leaf-spring creak and chassis bang, close, short, comic but real.",
+   "id": "vehicle_leaf-spring-creak-bang_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-shot1",
+   "shot": "B05-SH02",
+   "frame": 1282,
+   "brief": "Single Lewis shot going nowhere, open air, deflated, 0.3 s.",
+   "id": "impact_lewis-single-shot-deflated_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH02-shot2",
+   "shot": "B05-SH02",
+   "frame": 1289,
+   "brief": "Second single shot going nowhere.",
+   "id": "impact_lewis-single-shot-deflated_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B05-SH03-putter",
+   "shot": "B05-SH03",
+   "frame": 1294,
+   "brief": "Truck putter receding, low, with evening wind.",
+   "id": "vehicle_truck-1930s-putter-away_01",
+   "origin": "generated",
+   "durationFrames": 72
+  },
+  {
+   "cue": "B05-SH03-amb-p",
+   "shot": "B05-SH03",
+   "frame": 1150,
+   "brief": "Evening wind through wheat, lighter; AMB-P under B05 and B06 to 1737 (the engine bed rides over it to 1294).",
+   "id": "outdoor_wheat-wind-plain_01",
+   "origin": "generated",
+   "durationFrames": 587,
+   "note": "Lighter than B01; set by the mix."
+  },
+  {
+   "cue": "B05-SH03-tuba",
+   "shot": "B05-SH03",
+   "frame": 1313,
+   "brief": "Tuba glissando down, 1.2 s, sad-funny, ending on \"ถอนทัพ\" at 1350; music out after it.",
+   "id": "comedy_tuba-slide-down_01",
+   "origin": "generated",
+   "durationFrames": 37
+  },
+  {
+   "cue": "B05-SH03-bugle",
+   "shot": "B05-SH03",
+   "frame": 1363,
+   "brief": "Lone cornet four-note retreat call, slightly flat, at a distance, 1.0 s; last note ends at 1393 under L21.",
+   "id": "comedy_bugle-retreat-flat_01",
+   "origin": "generated",
+   "durationFrames": 30
+  },
+  {
+   "cue": "B05-SH04-shopbell",
+   "shot": "B05-SH04",
+   "frame": 1425,
+   "brief": "Tiny shop-door bell, two quick jingles, close, 0.4 s, cheerful \"come again\"; done by 1437.",
+   "id": "ui_shop-door-bell_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH01-mus06",
+   "shot": "B06-SH01",
+   "frame": 1441,
+   "brief": "MUS-06 low admiring brass chorale, mock-solemn; swell on \"ถัง\" 1530; cut clean at 1542.",
+   "id": "bed_brass-chorale-admiring_01",
+   "origin": "generated",
+   "durationFrames": 101
+  },
+  {
+   "cue": "B06-SH01-slowmo",
+   "shot": "B06-SH01",
+   "frame": 1441,
+   "brief": "Slow-motion emu footfalls, padded thuds pitched down, slow, close, low.",
+   "id": "foley_emu-slowmo-steps_01",
+   "origin": "generated",
+   "durationFrames": 89
+  },
+  {
+   "cue": "B06-SH01-tank",
+   "shot": "B06-SH01",
+   "frame": 1530,
+   "brief": "Tank-tread clank with a low engine growl on EMU-HERO's footfall, 1.0 s, ducked under the word's tail.",
+   "id": "vehicle_tank-track-clank_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH02-chord",
+   "shot": "B06-SH02",
+   "frame": 1549,
+   "brief": "MUS-06b soft held brass chord under the bow, resolves on the ting at 1563, out by 1578.",
+   "id": "bed_brass-held-chord_01",
+   "origin": "generated",
+   "durationFrames": 29,
+   "note": "Mime beat: effects and music only."
+  },
+  {
+   "cue": "B06-SH02-swish",
+   "shot": "B06-SH02",
+   "frame": 1549,
+   "brief": "Soft slow downward feather-and-cloth swish as the neck dips, close, 0.5 s, gracious (1549-1563).",
+   "id": "foley_feather-cloth-swish_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH02-ting",
+   "shot": "B06-SH02",
+   "frame": 1563,
+   "brief": "One small polite ting at the bottom of the bow, tiny triangle, 0.4 s.",
+   "id": "ui_polite-ting_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH02-applause",
+   "shot": "B06-SH02",
+   "frame": 1563,
+   "brief": "Faint scatter of tiny polite applause, far, 0.4 s; reads as taking a compliment. All out by 1578.",
+   "id": "crowd_polite-applause-far_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH03-pullup",
+   "shot": "B06-SH03",
+   "frame": 1607,
+   "brief": "Truck putter arriving (1607-1625), same engine family.",
+   "id": "vehicle_truck-1930s-pull-up-short_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B06-SH03-trailer",
+   "shot": "B06-SH03",
+   "frame": 1619,
+   "brief": "Movie-trailer hit on \"ภาคสอง\": big low boom with a cymbal swell, 1.5 s, ducked under the word.",
+   "id": "impact_trailer-hit-cymbal_01",
+   "origin": "generated",
+   "durationFrames": 45
+  },
+  {
+   "cue": "B06-SH03-mus07",
+   "shot": "B06-SH03",
+   "frame": 1639,
+   "brief": "MUS-07 slower, slightly detuned march from \"ลากยาว\" to the cut at 1737.",
+   "id": "bed_tired-march-detuned_01",
+   "origin": "generated",
+   "durationFrames": 98
+  },
+  {
+   "cue": "B06-SH03-projector",
+   "shot": "B06-SH03",
+   "frame": 1639,
+   "brief": "Projector rattle accelerating then decelerating, 1.3 s, over the time-lapse jumps (1639-1678).",
+   "id": "mechanical_projector-speed-up-down_01",
+   "origin": "generated",
+   "durationFrames": 39
+  },
+  {
+   "cue": "B06-SH04-putter",
+   "shot": "B06-SH04",
+   "frame": 1679,
+   "brief": "Truck putter receding.",
+   "id": "vehicle_truck-1930s-putter-away_01",
+   "origin": "generated",
+   "durationFrames": 58
+  },
+  {
+   "cue": "B06-SH04-bugle",
+   "shot": "B06-SH04",
+   "frame": 1715,
+   "brief": "Same off-key bugle callback; its 1.0 s tail runs past the cut, Editor fades it over 1733-1741.",
+   "id": "comedy_bugle-retreat-flat_01",
+   "origin": "generated",
+   "durationFrames": 30
+  },
+  {
+   "cue": "B07-SH01-windown",
+   "shot": "B07-SH01",
+   "frame": 1737,
+   "brief": "Projector motor slowing to a stop, 0.8 s; the old-record filter opens on the cut.",
+   "id": "mechanical_projector-wind-down_01",
+   "origin": "generated",
+   "durationFrames": 24
+  },
+  {
+   "cue": "B07-SH01-amb-a",
+   "shot": "B07-SH01",
+   "frame": 1737,
+   "brief": "Clean city exterior: soft far traffic, light breeze, one magpie warble near frame 1797, no filter, to the end 1977.",
+   "id": "city_plaza-morning-magpie_01",
+   "origin": "generated",
+   "durationFrames": 240
+  },
+  {
+   "cue": "B07-SH01-mus08",
+   "shot": "B07-SH01",
+   "frame": 1741,
+   "brief": "MUS-08 original warm anthem-style brass pad rising from 1741, full fidelity; pulls back at 1884; never the real anthem.",
+   "id": "bed_anthem-brass-pad_01",
+   "origin": "generated",
+   "durationFrames": 143
+  },
+  {
+   "cue": "B07-SH02-boom",
+   "shot": "B07-SH02",
+   "frame": 1916,
+   "brief": "Emu boom as in B01-SH03, now clean hi-fi (no old-record filter), 0.7 s, as the head turn settles.",
+   "id": "creature_emu-boom_01",
+   "origin": "generated"
+  },
+  {
+   "cue": "B07-SH02-button",
+   "shot": "B07-SH02",
+   "frame": 1937,
+   "brief": "Ending button: small brass band resolves on a warm major chord with one clean parade-snare flam, ringing 1.3 s to the end at 1977; fade nothing.",
+   "id": "stinger_brass-parade-end-button_01",
+   "origin": "generated",
+   "durationFrames": 40
+  }
+ ],
+ "swaps": [],
+ "exempt": [{"src": "audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav", "reason": "stem baked by short/sound-mix.py from this sheet"}],
+ "levels": {
+  "stems": {
+   "voice": "out/stems/voice.wav",
+   "bed": "out/stems/bed.wav",
+   "texture": "out/stems/texture.wav",
+   "accent": "out/stems/accent.wav"
+  },
+  "checks": [
+   {
+    "beat": "B01",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 0.0,
+    "toSec": 6.67
+   },
+   {
+    "beat": "B01",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 0.0,
+    "toSec": 6.67
+   },
+   {
+    "beat": "B01",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 0.0,
+    "toSec": 6.67
+   },
+   {
+    "beat": "B02",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 6.67,
+    "toSec": 22.23
+   },
+   {
+    "beat": "B02",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 6.67,
+    "toSec": 22.23
+   },
+   {
+    "beat": "B02",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 6.67,
+    "toSec": 22.23
+   },
+   {
+    "beat": "B03",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 22.23,
+    "toSec": 28.93
+   },
+   {
+    "beat": "B03",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 22.23,
+    "toSec": 28.93
+   },
+   {
+    "beat": "B03",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 22.23,
+    "toSec": 28.93
+   },
+   {
+    "beat": "B04",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 28.93,
+    "toSec": 38.33
+   },
+   {
+    "beat": "B04",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 28.93,
+    "toSec": 38.33
+   },
+   {
+    "beat": "B04",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 28.93,
+    "toSec": 38.33
+   },
+   {
+    "beat": "B05",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 38.33,
+    "toSec": 47.8
+   },
+   {
+    "beat": "B05",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 38.33,
+    "toSec": 47.8
+   },
+   {
+    "beat": "B05",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 38.33,
+    "toSec": 47.8
+   },
+   {
+    "beat": "B06",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 47.8,
+    "toSec": 57.9
+   },
+   {
+    "beat": "B06",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 47.8,
+    "toSec": 57.9
+   },
+   {
+    "beat": "B06",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 47.8,
+    "toSec": 57.9
+   },
+   {
+    "beat": "B07",
+    "layer": "background",
+    "when": "speech",
+    "min": 15,
+    "fromSec": 57.9,
+    "toSec": 65.9
+   },
+   {
+    "beat": "B07",
+    "layer": "bed",
+    "when": "speech",
+    "warnAbove": 20,
+    "fromSec": 57.9,
+    "toSec": 65.9
+   },
+   {
+    "beat": "B07",
+    "layer": "texture",
+    "when": "speech",
+    "min": 18,
+    "fromSec": 57.9,
+    "toSec": 65.9
+   },
+   {
+    "beat": "B02",
+    "layer": "background",
+    "when": "speech",
+    "min": 20,
+    "fromSec": 6.87,
+    "toSec": 9.83,
+    "note": "L02 year \"1932\" must be understood"
+   },
+   {
+    "beat": "B07",
+    "layer": "background",
+    "when": "speech",
+    "min": 20,
+    "fromSec": 60.7,
+    "toSec": 61.63,
+    "note": "L17 year \"1908\" must be understood"
+   },
+   {
+    "beat": "B02",
+    "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 15.77,
+    "toSec": 16.57,
+    "note": "fanfare sputter 473-497 over L04 \"เต็มกำลัง\"; cue <= 2 s"
+   },
+   {
+    "beat": "B03",
+    "layer": "accent",
+    "when": "peak",
+    "min": -6,
+    "max": 3,
+    "fromSec": 22.0,
+    "toSec": 22.43,
+    "note": "roll-hit 660-673 in the gap before \"ยิง!\""
+   },
+   {
+    "beat": "B03",
+    "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 23.0,
+    "toSec": 25.2,
+    "note": "burst 690-756 ducked ~6 dB under L06 words (Film VD30-11); full in the pauses and from 756",
+    "exception": "brief VD30-11 gunfire"
+   },
+   {
+    "beat": "B06",
+    "layer": "accent",
+    "when": "speech",
+    "min": 12,
+    "fromSec": 53.97,
+    "toSec": 54.6,
+    "note": "trailer hit 1619 under \"ภาคสอง\""
+   },
+   {
+    "beat": "B07",
+    "layer": "accent",
+    "when": "peak",
+    "min": -6,
+    "max": 3,
+    "fromSec": 64.57,
+    "toSec": 65.9,
+    "note": "ending button 1937-1977 after the line ends"
+   }
+  ]
+ }
+}

@@ -17,6 +17,8 @@
 // proxied to 540x960.
 // The final cut stops while any shot has no draft clip; --skip-draft="<reason>" renders anyway, only after the user
 // chose to skip the draft stage.
+// --scenes=<a>-<b> (with --full) paints and caches only scenes a..b (1-based) into the scene cache, then stops: no cut, no
+//   rows update. It lets a second process share a long draft; run --full again, which reuses the cached scenes, to cut.
 // --shots / --missing render single shots ±1 s (360x640 proxies, <shot>_<draft|final>.mp4), e.g. to re-check one fix.
 // Prints one line per shot, then the build command.
 // Defaults to --gl=angle; per-run timings and cache counts are written to out/logs/render-clips-*.jsonl.
@@ -24,7 +26,7 @@ import {bundle} from '@remotion/bundler';
 import {openBrowser, selectComposition} from '@remotion/renderer';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
-import {ffmpeg, manifestFile, readJson, renderSegmented, scenesInRange, variantOf} from '../segments.mjs';
+import {ffmpeg, manifestFile, readJson, renderSegmented, sceneRanges, scenesInRange, variantOf} from '../segments.mjs';
 import {parseRenderArgs} from '../render-options.mjs';
 import {withRenderLog} from '../render-log.mjs';
 
@@ -65,6 +67,15 @@ try {
   if (full) {
     const whole = `${dir}/_${kind}_cut.full.mp4`, cut = `${dir}/_${kind}_cut.mp4`;
     const render = {serveUrl, composition, puppeteerInstance: browser, chromiumOptions, timeoutInMilliseconds, inputProps, scale, concurrency};
+    if (flags.scenes) {
+      const [a, b = a] = String(flags.scenes).split('-').map(Number);
+      const ranges = sceneRanges({...composition.props, ...inputProps}.timeline, fps);
+      if (!(a >= 1 && b >= a && b <= ranges.length)) throw new Error(`--scenes=${flags.scenes}: expected <a>-<b> within 1-${ranges.length}`);
+      await renderSegmented({render, options: {gl, scale, crf: 18}, workDir: `out/${id}/segments-work-${a}-${b}`, output: `${dir}/_${kind}_scenes_${a}-${b}.mp4`,
+        frameRange: [ranges[a - 1][0], ranges[b - 1][1]], pinOptions: {keep: flags['keep-pinned'] === true}, metrics, log: (line) => console.log(`${kind} scenes ${a}-${b}: ${line}`)});
+      console.log(`${kind} scenes ${a}-${b} cached; run the same --full command without --scenes to assemble the cut`);
+      return;
+    }
     // The draft is already half size, so it is the cut itself; the full-size final gets a 540x960 proxy.
     await renderSegmented({render, options: {gl, scale, crf: 18}, workDir: `out/${id}/segments-work`, output: draft ? cut : whole, frameRange: [0, last],
       pinOptions: {keep: flags['keep-pinned'] === true}, metrics, log: (line) => console.log(`${kind} cut: ${line}`)});
