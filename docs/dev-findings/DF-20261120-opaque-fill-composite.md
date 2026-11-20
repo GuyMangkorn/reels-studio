@@ -39,7 +39,8 @@
 - A flat queue starting after library marks calls `render()`, which also "dries" watercolour fills (`Mix.afterFlush`). Only the `textured` POC paints those.
 - The wrapper trusts that the active p5.brush target is the `BrushCanvas` canvas. A page that also mounts the EDU-EP18 stack (its own `createCanvas`) is not covered by a test here.
 - Fewer stroke composites need a scene-level change (paint a part's fills, then its lines: the far-bird experiment on `claude/ep30-stamp-experiment`, 73 → 37 s on its own, look review pending) or deferring a line's composite while later fills do not overlap its bounds (not tried: needs a safe bound for a spline's ink).
-- Video renders and other episodes were not measured; only three EDU-EP30 stills.
+- Other episodes were not measured: three EDU-EP30 stills here and one EP30 scene as video (Re-check).
 
 ## Re-check
 - Date + branch/commit → method/result/coverage → status:
+- 2026-11-20, coordinator session, detached checkout of `2955862` with the four changed files of `196f425` copied in, scratch `REELS_STORE` → video render of EDU-EP30-SHORT scene 8 (B02-SH06, frames 592–666, 75 frames; `render.mjs --draft --range=592-666 --gl=angle --timeout=900000 --concurrency=2`): **1,521 s (20.3 s/frame)** against 3,344 s (44.6 s/frame) for the same scene in the EP30 draft cut earlier the same day with the original engine and the same flags. Both ran while another EP30 draft render used the machine: similar load, not controlled. Old vs new segment, 540×960, 75 frames: PSNR average 43.5 dB, min 41.0 (two separate H.264 encodes); frames 10, 38 and 70 of the scene viewed side by side, no visible difference → status unchanged (fixed for fill colour changes; stroke composite open).
