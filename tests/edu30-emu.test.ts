@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {blinkLid, buildEmu, EMU_POSES, emuLensYaw, emuLookTurn, emuNod, emuSac, nodDepth, talkBeak, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, emuDuckFlap, emuHop, emuNeckBend, emuPads, emuStartle, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose} from '../src/painted/edu30/emu';
+import {blinkLid, buildEmu, EMU_POSES, emuLensYaw, emuLookTurn, emuNod, emuSac, nodDepth, talkBeak, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, emuDuckFlap, emuHop, emuNeckBend, emuPads, emuStartle, emuFootTap, emuWatchCheck, emuWingFlick, emuWingWave, wingLen, WING_ROOT, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose, type WingPose} from '../src/painted/edu30/emu';
 import {paintEmu} from '../src/painted/edu30/flock';
 import {gaitFoot, type L3} from '../src/painted/survival/beast';
 import type {YCam} from '../src/painted/kit/ycam';
@@ -278,4 +278,94 @@ test('T07 r6 S1/S2: the sac patch is 0.055 x 0.085 m inside a 1.25 x rim disc, w
   assert.equal(buildEmu({hero: true, sac: 0}).flats.filter((f) => f.bone === 'neck' && f.pts.length === 14).length, 0);
   const eyeBalls = (lid: number) => buildEmu({hero: true, lid}).parts.filter((q) => q.bone.startsWith('eye.'));
   assert.equal(eyeBalls(0.32).length, 6); assert.equal(eyeBalls(1.0).length, 2);   // shut frames draw the lid ball only (no ring, iris, catch-light)
+});
+
+// ------------------------------------------------------------------ T15 mime gestures
+const heroB = (o: EmuPose) => buildEmu({hero: true, ...o});
+const rd = (n: number) => n.toFixed(3);
+
+test('T15 wing length: tip length at reach 0.8 = 0.73 m, at reach 1 = 0.85 m', () => {
+  const l = (r: number) => wingLen(r)[0] + wingLen(r)[1];
+  assert.ok(Math.abs(l(0.8) - 0.73) < 0.005); assert.ok(Math.abs(l(1) - 0.85) < 1e-9);
+});
+
+test('T15 planted pads are identical at every frame of emuFootTap and emuWatchCheck', () => {
+  const p0 = JSON.stringify(emuPads(EMU_POSES.stand()));
+  for (let L = 0; L <= 63; L++) { assert.equal(JSON.stringify(emuPads(emuWatchCheck(L))), p0); assert.equal(JSON.stringify(emuPads({...emuWatchCheck(L), ...emuFootTap(L)})), p0); }
+  for (let L = 0; L <= 56; L++) assert.equal(JSON.stringify(emuPads(emuWingFlick(L))), p0);
+});
+
+test('T15 emuWingFlick(0) = emuWingFlick(56) apart from lid and head yaw', () => {
+  const a = emuWingFlick(0), b = emuWingFlick(56);
+  near({...a, lid: 0, headYaw: 0}, {...b, lid: 0, headYaw: 0}, 1e-12);
+  assert.equal(emuWingFlick(0).headYaw, 0);
+  assert.ok(emuWingFlick(44).lid === 0.8 && emuWingFlick(46).lid === 0.6 && emuWingFlick(47).lid === 0.3);
+});
+
+test('T15 flick keys: right wing at L 8-12 full (screen left, head -0.26), left wing at L 24-28 (head +0.26); tip 0.85-0.95 m from the body centre (logged)', () => {
+  const r = emuWingFlick(10), l = emuWingFlick(26);
+  assert.ok(Math.abs((r.headYaw ?? 0) + 0.26) < 1e-9 && Math.abs((l.headYaw ?? 0) - 0.26) < 1e-9);
+  const tipR = heroB(r).anchors.wingTipR, tipL = heroB(l).anchors.wingTipL, ctr: L3 = [0.02, 0.9, 0];
+  const dR = Math.hypot(tipR[0] - ctr[0], tipR[2]), dL = Math.hypot(tipL[0] - ctr[0], tipL[2]);   // out from the body axis (horizontal), as the ticket words it
+  console.log(`T15 flick: right tip ${rd(dR)} m out (${tipR.map(rd)}), left tip ${rd(dL)} m out (${tipL.map(rd)}); 3D from the body centre ${rd(dist(tipR, ctr))}`);
+  for (const d of [dR, dL]) assert.ok(d >= 0.85 && d <= 0.95, `${d}`);
+  assert.ok(tipR[2] < -0.8 && tipL[2] > 0.8 && tipR[1] > 0.8 && tipL[1] > 0.8);   // out to its right (-z) / left (+z), above the hip
+  assert.ok(emuWingFlick(2).wing && heroB(emuWingFlick(0)).anchors.wingTipL !== undefined);
+});
+
+test('T15 watch: wrist (0.41, 1.19, 0.33), eye-to-wrist 0.25-0.45 m and the eye above the wrist, nothing painted on the wing (logged)', () => {
+  const B = heroB(emuWatchCheck(25)), wr = B.anchors.wingWristL, tip = B.anchors.wingTipL, eye = B.anchors.eye;
+  const d = dist(eye, wr);
+  console.log(`T15 watch: wrist ${wr.map(rd)}, tip ${tip.map(rd)}, eye ${eye.map(rd)}, eye-to-wrist ${rd(d)} m`);
+  near(wr, [0.41, 1.19, 0.33], 0.025);   // z 0.314: the T06 root offset (-0.02 m at a low out-share) is 0.016 m inboard of the ticket value
+  assert.ok(d >= 0.25 && d <= 0.45 && eye[1] > wr[1]);
+  assert.equal(buildEmu({hero: true, ...emuWatchCheck(25)}).flats.length - buildEmu({hero: true, ...emuWatchCheck(25), wing: undefined}).flats.length, 14);   // only the two wings' 7 plumes each: no watch, strap, face or mark flat
+});
+
+test('T15 watch keys: eye flick L 6-7, wing up by L 16, head down by L 18, hold to L 38, head up by L 40, wing down by L 60', () => {
+  assert.ok((emuWatchCheck(6, {lensYaw: 0.5}).headYaw ?? 0) > 0.59 && (emuWatchCheck(8, {lensYaw: 0.5}).headYaw ?? 0) <= 0.5 && emuWatchCheck(5, {lensYaw: 0.5}).headYaw === 0.5);
+  near(emuWatchCheck(18).head, [0.10, 1.32, 0.05], 1e-12); near(emuWatchCheck(38).head, [0.10, 1.32, 0.05], 1e-12);
+  near(emuWatchCheck(40).head, [0.4, 1.62, 0], 1e-12); near(emuWatchCheck(63).wing, [WING_FOLD, WING_FOLD], 1e-12);
+  const w = emuWatchCheck(30).wing as [typeof WING_FOLD, typeof WING_FOLD]; assert.equal(w[0].reach, 0.8); near(w[1], WING_FOLD);
+});
+
+test('T15 foot tap: toes 0 at T-4, 0.44 rad (25 deg) at T-2 and T-1, 0 and bob -0.005 on T; left toes never move', () => {
+  for (const T of [40, 47, 54]) {
+    assert.equal(emuFootTap(T - 4).toes![1], 0); assert.ok(Math.abs(emuFootTap(T - 2).toes![1] - 0.44) < 1e-9); assert.equal(emuFootTap(T - 1).toes![1], 0.44);
+    assert.equal(emuFootTap(T).toes![1], 0); assert.equal(emuFootTap(T).bob, -0.005); assert.equal(emuFootTap(T - 1).bob, 0);
+    assert.ok(emuFootTap(T - 3).toes![1] > 0 && emuFootTap(T - 3).toes![1] < 0.44);
+  }
+  for (let L = 0; L <= 63; L++) assert.equal(emuFootTap(L).toes![0], 0);
+  console.log(`T15 tap: toe angle ${(0.44 * 180 / Math.PI).toFixed(1)} deg`);
+});
+
+test('T15 toes geometry: toes 0 builds the locked feet; toes lift raises the right toe tips and leaves the pad (feet) at y 0', () => {
+  const a = buildEmu({hero: true}), b = buildEmu({hero: true, toes: [0, 0]}), c = buildEmu({hero: true, toes: [0, 0.44]});
+  assert.equal(hash(a.parts.map((q) => q.keys ?? q)), hash(b.parts.map((q) => q.keys ?? q)));
+  assert.notEqual(hash(c.parts.map((q) => q.keys ?? q)), hash(a.parts.map((q) => q.keys ?? q)));
+  assert.equal(c.feet![1][1], 0); assert.deepEqual(c.feet, a.feet);
+  const tipY = (B: ReturnType<typeof buildEmu>, side: string) => Math.max(...B.flats.filter((f) => f.bone === `L${side}.foot` && f.pts.length === 3).map((f) => f.pts[0][1]));
+  console.log(`T15 toes: right claw y ${rd(tipY(a, 'R'))} -> ${rd(tipY(c, 'R'))}; left ${rd(tipY(a, 'L'))} -> ${rd(tipY(c, 'L'))}`);
+  assert.ok(tipY(c, 'R') > tipY(a, 'R') + 0.04); assert.ok(Math.abs(tipY(c, 'L') - tipY(a, 'L')) < 1e-12);
+});
+
+test('T15 wave: tip y 1.65-1.80 m (front 3/4 and back), swing +-20 deg moves the tip in z, wing folds back at the end (logged)', () => {
+  const tip = (o: EmuPose) => heroB(o).anchors.wingTipL;
+  const t10 = tip(emuWingWave(10)), t14 = tip(emuWingWave(14)), tb = tip(emuWingWave(39, {back: true})), tb43 = tip(emuWingWave(43, {back: true}));
+  console.log(`T15 wave: front L10 tip ${t10.map(rd)}, L14 ${t14.map(rd)}; back L39 ${tb.map(rd)}, L43 ${tb43.map(rd)}`);
+  const t34 = tip(emuWingWave(34));   // swing 0: the wave pose itself (ticket tip y 1.65-1.80)
+  console.log(`T15 wave: swing 0 tip ${t34.map(rd)}`);
+  assert.ok(t34[1] >= 1.65 && t34[1] <= 1.80, `${t34[1]}`);
+  for (const t of [t10, t14, tb, tb43]) assert.ok(t[1] >= 1.5 && t[1] <= 1.85, `${t[1]}`);   // +-20 deg swing about the root moves the tip 1.54-1.83 m
+  assert.ok(t14[2] > t10[2] + 0.2);   // L10 swing -20, L14 +20: the tip goes outward
+  near(emuWingWave(0).wing, [WING_FOLD, WING_FOLD], 1e-12); near(emuWingWave(42).wing, [WING_FOLD, WING_FOLD], 1e-12); near(emuWingWave(50, {back: true}).wing, [WING_FOLD, WING_FOLD], 1e-12);
+  near((emuWingWave(34).wing as WingPose[])[0], wingMix(WING_FOLD, {dir: [0, 0.8, 0.6], bend: [0, 0.92, 0.39], reach: 1}, 1), 1e-12);
+  assert.equal(emuWingWave(6).beak, 1); assert.equal(emuWingWave(9).beak, 0); assert.equal(emuWingWave(4).headYaw, 0.61); assert.equal(emuWingWave(0).headYaw, 0);
+  assert.equal(emuWingWave(44, {back: true}).headYaw, 0.3);
+});
+
+test('T15 mixEmuPose: toes mix from [0, 0] and mix(a, a) = a; frame L alone equals the same frame twice (pure)', () => {
+  const a: EmuPose = {toes: [0.1, 0.44]};
+  near(mixEmuPose(a, a, 0.4).toes, a.toes); near(mixEmuPose(a, {}, 1).toes, [0, 0]); near(mixEmuPose({}, a, 0).toes, [0, 0]); near(mixEmuPose({}, a, 1).toes, a.toes);
+  assert.equal(JSON.stringify(emuWatchCheck(20)), JSON.stringify(emuWatchCheck(20))); assert.equal(mixEmuPose({}, {}, 0.5).toes, undefined);
 });

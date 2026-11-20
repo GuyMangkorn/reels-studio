@@ -48,6 +48,8 @@ export type EmuPose = {
   beak?: number;
   /** T07: neck-sac boom 0..1 (throat front swells at neck u 0.25-0.55, bare-skin patch) */
   sac?: number;
+  /** T15: toes lift [left, right] rad: the three front toes rotate up about the rear pad (the pad stays planted); default [0, 0] */
+  toes?: [number, number];
   hero?: boolean;
   /** look-frame flock variety: plumage tone shift -1..1 (darker .. paler) */
   tone?: number;
@@ -235,10 +237,12 @@ export const buildEmu = (o: EmuPose = {}): Build => {
     // feathered drumstick down to just above the joint
     R.loft(L1.thigh, {m: 10, col: plum, tex: TEX, side: g, keys: spline([{p: lerp(hip, knee, 0.0), a: 0.1, b: 0.11}, {p: lerp(hip, knee, 0.25), a: 0.08, b: 0.085}, {p: lerp(hip, knee, 0.45), a: 0.05, b: 0.052}], 2)});
     const fd: L3 = nrm([1, 0, g * 0.08]), base = add(pad, [0.05, 0.012, 0]);
+    const th = o.toes?.[g > 0 ? 0 : 1] ?? 0, tcs = Math.cos(th), tsn = Math.sin(th);   // T15 toe lift about the rear pad (th 0 = the locked toes, bit for bit)
+    const lift3 = (v: L3): L3 => [v[0] * tcs - v[1] * tsn, v[0] * tsn + v[1] * tcs, v[2]];
     for (const [k, len] of [[-1, 0.11], [0, 0.14], [1, 0.11]] as const) {   // three forward toes, the middle longest
-      const tip = add(add(base, mul(fd, len)), [0, -0.006, k * 0.05 * g]);
+      const tip = add(add(base, lift3(mul(fd, len))), lift3([0, -0.006, k * 0.05 * g]));
       R.loft(L1.foot, {m: 6, col: () => EMU_PX.legDark, keys: [{p: base, a: 0.014, b: 0.012}, {p: lerp(base, tip, 0.5), a: 0.011, b: 0.009}, {p: tip, a: 0.007, b: 0.006}]});
-      R.flat(L1.foot, {pts: [add(tip, [0, 0.006, 0]), add(tip, mul(fd, 0.02)), add(tip, [0, -0.004, 0])], col: EMU_PX.claw, two: true});
+      R.flat(L1.foot, {pts: [add(tip, [0, 0.006, 0]), add(tip, lift3(mul(fd, 0.02))), add(tip, [0, -0.004, 0])], col: EMU_PX.claw, two: true});
     }
     feet.push(pad);
   }
@@ -302,6 +306,7 @@ export const mixEmuPose = (a: EmuPose, b: EmuPose, u0: number): EmuPose => {
   if (a.headDir || b.headDir) r.headDir = mixDir(a.headDir ?? DEFAULT_HEAD_DIR, b.headDir ?? DEFAULT_HEAD_DIR, u);
   if (a.pads || b.pads) r.pads = a.pads && b.pads ? [mix3(a.pads[0], b.pads[0], u), mix3(a.pads[1], b.pads[1], u)] : (a.pads ?? b.pads);
   if (a.wing || b.wing) r.wing = wingMix(a.wing ?? WING_FOLD, b.wing ?? WING_FOLD, u);
+  if (a.toes || b.toes) { const ta = a.toes ?? [0, 0], tb = b.toes ?? [0, 0]; r.toes = [mixNum(ta[0], tb[0], u), mixNum(ta[1], tb[1], u)]; }   // T15: toes mix from their default [0, 0]
   if (a.hero !== undefined) r.hero = a.hero;
   if (a.tone !== undefined) r.tone = a.tone;
   return r;
@@ -364,3 +369,58 @@ export const nodDepth = (f: number, s: number): number => (f <= s || f >= s + 6 
 export const emuNod = (f: number, starts: number[]): number => Math.max(0, ...starts.map((s) => nodDepth(f, s)));
 /** Sac keys at B01-SH03 local frame L: 26 0, 34 1.0 (ease-out), hold to 40, 48 0.2 (ease-in-out), 50 0.1. */
 export const emuSac = (L: number): number => (L <= 26 ? 0 : L <= 34 ? easeOut((L - 26) / 8) : L <= 40 ? 1 : L <= 48 ? mixNum(1, 0.2, easeInOut((L - 40) / 8)) : L <= 50 ? mixNum(0.2, 0.1, (L - 48) / 2) : 0.1);
+
+// ------------------------------------------------------------------ T15 mime gestures (shot-local frames, pure functions of the frame)
+/** Mime wing poses for the bird's LEFT wing (the right wing negates z): see the T15 ticket for the values. */
+export const WING_FLICK: WingPose = {dir: [-0.14, 0.27, 0.95], bend: [-0.14, 0.27, 0.95], reach: 0.8};
+export const WING_WATCH: WingPose = {dir: [0.81, 0.49, 0.32], bend: [0.20, 0.0, -0.98], reach: 0.8};
+export const WING_WAVE: WingPose = {dir: [0.0, 0.80, 0.60], bend: [0.0, 0.92, 0.39], reach: 1};
+/** Head joint and head direction of the watch check: the left eye looks down at the wrist (creature frame). */
+export const WATCH_HEAD: L3 = [0.10, 1.32, 0.05];
+export const WATCH_HEAD_DIR: L3 = nrm([0.31, -0.13, 0.28]);
+/** A wing pose swung by `a` rad about the creature +x axis through the root (+ = tip outward, away from the head; the left wing's z is +). */
+const swingWing = (w: WingPose, a: number): WingPose => {
+  const rot = (v: L3): L3 => [v[0], v[1] * Math.cos(a) - v[2] * Math.sin(a), v[1] * Math.sin(a) + v[2] * Math.cos(a)];
+  return {dir: rot(w.dir), bend: rot(w.bend), reach: w.reach};
+};
+const DEG = Math.PI / 180;
+const ramp = (L: number, a: number, b: number, ease: (t: number) => number = easeInOut) => ease((L - a) / (b - a));
+const gestureBase = (o: Partial<EmuPose> = {}): EmuPose => EMU_POSES.look(0, o);
+/** Wing flick (B03-SH03, bird facing +z front to the lens) at local frame L 0..56: its RIGHT wing at L 4-16 (head 15 deg to its right), its LEFT wing at L 20-32 (head 15 deg to its left), then deadpan with a blink from L 44. Feet planted. */
+export const emuWingFlick = (L: number): EmuPose => {
+  const prof = (L0: number): [number, number] => [L <= L0 + 4 ? ramp(L, L0, L0 + 4, easeOut) : L <= L0 + 8 ? 1 : 1 - ramp(L, L0 + 8, L0 + 12), L <= L0 + 4 ? ramp(L, L0, L0 + 4) : L <= L0 + 8 ? 1 : 1 - ramp(L, L0 + 8, L0 + 12)];
+  const [w1, y1] = L < 4 || L >= 16 ? [0, 0] : prof(4), [w2, y2] = L < 20 || L >= 32 ? [0, 0] : prof(20), yaw = -0.26 * y1 + 0.26 * y2;
+  return gestureBase({headYaw: yaw, lid: blinkLid(L - 44, 0.3), pads: emuPads(EMU_POSES.stand()),
+    wing: [wingMix(WING_FOLD, WING_FLICK, w2), wingMix(WING_FOLD, WING_FLICK, w1)]});
+};
+/** Invisible-watch check (B04-SH05) at shot-local L 0..63 for the LEFT wing: stare at the lens (`lensYaw`), eye flick at L 6-7, wing up L 8-16, head down L 12-18, read to L 38, head up L 38-40, wing down L 55-60. Pads planted; nothing is painted on the wing. */
+export const emuWatchCheck = (L: number, o: {lensYaw?: number} = {}): EmuPose => {
+  const lens = o.lensYaw ?? 0.6, wing = L <= 16 ? ramp(L, 8, 16) : L <= 55 ? 1 : 1 - ramp(L, 55, 60);
+  const h = L <= 18 ? ramp(L, 12, 18) : L <= 38 ? 1 : 1 - ramp(L, 38, 40);
+  const flick = L >= 6 && L < 8 ? 0.10 : 0;
+  const stare = gestureBase({headYaw: lens + flick, lid: 0.3});
+  const read: EmuPose = {head: WATCH_HEAD, headDir: WATCH_HEAD_DIR, headYaw: 0, lid: 0.35};
+  const m = mixEmuPose(stare, read, h);
+  return {...m, pads: emuPads(EMU_POSES.stand()), wing: [wingMix(WING_FOLD, WING_WATCH, wing), WING_FOLD]};
+};
+/** Foot tap (B04-SH05) at shot-local L: its RIGHT foot's toes lift 0.44 rad (25 deg) in the 4 frames before each tap frame T (T-4 0, T-2 0.44 ease-out, T-1 0.44, T 0), body bob -0.005 m on T. Both pads planted. Returns only the foot fields: spread them over the watch pose. */
+export const emuFootTap = (L: number, taps: number[] = [40, 47, 54]): Pick<EmuPose, 'toes' | 'bob' | 'pads'> => {
+  let a = 0, bob = 0;
+  for (const T of taps) {
+    if (L === T) bob = -0.005;
+    else if (L > T - 4 && L < T) a = Math.max(a, L <= T - 2 ? 0.44 * easeOut((L - (T - 4)) / 2) : 0.44);
+  }
+  return {toes: [0, a], bob, pads: emuPads(EMU_POSES.stand())};
+};
+/** Wing wave, bird facing +z (B05-SH04 front three-quarter, L 0..42; B06-SH04 back view `back` true, L 36..50). LEFT wing, swing keys +-20 deg about the +x axis. */
+export const emuWingWave = (L: number, o: {back?: boolean} = {}): EmuPose => {
+  if (o.back) {
+    const w = L <= 39 ? ramp(L, 36, 39, easeOut) : L <= 44 ? 1 : 1 - ramp(L, 44, 50);
+    const sw = keyAt([[39, 20], [43, -20], [44, 0]], L) * DEG;
+    return gestureBase({headYaw: 0.3, lid: 0.15, pads: emuPads(EMU_POSES.stand()), wing: [swingWing(wingMix(WING_FOLD, WING_WAVE, w), sw * w), WING_FOLD]});
+  }
+  const w = L <= 6 ? ramp(L, 2, 6, easeOut) : L <= 36 ? 1 : 1 - ramp(L, 36, 42);
+  const keys: [number, number][] = [[6, 20], [10, -20], [14, 20], [18, -20], [22, 20], [26, -20], [30, 20], [34, 0]];
+  let sw = keys[0][1]; if (L > keys[0][0]) { sw = keys[keys.length - 1][1]; for (let i = 1; i < keys.length; i++) if (L <= keys[i][0]) { sw = mixNum(keys[i - 1][1], keys[i][1], easeInOut((L - keys[i - 1][0]) / (keys[i][0] - keys[i - 1][0]))); break; } }
+  return gestureBase({headYaw: 0.61 * ramp(L, 0, 4), lid: 0.15, beak: talkBeak(L, [6, 13, 21, 28]), pads: emuPads(EMU_POSES.stand()), wing: [swingWing(wingMix(WING_FOLD, WING_WAVE, w), sw * DEG * w), WING_FOLD]});
+};

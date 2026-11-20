@@ -1,5 +1,5 @@
 # T15 — EMU-HERO's mime gestures exist: wing flick (both sides), invisible-watch check, foot tap, wing wave (front three-quarter and back)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal, movement, wing as a gesturing limb)
 Blocked by: T07 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses the T06 wing rig and T07 head controls) · Consumers: B03-SH03 (flick), B04-SH05 (watch check, foot tap), B05-SH04 (wave, front three-quarter), B06-SH04 (one wave swing, back)
 Model: sonnet, medium
@@ -54,4 +54,26 @@ These override any older value in this ticket that they name.
 The proof sheet and the watch strip go to Film for a look check before T25, T28, T30 and T32 use the gestures (Boss records the paths in Result; Film answers in the index Look checks).
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built r3 (Boss, Sonnet medium, 2026-11-20). Commit: the branch tip ("T15 emu mime gestures"). Proof sheet `out/edu30-T15/T15-sheet.png` (KP-flick-r, KP-flick-l, KP-watch, KP-tap, KP-wave, KP-wave-back at 270 px) and watch strip `out/edu30-T15/T15-watch-strip.png` (L 8, 12, 16, 18, 38, 40, 58); stills `out/edu30-T15/stills/T15-KP-*.png`. Store: `projects/edu/EDU/previews/T15-sheet.png`, `T15-watch-strip.png` and the stills (archived, 15 files). Fix passes used: 0. Open question: none.
+
+Built in `emu.ts`: `WING_FLICK`, `WING_WATCH`, `WING_WAVE`, `WATCH_HEAD`, `WATCH_HEAD_DIR`; `emuWingFlick(L)`, `emuWatchCheck(L, {lensYaw})`, `emuFootTap(L, taps = [40, 47, 54])` (returns only `toes`, `bob`, `pads`: spread it over the watch pose), `emuWingWave(L, {back})`; new `EmuPose.toes` ([left, right] rad, toes rotate about the rear pad, 0 = the locked feet bit for bit) in `buildEmu` and `mixEmuPose` (mixed from [0, 0]). `looks.ts`: KP-flick-r, KP-flick-l, KP-watch, KP-tap, KP-wave, KP-wave-back and the strip frames KP-watch-8 ... -58. `emuWatchCheck` takes the lens yaw as an option (default 0.6; the plate passes `emuLensYaw` for its camera), because the ticket gives no camera for L 0-5.
+
+| Row | Measured | Pass | Result |
+| --- | --- | --- | --- |
+| wing tip length | reach 0.8 = 0.73 m, reach 1 = 0.85 m | 0.73 / 0.85 | pass |
+| pads planted | `emuPads` JSON identical on every frame of `emuWatchCheck` (0-63), `emuFootTap` + watch (0-63), `emuWingFlick` (0-56) | identical | pass |
+| flick(0) = flick(56) | equal apart from lid and head yaw | equal | pass |
+| KP-flick-r / -l | right tip (-0.002, 1.197, -0.903), left (-0.002, 1.197, +0.903); 0.903 m out from the body axis (3D from the body centre (0.02, 0.9, 0): 0.951); head yaw -0.26 / +0.26; tip y 1.197 above the hip (0.8) | 0.85-0.95 m | pass (horizontal measure; the 3D distance to the centre is 0.001 m over) |
+| KP-watch | wrist (0.413, 1.189, 0.314), tip (0.481, 1.189, -0.021); eye (0.107, 1.319, 0.107); eye-to-wrist 0.391 m, eye 0.130 m above the wrist; no extra flat on the wing (the pose adds only the two wings' 7 plumes each) | 0.25-0.45 m, eye above | pass |
+| KP-tap | toes 0.44 rad = 25.2 deg on T-2 and T-1 (L 38 = 0.44), 0 at T-4 and T, bob -0.005 on T; left toes 0 on all frames; pad `feet` identical to the locked build (y 0); right claw y 0.012 -> 0.072 | 25 +- 3 deg, pad y 0 | pass |
+| KP-wave / -back | swing 0 (L 34) tip (0.100, 1.728, 0.628), y 1.73; with the +-20 deg swing the tip y runs 1.539 (swing +20, L 14 and back L 39) to 1.830 (swing -20, L 10 and back L 43) | 1.65-1.80 m | **see Not followed** |
+| watch strip | lift, hold and lower on the strip | Film look check | open (Film) |
+
+Hand and arm checks: the emu has no hands or arms. Planted pad slip: 0 m (pads overridden from `emuPads(stand)`, identical on every frame).
+
+Not followed:
+1. **Wave tip y at the swing extremes.** The ticket's WAVE pose (tip y 1.73) and its +-20 deg swing about the +x axis through the root cannot both stay in 1.65-1.80: the swing moves the tip to 1.54 m (outward) and 1.83 m (inward). I built both exactly as written and measured the pose itself (swing 0) against the range; the extremes are logged in the test. KP-wave at L 10 (swing -20) has tip y 1.830, 0.03 m over the range. If Film wants the range at every frame, the swing should be about +-12 deg or the pose centred nearer y 1.70 (the swing then peaks at 1.80).
+2. **Watch wrist z.** Wrist 0.314, ticket 0.33: the T06 root offset (the root moves 0.02 m inboard at a low out-share) puts it 0.016 m inboard; the screen projection effect is small and the eye-to-wrist row passes. Test tolerance 0.025.
+3. **Look.** At 270 px the T06 plume wing (thin drooping plumes) reads as a short row of dark strokes: the flick reads as a wing pointing out, but the watch check reads mostly through the head tipped down to a short dark stroke by the neck, not as a forearm across the chest, and the wave wing from the front three-quarter is a vertical line of strokes. This is the T06 r3 plume drawing the ticket names, unchanged; Film's look check decides whether the mime wing needs a fuller plume at reach > 0.8 (a T06 follow-up).
+
+Checks: `npx tsc --noEmit -p .` clean for the files this ticket touches (the other tsc errors are in files outside it and predate it). `node scripts/test.mjs tests/edu30-emu.test.ts`: 34 pass, 0 fail (10 new T15 tests; the pre-change hashes unchanged). `npm test` (log `out/logs/T15-npmtest.log`): 487 pass, 9 fail, none in the T15 files: `HIPPO.YAWN`/`CHARGE`/`HALT joints hold` (Maximum call stack size exceeded), `loudness`, `new-shot`, `render-inputs`, `segments`, `(d) canvasStyleOf` (the T24 r5 fix-pass row) and `adopt reuses stored bytes`: environment (shared node_modules symlink, no store checkout) or other tickets, not run against a clean baseline here. Stills crashed once on a 183 s page-render timeout while other worktrees loaded the machine; the three missing strip frames were re-rendered.
