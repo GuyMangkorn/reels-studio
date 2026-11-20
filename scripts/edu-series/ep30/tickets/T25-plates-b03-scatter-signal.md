@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium
@@ -38,6 +38,11 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **B03-SH02 burst (T08 r5 B1–B4, TF25).** Six tight groups at L 0 run outward; nobody needs to leave the frame by L 45. Read the burst with T08 r5 `burst(L)` as built. The acceptance stays "six distinct groups read at 270 px"; the exit state becomes "six groups spreading out, the hero group heading for the B03-SH03 mark". Only the 40 birds and their dust are painted.
 - **B03-SH03 halves (T08 r5 H1–H3, TF24).** 12 m/s; the left half is fully off screen left by local 24 and the right half off screen right by local 40, so EMU-HERO is alone from about local 40 to 56 (the blink at 44–46 falls inside).
+
+## r8 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
+These override any older value in this ticket that they name.
+- **B03-SH02 smoke continues B03-SH01 r5 (TF28).** Call `paintSmoke` with L + 72, the B03-SH01 rounds and the same options as B03-SH01 r5: `drift: [0.25, 0.06, 0]`, `seed: 7100`, `fadeAfter: 45` (not the preset's −x drift), so the haze over the gun keeps drifting +x across the cut.
+- **Crowd phase (T08 r5).** `burst` uses the 1/96 phase step; log one B03-SH02 frame's paint time in Result.
 
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.

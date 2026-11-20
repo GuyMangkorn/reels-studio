@@ -1,5 +1,5 @@
 # T29 — plates B05-SH01 (chase locked to the truck) and B05-SH02 (the barrel bounces at the sky) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built (Film look check pending) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R8 Film look check, 2026-11-20: SH02 passes; SH01 G2 reads as a pipe at his mouth, rest elevation +15° (C1, TF31); GUNNER-1 rows set to the built figure (TF32); SH02 emus as built (TF33); thumb waived in the chase; fix pass 1) · was: built (Boss 2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (rider arms on a bouncing body, running emus)
 Blocked by: T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 · Consumers: B05-SH01, B05-SH02 (global 1150–1293)
 Model: sonnet, medium
@@ -34,6 +34,25 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **Single shots (T04 r4).** Per-circle α_c for the B05-SH02 puffs.
 - **Fist (T36).** GUNNER-1 right profile on G2: `flatFist` on the near RIGHT fist (thumb screen right); far LEFT mostly hidden.
+
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`): look check of the built plates and rulings on the open values
+These override any older value in this ticket that they name. Viewed: store `T29-sheet.png` (12 frames at 270 px), `T29-zoom.png` (SH01 L 0 / 30, SH02 L 72 at 540 px), a 500 px crop of the gunner in `T29-s1_00.png` beside the same crop of `T14-chase-10.png`.
+
+**Look check.**
+- **SH02: pass.** The barrel kicks at the sky on the bumps (156 px L 8 → 11), the drum and shroud read, one flash core per single shot aimed at the sky, the gunner calm, the emus pull out right.
+- **SH01: fix (row C1).** Riders rigid (0 px drift), emus running ahead beyond the cab, title clear. But at the rest elevation (10°) the gun lies almost along the view ray: its 1.32 m shows as a short dark tube from his cheek, which reads as a pipe in his mouth, and the line under it is "เอาปืนกลขึ้นรถ". In T14's chase proof the same gun reads as a gun only on the kick frames, when it climbs. The plate raises the rest elevation so the barrel always climbs screen right over the cab.
+- **Near rear wheel with the trailing dust over it: accepted** (the dust trails between the wheel and the lens; T14 dust is at its fix-pass cap).
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| C1 SH01 gun elevation (TF31) | `g2Elev: st.g2Elev + 15 * D` (D = π/180) in the `paintTruckRig` call: rest 25°, bump kicks to 40° as built; fists follow the grips through the rig as in SH02 (kicks to 50° there already) | L 0 and L 30: the muzzle projects **≥ 60 px above** the gun's rear end (stock butt) on screen and the gun's screen length butt → muzzle **≥ 150 px** (logged); arm ratio ≤ 1.05 (logged); viewed at 540 px: a machine gun aimed over the cab, not a tube at his mouth; muzzle clear of the cab roof (≥ 10 px, logged) |
+| C1b SH02 continuity | across the hard cut the gun keeps SH01's raised rest, then settles: SH02 `g2Elev: st.g2Elev + 15 * D * (1 − ease(L / 8))` for L 0–8 (ease-in-out, 0 from L 8, before the first bump peak) | L 0 elevation = SH01 L 59 rest ± 2° (logged); L 8 onward identical to the r4 build (the 156 px kick row still holds) |
+| C2 GUNNER-1 heights (TF32) | the T11 seated figure is 1.12 m; the cast is not scaled (TF23, T14 r4 accepted ≥ 430) | SH01 L 0 / 15: **444 ± 15**; SH02 L 0: **495 ± 20**; SH02 L 72: **≥ 430** (foreshortened by the body pitch at the shot); scene-sheet acceptance "GUNNER-1 ≥ 480" becomes ≥ 430 |
+| C3 SH02 emus (TF33) | accepted as built: the leader at T (6, 0, −6), the other five 0.9–3.8 m behind it (T x 2.2–5.1, z −6 ± 0.7), all start inside the right third and are gone by L 72 | unchanged; no re-render needed beyond C1b |
+| C4 thumb | waived in B05-SH01/02: the T11 mitten fists painted by `paintTruckRig` stand (no `flatFist` hook in `props.ts`; T14 has used both fix passes and the fist is about 20–25 px here). The r4 "Fist (T36)" note is withdrawn for this ticket | Result line `thumb check: GUNNER-1 RIGHT: mitten fist, no thumb drawn (T14 rig, waived R8)` |
+| C5 caption zone | SH01 L 0 mean 0.425: accepted, logged; captions carry the edu stroke without a band; the Editor confirms legibility in the draft cut | logged |
+
+**r5 Files:** `src/painted/edu30/shots/B05-SH01.tsx`, `src/painted/edu30/shots/B05-SH02.tsx`. **Proof:** re-render SH01 L 0, 15, 30, 59 and SH02 L 0, 8, 11; a 540 px crop of the gunner and gun at SH01 L 0; sheet at 270 px; archive as `T29r5-*.png` with `T29r5-sheet.png`. Every r4 row not named here stands.
 
 ## Proof
 - Stills (`out/edu30-T29/`): SH01 L 0, 15, 30, 59; SH02 L 0, 8, 11, 24, 27, 72, 79, 83.

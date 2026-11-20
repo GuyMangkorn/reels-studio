@@ -1,5 +1,5 @@
 # T24 — plate B03-SH01, the first full-frame firing beat (VD30-11, 23 rounds from the order), is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R8 Film look check of the built plate, 2026-11-20: muzzle, flash, shake, casings, strikes, bolt stop and composition pass; smoke drift flipped to screen right (TF28), L 4 row moves to L 5 (TF30), registered-vs-QA row runs where `@remotion/three` resolves, test (d) edit owned here; fix pass 1) · was: built (R7, Boss 2026-11-20) · ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plate) · Hard: yes (gunner arms and jolt, flock startle and scatter)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T08, T09 (r4, done), T11, T13, T34, T36 · Consumers: B03-SH01 (global 688–759)
 Model: sonnet, medium
@@ -8,7 +8,7 @@ Read first: [common rules](index.md#common-rules); shot block [b03.md](../short/
 
 ## Build
 Replace the stub shot file with the plate: over the seated gunner's shoulder, 23 rounds every 3 frames from local 2 to 68, every VD30-11 effect, the flock startling, bunching and bolting.
-Files: `src/painted/edu30/shots/B03-SH01.tsx`
+Files: `src/painted/edu30/shots/B03-SH01.tsx` (r5 adds `tests/painted-canvas-style.test.ts`, test (d) only)
 
 ## Decided values
 | What | Value | Source |
@@ -44,6 +44,27 @@ These override any older value in this ticket that they name.
 - **T34 carry-over.** This is the first plate that sets `shake` and paints leads: the registered plate vs the QA stack at L 2 (a k 0 frame) MAD ≤ 2 with the shake translate in the wrapper style, and the lead probe equal to the QA stack ± 1 px (Proof row added).
 - **Fists (T36).** GUNNER-1 back view: both `Arm.exact` fists with `flatFist`; thumb lines as T36's back row (RIGHT screen left, LEFT screen right).
 - **Lean.** T09's `lean` uses the `lewisAnchors` muzzle (0, 0.586, −0.659) (T09 r4).
+
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`): look check of the built plate and rulings on the four open values
+These override any older value in this ticket that they name. Viewed: store `T24-sheet.png` (9 frames at 270 px), `T24-s68.png` and `T24-s71.png` side by side at 540 px, `T24-crop20.png`, `T24-crop56.png`, crops of `T24-s00.png` / `T24-c02.png` (body region, 400 px) and `T11-back-j0.png` for the gunner's shadow.
+
+**Look check.**
+- **Pass:** muzzle and flash (white core the frame max, halation over the gunner's head edge), per-round shake, casings on the dirt right of G1, spurts short of the birds, near-stalk lean, bolt stop at L 70 (no flash, shake 0), hat and shoulder filling the lower left, title clear. The flock is a dark band of 20–40 px birds on the horizon running in clumps (crop 56): it is the sheet's "dark band across the middle distance"; the burst itself is read in B03-SH02's top shot.
+- **GUNNER-1 head top 746 (value 3): accepted.** The sheet's head (147, 640) and "y ~600" were the SCENE-R1 look; T11 and the locked camera set the head; nothing is bent (TF29). The pale oval right of his tunic (x ≈ 240–390, y ≈ 1540–1820) is his ground shadow from the T11 build, accepted.
+- **Smoke: fix (row R1).** No haze reads in any frame. The preset drift (−0.25 m/s x) carries every puff screen left behind the gunner's head (painted after the smoke), and the halation covers the newest puffs at the muzzle, so the flash is never wrapped by darker smoke (VD30-11). The plate flips its own drift to screen right, over the open wheat (TF28); `kit/gunfire.ts` and the preset stay.
+- **Caption zone mean 0.64: accepted, logged.** The halation and the pop sky sit in the band (r3 note); captions carry the edu stroke without a band. The Editor confirms subtitle legibility on this shot in the draft cut (W5.3).
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| R1 smoke drift | `SMOKE = {...PRE.smoke, drift: [0.25, 0.06, 0], seed: 7100}` (screen right and slightly up; everything else in the preset unchanged); smoke still painted before GUNNER-1 and before the flash | L 71 (no flash, no pop) vs L 0, both clean: mean luma of the 100 × 100 box centred at (620, 960) is **≥ 8 lower at L 71** (logged, with both values); viewed at 270 and 540 px: a grey-brown haze right of the muzzle at L 32 and L 71, flock band birds still visible through it; L 2/3 core still the frame max (existing row) |
+| R2 startle row (value 1, TF30) | no T08 change: the seeded 0–2 f startle delay is the ripple the sound cue SFX-B03-SH01-4 (local 4) describes | **L 5: ≥ 80 %** of F1 in the startle pose (measured 82.5 % in r4 build) and **L 6: 100 %** (logged); L 4 logged, no range |
+| R3 registered vs QA (value 2, T34 carry-over) | run `npm ls @remotion/three` first. It resolves in Film's worktree `brave-visvesvaraya-700270` at `6f47938` (checked 2026-11-20); the coordinator dispatches this pass in a worktree where it resolves (for example one whose `node_modules` points at a complete install). Do **not** run `npm ci` or `npm install`: if it does not resolve, mark R3 `not run (env)` in Result and finish the other rows | L 2 registered vs QA stack MAD ≤ 2 with the shake translate present; lead probe equal ± 1 px |
+| R4 test (d) (value 4) | in `tests/painted-canvas-style.test.ts` test (d), replace the first assertion (`doesNotMatch … /rotate/` on the real B03-SH01 def at 706) with two on the real def: at **L 2, global 690** `assert.match(t, /translate\(-?[\d.]+px, -?[\d.]+px\) rotate\(-?[\d.]+deg\) scale\(1\.05\)$/)`; at **L 71, global 759** `assert.match(t, /scale\(1\.05\)$/)` and `assert.doesNotMatch(t, /rotate\(-?0*\.?0*[1-9]/)` (no non-zero roll after the bolt stop). Update the comment to "B03-SH01 sets `shake` (T24)". Keep the synthetic-shake and B01-SH01 assertions. Not Boss's literal `0.3deg`: that ties the T34 wiring test to the T04 seed | `node scripts/test.mjs tests/painted-canvas-style.test.ts` passes |
+| R5 lead row | GUNNER-1 probe top **746 ± 10**, head x 159 ± 10 (TF29) | `measure-shots.ts B03-SH01 2,68` |
+
+**Smoke cover (r4 row): replaced by R1.** The densest-box pixel cover is not re-measured on this plate: the puffs, alphas and caps are T04's, measured there at 0.245 (smoke) / 0.274 (blast), and the cap bound here is 0.451 / 0.393. The plate's risk is a haze too faint to read, which R1 measures. T27 keeps its own cover row (water, emu legs).
+
+**r5 Files:** `src/painted/edu30/shots/B03-SH01.tsx`, `tests/painted-canvas-style.test.ts`. **Proof:** re-render L 0, 2, 3, 5, 6, 32, 56, 68, 71 (clean L 0 and L 71 for R1); sheet at 270 px plus `s71` at 540 px; archive as `T24r5-*.png` with `T24r5-sheet.png`. Every r4 row not named here stands.
 
 ## Proof
 - Stills (`out/edu30-T24/`): L 0, 2, 3, 4, 20, 40, 56, 68, 71; `scripts/qa-sheet.sh out/edu30-T24/sheet.png --cols 5 --width 270 out/edu30-T24/s*.png`; `measure-shots.ts B03-SH01 2,68`; overlay diff: render L 2 and L 3 with `tag: true` and check the tag and guides do not move.

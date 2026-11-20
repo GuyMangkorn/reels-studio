@@ -1,5 +1,5 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 built by Boss (fix pass 1), awaits Film look check (was: r5 fix pass ready (R7 Film look check of r4: buffet, EMU1, heads field, scatter and fence pass; halves speed, burst grouping and slow-line cycle are revised in rows H1–H3, B1–B4 and S1–S3; this is fix pass 1) · was: r4 built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: **done** (R8 Film look check of r5, 2026-11-20: halves, burst and slow line pass; scatter bolt transient accepted, no stepping turn; crowd phase 1/96 accepted) · was: r5 built by Boss (fix pass 1), awaits Film look check (was: r5 fix pass ready (R7 Film look check of r4: buffet, EMU1, heads field, scatter and fence pass; halves speed, burst grouping and slow-line cycle are revised in rows H1–H3, B1–B4 and S1–S3; this is fix pass 1) · was: r4 built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
 Class: movement · Hard: yes (animal movement)
 Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
@@ -140,3 +140,14 @@ Values I could not follow (Film to decide):
 4. **peck quantisation 1/16 vs slip <= 0.02:** named walkers (EMU1, extras, halves, slowLine) use exact phase; crowd birds (scatter, burst) quantise to 1/16, so run slip there is untested (up to about 0.06 m).
 5. **burst groups:** the six groups take each bird's scatter heading +-60 deg, snapped to 15+60k deg; hero group = the hero and the 10 birds nearest (12, 0, -32), heading toward it. `halves` returns the 10 birds only; the hero at (12, 0, -32) is painted by the plate (T15 mime).
 Other limits: walk to run snap at the bolt is blended over 3 f by `blendPoses`; heads proof overpaints wheat ridges per z band, so some sitting bodies show above the stalks in the proof (the plate T-ticket interleaves properly); scatter birds are 20-40 px high at the sheet camera (z -30..-60 at f 900), as the ticket places them; neck seams ignored per R6 until T37.
+
+## R8 look check of r5 (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
+Viewed: store `T08r5-sheet.png` (13 frames at 270 px).
+- **Halves: pass.** L 14 the left half runs off left, gone by L 22–24 while the right half still stands; L 30 the right half runs off right; L 40 EMU-HERO alone. Two clean exits.
+- **Burst: pass.** L 0 six tight groups round the bare patch; L 20 and 45 six separate clusters spreading outward; no far silhouettes (40 members).
+- **Slow line: pass on the numbers** (84 f cycle, alternate contacts 12/54/96, freeze L 100 with both feet down). The walk is not readable at the proof camera's size; T31 judges it in the plate.
+- **Deviation 1, crowd phase 1/96: accepted.** It is what meets the ≤ 1.5 px row; the cost is more rig builds per frame. Plates that paint `scatter` or `burst` (T24, T25) log one frame's paint time in Result.
+- **Deviation 2, scale fix: accepted.**
+- **Deviation 3, scatter bolt transient (20.87 px for about 7 f per bird): accepted, no stepping turn.** The birds are 20–40 px tall at the B03-SH01 camera and the slide happens while each body pivots into the bolt; at that size it reads as the turn, and B03-SH01's look check (R8) passed the flock band. The ≤ 1.5 px row stays as tested (from 7 f after each bird starts to move), the transient stays logged. Rule for later plates: any plate that shows a `scatter` bird with a lead height ≥ 80 px during its pivot asks Film for a stepping turn first.
+- **Deviation 4 (`FL30-halves` N 41, `HALVES_CAM`): accepted.**
+T08 is **done** (fix passes 1). T16 (same files) and the plates T19, T20, T22, T31 can start; T25 waits on T15 only.

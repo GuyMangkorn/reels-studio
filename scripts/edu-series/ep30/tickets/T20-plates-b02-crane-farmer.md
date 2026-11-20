@@ -1,5 +1,5 @@
 # T20 — plates B02-SH01 (crane into the buffet, place tag) and B02-SH02 (the farmer at the gate) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (flock peck sync, farmer arm and face)
 Blocked by: T03, T08, T09, T12 · Consumers: B02-SH01, B02-SH02 (global 200–439)
 Model: sonnet, medium
@@ -28,6 +28,10 @@ Files: `src/painted/edu30/shots/B02-SH01.tsx`, `src/painted/edu30/shots/B02-SH02
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TP2.png` (the high view to un-stripe), `LF01a.png` (paddock values).
 
 **Judgment for the builder (Hard).** The buffet dip is one frame for all six (L 135); before it the six peck out of phase like real birds. The farmer's point is one clear gesture with a continuous arm; his turn to the lens on "เรียก" reads through the eyes.
+
+## r2 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
+These override any older value in this ticket that they name.
+- **Farmer point (T12 r6, TF27 as built).** Paint FARMER through T12's solve as built: right mitten 0.50 m from the shoulder along d = (−0.873, −0.218, −0.436), elbow flexion 55.6°, open oval mitten with no thumb. At L 9 and L 45 log the screen distance from the shoulder → mitten line to the emu head (T12 measured 50.1 px on the sheet camera; pass ≤ 60 px on the plate camera). The SH02 row's `thumb check` line reads `thumb check: FARMER RIGHT: open oval, no thumb drawn (unshaped kit); edge to the lens`.
 
 ## Proof
 - Stills (`out/edu30-T20/`): SH01 L 0, 60, 100, 134, 135, 151; SH02 L 0, 9, 40, 47, 53, 84.
