@@ -1,6 +1,274 @@
 {
+  "public/audio/action/action_galop-chase_01.wav": {
+    "store": "library/sound/music/action/action_galop-chase_01.wav",
+    "sha256": "a68e713cb0f0dc8a6f87d04d40003ec686b8f06d821755f9c4b7fa5112ab633e"
+  },
+  "public/audio/bed/bed_anthem-brass-pad_01.wav": {
+    "store": "library/sound/music/bed/bed_anthem-brass-pad_01.wav",
+    "sha256": "55a8b098d2a2e024ebf9b0021ea194638c15217bafc44afe781e34c3e695c4ff"
+  },
+  "public/audio/bed/bed_brass-chorale-admiring_01.wav": {
+    "store": "library/sound/music/bed/bed_brass-chorale-admiring_01.wav",
+    "sha256": "a1a8c534a7e02aa5b6c2da12b4c9d279669b3aeca626698c26472ee5f24faa23"
+  },
+  "public/audio/bed/bed_brass-held-chord_01.wav": {
+    "store": "library/sound/music/bed/bed_brass-held-chord_01.wav",
+    "sha256": "8b0dad9da7366447d26d963a024498b77ffdc9ad0761e6cbbde317c7d4c02eda"
+  },
+  "public/audio/bed/bed_newsreel-march-jaunty_01.wav": {
+    "store": "library/sound/music/bed/bed_newsreel-march-jaunty_01.wav",
+    "sha256": "21b78360bb3ce25d337e55532e5031484372fd88cc24e9435b3ed921c99f4aa4"
+  },
+  "public/audio/bed/bed_newsreel-march-reentry_01.wav": {
+    "store": "library/sound/music/bed/bed_newsreel-march-reentry_01.wav",
+    "sha256": "05e4fb2539666457ba5cced358dba2806f7c7977ae8f07a8cdeb5e3fdbbe02e5"
+  },
+  "public/audio/bed/bed_tired-march-detuned_01.wav": {
+    "store": "library/sound/music/bed/bed_tired-march-detuned_01.wav",
+    "sha256": "5e40052272fd49ebcc68c1fbdf8d48a911acedfb979f8684ce7e4fb5e9416d21"
+  },
+  "public/audio/ep30r2-proc/city_plaza-morning-magpie_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/city_plaza-morning-magpie_01.wav",
+    "sha256": "ebf8ddedce67debda2297def83a70cc1ad6a5021561751d9858d63a49d5708c0"
+  },
+  "public/audio/ep30r2-proc/comedy_brass-fanfare-sputter_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_brass-fanfare-sputter_01.wav",
+    "sha256": "99c0acbb133e92a34b0d7f6ef89707184c74dd12e37b9f18c38d44c3d6f25749"
+  },
+  "public/audio/ep30r2-proc/comedy_bugle-retreat-flat_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_bugle-retreat-flat_01.wav",
+    "sha256": "3163f4fddfd74291ddb5e6b59dc700f4cf428590cefec7d7d6004290520bcc97"
+  },
+  "public/audio/ep30r2-proc/comedy_parade-drum-tap_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_parade-drum-tap_01.wav",
+    "sha256": "0f0b2acceffb91dabab838c6904c5adcffa847cbdd850a9966b79a414151d7e7"
+  },
+  "public/audio/ep30r2-proc/comedy_slide-whistle-cheeky-down_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_slide-whistle-cheeky-down_01.wav",
+    "sha256": "751d578fb7248d7f5e08d5dde69ebd510358aef139bf2fba2ae151afb67c893b"
+  },
+  "public/audio/ep30r2-proc/comedy_slide-whistle-cheeky-up_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_slide-whistle-cheeky-up_01.wav",
+    "sha256": "753c110c496844563e7e4cc4e890b3feb136a1b19131039b020b0ec526dfd8c9"
+  },
+  "public/audio/ep30r2-proc/comedy_tuba-slide-down_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/comedy_tuba-slide-down_01.wav",
+    "sha256": "c396c452d2ec7ee4a10430b0d440bf20e239b48121b796c703eaa130eaf50e2f"
+  },
+  "public/audio/ep30r2-proc/creature_emu-beak-click_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-beak-click_01.wav",
+    "sha256": "d5ec4c315b498c344e975dfa5423e1fc1617f6c77e9859040c5cf61dd9878098"
+  },
+  "public/audio/ep30r2-proc/creature_emu-boom_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-boom_01.wav",
+    "sha256": "74fd6353ad3f6f70464083ac8e8105c9122edd732e137d14c8a1892fbff45735"
+  },
+  "public/audio/ep30r2-proc/creature_emu-curious-grunt_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-curious-grunt_01.wav",
+    "sha256": "21396a694664341399e0ddc01d84c41ddeeafa420e76659c97c3f57644f30b8a"
+  },
+  "public/audio/ep30r2-proc/creature_emu-feet-patter-off_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-feet-patter-off_01.wav",
+    "sha256": "140c8d18c4f358dd3c14fab3fd1b5547caf0a2d3509c38c71641af8b21abe0ba"
+  },
+  "public/audio/ep30r2-proc/creature_emu-flock-scatter_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-flock-scatter_01.wav",
+    "sha256": "dec4d4d6b6e3d289b91f6347bfcbb0a89e4a504149cf190f261f3b6901ff19d8"
+  },
+  "public/audio/ep30r2-proc/creature_emu-flock-startled-dam_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-flock-startled-dam_01.wav",
+    "sha256": "57f142b6396e5c50cabc3f056fe4f0df7aa5ac19754525bbfc0e0ed9a3bcd89f"
+  },
+  "public/audio/ep30r2-proc/creature_emu-flock-startled-plain_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-flock-startled-plain_01.wav",
+    "sha256": "77b527c324f11d7bdef7a807b426a80de19c8f2aa9e7328d0a9b7cb0af41c015"
+  },
+  "public/audio/ep30r2-proc/creature_emu-foot-tap_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-foot-tap_01.wav",
+    "sha256": "f673a32c68f294fa1f5e64369462d62db4bf30d14c11c9b1e259ea8b3690f6e9"
+  },
+  "public/audio/ep30r2-proc/creature_emu-step-padded_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-step-padded_01.wav",
+    "sha256": "0b672798f1d680f4f9d46b2398df5226ac4aaa8d440c5e298d69fee3c0c80ae5"
+  },
+  "public/audio/ep30r2-proc/creature_emu-wing-flick_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/creature_emu-wing-flick_01.wav",
+    "sha256": "ec38be6c04695e947d2e99a22a22d5e0eb9d5d7f09e81b1a62eb0417027b45d6"
+  },
+  "public/audio/ep30r2-proc/crowd_polite-applause-far_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/crowd_polite-applause-far_01.wav",
+    "sha256": "e97932e89d4d19201bd9cb2f032ea3b975a7dc11a2b9cdf473f322b7086723f6"
+  },
+  "public/audio/ep30r2-proc/foley_brass-casing-tinkle_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_brass-casing-tinkle_01.wav",
+    "sha256": "00d4f2f3922d1f0563e2abf69f6a896e03da29a16502b2db58f5af497420bfb3"
+  },
+  "public/audio/ep30r2-proc/foley_brass-casings-dirt_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_brass-casings-dirt_01.wav",
+    "sha256": "af54b4e28a8e525cf6cb37ad93e071ff1fbd950402f028638d5c77ad5fd46170"
+  },
+  "public/audio/ep30r2-proc/foley_brass-casings-water_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_brass-casings-water_01.wav",
+    "sha256": "6749d1b0277cbd6718243c28dd28f5b5bf68abd86b4a0a59f97981b03e06f1c9"
+  },
+  "public/audio/ep30r2-proc/foley_emu-column-shuffle_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_emu-column-shuffle_01.wav",
+    "sha256": "cf5556bbe51f4309c0962ebee13d25997140ddd84cc7044e64b3825a0c80a853"
+  },
+  "public/audio/ep30r2-proc/foley_emu-flock-run-loop_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_emu-flock-run-loop_01.wav",
+    "sha256": "ac7ecae721cf9c3db5eb319f21aabe18cd1675bb99fba7d32e225b36e27ef5d1"
+  },
+  "public/audio/ep30r2-proc/foley_emu-slowmo-steps_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_emu-slowmo-steps_01.wav",
+    "sha256": "e2b5d1b0e48a06d78dec83edd01ac60b85391c5c0e96257c1a587e22147de363"
+  },
+  "public/audio/ep30r2-proc/foley_emu-unison-step_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_emu-unison-step_01.wav",
+    "sha256": "5fa182f84405cbbb83875bfd8b6373a6523919bd54f79f8df077f011a82ba7e3"
+  },
+  "public/audio/ep30r2-proc/foley_feather-cloth-swish_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_feather-cloth-swish_01.wav",
+    "sha256": "4cba657bf213afc87ace1db39d687a1f5009d2dd17eef0d5325382e41141c857"
+  },
+  "public/audio/ep30r2-proc/foley_wheat-peck-loop_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_wheat-peck-loop_01.wav",
+    "sha256": "098c078938aa5fac27f62fca73b4350e29475f734ceb7acaf13a4b7965ba1f26"
+  },
+  "public/audio/ep30r2-proc/foley_wheat-peck-single_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/foley_wheat-peck-single_01.wav",
+    "sha256": "b226c68ac7bc3c51a82596875eec40f98145801bdf71da192cd0daa6824a75e5"
+  },
+  "public/audio/ep30r2-proc/impact_lewis-burst-plain-23_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/impact_lewis-burst-plain-23_01.wav",
+    "sha256": "96dab9e444ded80dff1ddce8b3b7577e5ff33e57a0fa5cd6305927975af2d3db"
+  },
+  "public/audio/ep30r2-proc/impact_lewis-burst-wet-11_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/impact_lewis-burst-wet-11_01.wav",
+    "sha256": "2d85621e556ac1924e996a44bb9f729fc51d68d432592230471d047496fc5d9d"
+  },
+  "public/audio/ep30r2-proc/impact_lewis-single-shot-deflated_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/impact_lewis-single-shot-deflated_01.wav",
+    "sha256": "8610d0fc9c66b21254f63e20bd36a6bd1f704989aa07c808461f9f5fed4a1ffa"
+  },
+  "public/audio/ep30r2-proc/impact_trailer-hit-cymbal_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/impact_trailer-hit-cymbal_01.wav",
+    "sha256": "4dc73af8649ed5fdab76ea0db51eb7bf2eaf8cd6b65168690e8c75b856ea2e51"
+  },
+  "public/audio/ep30r2-proc/mechanical_gun-jam-click-offaxis_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_gun-jam-click-offaxis_01.wav",
+    "sha256": "245f02ee585607832b29299a5296d3d8b41ffb39e038e364d125b79a0da96fb0"
+  },
+  "public/audio/ep30r2-proc/mechanical_gun-jam-click_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_gun-jam-click_01.wav",
+    "sha256": "8042343b03072c91a352674f8cdab93676dcf8b3b00db71a90893a96bee1bc5f"
+  },
+  "public/audio/ep30r2-proc/mechanical_gun-smoke-puff_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_gun-smoke-puff_01.wav",
+    "sha256": "b025e120a3eab121d4ec812d37bcec89af9d46dd0e5097e3deb2656848805d22"
+  },
+  "public/audio/ep30r2-proc/mechanical_lewis-bolt-open_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_lewis-bolt-open_01.wav",
+    "sha256": "b252775034a95484258c570e9e424c986152f3b69bee1c36f1eb807e8786f1ef"
+  },
+  "public/audio/ep30r2-proc/mechanical_lewis-cocking-rack_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_lewis-cocking-rack_01.wav",
+    "sha256": "0b45250ec2e37c0fbb1c5b03d8e41cfe93206b1d5735cdf71314ee56daad6a24"
+  },
+  "public/audio/ep30r2-proc/mechanical_projector-speed-up-down_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_projector-speed-up-down_01.wav",
+    "sha256": "52de9bb8c013809a4d1f04790f7d3bb7ddce6b162c3d1ec53f71b8aba7c3f91b"
+  },
+  "public/audio/ep30r2-proc/mechanical_projector-whirr-bed_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_projector-whirr-bed_01.wav",
+    "sha256": "c76fcd8140d2769a79cea5eff816196352be47d9412c2fa423699b68a74d6e70"
+  },
+  "public/audio/ep30r2-proc/mechanical_projector-wind-down_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_projector-wind-down_01.wav",
+    "sha256": "071b184b661a94a3380c6ec1394d4181421689f7a39c91b75ae44e215fd43b5d"
+  },
+  "public/audio/ep30r2-proc/mechanical_truck-engine-labouring-loop_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_truck-engine-labouring-loop_01.wav",
+    "sha256": "03278b7ec8e10b203ab834701f7733ebd5a2a2bf12cfaa13e753fb172287fcb4"
+  },
+  "public/audio/ep30r2-proc/mechanical_watch-tick-pair_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/mechanical_watch-tick-pair_01.wav",
+    "sha256": "c0f6d303f5fe3769d3046a8a684f2072b5e7c33998d8d929bea153b1d66459fe"
+  },
+  "public/audio/ep30r2-proc/outdoor_wheat-wind-plain_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/outdoor_wheat-wind-plain_01.wav",
+    "sha256": "063acbc0fc848885b585b5bd43b28624f19198c4ea1f2acd9dfcefcc2b0f7e3c"
+  },
+  "public/audio/ep30r2-proc/stinger_brass-parade-end-button_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/stinger_brass-parade-end-button_01.wav",
+    "sha256": "064cea4d57e30fac5ca17f995cec79d8bb509ccfbcad42cd4f1d13ce86c50a46"
+  },
+  "public/audio/ep30r2-proc/tension_ear-ring-dam_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/tension_ear-ring-dam_01.wav",
+    "sha256": "a1aaa9107d0ce757e44eb5e58ebccc38a65586b2d333659fadcd3f86c01a8cf6"
+  },
+  "public/audio/ep30r2-proc/tension_ear-ring-tail_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/tension_ear-ring-tail_01.wav",
+    "sha256": "6022ea6231f55c295ce8a286c98ee36e3e49053a80536df48745e08ef379a11f"
+  },
+  "public/audio/ep30r2-proc/ui_brass-counter-bell_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/ui_brass-counter-bell_01.wav",
+    "sha256": "079f3a51f53429ba91dfcca38630efb210ce4b3a6331855f5702a0bbf7165194"
+  },
+  "public/audio/ep30r2-proc/ui_polite-ting_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/ui_polite-ting_01.wav",
+    "sha256": "0ce7c6468101147a9b86d4c206f48210b44f12ee85edcf59f203362ec9e68022"
+  },
+  "public/audio/ep30r2-proc/ui_shop-door-bell_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/ui_shop-door-bell_01.wav",
+    "sha256": "b06f2a073251d121143c9e592333b5599bbcd001ea067397843b244068ad6d1e"
+  },
+  "public/audio/ep30r2-proc/vehicle_leaf-spring-creak-bang_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/vehicle_leaf-spring-creak-bang_01.wav",
+    "sha256": "0a4d5f5a3e687e4b953c84dea86b88dbbbb41fe347867510bc7c0f242875a0dc"
+  },
+  "public/audio/ep30r2-proc/vehicle_tank-track-clank_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/vehicle_tank-track-clank_01.wav",
+    "sha256": "5bd95253005e75affafd27412dae0219ecabaed7a28c3fd4f95f3c85f3ce5453"
+  },
+  "public/audio/ep30r2-proc/vehicle_truck-1930s-arrive-brakes_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/vehicle_truck-1930s-arrive-brakes_01.wav",
+    "sha256": "1991927d77b23f984cefefab6e5f6fc4f8c3cff2e444f1391a49640f5caef864"
+  },
+  "public/audio/ep30r2-proc/vehicle_truck-1930s-pull-up-short_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/vehicle_truck-1930s-pull-up-short_01.wav",
+    "sha256": "8b1519f5d05823a15661e62c27835785189b49bf052052d37a2481d093fa2ad2"
+  },
+  "public/audio/ep30r2-proc/vehicle_truck-1930s-putter-away_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/vehicle_truck-1930s-putter-away_01.wav",
+    "sha256": "f3329b09c3fee2c3dce6d4fb24d7aa6780ca15b074374a5c038c4500d96f879c"
+  },
+  "public/audio/ep30r2-proc/water_dam-lap-windmill_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/water_dam-lap-windmill_01.wav",
+    "sha256": "e233708ddc33da9094724bc555b808587edf5ee300d1c6eb428830453e7c6af2"
+  },
+  "public/audio/ep30r2-proc/water_rounds-strike-mud_01.wav": {
+    "store": "library/sound/_raw/ep30r2-proc/water_rounds-strike-mud_01.wav",
+    "sha256": "4657c5d45b14be6eb459fe0b0981561c5a3ceae0c9b8b496af0da7189a651f96"
+  },
+  "public/audio/stinger/stinger_march-roll-hit_01.wav": {
+    "store": "library/sound/music/stinger/stinger_march-roll-hit_01.wav",
+    "sha256": "5384ab058d02471ae99f02494b59a6fa31745ef7d2d6a656719f0306b56ac74a"
+  },
+  "public/audio/stinger/stinger_newsreel-march-intro_01.wav": {
+    "store": "library/sound/music/stinger/stinger_newsreel-march-intro_01.wav",
+    "sha256": "03246fa15f9e4b9c2375b6477f91117d3e60195d6d3f12b7dcfb6afae4b39040"
+  },
+  "public/audio/tension/tension_ambush-pizzicato-vamp_01.wav": {
+    "store": "library/sound/music/tension/tension_ambush-pizzicato-vamp_01.wav",
+    "sha256": "d448ebbffef9ae7f98fb0bcf2f8eeb0f14b5ef4907f3b85c2e2fd2708a448b3e"
+  },
   "public/narration/EDU-EP30-SHORT-narration-v1.wav": {
     "store": "projects/edu/EDU/narration/ep30-voice-r2-2/preview.wav",
     "sha256": "0f65860839ac59fd56721b98a43a5c3dcd692c5f864d62e9f151e3d7dd3b7719"
+  },
+  "public/sfx/mechanical/mechanical_projector-shutter-click_01.wav": {
+    "store": "library/sound/sfx/mechanical/mechanical_projector-shutter-click_01.wav",
+    "sha256": "119d5f27aebd20b2435cd232293d81d14d49a870547d460e6175bd1aa450248a"
   }
 }
