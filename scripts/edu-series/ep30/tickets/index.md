@@ -26,7 +26,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T13](T13-lewis-gun-mechanics.md) Lewis gun anchors, recoil, pan, jam, cocking rack | prop | yes | T03 | done (r3 Film: A1–A5 answered, the locked gun wins; consumers call `paintLewisPanTicks`; no Boss pass) | 0 | `e7a496e` (r1) |
 | [T14](T14-truck-rig.md) truck rig and every drive schedule | movement | yes | T13, T11 | done (R7: Film accepts r5, E4 L 44 row widened to ≤ 27 %, the truck reads clear at L 44 (viewed); user confirms: Q-R7-1) (was: r5 built, E4 L 44 measures 26.25 % vs 25 %; R6 look check of the r4 stop dust: fix, the B02-SH03 puffs are too big and hard-rimmed at L 44/46; rows E1–E4: radius 0.25 → 0.8 m, +0.5 m swell after the stop, 3 soft discs per puff, truck box ≤ 25 % covered at L 44; chase, seats and other rows pass) | 2 (r4, r5); cap reached | `150e469` (r1), `320a59e` (r4), `c8ae269` (r5) |
 | [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 (done, R8) | ready, **dispatchable** (Q7 answered) | 0 | — |
-| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10 (r4), T08 (done, R8), T35 | ready, **dispatchable** (Q7 answered; r3 notes: wading, hop `air`; r4 notes: waterline ease) | 0 | — |
+| [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10 (r4), T08 (done, R8), T35 | **built r4** (2026-11-20, Boss; awaiting Film look check; Result lists 9 values reinterpreted, chiefly SH03 bunching of birds 1–8; proof `T16-sheet.png`) (Q7 answered; r3 notes: wading, hop `air`; r4 notes: waterline ease) | 0 | — |
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12 (done, R8), T13 | ready, **dispatchable** (Q7 answered; r4 notes: TF21, fists) | 0 | — |
 | [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready, **dispatchable** (all blockers done) | 0 | — |
@@ -51,7 +51,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 
 **Dispatchable now (R8), in parallel, no shared file** (each in its own worktree, Sonnet medium; every blocker is done):
 1. **T15** emu mime. Files: `src/painted/edu30/emu.ts`, `src/painted/edu30/looks.ts`, `tests/edu30-emu.test.ts`.
-2. **T16** queue motion. Files: `src/painted/edu30/flock.ts`, `src/painted/edu30/proof-flock.tsx`, `tests/edu30-flock.test.ts`.
+2. ~~**T16** queue motion~~ built 2026-11-20 (awaiting Film look check). Files: `src/painted/edu30/flock.ts`, `src/painted/edu30/proof-flock.tsx`, `tests/edu30-flock.test.ts`.
 3. **T17** cocking pull + gunner face. Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx`, `tests/edu30-cast.test.ts`.
 4. **T19** plates B01. Files: `src/painted/edu30/shots/B01-SH01.tsx`, `B01-SH02.tsx`, `B01-SH03.tsx`.
 5. **T20** plates B02-SH01/02. Files: `src/painted/edu30/shots/B02-SH01.tsx`, `B02-SH02.tsx`.
