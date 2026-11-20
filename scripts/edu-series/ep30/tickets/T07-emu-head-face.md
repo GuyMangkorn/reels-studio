@@ -1,5 +1,5 @@
 # T07 — the emu head acts: lens turn, blink, nod, two-state talking beak, neck-sac boom puff (and the relief emu)
-Deliverable: EDU-EP30-SHORT · Revision: r6 · Status: r6 fix pass ready, **dispatchable** (R7: T37 done at `d5a5b82`; it changed no test hash, so the r6 pass re-takes any `tests/edu30-emu.test.ts` hash that its own sac and blink rows change, keeping the old value in the test title) · was: r6 fix pass ready after T37 (R6 Film look check of r5: face, beak, nod, lookback pass; sac patch and blink ball fix rows S1–S3; N4 moves to T37) · r5 built (Boss Sonnet, 2026-11-20, T06 neck rows N1–N3 in `f21fdc0`) · r3, r4, r5: Film notes
+Deliverable: EDU-EP30-SHORT · Revision: r6 · Status: **r6 built** (Boss Sonnet, 2026-11-20, `5c18417`; Film looks again before T15) · was: r6 fix pass ready, dispatchable (R7: T37 done at `d5a5b82`; it changed no test hash, so the r6 pass re-takes any `tests/edu30-emu.test.ts` hash that its own sac and blink rows change, keeping the old value in the test title) · was: r6 fix pass ready after T37 (R6 Film look check of r5: face, beak, nod, lookback pass; sac patch and blink ball fix rows S1–S3; N4 moves to T37) · r5 built (Boss Sonnet, 2026-11-20, T06 neck rows N1–N3 in `f21fdc0`) · r3, r4, r5: Film notes
 Class: figure · Hard: yes (animal face)
 Blocked by: T37 (done, R7) (r6: same test file `tests/edu30-emu.test.ts`, its hash re-takes first; the sac seam at u 0.25 is T37's fix), T06 (its r4 fix pass first; same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses `mixEmuPose`) · Consumers: B01-SH01, B01-SH03, B02-SH06, B03-SH03, B04-SH05, B05-SH04, B06-SH02, B07-SH02 (relief emu through `arms.ts`); T08 (heads field, queue stare), T15
 Model: sonnet, medium
@@ -117,3 +117,21 @@ Values read differently from the ticket (Film may revise):
 6. Thumb and arm checks: no hand or arm is drawn (N/A). EMU-HERO tuft count unchanged with every control (tested).
 
 New exports in `emu.ts`: `emuLensYaw`, `emuLookTurn`, `blinkLid`, `talkBeak`, `nodDepth`, `emuNod`, `emuSac`. `looks.ts`: KP-beak, KP-sac, KP-blink, KP-nod, KP-lookback; `lensYaw` now calls `emuLensYaw` (KP-look yaw 1.1208, below the clamp, unchanged).
+
+## Result r6 (Boss, Sonnet medium, 2026-11-20)
+Commit `5c18417` (files: `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; `arms.ts` not touched). Fix passes used: 0 (r6 is the first). Store `projects/edu/EDU/previews/` (all `T07r6-` prefixed; `sheet.png` untouched): `T07r6-sheet.png` (KP-face, KP-sac, KP-blink08, KP-blink, KP-lookback, TA2-blink55 at 270 px), `T07r6-sac-crop.png` (400 x 400 full size), `T07r6-blink-crops.png` (open eye, lid 0.8, lid 1.0, 2x crops), `T07r6-relief-blink-strip.png`, `T07r6-KP-{face,sac,blink,blink08,lookback}.png`, `T07r6-TA2-blink{54,55,56,57}.png` (relief emu, TA2 camera through `arms.ts`). Tests: `edu30-emu.test.ts` 24 of 24 (one new r6 test), `beast-air.test.ts` 3 of 3, no new tsc errors in edu30; no hash changed (sac 0 and lid <= 0.7 builds are untouched).
+
+| Row | Measured | Pass | Result |
+| --- | --- | --- | --- |
+| S1 patch size | 0.055 x 0.085 m at sac 1 (test: z extent 0.055 within 0.002); screen width about 70 px vs neck width at u 0.4 209.8 px (sac 1) = 0.33 | <= 0.45 | pass |
+| S1 colour | neck colour at u 0.4 mixed 35 % toward skin, then **15 % toward black** (see deviation 1); patch luma about 87 vs the neck 10 px beside it about 72 (diff 15; r5 patch about 151, diff about 80) | within +-25 | pass |
+| S2 rim and strokes | rim disc 1.25 x (test 1.25), colour halfway, painted first; 6 seeded strokes (0.012-0.018 m, `neckFeather` ink) down and out; viewed at 270 px and in `T07r6-sac-crop.png`: reads as skin between lifted feathers, no hard pale oval | viewed | pass (Film to confirm) |
+| S3 blink ball | sky pixels changed outside the skull silhouette (vs an eyeless render, region x 540-800, y 470-590, both eyes): 0 at lid 0.8, 0 at lid 1.0 (r5 open-eye ring 952 for comparison); no iris, ring or catch-light pixel (not drawn at lid > 0.7) | <= 2 px | pass |
+| S4 relief blink (TA2 camera, B07-SH02 local 54-57, lid 0.8, 1.0, 0.6, base 0.15) | local 55 (lid 1.0): lid ball only, no iris; local 54 same; local 56-57 open eye; no ball bulge beyond the open eye's own outline | no iris at 55, outline intact | pass, see deviation 3 |
+| S5 lock vs renders | KP-face vs T07 r5 render 0.0001 (0 px > 8), vs store r1 0.2248; KP-stand vs T07 r5 0.0002, vs store r1 0.0234; KP-look vs store r1 0.0219 | <= 2 | pass |
+
+Deviations Film may revise:
+1. **S1 colour:** the flats are unshaded while the neck loft is shaded on its flank, so the exact "no extra lightening" colour measured luma 102 vs 71 (diff 31, over 25). I darkened the patch and rim by 15 % toward black; patch luma 87, diff 15.
+2. **S3 construction:** a cap on the old ball radius still left 240 px outside the skull (the far eye sits on the skull edge). At lid > 0.7 ring, iris and catch-light are now not drawn at all; the lid ball is radius 0.018 sunk 2 mm (was 0.026 raised 7 mm). The shut eye reads as a small lid bump on the face, no lump on the outline.
+3. **Relief outline at lid <= 0.7:** frames 56-57 show the existing flat lid (base 0.15) as a small flap past the head outline in the profile view; not a r6 row and unchanged from the locked build; Film may want a T15/T20 note.
+4. Added looks (`looks.ts`): `KP-blink08`, `TA2-blink54..57` (`armsLook` gained an optional `emuLid`). No KP call changed.
