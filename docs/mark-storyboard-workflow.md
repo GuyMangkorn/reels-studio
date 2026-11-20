@@ -77,6 +77,7 @@ A story scene may map to several runtime `Scene` entries. Record that mapping ra
 - **Link, then state the difference.** Baseline, projection, palette, lighting method and fallback that Film's brief or the sequence index already own are linked, not copied; the sheet adds only values a shot needs or a deviation with its reason. Where a number must be repeated for Editor's convenience, mark the copy `(brief: <decision ID>)` so the owner wins on conflict.
 - **Status once.** The header carries the sheet's status and the evidence line. Mark an individual value only when it differs (`verified`, `measured`); do not repeat "design-only / unrendered / unverified" through the body.
 - **Current values only.** Superseded values, review narrative and migration notes go to the change log at the end, never into the shot blocks.
+- <a id="build-line"></a>**Build line (Default; user, 20 Nov 2026).** Each shot block carries one `Build:` line so the coordinator can [batch Boss by difficulty](coordinator.md#boss-batches) without a separate ticket file. `hard` is a shot whose new work is movement (walk, leap, cycle), a new character or animal, or arm, hand or face work ([Boss model by pass](coordinator.md#boss-model-by-pass)); everything else is `easy` (sets, props, a kit figure in a pose-sheet pose, a reused plate). The same line names where Boss starts: the owning module paths and the kit IDs, so Boss does not search for them. A value Boss needs (size, position, colour, timing) is decided in the block; a choice Film has not made goes to `Dependencies and open items`, and the sheet is not `ready-for-dev` while one blocks a shot.
 - **Language.** Headings, field names and notes are English; Thai VO, subtitles and on-screen text stay Thai and verbatim.
 - **Omit what does not apply** (a fixed-plane shot has no XYZ depth; a shot with no cut has no transition field). Roles skipped by the tier are recorded in the delivery record, not here.
 - **Default size:** about 600–800 words per shot plus one shared section; a longer sheet needs a reason (for example a shot with several numeric paths). Split a scene whose sheet outgrows this.
@@ -113,6 +114,7 @@ VO + subtitles: full Thai VO (or exact accessible source range); subtitle text +
 Sound: ambience/music state; cues with shot-local frame + description of the sound + a fitting library ID or `NEEDS-GEN` ([fit beats reuse](sound-generation-workflow.md#fit-beats-reuse)); ducking/continuity
 Mix intent: hold / lift / drop / hit / release per beat ([EP08a](editor-principles.md#ep08a-shape-audio-emphasis-by-story-beat)); Editor sets levels
 Cut/transition: purpose, type, start/end frames, overlap, active subtitle/audio; existing implementation or Boss requirement
+Build: hard | easy + the reason in a few words; start from: owning module paths + kit IDs ([casting line](character-proportion-principles.md#cp-casting-line)) or `new: <short look>`
 Entry → exit: state at the first and last frame (actor/prop positions, pose/contact, set/light states, spanning audio)
 Acceptance: | Frame + named clock | Observable image/sound/contact/reveal | Evidence |
 

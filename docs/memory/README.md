@@ -21,3 +21,4 @@
 - [Gemini TTS quota](gemini-tts-quota-tier1.md) — Tier 1: 100 req/day; voice library batch --max 50/day (2 Nov 2026)
 - [KIT-ARM-DEPTH declined items](kit-arm-depth-approvals.md) — B back-view depth + E walk swing seen and declined; knees unchanged (13 Nov 2026)
 - [Fiction repo split](fiction-repo-split.md) — fiction = ~/Developer/reels-fiction (private, no Boat) since 17 Nov 2026; reels-studio = edu + legacy
+- [Plate-tickets trial ended](plate-tickets-trial-ended.md) — one Sonnet Boss pass per ticket cost ~3x on EDU-EP30; Boss builds in beat batches (user, 20 Nov 2026)

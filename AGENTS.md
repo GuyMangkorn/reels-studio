@@ -77,7 +77,6 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [film-visual-brief-workflow](docs/film-visual-brief-workflow.md) | Medium choice, visual/technical brief (Film) | F |
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
 | [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Scene sheets (Film); the review page: [review-page skill](.agents/skills/review-page/SKILL.md) (Film rows, coordinator publishing) | F |
-| [plate-tickets skill](.agents/skills/plate-tickets/SKILL.md) | Writing build tickets once scene sheets are `ready-for-dev` (Film); dispatching Boss from a ticket (coordinator); building from one (Boss). Trial, 19 Nov 2026 | on trigger (F, S) |
 | [user-taste](docs/user-taste.md) | Painting thumbnails, look frames, plates; [viewer check](docs/sequence-workflow.md#viewer-check); a repeated user note | F S |
 | [cover-principles](docs/cover-principles.md) / [cover-design skill](.agents/skills/cover-design/SKILL.md) | Any cover or thumbnail (Film); the skill is the procedure | F |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
