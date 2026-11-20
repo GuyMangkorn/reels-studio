@@ -787,7 +787,7 @@
   }
  ],
  "swaps": [],
- "exempt": [],
+ "exempt": [{"src": "audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav", "reason": "stem baked by short/sound-mix.py from this sheet"}],
  "levels": {
   "stems": {
    "voice": "",
