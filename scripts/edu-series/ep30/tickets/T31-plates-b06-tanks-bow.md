@@ -1,5 +1,5 @@
 # T31 — plates B06-SH01 (emus advance like tanks over MEREDITH's back) and B06-SH02 (the silent bow, L15 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready · r2: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built (Film look check pending) · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (slow-motion walk contacts, bow on the story clock)
 Blocked by: T03, T06, T07, T08, T09, T12 · Consumers: B06-SH01, B06-SH02 (global 1434–1579)
 Model: sonnet, medium
@@ -40,4 +40,23 @@ These override any older value in this ticket that they name.
 | SH02 L 35 | upright, eyes to the lens, no smirk | tuft and bib visible |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built 2026-11-20 (Boss, Sonnet medium). Commit: see the T31 line of the index. Fix passes used: 0. Proof sheet: store `projects/edu/EDU/previews/T31-sheet.png` (14 frames, 7 x 2) and `T31-s1_<L>.png` / `T31-s2_<L>.png` (clean, full size); logs `out/logs/T31-*.log`.
+
+| Frame | Measured (`measure-shots.ts`, head top to toe line) | Row | Result |
+| --- | --- | --- | --- |
+| SH01 L 0 | EMU-HERO 531 px, x 705, top 663 | 485 ± 25 | **not met** (+46 px, 1.09 x) |
+| SH01 L 109 | 706 px, x 610, top 559 | 615 ± 30 | **not met** (+91 px, 1.15 x); L 96 697 px, L 54 622 px |
+| SH01 L 96 vs L 100 | both stance pads equal at L 96, 98, 100 and 109 (world (-1.29, 0, -3.651) and (-1.51, 0, -3.959)) | slip <= 0.02 m | met (0.000 m) |
+| SH02 L 19 | head point (418, 1029) | (549 -> 436, 993 -> 1024) ± 40 | y met (1029); x 418 vs 436 met (18 px) |
+| SH02 L 35 | upright, eyes to the lens, no smirk; tuft and bib visible; head top (420, 559), standing 1210 px | standing 909-986 | height **not met** (rig is 1.2 x the sheet figure) |
+
+Slow-line read at plate size (r2 note): stills L 0, 12, 33, 54, 75, 96 (and 109) viewed on the sheet. **Yes, the slow steps read as walking:** the hero's lead height grows 531 -> 565 -> 622 -> 697 px (L 0 / 12 / 54 / 96) and the stance legs change between frames; the line advances heavily, each foot planted, MEREDITH leaving frame left as the camera pans. Only two line birds sit inside the 1080 px frame (hero and the left bird); the others are beyond the edges.
+
+Decisions where a value could not be followed as written:
+1. **Gun clearing.** `paintPaddockScene` always paints the clearing's 0.85 m wheat wall (r 3.7 about (-0.3, -0.4)) after the cast. The sheet stages the line at z -4.6 to -3.8 (beyond that wall) with feet visible, so the first stills showed only the necks over a wall (SH01) and the hero's feet under a mound (SH02). Both plates paint the set through `paintOpenPaddock` (exported from `B06-SH01.tsx`, imported by SH02): the same layers and seeds as `paintPaddockScene` without `paintClearing`, with `setNoClearing(true)` so the ridges fill the clearing area. `paddock.ts` is not edited (T09's file). Film: confirm B06 has no clearing wall, or add a `clearing: false` flag to T09.
+2. **Bow head.** The locked `EMU_POSES.bow()` puts the head at about y 1337 px at L 19 (below the caption band and the y 1100 line), against the sheet's world point (0, 1.1, -4.6) = (436, 1024). The bow is `bow({head: [0.72, 1.20, 0], neckMid: [0.58, 1.44, 0]})` mixed from `stand`, so pads, lid 0.55, headDir and body pitch stay locked; only head and mid-neck are lifted to the sheet point. Reads as a swan-neck dip at 270 px (W3.2 limit accepted).
+3. **Bird size.** The sheet projection numbers were computed for a smaller bird; the built hero is 1.09-1.15 x (SH01) and 1.2 x (SH02) those heights. The cast is never scaled (common rules); camera and positions are as the sheet, so SH01 EMU-HERO >= 480 px (acceptance) holds and the SH02 bow stays above y 1100 only with the lifted head. Film: restate the row numbers for the built rig or accept.
+4. **Ruffle.** The rig has no ruffle input: the SH02 feather ruffle jitters the `body` bone's keys and flats up to 0.01 m (sine envelope over L 5-15, seeded per plume and per frame, a pure function of L).
+
+Caption zone (`caption-zone.py`, clean frames): SH01 L 96 mean 0.672 / p95 0.989 and SH02 L 19 p95 0.932, both `pass: false`: the band y 1150-1344 is pale sand and sky-lit ground in both plates (shared set look, not a plate choice). Editor's caption stroke carries the contrast; Film to judge.
+Hand lines: none (MEREDITH's arms hang in the T12 P44-back pose, no hand close-up; thumb and arm checks N/A). Open question: none blocking.

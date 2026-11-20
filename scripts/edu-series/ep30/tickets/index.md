@@ -41,7 +41,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T28](T28-plates-b04-gunner-watch.md) plates B04-SH06, SH05 (PB01) | set | yes | T03, T05, T07, T10, T11, T13, T15, T16, T17 | ready (Q7 answered; r4 notes: TF21) | 0 | — |
 | [T29](T29-plates-b05-chase.md) plates B05-SH01, SH02 | set | yes | T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 | r5 fix pass 1 **built** 2026-11-20, awaiting Film look check (R8 look check: SH02 pass; C1 SH01 gun rest +15° (TF31) with C1b SH02 settle by L 8; C2 heights 444 ± 15 / 495 ± 20 / ≥ 430 (TF32); C3 emus as built (TF33); C4 thumb waived) | 1 (r5, built) | `6b2649b` (built), r5 commit on branch `worktree-agent-a3b84bcdbed4bef74` |
 | [T30](T30-plates-b05-withdrawal-wave.md) retreat vantage + plates B05-SH03, SH04 | set | yes | T03, T07, T08, T09, T14, T15 | ready (r4 notes: wire contrast between birds) | 0 | — |
-| [T31](T31-plates-b06-tanks-bow.md) plates B06-SH01, SH02 (L15 mime) | set | yes | T03, T06, T07, T08, T09, T12 | ready, **dispatchable** (r2 notes: slow-walk read at plate size) | 0 | — |
+| [T31](T31-plates-b06-tanks-bow.md) plates B06-SH01, SH02 (L15 mime) | set | yes | T03, T06, T07, T08, T09, T12 | built 2026-11-20 (look check pending: sheet heights vs built rig, open paddock, lifted bow head; slow steps read as walking) | 0 | built (T31 commit) |
 | [T32](T32-plates-b06-timelapse-withdrawal.md) plates B06-SH03, SH04 | set | yes | T30, T01, T03, T08, T09, T14, T15 | ready (r7 notes: fence-bird LOD) | 0 | — |
 | [T33](T33-plates-b07-arms.md) plates B07-SH01, SH02 | set | yes | T01, T03, T07 | built 2026-11-20 (awaiting Film look check; emu 785 px vs row 630-705, caption-zone mean 0.6-0.7) | 0 | this commit |
 
