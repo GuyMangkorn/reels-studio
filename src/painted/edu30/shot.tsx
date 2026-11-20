@@ -6,7 +6,8 @@ import {makePainter, type Painter} from '../kit/painter';
 import {Grain, NewsreelOverlay, newsreelFilter, newsreelWeave, type NewsreelTint} from '../kit/screen';
 import {span} from '../sea';
 import type {PaintedShot} from '../shot';
-import type {YCam} from '../kit/ycam';
+import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import type {V3} from '../kit/space';
 import {horizonRow} from './paddock';
 import {EDU30_SHOTS, FPS, lenOf} from './shots/index';
 import {NewsreelTitle, TITLES} from './titles';
@@ -39,7 +40,19 @@ export type Shot30 = {
   shake?: (L: number) => Shake30;
   /** B03-SH01 and B04-SH03 only: canvas scaled 1.05 about (540, 960), camera compensated so every projected point equals the sheet numbers. */
   overscan?: boolean;
+  /** A word on the relief (the scroll) at frame L, drawn as DOM text inside the canvas wrapper (B07). */
+  word?: (L: number) => Word30 | null;
 };
+export type Word30 = {at: V3; text: string; h: number};
+
+/** A word on the relief (the scroll), projected: centred at the word's world point, cap height `h` metres. One home for look stills and plates. */
+export const ReliefWord30 = ({cam, word}: {cam: YCam; word: Word30}) => {
+  const w = word;
+  const at = camPoint(cam, w.at), u = camUnit(cam, w.at);
+  if (!at) return null;
+  return <div style={{position: 'absolute', left: at[0] - 600, top: at[1] - w.h * u * 0.85, width: 1200, textAlign: 'center', fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 700, fontSize: w.h * u * 1.35, letterSpacing: w.h * u * 0.25, color: '#5a3c1c', textShadow: `${0.01 * u}px ${0.012 * u}px 0 rgba(120,90,50,0.6)`}}>{w.text}</div>;
+};
+const WordOf = ({def, L}: {def: Shot30; L: number}) => { const w = def.word?.(L); return w ? <ReliefWord30 cam={stackCam(def, L)} word={w} /> : null; };
 
 /** Default grade (VD30-01a). */
 export const DEFAULT_REEL: Reel30 = {strength: 1, tint: 'warm', tintAmount: 1, pop: 0};
@@ -82,7 +95,7 @@ export const PlateStack = ({def, L, G, canvas}: {def: Shot30; L: number; G: numb
   const o = {frame: G, strength: r.strength, tint: r.tint, tintAmount: r.tintAmount, tintMix: r.tintMix, pop: r.pop};
   return (
     <AbsoluteFill style={{backgroundColor: def.paper}}>
-      <AbsoluteFill style={canvasStyleOf(def, L, G)}>{canvas}</AbsoluteFill>
+      <AbsoluteFill style={canvasStyleOf(def, L, G)}>{canvas}<WordOf def={def} L={L} /></AbsoluteFill>
       <NewsreelOverlay {...o} />
       <Grain opacity={0.06} />
       {TITLES.filter((t) => t.shot === def.id).map((t) => <NewsreelTitle key={t.in} text={t.text} frame={G} inFrame={t.in} outFrame={t.out} size={t.size} />)}
@@ -131,6 +144,7 @@ export const makeShot = (def: Shot30): PaintedShot => {
       const o = {frame: G, strength: r.strength, tint: r.tint, tintAmount: r.tintAmount, tintMix: r.tintMix, pop: r.pop};
       return (
         <div style={{position: 'absolute', inset: 0, opacity}}>
+          {def.word && <AbsoluteFill style={canvasStyleOf(def, L, G)}><WordOf def={def} L={L} /></AbsoluteFill>}
               <NewsreelOverlay {...o} />
           <Grain opacity={0.06} />
           {TITLES.filter((t) => t.shot === def.id).map((t) => <NewsreelTitle key={t.in} text={t.text} frame={G} inFrame={t.in} outFrame={t.out} size={t.size} />)}

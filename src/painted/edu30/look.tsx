@@ -6,9 +6,9 @@ import {Subtitles} from '../../scenes/Subtitles';
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {makePainter} from '../kit/painter';
 import {Grain} from '../kit/screen';
-import {camPoint, camUnit} from '../kit/ycam';
 import {LOOK_DEFS, type LookDef} from './looks';
 import {NewsreelOverlay, NewsreelPicture} from './newsreel';
+import {ReliefWord30} from './shot';
 
 // EDU-EP30-SHORT W3 look frames, thumbnails and KP-EMU stills (Film, 2026-11-19): one BrushCanvas per still, the newsreel layer (VD30-01)
 // around the canvas, the title overlay (VD30-09), the edu outline caption at bottomEdgeY 1344 and the @TamMaiLa mark with the reconstruction
@@ -26,15 +26,6 @@ export const ReelTitle = ({text}: {text: string}) => (
   </div>
 );
 
-/** A word on the relief (the scroll), projected: centred at the word's world point, cap height `h` metres. */
-const ReliefWord = ({look}: {look: LookDef}) => {
-  const w = look.word;
-  if (!w) return null;
-  const at = camPoint(look.cam, w.at), u = camUnit(look.cam, w.at);
-  if (!at) return null;
-  return <div style={{position: 'absolute', left: at[0] - 600, top: at[1] - w.h * u * 0.85, width: 1200, textAlign: 'center', fontFamily: "Georgia, 'Times New Roman', serif", fontWeight: 700, fontSize: w.h * u * 1.35, letterSpacing: w.h * u * 0.25, color: '#5a3c1c', textShadow: `${0.01 * u}px ${0.012 * u}px 0 rgba(120,90,50,0.6)`}}>{w.text}</div>;
-};
-
 const Still = ({id}: {id: string}) => {
   const frame = useCurrentFrame();
   const look = LOOK_DEFS[id]();
@@ -45,7 +36,7 @@ const Still = ({id}: {id: string}) => {
   return (
     <AbsoluteFill style={{background: look.paper}}>
       {reel ? <NewsreelPicture frame={frame + 7} tint={reel.tint} tintAmount={reel.amount} strength={reel.strength ?? 1}>{canvas}</NewsreelPicture> : canvas}
-      <ReliefWord look={look} />
+      {look.word && <ReliefWord30 cam={look.cam} word={look.word} />}
       <Grain opacity={reel ? 0.07 : 0.04} />
       {reel && <NewsreelOverlay frame={frame + 7} tint={reel.tint} strength={reel.strength ?? 1} />}
       {props.caption !== false && <>
