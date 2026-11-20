@@ -1,4 +1,5 @@
-"""Check docs/context-map.md: every link and #anchor resolves, and every module is mentioned by some entry.
+"""Check the context map (docs/context-map.md and the sub-maps in MAPS): every link and #anchor resolves, and every
+module is mentioned by some entry.
 
 Usage: python3 -I scripts/context-map.py
 A module is a tracked or new (not ignored) path cut to the depth in DEPTH below: a top-level file or folder, a doc,
@@ -10,7 +11,8 @@ Exits 1 on a dead link or anchor, or an uncovered module.
 import importlib.util, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-MAP = 'docs/context-map.md'
+# The central map and its sub-maps: episodes, and the shared memory index.
+MAPS = ['docs/context-map.md', 'docs/context-map-episodes.md', 'docs/memory/README.md']
 # Longest matching prefix sets how many path components make one module.
 DEPTH = {'': 1, 'docs/': 2, 'scripts/': 2, 'tests/': 2, 'src/': 2, 'src/painted/': 3, 'src/painted/kit/': 4,
          'src/painted/shots/': 4, 'src/scenes/': 3, 'src/videos/': 3, '.claude/': 2, '.claude/skills/': 3,
@@ -25,12 +27,12 @@ def module(path):
     return real if not real.startswith('..') else unit
 
 
-def mentions(text):
-    """Paths the map names (repo-relative) and the pending ones."""
+def mentions(text, source):
+    """Paths one map file names (repo-relative) and the pending ones."""
     named, pending = set(), set()
     for target in re.findall(r'\]\(([^)\s#]+)', text):
         if not re.match(r'^(https?:|mailto:)', target):
-            named.add(os.path.normpath(os.path.join(os.path.dirname(MAP), target)))
+            named.add(os.path.normpath(os.path.join(os.path.dirname(source), target)))
     for line in text.split('\n'):
         for span in re.findall(r'`([^`\s]+)`', line):
             if '/' in span or '.' in span:
@@ -44,9 +46,12 @@ def main():
     os.chdir(ROOT)
     spec = importlib.util.spec_from_file_location('check_links', 'scripts/check-links.py')
     check_links = importlib.util.module_from_spec(spec); spec.loader.exec_module(check_links)
-    dead = check_links.main([MAP])
+    dead = check_links.main(MAPS)
 
-    named, pending = mentions(check_links.prose(open(MAP, encoding='utf-8').read()))
+    named, pending = set(), set()
+    for source in MAPS:
+        n, p = mentions(check_links.prose(open(source, encoding='utf-8').read()), source)
+        named |= n; pending |= p
     files = subprocess.run(['git', 'ls-files', '--cached', '--others', '--exclude-standard'], capture_output=True, text=True).stdout.split('\n')
     units = sorted({module(f) for f in files if f and f not in IGNORE and '__pycache__' not in f and os.path.exists(f)})
     uncovered = [u for u in units if not any(m == u or m.startswith(u + '/') for m in named)]
