@@ -6,6 +6,7 @@ import {BrushCanvas, type PaintContext} from './BrushCanvas';
 import {type LabelSide, PaintedItemView, PaintedLabel as LabelText} from './Label';
 import {paintedShots} from './registry';
 import {drawPlate} from './plate';
+import {stageCanvasStyle} from './shot';
 
 /**
  * Fact-label slots of one frame: slot 0 (y 300, or the cue's `labelTop`) and slot 1 (y 360, DEP03). Texts are merged
@@ -57,7 +58,9 @@ export const PaintedStage = ({timeline, ending, loopBlendFrames, endingOptions}:
   const slots = labelSlots(visible.flatMap(({plate}) => (plate.label !== undefined ? [{label: plate.label, top: plate.labelTop, side: plate.labelSide}] : [])));
   return (
     <AbsoluteFill style={{opacity: state.opacity}}>
-      <BrushCanvas paint={paint} paper={plates[0].shot.paper} layer={layer || undefined} />
+      <div style={{position: 'absolute', inset: 0, ...stageCanvasStyle(visible, Boolean(fadeIn), {width, height, fps})}}>
+        <BrushCanvas paint={paint} paper={plates[0].shot.paper} layer={layer || undefined} />
+      </div>
       {plates.map(({shot, tl, alpha, camera, plate}, i) => {
         const opacity = plate.overlayOpacity * (alpha > 0 ? Math.min(1, alpha / plate.alpha) : 0);
         if (!shot.Overlay || opacity <= 0) return null;
