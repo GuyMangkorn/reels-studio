@@ -1,5 +1,5 @@
 import {BONE, H, SKIRT_LATE, bodyFrame, ikElbow, type CastDef, type FigAnchors, type FigPose, type Outfit} from './cast';
-import {INK, VD18, capsule, ell, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
+import {INK, VD18, capsule, ell, flatFistAt, glaze, inkLine, limb, lineOf, modelPart, solid, toneOf, washAt} from './draw';
 import {hatFront} from './gear';
 import {CHIN, HEAD_SPAN, headOutline, type HeadStyle} from './head';
 import {hairFront, isNewCut, spikes} from './hair';
@@ -88,7 +88,8 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
   };
 
   let part = 0, line = 0;
-  const fill = (color: string, pts: Pt[], outline = true, passes = 4) => {
+  const fill = (color: string, pts: Pt[], outline = true, passes = 4, pp: Painter = p) => {
+    const p = pp;
     const base = sil ?? toneOf(color, L);
     solid(p, seed * 1000 + ++part, base, pts, sil ? 8 : passes, sil ? 0.02 : L ? 0 : 0.07, sil ? 0.03 : 0.2);
     if (L && !sil) modelPart(p, seed * 1000 + part, base, pts, L);
@@ -312,7 +313,26 @@ export const drawFigureBack = (p: Painter, def: CastDef, g: Pt, unit: number, po
     line = l0 + 2;
     const dx = a.T[0] - a.E[0], dy = a.T[1] - a.E[1], d = Math.hypot(dx, dy) || 1;
     const hand: Pt = [a.T[0] + (dx / d) * 0.03 * unit * sc, a.T[1] + (dy / d) * 0.03 * unit * sc];
-    if (!(s === 1 ? pose.rArm : pose.lArm)?.noHand) fill(skinShade, ell(hand[0], hand[1], 0.036 * unit * sc, 0.046 * unit * sc, 14, Math.atan2(dy, dx) - Math.PI / 2), true, 4);
+    const pa = s === 1 ? pose.rArm : pose.lArm;
+    if (pa?.flatFist && pa.fist && !pa.noHand) {
+      // T36: the unshaped flat fist centred on the held point `a.T` (same placement rule as cast.ts).
+      const an = Math.atan2(dy, dx), fx0 = Math.cos(an), fy0 = Math.sin(an), hu = unit * sc, F = flatFistAt(a.T, an, hu, pa.fist);
+      const part0 = part, line0 = line;
+      const draw = (q: Painter, restore = false) => {
+        const pe = part, le = line;
+        part = part0;
+        line = line0;
+        fill(skinShade, F.back, true, 4, q);
+        const ink = lineOf(skinShade, L);
+        [...F.creases, F.thumbCrease].forEach((cr) => inkLine(q, seed * 1000 + ++line, cr, {closed: false, weight: L ? VD18.lineOuter : 1.0, curve: 0.5, color: ink}));
+        if (restore) { part = pe; line = le; }
+      };
+      draw(p);
+      pa.onFlatFist?.((q) => draw(q, true));
+      void M;
+      return [a.T[0] + fx0 * 0.05 * hu, a.T[1] + fy0 * 0.05 * hu] as Pt;
+    }
+    if (!pa?.noHand) fill(skinShade, ell(hand[0], hand[1], 0.036 * unit * sc, 0.046 * unit * sc, 14, Math.atan2(dy, dx) - Math.PI / 2), true, 4);
     void M;
     return hand;
   };
