@@ -1,5 +1,5 @@
 # T42 — plate fixes: B02-SH06 near field birds culled (T22 fix pass 2) and B04-SH03 spouts in the shallows + one casing spec (T27 fix pass 1)
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: partial (B04-SH03 built; B02-SH06 blocked on H1 vs H2, question for Film)
 Class: set (fix bundle, two plates) · Hard: yes (CAT02 bird reading; effects)
 Blocked by: none (T22 r8, T27, T28 built) · Consumers: B02-SH06, B04-SH03
 Model: sonnet, medium
@@ -42,4 +42,12 @@ Files: `src/painted/edu30/shots/B02-SH06.tsx`, `src/painted/edu30/shots/B04-SH03
 | smoke (TF56) | B04-SH03 L 42 | analytic smoke bound **≤ 0.46**, blast **≤ 0.40** (as built 0.451 / 0.393) |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see git log (`T42`). Proof (store `projects/edu/EDU/previews/`, T42-prefixed): `T42-T42-sheet.png` (B04-SH03 L 10, 19, 25, 27, 42, 43, guides on, viewed), `T42-s03_L*.png` (guides on), `T42-c03_L*.png` (clean), `T42-T42-c03_L19.png` and `T42-T42-c03_L27.png` (540 px, viewed; the double prefix is a naming slip, the files are the 540 px crops).
+
+**B04-SH03 built (W1, W2, W3).** W1: strikes i = 1, 2, 4, 5, 7, 8, 10 at `z = -5.70 - 0.50r`, the rest as built. W2: `B04_CASINGS` imported from `./B04-SH06`, the plate's own `CASINGS`/`A0` deleted.
+- Spouts over water: **7 of 11** (row >= 6): pass. Nearest bird to any strike over L 0-46: **1.79 m** (row >= 1.5): pass. Muzzle L 10 **(633, 832)**: pass. Caption zone clean L 10 mean 0.714, p95 0.984; L 42 mean 0.661 (band 1150:1344, max-mean 0.80, max-p95 0.99): pass. Casings landing inside the SH03 frame at some frame: **11 of 11**. Viewed at 270 and 540 px: the spouts in the shallows show as small white marks on the pale water at left and are faint, mud kicks on the rim read; Film judges whether faint is enough.
+- Not measured: shake 0 at L 42/43 and smoke centroid >= 1 px and the analytic smoke bound (smoke, shake and blast code untouched; `measure.py` absent, TF56); EMU-HERO and caption rows of B02-SH06 (not built).
+
+**B02-SH06 not built: H1 and H2 conflict (blocked, no fix pass used).** At `stackCam(def, 74)` the heads-field birds have ground y (px) and camera distance (m) as follows: rule "y > 1450 or distance < 6.0 m" drops **27** of 36 (kept **9**, dropped ids 1, 3, 4, 5, 6, 8, 9, 10, 11, 14, 16, 18-24, 26, 28-35); y > 1450 alone drops 12 (kept 24); distance < 6.0 alone drops 26 (kept 10). H2 (>= 28 kept) cannot hold with H1 under any form. Question for Film: relax to y-only (24 kept) or a smaller distance limit, or accept the near birds hidden by a different method (e.g. drop only those under the lower-left dark region, ids with y > 1450 and distance < 3.5 m), or accept B02-SH06 as built (cap reached). Nothing in B02-SH06.tsx changed.
+
+Fix passes used: T27 1 (done), T22 pass 2 not spent.
