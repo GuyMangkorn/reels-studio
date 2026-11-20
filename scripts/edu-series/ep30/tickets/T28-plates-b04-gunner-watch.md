@@ -1,5 +1,5 @@
 # T28 — plates B04-SH06 (GUNNER-1 racks the dead gun, "โธ่เอ๊ย…") and B04-SH05 (PB01: EMU-HERO checks an invisible watch, three foot taps) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T15, T16, T17 done) · was: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaits Film look check (Boss, 2026-11-20; R9: T15, T16, T17 done) · was: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (gunner arm and face, emu mime)
 Blocked by: T03, T05, T07, T10, T11, T13, T15, T16, T17 · Consumers: B04-SH06, B04-SH05 (global 1062–1149; play order SH06 then SH05)
 Model: sonnet, medium
@@ -56,4 +56,36 @@ These override any older value in this ticket that they name.
 | SH05 L 63 | wing down, nearest birds turning away up the shore | EMU-HERO 505 ± 30 px; tuft and bib visible |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: T28 commit on `worktree-agent-a8c0e27ad75f647c1` (not pushed) · proof sheet: `~/ReelsStore/projects/edu/EDU/previews/T28-sheet.png` (frames `T28-s1_SH06_L*.png`, `T28-s2_SH05_L*.png`, clean `T28-clean_SH06_L14.png`, `T28-clean_SH05_L30.png`; archived with `store.py archive --path out/edu30-T28`) · fix passes used: 0
+
+Files: `src/painted/edu30/shots/B04-SH06.tsx` (exports `camAt`, `rackAt`, `B04_CASINGS`, `paintRestingCasings`), `src/painted/edu30/shots/B04-SH05.tsx` (exports `sh05Queue`, `camAt`). No other source touched.
+
+Measured (`measure-shots.ts`, stack camera):
+| Row | Measured | Range | Verdict |
+| --- | --- | --- | --- |
+| SH06 L 0 handle | (663, 961) | (663, 961) ± 25 (r3) | pass |
+| SH06 L 23 handle | (640, 981) | sheet end (652, 1009) | 12 px / 28 px off the sheet estimate, in the r3 handle numbers' direction; not a proof row |
+| SH06 GUNNER-1 L 0 / 23 | 562 / 595 px (x 547 / 516) | 593-624 (pre-r4) ; T11 r4 accepted 572 | fail the old row by 31 px at L 0, 4 px at L 23 under it; consistent with T17's logged 572 (r4 lean) |
+| SH06 face above y 1100 | chin ≈ 800 at L 0 / 3 / 8 / 14 / 23 (viewed) | < 1100 | pass |
+| SH06 thumb check | `thumb check: GUNNER-1 RIGHT: up ok` at L 0, 3, 6, 8 (TF38; forearm near-horizontal, measured with `mittenThumbSide('right','back')`) | up | pass |
+| SH06 arm check | `arm check: GUNNER-1 r/l: attached ok`, worst ratio 1.023 (L 0-23), r 1.010 / 1.000 / 1.010 / 1.018 at L 0 / 3 / 6 / 8 | <= 1.05 | pass |
+| SH06 left fist on the stock | left ratio 1.000 every frame (solve targets `stock`) | throughout | pass |
+| SH05 L 30 wrist | (639, 700) | (631 interpolated, 733) ± 40 | x pass; y 33 px off, inside 40 |
+| SH05 L 30 head down, nothing on the wing | viewed: head over the raised bare wing, no watch, strap, dial or mark | — | pass |
+| SH05 toes L 40 / 47 / 54 | 0.0 deg on the tap frame; 25.2 deg at T-2 and T-1 (`emuFootTap`) | 0 / 25 | pass |
+| SH05 foot slip | hero pads 0.0000 m over L 0-63 | <= 0.02 m | pass |
+| SH05 L 0 hero place | (1.600, 0.330, -4.900), heading 3.142 | queue head, π | pass |
+| SH05 L 63 EMU-HERO lead | 578 px (head top 512, toe line 1089), centre x 574 | 505 ± 30 | **fail by 43 px** (see below) |
+| SH05 L 63 wing down, birds turning away, tuft and bib | viewed: wing folded; birds turning away from L 57 (L 60 shows the nearest bird half turned); tuft visible | — | pass (bib not separately identifiable at 270 px, same bird as T15/T16) |
+| Caption zone (TF46, band 1150:1344, mean <= 0.80, p95 <= 0.99) | SH06 L 14 0.593 / 0.675; SH05 L 30 0.643 / 0.897 | pass | pass |
+| `queue` shadows | `shadowOp: 45` (TF37) | 45 | applied |
+
+Values not followed or not reachable as written:
+1. SH05 L 63 EMU-HERO 578 px vs 505 ± 30. The sheet figure (head y 563, feet 1068) is an estimate; the built bird (T07 stand, 3.2 m from the lens at f 950) measures head top 512 and toe line 1089 at the sheet camera, so the same ratio holds at every frame (577 at L 0). Not scaled to match (cast is never scaled); Film to restate the row to the built bird as for T19.
+2. SH06 GUNNER-1 593-624 is the pre-T11 r4 number (T17 already logged this); built 562-595.
+3. Casings: the spec of B04-SH03 does not exist yet (T27 is a stub). I defined `B04_CASINGS` in `B04-SH06.tsx` (rounds `GUNFIRE_PRESETS.B04_SH03`, port `lewisAnchors(G1)`, side +1, dir +x, seed 8300, slope `southBankY`, water `overWater`) and laid its rest positions in both shots. With side +1 on a +x barrel the receiver's right is +z (uphill), so all 11 casings rest on the slope at x about -5.9, z about -3.6, which is behind or left of both lenses: none is visible in either shot, and none lands in the shallows. T27 should import `B04_CASINGS` (or Film decides side -1) so the three shots agree; until then the "casings in the shallows" staging row has no visible casing.
+4. GUNNER-2's spare pan has no T13 pan-only build in the kit, so it is a flat drum painted from world fills at (-6.4, 0.75, -4.0) (visible at the left edge, y about 1000, from L 0 to 23).
+5. Jam wisp (`paintLewisPuff` B04-SH06, alpha 0.3, r 0.05 m) is nearly invisible at 270 px, as built in T13.
+6. Queue birds beyond the corner (x about 14.5, z -5 to -12) stand in profile at the far-shore horizon at the left of every SH05 frame; that is the T16 queue geometry, unchanged.
+7. Water reflections of the queue are not painted (not in the ticket).
+8. `npm test`: 498 / 506, the 8 failures are the known set (hippo joints x3, loudness, new-shot, render-inputs, segments, store adopt), none in edu30. `npx tsc --noEmit -p .` has 0 errors in edu30 files (8 errors elsewhere, unchanged).
