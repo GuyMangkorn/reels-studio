@@ -1,5 +1,5 @@
 # T26 — plates B04-SH01 (ambush at the water, LF02) and B04-SH02 (the queue, the unison step) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T16 done) · was: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built 2026-11-20, awaiting Film look check · was: ready, dispatchable (R9: T16 done) · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (queue walk and unison step)
 Blocked by: T03, T10, T11, T12, T16 · Consumers: B04-SH01, B04-SH02 (global 868–992)
 Model: sonnet, medium
