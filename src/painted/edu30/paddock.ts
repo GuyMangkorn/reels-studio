@@ -4,6 +4,7 @@ import {paintSkyBands} from '../kit/sky';
 import type {V3} from '../kit/space';
 import {paintBox, wFill, wInk} from '../kit/world';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
+import {paintFarFlock} from './flock';
 import {buildBellTent, placeBuild} from './props';
 
 // SPACE P, the Campion wheat paddock in 1932 (`new: wheat-paddock-1932`, VD30-02; Film W3 look asset 2026-11-19, Boss hardens). Painted in
@@ -19,15 +20,32 @@ export const PAD = {
 export type PadLight = 'morning' | 'west';
 /** NE morning sun (southern hemisphere, north = -z) and the low west retreat sun (VD30-02). */
 export const SUN: Record<PadLight, V3> = {morning: [0.45, 0.8, -0.4], west: [-0.85, 0.3, 0.1]};
+/** A light or a mix m 0..1 (0 = 'morning', 1 = 'west'; T09 time-lapse). */
+export type PadLightArg = PadLight | number;
+/** Light mix m 0..1 of a light argument. */
+export const lightM = (l: PadLightArg) => (typeof l === 'number' ? Math.max(0, Math.min(1, l)) : l === 'west' ? 1 : 0);
+/** Sun vector of a light argument: a name gives `SUN[name]` as locked; a number gives normalise(lerp(SUN.morning, SUN.west, m)). */
+export const sunOf = (l: PadLightArg): V3 => {
+  if (typeof l === 'string') return SUN[l];
+  const m = lightM(l), v = SUN.morning.map((a, i) => a + (SUN.west[i] - a) * m), n = Math.hypot(v[0], v[1], v[2]);
+  return [v[0] / n, v[1] / n, v[2] / n];
+};
+/** Where the ground shadow of a point at height `y` over (x, z) lands for this sun (metres). */
+export const shadowOf = (sun: V3, [x, y, z]: V3): V3 => [x - (sun[0] / sun[1]) * y, 0.012, z - (sun[2] / sun[1]) * y];
+const STRAW = '#b89a62';
 
 const h = (n: number) => { const s = Math.sin(n * 91.345 + 47.123) * 43758.5453; return s - Math.floor(s); };
 /** Picture row of the horizon for this camera (pitch aware). */
 export const horizonRow = (c: YCam) => camPoint(c, [c.x + 5000 * Math.sin(c.yaw), c.y, c.z - 5000 * Math.cos(c.yaw)])?.[1] ?? c.hy;
 
-export const paintPadSky = (p: Painter, c: YCam, light: PadLight = 'morning') => {
-  const hz = horizonRow(c);
-  const cool = light === 'west';
-  paintSkyBands(p, {from: cool ? '#b8c2c8' : PAD.skyTop, via: cool ? '#d8d2c2' : PAD.skyHaze, viaAt: 0.6, to: cool ? '#efd9b4' : PAD.skyLow, horizon: hz + 12, width: 1080, top: -200, bands: 9});
+/** Sky band colours for a light (morning at m 0, the cool west sky at m 1). */
+export const skyColors = (light: PadLightArg) => {
+  const m = lightM(light);
+  return {from: mixColor(PAD.skyTop, '#b8c2c8', m), via: mixColor(PAD.skyHaze, '#d8d2c2', m), to: mixColor(PAD.skyLow, '#efd9b4', m)};
+};
+export const paintPadSky = (p: Painter, c: YCam, light: PadLightArg = 'morning') => {
+  const hz = horizonRow(c), k = skyColors(light);
+  paintSkyBands(p, {from: k.from, via: k.via, viaAt: 0.6, to: k.to, horizon: hz + 12, width: 1080, top: -200, bands: 9});
 };
 
 /** A ring of mallee scrub on the horizon at radius `r` (m) round the camera, bumpy top 2.5-6 m, painted in segments in front of the lens. */
@@ -48,15 +66,20 @@ export const paintScrub = (p: Painter, c: YCam, seed: number, r = 260, color: st
 export const CLEARING = {c: [-0.3, -0.4] as [number, number], r: 3.7};
 export const clearingPts = (y = 0): V3[] => Array.from({length: 28}, (_, i) => { const a = (i / 28) * Math.PI * 2, rr = CLEARING.r * (0.9 + 0.18 * h(i * 3.1)); return [CLEARING.c[0] + rr * Math.cos(a), y, CLEARING.c[1] + rr * Math.sin(a)]; });
 export const WHEAT_H = 0.85;
+/** High view (T09): camera pitch <= -20 deg; wheat beyond HIGH_NEAR m is a flat wash with texture and patches, no ridge rows or value bands. */
+export const HIGH_PITCH = -20 * (Math.PI / 180);
+export const HIGH_NEAR = 30;
+/** Track ruts (T09): two along x at z 8.6 and 10.4, 0.25 m wide. */
+const RUT = '#6a4a32';
 
-export const paintPadGround = (p: Painter, c: YCam, seed: number, o: {eaten?: number; light?: PadLight} = {}) => {
+export const paintPadGround = (p: Painter, c: YCam, seed: number, o: {eaten?: number; light?: PadLightArg} = {}) => {
   const above = c.y > WHEAT_H + 0.05, R = 600;
   wFill(p, c, seed, PAD.verge, [[c.x - R, 0, c.z - R], [c.x + R, 0, c.z - R], [c.x + R, 0, c.z + R], [c.x - R, 0, c.z + R]]);
   // wheat field: from far north to the fence (z +6)
   const wy = above ? WHEAT_H : 0;
   wFill(p, c, seed + 1, PAD.wheat, [[-R, wy, -R], [R, wy, -R], [R, wy, 6], [-R, wy, 6]]);
   // value bands on the field (light ripples, so the plain is not one flat fill)
-  for (let k = 0; k < 9; k++) { const z0 = -12 - k * k * 4.5, z1 = z0 - 3 - k * 2; wFill(p, c, seed + 10 + k, k % 2 ? PAD.wheatLit : mixColor(PAD.wheat, PAD.wheatShade, 0.35), [[-R, wy + 0.001, z0], [R, wy + 0.001, z0], [R, wy + 0.001, z1], [-R, wy + 0.001, z1]]); }
+  if ((c.pitch ?? 0) > HIGH_PITCH) for (let k = 0; k < 9; k++) { const z0 = -12 - k * k * 4.5, z1 = z0 - 3 - k * 2; wFill(p, c, seed + 10 + k, k % 2 ? PAD.wheatLit : mixColor(PAD.wheat, PAD.wheatShade, 0.35), [[-R, wy + 0.001, z0], [R, wy + 0.001, z0], [R, wy + 0.001, z1], [-R, wy + 0.001, z1]]); }
   // the eaten patch: bare red-brown earth with flattened stalks, x -25..25, z -60..-20 (grows)
   const e = o.eaten ?? 0.4, ex = 6 + 19 * e, ez0 = -40 + 20 * e, ez1 = -40 - 20 * e;
   wFill(p, c, seed + 30, PAD.earth, Array.from({length: 18}, (_, i) => { const a = (i / 18) * Math.PI * 2; return [ex * Math.cos(a) * (0.85 + 0.25 * h(i + 7)), 0.02, (ez0 + ez1) / 2 + ((ez0 - ez1) / 2) * Math.sin(a) * (0.85 + 0.25 * h(i + 3))] as V3; }));
@@ -64,23 +87,28 @@ export const paintPadGround = (p: Painter, c: YCam, seed: number, o: {eaten?: nu
   if (c.z > 6) wFill(p, c, seed + 40, PAD.wheatShade, [[-R, 0, 6], [R, 0, 6], [R, WHEAT_H, 6], [-R, WHEAT_H, 6]]);
   // track: red dirt along x, z 7.5..11.5, two ruts
   wFill(p, c, seed + 50, PAD.track, [[-R, 0.005, 7.5], [R, 0.005, 7.5], [R, 0.005, 11.5], [-R, 0.005, 11.5]]);
-  for (const [k, zr] of [[0, 8.7], [1, 10.4]] as const) wFill(p, c, seed + 51 + k, PAD.rut, [[-R, 0.01, zr - 0.18], [R, 0.01, zr - 0.18], [R, 0.01, zr + 0.18], [-R, 0.01, zr + 0.18]]);
+  for (const [k, zr] of [[0, 8.6], [1, 10.4]] as const) wFill(p, c, seed + 51 + k, RUT, [[-R, 0.01, zr - 0.125], [R, 0.01, zr - 0.125], [R, 0.01, zr + 0.125], [-R, 0.01, zr + 0.125]]);
 };
 
 /** Wheat ears as short strokes over the field between `d0` and `d1` m from the camera, in front of the lens (the mid texture band). */
-export const paintWheatTexture = (p: Painter, c: YCam, seed: number, d0 = 4, d1 = 60, n = 900) => {
-  const top = c.y > WHEAT_H + 0.05 ? WHEAT_H : WHEAT_H;
-  for (let i = 0; i < n; i++) {
+export const paintWheatTexture = (p: Painter, c: YCam, seed: number, d0 = 4, d1 = 60, n = 900, o: {stubble?: number; eaten?: number} = {}) => {
+  const s = o.stubble ?? 0, top = WHEAT_H * (1 - 0.8 * s), nn = Math.round(n * (1 - 0.4 * s));
+  for (let i = 0; i < nn; i++) {
     const a = c.yaw + (h(i * 2.3) - 0.5) * 1.4, d = d0 + (d1 - d0) * h(i * 5.7) ** 1.6;
     const x = c.x + d * Math.sin(a), z = c.z - d * Math.cos(a);
-    if (z > 5.8 || inClearing(x, z, 0.3) || inEaten(x, z)) continue;
+    if (z > 5.8 || inClearing(x, z, 0.3) || inEaten(x, z, o.eaten)) continue;
     const b = camPoint(c, [x, top - 0.18, z]), t = camPoint(c, [x + 0.03, top + 0.06, z]);
     if (!b || !t || b[1] < -50 || b[1] > 2000) continue;
-    inkLine(p, seed + 1 + i, [b, t], {closed: false, weight: Math.max(0.5, Math.min(2.2, camUnit(c, [x, 0, z]) * 0.012)), color: h(i * 9.1) > 0.5 ? PAD.wheatEar : PAD.wheatShade, still: true});
+    inkLine(p, seed + 1 + i, [b, t], {closed: false, weight: Math.max(0.5, Math.min(2.2, camUnit(c, [x, 0, z]) * 0.012)), color: mixColor(h(i * 9.1) > 0.5 ? PAD.wheatEar : PAD.wheatShade, STRAW, s), still: true});
   }
 };
 export const inClearing = (x: number, z: number, pad = 0) => Math.hypot(x - CLEARING.c[0], z - CLEARING.c[1]) < CLEARING.r + pad;
-const inEaten = (x: number, z: number) => Math.abs(x) < 14 && z < -28 && z > -52;
+/** The eaten patch: the locked rectangle, or (when `eaten` 0..1 is given) the ground patch ellipse of `paintPadGround`. */
+const inEaten = (x: number, z: number, eaten?: number) => {
+  if (eaten === undefined) return Math.abs(x) < 14 && z < -28 && z > -52;
+  const ex = 6 + 19 * eaten, hz = 20 * eaten;
+  return (x / ex) ** 2 + ((z + 40) / hz) ** 2 < 1;
+};
 
 /** The gun clearing: trampled stubble floor and the standing-wheat wall round it (inner faces seen from inside, painted far to near). */
 export const paintClearing = (p: Painter, c: YCam, seed: number) => {
@@ -109,35 +137,67 @@ export const paintClearing = (p: Painter, c: YCam, seed: number) => {
 };
 
 /** Foreground stalks near the lens (bottom of frame), darker and lower in contrast than the midground (UT12a). `spots` world points. */
-export const paintNearStalks = (p: Painter, c: YCam, seed: number, spots: V3[]) => {
+export const paintNearStalks = (p: Painter, c: YCam, seed: number, spots: V3[], o: {stubble?: number; lean?: (x: number, z: number) => number; leanFrom?: V3} = {}) => {
+  const st = o.stubble ?? 0, nk = Math.round(9 * (1 - 0.4 * st));
   spots.forEach((s, i) => {
-    for (let k = 0; k < 9; k++) {
-      const x = s[0] + (h(i * 11 + k) - 0.5) * 0.5, z = s[2] + (h(i * 7 + k * 3) - 0.5) * 0.3, hh = WHEAT_H * (0.85 + 0.25 * h(i + k * 5)), lean = (h(k * 2 + i) - 0.5) * 0.12;
-      const b = camPoint(c, [x, 0, z]), t = camPoint(c, [x + lean, hh, z]), ear = camPoint(c, [x + lean * 1.25, hh + 0.13, z]);
+    for (let k = 0; k < nk; k++) {
+      const x = s[0] + (h(i * 11 + k) - 0.5) * 0.5, z = s[2] + (h(i * 7 + k * 3) - 0.5) * 0.3, hh = WHEAT_H * (1 - 0.8 * st) * (0.85 + 0.25 * h(i + k * 5)), lean = (h(k * 2 + i) - 0.5) * 0.12;
+      // blast lean (T09): the stalk tilts by `lean(x, z)` rad away from `leanFrom` in the ground plane (height kept as hh cos a, offset hh sin a)
+      const la = o.lean && o.leanFrom ? o.lean(x, z) : 0, dd = o.leanFrom ? Math.hypot(x - o.leanFrom[0], z - o.leanFrom[2]) || 1 : 1;
+      const lx = la ? (Math.sin(la) * hh * (x - o.leanFrom![0])) / dd : 0, lz = la ? (Math.sin(la) * hh * (z - o.leanFrom![2])) / dd : 0, hc = la ? Math.cos(la) : 1;
+      const b = camPoint(c, [x, 0, z]), t = camPoint(c, [x + lean + lx, hh * hc, z + lz]), ear = camPoint(c, [x + lean * 1.25 + lx * (1 + 0.13 / hh), hh * hc + 0.13 * hc, z + lz * (1 + 0.13 / hh)]);
       if (!b || !t || !ear) continue;
       const w = camUnit(c, [x, hh, z]);
-      inkLine(p, seed + i * 40 + k, [b, t], {closed: false, weight: Math.max(1, w * 0.008), color: mixColor(PAD.wheatShade, '#4a3a22', 0.45), still: true});
+      inkLine(p, seed + i * 40 + k, [b, t], {closed: false, weight: Math.max(1, w * 0.008), color: mixColor(mixColor(PAD.wheatShade, '#4a3a22', 0.45), STRAW, st), still: true});
       const ex = ear[0] - t[0], ey = ear[1] - t[1], wd = Math.max(3, w * 0.014);
-      hardFill(p, seed + i * 40 + 20 + k, mixColor(PAD.wheatEar, '#5a4528', 0.4), [[t[0] - wd, t[1]], [t[0] + ex * 0.5 - wd * 1.1, t[1] + ey * 0.5], [ear[0], ear[1]], [t[0] + ex * 0.5 + wd * 1.1, t[1] + ey * 0.5], [t[0] + wd, t[1]]]);
+      hardFill(p, seed + i * 40 + 20 + k, mixColor(mixColor(PAD.wheatEar, '#5a4528', 0.4), STRAW, st), [[t[0] - wd, t[1]], [t[0] + ex * 0.5 - wd * 1.1, t[1] + ey * 0.5], [ear[0], ear[1]], [t[0] + ex * 0.5 + wd * 1.1, t[1] + ey * 0.5], [t[0] + wd, t[1]]]);
     }
   });
 };
 
+/** Ground shadow of the 1.1 m fence post at x (a 0.14 m wide quad from the foot to the shadow of the tip). Returns its picture polygon. */
+export const postShadow = (p: Painter, c: YCam, seed: number, x: number, light: PadLightArg) => {
+  const t = shadowOf(sunOf(light), [x, 1.1, 6]);
+  return wFill(p, c, seed, mixColor(PAD.verge, '#3a2c1c', 0.6), [[x - 0.07, 0.012, 6], [x + 0.07, 0.012, 6], [t[0] + 0.07, 0.012, t[2]], [t[0] - 0.07, 0.012, t[2]]]);
+};
+
+/** The dry verge between the fence (z 6.0) and the track (z 7.5), seen from the track side (B05-SH04): dry grass #b59a6a, `tussocks` sparse
+ *  tussocks and 40 seeded marks, over x `x0..x1`. Paint after the ground and before the fence. */
+export const paintVerge = (p: Painter, c: YCam, seed: number, o: {x0?: number; x1?: number; tussocks?: number} = {}) => {
+  const x0 = o.x0 ?? c.x - 40, x1 = o.x1 ?? c.x + 40, nt = o.tussocks ?? 12, W = x1 - x0;
+  wFill(p, c, seed, '#b59a6a', [[x0, 0.008, 6], [x1, 0.008, 6], [x1, 0.008, 7.5], [x0, 0.008, 7.5]]);
+  for (let k = 0; k < 40; k++) {
+    const x = x0 + W * h(k * 3.7), z = 6.1 + 1.3 * h(k * 5.3), a = h(k * 2.9) * 3.14, l = 0.2 + 0.4 * h(k * 8.1);
+    wInk(p, c, seed + 10 + k, [[x, 0.012, z], [x + l * Math.cos(a), 0.012, z + l * 0.5 * Math.sin(a)]], {closed: false, weight: 1.1, color: k % 3 ? '#9a8156' : '#cdb683'});
+  }
+  for (let t = 0; t < nt; t++) {
+    const x = x0 + W * h(t * 6.1 + 0.5), z = 6.2 + 1.1 * h(t * 4.3 + 0.5);
+    for (let b = 0; b < 6; b++) { const dx = (b - 2.5) * 0.06, lean = (b - 2.5) * 0.05; wInk(p, c, seed + 100 + t * 8 + b, [[x + dx, 0, z], [x + dx + lean, 0.28 + 0.1 * h(t * 9 + b), z]], {closed: false, weight: 1, color: b % 2 ? '#8a7248' : '#a38a58'}); }
+  }
+};
+
 /** Post-and-wire fence along z +6 (posts 1.1 m every 3 m, three wires), with the gate gap x -4..-1. */
-export const paintFence = (p: Painter, c: YCam, seed: number, x0 = -60, x1 = 60) => {
+export const paintFence = (p: Painter, c: YCam, seed: number, x0 = -60, x1 = 60, light?: PadLightArg, wire: {wireW?: number; wireCol?: string} = {}) => {
   for (let x = x0; x <= x1; x += 3) {
     if (x > -4 && x < -1) continue;
+    if (light !== undefined) postShadow(p, c, seed + 500 + Math.round(x + 100), x, light);   // T09: the post's ground shadow follows the sun
     paintBox(p, c, seed + Math.round(x + 100), {x0: x - 0.05, x1: x + 0.05, y0: 0, y1: 1.1, z0: 5.95, z1: 6.05}, PAD.post, {}, {});
   }
-  for (const [k, y] of [[0, 0.35], [1, 0.7], [2, 1.02]] as const) for (const [a, b] of [[x0, -4], [-1, x1]] as const) wInk(p, c, seed + 300 + k * 2 + (a === x0 ? 0 : 1), [[a, y, 6], [b, y, 6]], {closed: false, weight: 0.7, color: PAD.wire});
+  // a wire whose far end is behind the lens (a camera on the track looking north, B05-SH04) is skipped by wInk whole; it is then drawn as 3 m spans
+  // between posts, each skipped only when its own end is behind, and only when the caller passes a wire option (default calls keep the locked stroke list).
+  for (const [k, y] of [[0, 0.35], [1, 0.7], [2, 1.02]] as const) for (const [a, b] of [[x0, -4], [-1, x1]] as const) {
+    const o = {closed: false, weight: wire.wireW ?? 0.7, color: wire.wireCol ?? PAD.wire}, id = seed + 300 + k * 2 + (a === x0 ? 0 : 1);
+    if ((wire.wireW === undefined && wire.wireCol === undefined) || (camPoint(c, [a, y, 6]) && camPoint(c, [b, y, 6]))) { wInk(p, c, id, [[a, y, 6], [b, y, 6]], o); continue; }
+    for (let x = a, n = 0; x < b; x += 3, n++) wInk(p, c, id + 1000 + n * 10, [[x, y, 6], [Math.min(x + 3, b), y, 6]], o);
+  }
   // the gate: a five-bar frame swung open
   paintBox(p, c, seed + 400, {x0: -4.05, x1: -3.95, y0: 0, y1: 1.2, z0: 5.9, z1: 6.1}, PAD.post);
   for (const [k, y] of [[0, 0.25], [1, 0.55], [2, 0.85], [3, 1.1]] as const) wInk(p, c, seed + 410 + k, [[-4, y, 6], [-3.2, y, 8.6]], {closed: false, weight: 1.3, color: '#7e6c52'});
 };
 
 /** Salmon gum: smooth pale pinkish trunk forking high, sparse clumped canopy (washes), at `at` with height `ht`. */
-export const paintGum = (p: Painter, c: YCam, seed: number, at: V3, ht: number, light: PadLight = 'morning') => {
-  const [x, , z] = at, tw = ht * 0.028, sx = SUN[light][0] > 0 ? 1 : -1;
+export const paintGum = (p: Painter, c: YCam, seed: number, at: V3, ht: number, light: PadLightArg = 'morning') => {
+  const [x, , z] = at, tw = ht * 0.028, sun = sunOf(light), sx = sun[0] > 0 ? 1 : -1;
   const trunk: V3[] = [[x - tw, 0, z], [x + tw, 0, z], [x + tw * 0.7, ht * 0.55, z], [x - tw * 0.7, ht * 0.55, z]];
   const q = wFill(p, c, seed, PAD.gumTrunk, trunk);
   if (q.length > 2) wFill(p, c, seed + 1, PAD.gumTrunkShade, [[x - tw * sx, 0, z], [x - tw * sx * 0.2, 0, z], [x - tw * 0.2 * sx, ht * 0.55, z], [x - tw * 0.7 * sx, ht * 0.55, z]]);
@@ -150,7 +210,9 @@ export const paintGum = (p: Painter, c: YCam, seed: number, at: V3, ht: number, 
     const blob: Pt[] = Array.from({length: 14}, (_, i) => { const a = (i / 14) * 6.283; return [s[0] + rp * Math.cos(a) * (0.85 + 0.3 * h(k * 17 + i)), s[1] + rp * 0.62 * Math.sin(a) * (0.85 + 0.3 * h(k * 13 + i))]; });
     hardFill(p, seed + 20 + k, k % 3 ? PAD.gumLeaf : PAD.gumLeafDark, blob);
   }
-  const sh: V3[] = Array.from({length: 14}, (_, i) => { const a = (i / 14) * 6.283; return [x + ht * 0.25 * Math.cos(a) + ht * 0.1, 0.01, z + ht * 0.18 * Math.sin(a) + ht * 0.08]; });
+  // string light: the locked offset; numeric light (T09): the canopy shadow lands where the sun puts it (canopy centre at 0.8 ht)
+  const cs: V3 = typeof light === 'number' ? shadowOf(sun, [x, 0.8 * ht, z]) : [x + ht * 0.1, 0, z + ht * 0.08];
+  const sh: V3[] = Array.from({length: 14}, (_, i) => { const a = (i / 14) * 6.283; return [cs[0] + ht * 0.25 * Math.cos(a), 0.01, cs[2] + ht * 0.18 * Math.sin(a)]; });
   wFill(p, c, seed + 40, mixColor(PAD.verge, '#5a4a32', 0.35), sh);
 };
 
@@ -164,21 +226,38 @@ export const paintFarmhouse = (p: Painter, c: YCam, seed: number, at: V3) => {
 };
 
 /** Camp: the bell tent and a water drum. */
-export const paintCamp = (p: Painter, c: YCam, seed: number, light: PadLight = 'morning') => {
-  placeBuild(p, c, buildBellTent(), [-14, 0, 14], 0.6, {seed, sun: SUN[light]});
+export const paintCamp = (p: Painter, c: YCam, seed: number, light: PadLightArg = 'morning') => {
+  placeBuild(p, c, buildBellTent(), [-14, 0, 14], 0.6, {seed, sun: sunOf(light)});
   paintBox(p, c, seed + 50, {x0: -11.8, x1: -11.2, y0: 0, y1: 0.9, z0: 12.7, z1: 13.3}, '#5d5a50', {}, {ink: true});
 };
 
 let noClearing = false;
 export const setNoClearing = (v: boolean) => { noClearing = v; };
-const inWheat = (x: number, z: number) => z < 5.9 && (noClearing || !inClearing(x, z, 0.05)) && !inEaten(x, z);
+const inWheat = (x: number, z: number, eaten?: number) => z < 5.9 && (noClearing || !inClearing(x, z, 0.05)) && !inEaten(x, z, eaten);
+/** High-view wheat (T09 r3): the flat wash (ridge base colour on the canopy plane, already the ground fill) plus `paintWheatTexture` (n 1400, 0..200 m)
+ *  and seeded broken patches of 2-6 m with value +-6 % over the whole ground, on a world grid so they stay put while the camera moves. */
+const paintHighWheat = (p: Painter, c: YCam, seed: number, st: number, eaten?: number) => {
+  const base = mixColor(PAD.wheat, STRAW, st), cell = 9, cx = Math.round(c.x / cell), cz = Math.round(c.z / cell);
+  for (let i = cx - 24; i <= cx + 24; i++) for (let j = cz - 24; j <= cz + 24; j++) {
+    const n = i * 131 + j * 17, x = (i + h(n) - 0.5) * cell, z = (j + h(n + 1) - 0.5) * cell, d = Math.hypot(x - c.x, z - c.z);
+    if (d > 220 || !inWheat(x, z, eaten) || h(n + 2) < 0.35) continue;
+    const a = 1 + 2 * h(n + 3), b = (1 + 2 * h(n + 4)) * 0.6, rot = h(n + 5) * 3.14, col = mixColor(base, h(n + 6) > 0.5 ? '#ffffff' : '#000000', 0.06);
+    wFill(p, c, seed + (n & 0xfff), col, Array.from({length: 10}, (_, q) => { const t = (q / 10) * 6.283, u = a * Math.cos(t), v = b * Math.sin(t); return [x + u * Math.cos(rot) - v * Math.sin(rot), (c.y > WHEAT_H + 0.05 ? WHEAT_H : 0) + 0.002, z + u * Math.sin(rot) + v * Math.cos(rot)] as V3; }));
+  }
+  paintWheatTexture(p, c, seed + 100, 0, 200, 1400, {stubble: st, eaten});
+};
+
 /** Standing wheat as stacked ridges round the camera (far to near): each ridge a band from the ground to the ear line at one radius, with a
  *  bumpy ear-top edge, alternating lit and shaded values, only where the ground is wheat (not the clearing, the eaten patch or south of the
  *  fence). Near ridges carry ear strokes. This is what makes the plain read as a tall crop, at any camera height. */
-export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: number; r1?: number; rows?: number; fov?: number; light?: PadLight} = {}) => {
-  const r0 = o.r0 ?? 2.5, r1 = o.r1 ?? 140, rows = o.rows ?? 26, fov = o.fov ?? 0.75, S = 64;
+export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: number; r1?: number; rows?: number; fov?: number; light?: PadLightArg; stubble?: number; eaten?: number} = {}) => {
+  const r0 = o.r0 ?? 2.5, r1 = o.r1 ?? 140, rows = o.rows ?? 26, fov = o.fov ?? 0.75, S = 64, st = o.stubble ?? 0, top = 1 - 0.8 * st;
+  // high view (pitch <= -20 deg): no ridge rows at any distance (they read as stripes far and as arcs near), a flat wash plus texture and broken patches instead (T09 r3)
+  const high = (c.pitch ?? 0) <= HIGH_PITCH;
+  if (high) paintHighWheat(p, c, seed + 7000, st, o.eaten);
   for (let k = rows - 1; k >= 0; k--) {
-    const r = r0 * Math.pow(r1 / r0, k / (rows - 1)), col = mixColor(PAD.wheat, k % 2 ? PAD.wheatLit : PAD.wheatShade, 0.25 + 0.35 * h(k * 7.7));
+    const r = r0 * Math.pow(r1 / r0, k / (rows - 1)), col = mixColor(mixColor(PAD.wheat, k % 2 ? PAD.wheatLit : PAD.wheatShade, 0.25 + 0.35 * h(k * 7.7)), STRAW, st);
+    if (high) continue;
     let run: V3[] = [];
     const flush = () => {
       if (run.length >= 2) {
@@ -186,15 +265,15 @@ export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: num
         if (q.every(Boolean)) hardFill(p, seed + k * 97 + run.length, col, q as Pt[]);
         if (r < 12) top.forEach((v, i) => {   // stalks on the ridge face (vertical strokes), then the ears on its top
           const g = camPoint(c, [v[0], 0, v[2]]), t = camPoint(c, [v[0] + 0.01, v[1] - 0.05, v[2]]);
-          if (g && t && h(k * 71 + i) > 0.35) inkLine(p, seed + 9000 + k * 200 + i, [g, t], {closed: false, weight: Math.max(0.6, 12 / r), color: mixColor(PAD.wheatShade, '#6a5232', 0.35), still: true});
+          if (g && t && h(k * 71 + i) > 1 - 0.65 * (1 - 0.4 * st)) inkLine(p, seed + 9000 + k * 200 + i, [g, t], {closed: false, weight: Math.max(0.6, 12 / r), color: mixColor(mixColor(PAD.wheatShade, '#6a5232', 0.35), STRAW, st), still: true});
         });
-        if (r < 14) top.forEach((v, i) => { if (i % 2) return; const b = camPoint(c, [v[0], v[1] - 0.14, v[2]]), t = camPoint(c, [v[0] + 0.02, v[1] + 0.05, v[2]]); if (b && t) inkLine(p, seed + 5000 + k * 200 + i, [b, t], {closed: false, weight: Math.max(0.8, 26 / r), color: i % 4 ? PAD.wheatEar : PAD.wheatShade, still: true}); });
+        if (r < 14) top.forEach((v, i) => { if (i % 2 || h(k * 37 + i) >= 1 - 0.4 * st) return; const b = camPoint(c, [v[0], v[1] - 0.14, v[2]]), t = camPoint(c, [v[0] + 0.02, v[1] + 0.05, v[2]]); if (b && t) inkLine(p, seed + 5000 + k * 200 + i, [b, t], {closed: false, weight: Math.max(0.8, 26 / r), color: mixColor(i % 4 ? PAD.wheatEar : PAD.wheatShade, STRAW, st), still: true}); });
       }
       run = [];
     };
     for (let i = 0; i <= S; i++) {
       const a = c.yaw + (i / S - 0.5) * 2 * fov, x = c.x + r * Math.sin(a), z = c.z - r * Math.cos(a);
-      if (inWheat(x, z)) run.push([x, WHEAT_H * (0.94 + 0.1 * h(k * 131 + i)), z]); else flush();
+      if (inWheat(x, z, o.eaten)) run.push([x, WHEAT_H * top * (0.94 + 0.1 * h(k * 131 + i)), z]); else flush();
     }
     flush();
   }
@@ -204,4 +283,36 @@ export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: num
 export const paintKpPatch = (p: Painter, c: YCam, seed: number) => {
   wFill(p, c, seed, PAD.earthLight, Array.from({length: 20}, (_, i) => { const a = (i / 20) * Math.PI * 2; return [6.5 * Math.cos(a) * (0.9 + 0.2 * h(i)), 0.01, -1 + 5.5 * Math.sin(a) * (0.9 + 0.2 * h(i + 5))] as V3; }));
   for (let k = 0; k < 40; k++) { const x = -4 + h(k * 3.3) * 8, z = -5 + h(k * 5.9) * 7, b = h(k * 2.1) * 3.1; wInk(p, c, seed + 10 + k, [[x, 0.02, z], [x + 0.35 * Math.cos(b), 0.02, z + 0.35 * Math.sin(b)]], {closed: false, weight: 1.1, color: PAD.wheatShade}); }
+};
+
+/** The plate painter for space P (T09 r3): the locked paddock stack with the state options. At default options it equals `looks.ts` `paintPaddock`
+ *  (no truck, no flock members). `cast` paints the birds between the ground layers and the fence; with the camera south of the fence (c.z > 6)
+ *  the clearing and the verge paint before the fence. Plates always pass `eaten`, so the ridges follow the grown patch. */
+export type PadSceneOpts = {
+  light?: PadLightArg; eaten?: number; stubble?: number; lean?: (x: number, z: number) => number; leanFrom?: V3; verge?: boolean; fence?: boolean; stalks?: V3[];
+  wire?: {wireW?: number; wireCol?: string}; far?: {n: number; x: [number, number]; z: [number, number]};
+  /** nothing but ground and wheat (the P2 stripe measure) */
+  bare?: boolean;
+};
+export const paintPaddockScene = (p: Painter, c: YCam, o: PadSceneOpts, cast: () => void = () => {}) => {
+  const light = o.light ?? 'morning';
+  paintPadSky(p, c, light);
+  paintScrub(p, c, 30100, 300);
+  paintScrub(p, c, 30200, 170, '#7a8264');
+  paintPadGround(p, c, 30300, {eaten: o.eaten, light});
+  if (!o.bare) paintFarmhouse(p, c, 30400, [-90, 0, -160]);
+  if (o.far && !o.bare) paintFarFlock(p, c, 30500, o.far.n, o.far.x, o.far.z);
+  paintWheatRidges(p, c, 30600, {light, stubble: o.stubble, eaten: o.eaten});
+  if (o.bare) return;
+  paintGum(p, c, 30700, [-22, 0, -38], 14, light);
+  paintGum(p, c, 30720, [36, 0, -70], 12, light);
+  paintGum(p, c, 30740, [18, 0, 22], 10, light);
+  paintCamp(p, c, 30800, light);
+  if (o.verge) paintVerge(p, c, 30850);
+  const fromTrack = c.z > 6;
+  if (fromTrack) paintClearing(p, c, 31200);
+  cast();
+  if (o.fence !== false) paintFence(p, c, 31000, -60, 60, light, o.wire);
+  if (!fromTrack) paintClearing(p, c, 31200);
+  if (o.stalks) paintNearStalks(p, c, 31800, o.stalks, {stubble: o.stubble, lean: o.lean, leanFrom: o.leanFrom});
 };
