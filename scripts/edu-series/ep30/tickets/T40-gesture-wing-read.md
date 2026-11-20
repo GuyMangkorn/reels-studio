@@ -1,5 +1,5 @@
 # T40 — the mime wing reads at 270 px: a fuller, paler plume fringe on gesture wings, flick raised (T15 fix pass 1) + re-proof of B03-SH03, B05-SH04, B06-SH04
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: blocked
 Class: figure (fix bundle) · Hard: yes (wing gesture on a creature)
 Blocked by: none (T15 done; T25, T30, T32 built) · Consumers: B03-SH03 (T25), B05-SH04 (T30), B06-SH04 (T32)
 Model: sonnet, medium
@@ -45,4 +45,26 @@ Files: `src/painted/edu30/emu.ts`, `tests/edu30-emu.test.ts` (no plate file chan
 | pads | planted through every gesture | by construction (gesture pads = `emuPads(stand)`, T15 test); no re-measure |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T40 commit) · fix passes used: 0 · Sonnet medium, 20 Nov 2026 · proof: store `projects/edu/EDU/previews/T40-sheet.png` (18 frames, 270 px), `T40-wing-crops.png` (540 px crops of B03-SH03 L 8, B05-SH04 L 10, B06-SH04 L 43; singles `T40-wing-crop-B03-L8.png`, `-B05-L10.png`, `-B06-L43.png`), `T40-kp-sheet.png` + `T40-KP-*.png`, per-frame `T40-s03_*`, `T40-s05_*`, `T40-s06_*`, clean `T40-c03_08.png`, `T40-c05_14.png`, `T40-c06_39.png` (local `out/edu30-T40/`; logs `out/logs/T40-*.log`).
+
+**Status: blocked (Film decision needed).** G1-G9 built exactly as decided (`WingPose.show`, 14 plumes, G4 size, G5 tone, G7 raised flick, G8 wave unchanged). `npx tsc` clean for `edu30` files, `node scripts/test.mjs tests/edu30-emu.test.ts` 35 pass / 0 fail (`out/logs/T40-test.log`). Two implementation notes: `show` is kept absent from a mixed pose while it is below 1e-9 (so `emuWingWave(0)` still equals `[WING_FOLD, WING_FOLD]` in the existing near() tests), and `swingWing` now carries `show` through (it rebuilt the pose without it).
+
+| Frame | Measured | Range | Verdict |
+| --- | --- | --- | --- |
+| KP-stand (the locked KP-EMU look; `KP-EMU` is not a look ID), KP-watch vs parent `d64c124` | mean abs luma diff 0.0002 / 0.0001 | <= 2 | pass |
+| B03-SH03 L 8 right-wing tip | (278, 737); root (476, 891), wrist (369, 808) | (270, 738) +-60 | pass |
+| B03-SH03 L 24 left-wing tip | (827, 733); root (620, 892), wrist (731, 806) | (836, 738) +-60 | pass |
+| B03-SH03 fringe box (40x40 at the wrist) vs the same box with the wing folded | L 8: 143.0 vs 137.0 (L 0, dark group behind) = **6.0**, vs 251.3 (L 40, sky) = 108; L 24: 168.3 vs 157.7 (L 0) = **10.6**, vs 251.3 = 83 | >= 35 apart | **fail against the dark group (the case the ticket names)**; the proxy is the folded frame of the same shot, not a re-render |
+| B03-SH03 L 40 EMU-HERO | 616-1256 = 640 px | 614-660 | pass |
+| B05-SH04 L 6 / 10 / 14 wing tip y | 786 / 674 / 785 (x 871 / 663 / 869; unchanged from parent, wave pose untouched) | <= 800 | pass |
+| B05-SH04 fringe box at L 10 (wrist (655, 829)) vs L 0 / L 45 | 217.6 vs 226.5 = **8.9**; vs 221.6 = **4.0** | >= 35 apart | **fail** |
+| B05-SH04 L 10 EMU-HERO | 525-1413 = **888 px** (parent 779; L 6 716, L 14 727 unchanged) | 750-810 | **fail**: the longer plumes (G4 x1.6) stand 109 px above the old top (634); the tip y (674) is unchanged |
+| B06-SH04 L 43 wing tip y | 734 | <= 800 | pass |
+| B06-SH04 fringe box at L 43 (wrist (550, 857)) vs L 36 / L 50 | 171.5 vs 184.1 = **12.5**; vs 180.9 = **9.3** | >= 35 apart | **fail** |
+| B06-SH04 L 39 EMU-HERO | 768-1324 = 556 px | 542-563 | pass |
+| B06-SH04 L 50; B05-SH04 L 45 folded | viewed `T40-s06_50.png`, `T40-s05_45.png`: no gesture plume outside the body | none outside | pass |
+| caption zone, clean B03-SH03 L 8 / B05-SH04 L 14 / B06-SH04 L 39 | mean 0.76 / 0.51 / 0.48; p95 0.904 / 0.649 / 0.758 | mean <= 0.80, p95 <= 0.99 | pass |
+
+**Viewed (270 px sheet and 540 px crops).** KP stills: flick and back wave read as a held-out comb of pale-and-dark plumes, no fill, no hand-like end; KP-watch and KP-stand unchanged. B03-SH03 L 8 / L 24 read as a feathered wing held out toward screen left / right; against the dark group the plume tones are close to the group tones, which is what the 6.0 / 10.6 numbers show. **B05-SH04 L 10 and B06-SH04 L 43 do not read:** the outer segment of the wave points almost straight up and the plumes are seen nearly edge-on (the plume width axis `wv` lies along the lens), so the upper half is a few thin hairlines and one narrow spike, and the lower half a pale comb that sits on the fence haze (luma gap 9 px). The effect is a scratch and a stick, not a wing. This is the T15 geometry (wave pose and swing locked by G8, TF35), not a value I can tune inside G1-G9; I did not add a fill or change the pose.
+
+**Question for Film.** Wave: (a) raise the plume width on the outer segment when the segment is near-vertical (a width term that does not collapse edge-on, e.g. plumes also spread along the lens axis), or (b) tilt the wave pose toward the lens so the wing plane faces the camera (changes G8 and the TF35 tip numbers), or (c) darker plume tone against the pale sky and haze instead of the paler `#b8a27a` mix (G5). B05-SH04 L 10 EMU-HERO 888 px is outside 750-810 because of G4 plume length; the range needs Film's call or a shorter G4 factor. The B03-SH03 dark-group case needs a darker or paler contrast decision (G5) in the same revision.

@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
-import {blinkLid, buildEmu, EMU_POSES, emuLensYaw, emuLookTurn, emuNod, emuSac, nodDepth, talkBeak, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, emuDuckFlap, emuHop, emuNeckBend, emuPads, emuStartle, emuFootTap, emuWatchCheck, emuWingFlick, emuWingWave, wingLen, WING_ROOT, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose, type WingPose} from '../src/painted/edu30/emu';
+import {blinkLid, buildEmu, EMU_POSES, emuLensYaw, emuLookTurn, emuNod, emuSac, nodDepth, talkBeak, EMU_RUN, EMU_WALK, WING_FLAP_OUT, WING_FOLD, WING_FLICK, WING_WAVE, WING_WATCH, emuDuckFlap, emuHop, emuNeckBend, emuPads, emuStartle, emuFootTap, emuWatchCheck, emuWingFlick, emuWingWave, wingLen, WING_ROOT, gaitAdvance, gaitPhase, mixEmuPose, wingMix, type EmuPose, type WingPose} from '../src/painted/edu30/emu';
 import {paintEmu} from '../src/painted/edu30/flock';
 import {gaitFoot, type L3} from '../src/painted/survival/beast';
 import type {YCam} from '../src/painted/kit/ycam';
@@ -308,8 +308,8 @@ test('T15 flick keys: right wing at L 8-12 full (screen left, head -0.26), left 
   const tipR = heroB(r).anchors.wingTipR, tipL = heroB(l).anchors.wingTipL, ctr: L3 = [0.02, 0.9, 0];
   const dR = Math.hypot(tipR[0] - ctr[0], tipR[2]), dL = Math.hypot(tipL[0] - ctr[0], tipL[2]);   // out from the body axis (horizontal), as the ticket words it
   console.log(`T15 flick: right tip ${rd(dR)} m out (${tipR.map(rd)}), left tip ${rd(dL)} m out (${tipL.map(rd)}); 3D from the body centre ${rd(dist(tipR, ctr))}`);
-  for (const d of [dR, dL]) assert.ok(d >= 0.85 && d <= 0.95, `${d}`);
-  assert.ok(tipR[2] < -0.8 && tipL[2] > 0.8 && tipR[1] > 0.8 && tipL[1] > 0.8);   // out to its right (-z) / left (+z), above the hip
+  for (const d of [dR, dL]) assert.ok(d >= 0.80 && d <= 0.95, `${d}`);   // T40: raised flick, out 0.80-0.95
+  assert.ok(tipR[2] < -0.8 && tipL[2] > 0.8 && tipR[1] >= 1.45 && tipL[1] >= 1.45, `tip y ${tipR[1]} ${tipL[1]}`);   // out to its right (-z) / left (+z), above the hip
   assert.ok(emuWingFlick(2).wing && heroB(emuWingFlick(0)).anchors.wingTipL !== undefined);
 });
 
@@ -359,7 +359,7 @@ test('T15 wave: tip y 1.65-1.80 m (front 3/4 and back), swing +-20 deg moves the
   for (const t of [t10, t14, tb, tb43]) assert.ok(t[1] >= 1.5 && t[1] <= 1.85, `${t[1]}`);   // +-20 deg swing about the root moves the tip 1.54-1.83 m
   assert.ok(t14[2] > t10[2] + 0.2);   // L10 swing -20, L14 +20: the tip goes outward
   near(emuWingWave(0).wing, [WING_FOLD, WING_FOLD], 1e-12); near(emuWingWave(42).wing, [WING_FOLD, WING_FOLD], 1e-12); near(emuWingWave(50, {back: true}).wing, [WING_FOLD, WING_FOLD], 1e-12);
-  near((emuWingWave(34).wing as WingPose[])[0], wingMix(WING_FOLD, {dir: [0, 0.8, 0.6], bend: [0, 0.92, 0.39], reach: 1}, 1), 1e-12);
+  near((emuWingWave(34).wing as WingPose[])[0], wingMix(WING_FOLD, WING_WAVE, 1), 1e-12);
   assert.equal(emuWingWave(6).beak, 1); assert.equal(emuWingWave(9).beak, 0); assert.equal(emuWingWave(4).headYaw, 0.61); assert.equal(emuWingWave(0).headYaw, 0);
   assert.equal(emuWingWave(44, {back: true}).headYaw, 0.3);
 });
@@ -368,4 +368,9 @@ test('T15 mixEmuPose: toes mix from [0, 0] and mix(a, a) = a; frame L alone equa
   const a: EmuPose = {toes: [0.1, 0.44]};
   near(mixEmuPose(a, a, 0.4).toes, a.toes); near(mixEmuPose(a, {}, 1).toes, [0, 0]); near(mixEmuPose({}, a, 0).toes, [0, 0]); near(mixEmuPose({}, a, 1).toes, a.toes);
   assert.equal(JSON.stringify(emuWatchCheck(20)), JSON.stringify(emuWatchCheck(20))); assert.equal(mixEmuPose({}, {}, 0.5).toes, undefined);
+});
+
+test('T40 G1: wingMix interpolates show linearly; the flick and wave poses carry show 1, the watch and fold none', () => {
+  assert.equal(wingMix(WING_FOLD, WING_FLICK, 0.5).show, 0.5);
+  assert.equal(WING_FLICK.show, 1); assert.equal(WING_WAVE.show, 1); assert.equal(WING_WATCH.show, undefined); assert.equal(WING_FOLD.show, undefined);
 });

@@ -17,7 +17,7 @@ export const EMU_PX = {
 export const EMU_LOOK: NonNullable<Build['look']> = {sub: 3, ring: 2, rim: '#d9cdb4', rimK: 0.28, edge: 0.4, far: 0.2};
 
 /** A wing given for the LEFT wing (the right negates z): inner segment root -> wrist along `dir`, outer wrist -> tip along `bend`, `reach` 0 (real vestigial 0.24 m) .. 1 (mime 0.85 m). */
-export type WingPose = {dir: L3; bend: L3; reach: number};
+export type WingPose = {dir: L3; bend: L3; reach: number; /** T40: plume emphasis 0..1 (absent = 0) for gesture wings: more, longer, paler plumes */ show?: number};
 export const WING_FOLD: WingPose = {dir: [-0.55, -0.83, 0.08], bend: [-0.55, -0.83, 0.02], reach: 0};
 export const WING_FLAP_OUT: WingPose = {dir: nrm([-0.35, -0.70, 0.62]), bend: nrm([-0.40, -0.88, 0.25]), reach: 0};
 export const WING_ROOT: L3 = [0.10, 1.00, 0.21];
@@ -128,11 +128,13 @@ export const buildEmu = (o: EmuPose = {}): Build => {
       const ref = nrm(lerp([0, 0, 1], [1, 0, 0], out)), dm = nrm(add(d0, d1)), wv = nrm([dm[1] * ref[2] - dm[2] * ref[1], dm[2] * ref[0] - dm[0] * ref[2], dm[0] * ref[1] - dm[1] * ref[0]]);
       const [rp, wp2, tp] = [rootB, wristB, tipB].map(P);
       // r3: no solid flat, no tip fan; 7 seeded loose plumes along the two segments, each hanging (segment direction + (0, -0.8, 0)), two mop tones alternating
-      for (let k = 0; k < 7; k++) {
-        const r1 = hsh(5000 + wi * 40 + k), r2 = hsh(5100 + wi * 40 + k), tt = clamp((k + 0.5 + (r1 - 0.5) * 0.5) / 7), s1 = l1 / (l1 + l2);
+      const sh = wp.show ?? 0, nP = 7 + Math.round(7 * sh);   // T40: 7 plumes + up to 7 more at show 1
+      for (let k = 0; k < nP; k++) {
+        const r1 = hsh((k < 7 ? 5000 : 5200) + wi * 40 + k), r2 = hsh((k < 7 ? 5100 : 5300) + wi * 40 + k), tt = clamp((k + 0.5 + (r1 - 0.5) * 0.5) / nP), s1 = l1 / (l1 + l2);
         const inner = tt <= s1, base = inner ? add(rootB, mul(d0, l1 * (tt / s1))) : add(wristB, mul(d1, l2 * ((tt - s1) / (1 - s1)))), sd = inner ? d0 : d1;
-        const dir = pitchAbout(nrm(add(sd, [0, -0.8, 0])), [0, 0, 0], pitch), q = P(base), len = (0.08 + 0.08 * r2) * (1 + wp.reach);
-        feather(R, root, add(q, mul(wv, -0.015)), add(q, mul(wv, 0.015)), dir, len, tc(mixColor(EMU_PX.body, EMU_PX.bodyDark, k % 2 ? 0.35 : 0.15)), 0.5);
+        const dir = pitchAbout(nrm(add(sd, [0, -0.8, 0])), [0, 0, 0], pitch), q = P(base), len = (0.08 + 0.08 * r2) * (1 + wp.reach) * (1 + 0.6 * sh), wd = 0.015 * (1 + sh);
+        const tone = mixColor(EMU_PX.body, EMU_PX.bodyDark, k % 2 ? 0.35 : 0.15);
+        feather(R, root, add(q, mul(wv, -wd)), add(q, mul(wv, wd)), dir, len, tc(sh > 0 ? mixColor(tone, '#b8a27a', 0.55 * sh) : tone), 0.5);
       }
       R.B.anchors[`wingRoot${n}`] = rp; R.B.anchors[`wingWrist${n}`] = wp2; R.B.anchors[`wingTip${n}`] = tp;
     });
@@ -281,7 +283,9 @@ const mixNum = (a: number, b: number, u: number) => (u >= 1 ? b : a + (b - a) * 
 const mix3 = (a: L3, b: L3, u: number): L3 => [mixNum(a[0], b[0], u), mixNum(a[1], b[1], u), mixNum(a[2], b[2], u)];
 /** Mix two directions: the mixed direction renormalised to the mixed length (so mix(a, a) = a even for a non-unit vector). */
 const mixDir = (a: L3, b: L3, u: number): L3 => { const m = mix3(a, b, u), n = nrm(m), l = mixNum(Math.hypot(...a), Math.hypot(...b), u); return [n[0] * l, n[1] * l, n[2] * l]; };
-const mixWing1 = (a: WingPose, b: WingPose, u: number): WingPose => ({dir: mixDir(a.dir, b.dir, u), bend: mixDir(a.bend, b.bend, u), reach: mixNum(a.reach, b.reach, u)});
+/** G1 show mix; kept absent while it is 0 so a folded wing equals WING_FOLD exactly */
+const mixShow = (a: WingPose, b: WingPose, u: number): {show?: number} => { const v = (a.show ?? 0) + ((b.show ?? 0) - (a.show ?? 0)) * u; return v > 1e-9 ? {show: v} : {}; };
+const mixWing1 = (a: WingPose, b: WingPose, u: number): WingPose => ({dir: mixDir(a.dir, b.dir, u), bend: mixDir(a.bend, b.bend, u), reach: mixNum(a.reach, b.reach, u), ...mixShow(a, b, u)});
 /** Mix two wing poses; one value in = one value out (both wings alike), a pair in = a pair out. */
 export function wingMix(a: WingPose, b: WingPose, u: number): WingPose;
 export function wingMix(a: WingPose | [WingPose, WingPose], b: WingPose | [WingPose, WingPose], u: number): WingPose | [WingPose, WingPose];
@@ -372,16 +376,16 @@ export const emuSac = (L: number): number => (L <= 26 ? 0 : L <= 34 ? easeOut((L
 
 // ------------------------------------------------------------------ T15 mime gestures (shot-local frames, pure functions of the frame)
 /** Mime wing poses for the bird's LEFT wing (the right wing negates z): see the T15 ticket for the values. */
-export const WING_FLICK: WingPose = {dir: [-0.14, 0.27, 0.95], bend: [-0.14, 0.27, 0.95], reach: 0.8};
+export const WING_FLICK: WingPose = {dir: nrm([-0.14, 0.60, 0.79]), bend: nrm([-0.14, 0.60, 0.79]), reach: 1.0, show: 1};
 export const WING_WATCH: WingPose = {dir: [0.81, 0.49, 0.32], bend: [0.20, 0.0, -0.98], reach: 0.8};
-export const WING_WAVE: WingPose = {dir: [0.0, 0.80, 0.60], bend: [0.0, 0.92, 0.39], reach: 1};
+export const WING_WAVE: WingPose = {dir: [0.0, 0.80, 0.60], bend: [0.0, 0.92, 0.39], reach: 1, show: 1};
 /** Head joint and head direction of the watch check: the left eye looks down at the wrist (creature frame). */
 export const WATCH_HEAD: L3 = [0.10, 1.32, 0.05];
 export const WATCH_HEAD_DIR: L3 = nrm([0.31, -0.13, 0.28]);
 /** A wing pose swung by `a` rad about the creature +x axis through the root (+ = tip outward, away from the head; the left wing's z is +). */
 const swingWing = (w: WingPose, a: number): WingPose => {
   const rot = (v: L3): L3 => [v[0], v[1] * Math.cos(a) - v[2] * Math.sin(a), v[1] * Math.sin(a) + v[2] * Math.cos(a)];
-  return {dir: rot(w.dir), bend: rot(w.bend), reach: w.reach};
+  return {dir: rot(w.dir), bend: rot(w.bend), reach: w.reach, ...(w.show !== undefined ? {show: w.show} : {})};
 };
 const DEG = Math.PI / 180;
 const ramp = (L: number, a: number, b: number, ease: (t: number) => number = easeInOut) => ease((L - a) / (b - a));
