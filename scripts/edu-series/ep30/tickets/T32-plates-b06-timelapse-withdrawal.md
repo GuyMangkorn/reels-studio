@@ -24,6 +24,9 @@ Files: `src/painted/edu30/shots/B06-SH03.tsx`, `src/painted/edu30/shots/B06-SH04
 
 **Judgment for the builder (Hard).** The time-lapse is state jumps, not motion: each 6-frame block is one held day (the projector sound speeds over them). The hero never moves until its one small wave in B06-SH04: from behind, a dark wing lifts at the flank toward the truck, swings once and tucks back in.
 
+## r7 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`)
+- **Render cost of the fence birds (T08 r4).** A nine-bird `fenceBirds` frame at near detail took 191 s per still. EMU-HERO paints near. The other fence birds use the automatic `LOD_PX` rule, with the back row (z 0.5 m behind) forced to `lod: 'far'` when a frame takes more than 120 s. Log the frame time of the L 90 (nine-bird) frame.
+
 ## Proof
 - Stills (`out/edu30-T32/`): SH03 L 0, 27, 45, 59, 65, 71, 77, 83, 89, 98; SH04 L 0, 20, 36, 39, 43, 50, 57; plus B05-SH03 at the matching truck x for the side-by-side.
 - `scripts/qa-sheet.sh out/edu30-T32/sheet.png --cols 6 --width 270 out/edu30-T32/s*.png`; `measure-shots.ts B06-SH03 0,98` and `B06-SH04 0,57`; clean SH04 L 39 through `caption-zone.py`.

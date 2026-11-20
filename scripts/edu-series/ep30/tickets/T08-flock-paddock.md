@@ -1,5 +1,5 @@
 # T08 — flock motion in the paddock: buffet peck sync, strolling extras, the field of rising heads, scatter, six-group burst, the split by halves, fence birds, the slow-motion line
-Deliverable: EDU-EP30-SHORT · Revision: r4 · Status: built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R7 Film look check of r4: buffet, EMU1, heads field, scatter and fence pass; halves speed, burst grouping and slow-line cycle are revised in rows H1–H3, B1–B4 and S1–S3; this is fix pass 1) · was: r4 built, awaits Film look check (was: ready, dispatchable (R6: T07 r5 head API merged at `707d757`; runs in parallel with T37) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R6))
 Class: movement · Hard: yes (animal movement)
 Blocked by: T35 (same file `flock.ts`, first), T07 (uses T06 poses, `mixEmuPose`, `gaitAdvance` and T07 `emuLensYaw`, `nod`) · Consumers: B01-SH02, B02-SH01, B02-SH06, B03-SH01, B03-SH02, B03-SH03 (the group), B05-SH03, B05-SH04, B06-SH01, B06-SH03, B06-SH04; T16
 Model: sonnet, medium
@@ -37,6 +37,54 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **T07 r5 API.** Use `emuLensYaw` (clamp ±1.2 stands), `emuLookTurn`, `nodDepth` / `emuNod`, `blinkLid`, `talkBeak` as exported in `emu.ts`; do not edit `emu.ts` (T07 r6 and T15 write it).
 - **Runs beside T37.** T37 changes the ring frame in `survival/beast.ts`, so bent necks (startle, duck in the scatter and burst) still show the T06 N4 pinch or slits in this ticket's stills: ignore those seams; Film judges them on T37's proof. `tests/edu30-flock.test.ts` checks positions, headings, pose values and keys only, **no stroke or pixel hash of a painted emu** (it would break when T37 merges).
+
+## r5 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`): look check of r4 and rulings on the Result notes
+These override any older value in this ticket that they name. Viewed: store `T08-sheet.png` (18 frames at 270 px), and `T08-halves-{06,14,30}`, `T08-burst-{20,45}` and `T08-heads-{58,74}` downscaled to 360–540 px.
+
+**Look check of r4.**
+- **Buffet 130/135: pass.** All six dip on the same frame and the row reads as comic precision.
+- **EMU1 / extras: pass** on the numbers (contacts and slip 0.0000 m).
+- **Heads field 48/58/74: pass for timing and placement.** The groups rise in order, the crew is unblocked and the heads read as many necks popping up. Proof-only artefacts accepted: the sitting bodies show as dark ovals above the stalks, and at L 48 EMU-HERO's legs show, because the proof overpaints wheat per band. Plate T22 interleaves them (T22 r7 notes). `lod: 'far'` for the 36 field members is accepted in this proof: the far heads still show an eye and a beak dot.
+- **Scatter 3/6/44/60: pass** on the numbers (4 clumps, 13.9 m apart). The birds are 20–40 px at the sheet camera, as placed; T24 judges the read in the plate.
+- **Fence 0: pass** (wire over every bird, body front ≤ z 5.92). The proof uses the five birds of B05-SH04, which is that shot's real count. The nine-bird near-detail frame (191 s) is a render-cost note for T32 (T32 r7 notes).
+- **Halves 6/14/30: fix.** At L 30 one left-half bird is still at the left edge while the right half leaves. The two peel-offs overlap, so the "one clean peel-off per half" beat is lost (rows H1–H3).
+- **Burst 20/45: fix.** The six groups do not read: the burst groups are formed by heading snap from birds already spread across the four scatter clumps, so at 270 px the frame shows one spray of dots, not a firework of six groups. Small dark silhouettes also fill the far paddock (rows B1–B4).
+- **Slow line 0/96: pass for framing; fix the cycle** (rows S1–S3).
+
+**Ruling on Result note 1, halves exit (H1–H3).** The sheet's two x marks and 5.5 m/s cannot both hold. The beat is two clean exits, so the speed gives way.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| H1 speed | run **0 → 12 m/s over 3 f**, at the same time as the 3 f turn to ±x, from L 7 + d (left) and L 23 + d (right), d seeded 0–3 as built; run phase exact (named walkers), T06 run gait, one `paintPlume` 0.25 m puff per footfall | test: speed 12.0 at start + 3 f; stance slip ≤ 0.02 m |
+| H2 exit, screen | at the B03-SH03 camera of that frame (start → end camera, ease-in-out as in the sheet), every **left-half** body's screen bbox is entirely at x < 0 by **L 24**, and every **right-half** body's is entirely at x > 1080 by **L 40** | logged per bird: exit frame; max ≤ 24 / ≤ 40 |
+| H3 overlap | no left-half body pixel on screen after L 24, when the right half has barely started its turn | follows from H2 |
+
+The sheet marks "x ≈ 6.0 / 18.0" and "5.5 m/s" are replaced (TF24). The sound cues (patter 818 and 834 = local 7 and 23) stay, because they mark the start of each run.
+
+**Ruling on Result notes 2 and 5, burst (B1–B4).** At 6–8 m/s and this camera (about 39 m half-width at the flock), no group can leave the frame by L 45, and the sheet's real need is "six distinct groups read at 270 px". The cut from the low B03-SH01 camera to the top shot allows a fresh start.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| B1 start | `burst(L)` no longer continues from `scatter(71)`. At L 0 the 40 birds stand in **six tight groups**: group 0 = EMU-HERO (seed 36000) + 10 birds; groups 1–5 = 6, 6, 6, 6, 5 birds (the scatter seeds in order). Group centres = (0, 0, −45) + **8 m** along each group heading; members seeded inside a **2.5 m** disc round their centre, min spacing 0.7 m | test: every member ≤ 2.5 m from its group centre at L 0 |
+| B2 headings | group 0 heads toward (12, 0, −32) (the B03-SH03 mark, TF03); groups 1–5 at group 0's heading + 60° k (k 1…5); each bird ± 8° seeded about its group heading; speed U(6, 8) m/s from L 0 (run, phase quantised as now) | test: group 0 heading = direction to (12, 0, −32) ± 0.01 rad |
+| B3 read | the six groups read as six separate clusters moving outward | at L 20 and 45: pairwise group-centroid distance ≥ 8 m (logged); viewed at 270 px; flock centre at L 0 on screen (540 ± 60, 400 ± 60) (sheet Projection) |
+| B4 only the 40 | `FL30-burst` and B03-SH02 paint the 40 burst birds and their dust only: no far mass and no extra distant silhouettes (if the small dark marks across the far paddock in the r4 frames are birds, they go) | count of painted emu members = 40 (logged) |
+
+No group needs to leave the frame: the sheet's "crossing the frame edges by local 45" and its exit state "groups gone through the edges" become "six groups spreading out, the hero group heading for the B03-SH03 mark" (TF25). The B03-SH01 → SH02 continuity is the count (40) and the hero group, not the clump positions.
+
+**Ruling on Result note 3, slow-line cycle (S1–S3).** The "40 % cycle speed" means a slow-motion walk with normal-looking steps, not tiny steps. The hero's contacts L 12, 54, 96 are **alternate feet**, not one foot per cycle.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| S1 cycle | walk cycle **84 f** for all five (`SLOW_PERIOD` 42 → 84; about 36 % of the 30 f walk, the closest to 40 % that keeps the "ถัง" contact on L 96); hero contacts L 12, 54, 96 alternate feet; the others keep their first-contact offsets 7, 19, 31, 41 | test: hero foot contacts at L 12, 54, 96, alternating |
+| S2 stride | advance per cycle = 0.22 × 84 / 30 = **0.616 m**, stride = `strideForAdvance(0.616)` (≈ 0.37); speed 0.22 m/s unchanged | test; slip ≤ 0.02 m |
+| S3 stop | EMU-HERO's pose and position **freeze at L 100**, inside the double support that follows the L 96 contact; both feet down L 100–109; z ≈ −3.87 (the sheet's −3.8 at L 109 is accepted as −3.87, TF26); the r4 swing compression L 100–109 is removed | test: both feet on the ground L 100–109, hero position constant |
+
+**Ruling on Result note 4, crowd phase quantisation.** Accepted. Crowd members in `scatter` and `burst` keep the 1/16-cycle quantisation: they are 20–40 px (scatter) and smaller (burst top shot), so a 0.06 m slip is about 1 px. Named walkers keep exact phase. Add a logged test row: max stance slip in screen px for `scatter` (B03-SH01 camera) and `burst` (B03-SH02 camera) over L 40–60 / 0–30, **pass ≤ 1.5 px**. Any later plate that shows a quantised bird with a lead height ≥ 80 px uses exact phase for it.
+
+**Result note 5, hero in `halves`:** accepted. `halves` returns the 10 birds and the plate (T25) paints EMU-HERO with the T15 mime.
+
+**r5 Files:** `src/painted/edu30/flock.ts`, `src/painted/edu30/proof-flock.tsx` (only if a proof call changes), `tests/edu30-flock.test.ts`. **Proof:** re-render `FL30-halves` L 6, 14, 22, 24, 30, 40; `FL30-burst` L 0, 20, 45; `FL30-slow` L 0, 54, 96, 105; a qa-sheet at 270 px; archive as `T08r5-*.png` with `T08r5-sheet.png`. Every other r4 frame and test stands (buffet, EMU1, heads, scatter, fence unchanged: their tests must still pass).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-flock.test.ts`: `buffetRow(135)` all six at full peck, none fully down at 134 or 140; `headsField` keeps every member outside the sightline band; `fenceBirds` bodies behind the wire; stance-foot slip ≤ 0.02 m over 30 f for EMU1; frame L alone equals frame L after 0…L.

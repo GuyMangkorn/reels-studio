@@ -1,5 +1,5 @@
 # T12 — the standing and kneeling crew poses and the farmer's gesture exist with their hands and faces decided
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: row G0 added (TICKETS-R6)
+Deliverable: EDU-EP30-SHORT · Revision: r6 · Status: r6 fix pass ready (R7 Film look check of r5: P44-back, loader, G0, line-up, the farmer's face and talk pass; the salute hand (A2) and the farmer's point (G2) are revised; fix pass 1) · was: r5 built `b44ca08`, awaiting Film look check · was: r3 done · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: row G0 added (TICKETS-R6)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T36 (r4: the flat thumbed fist; same files `edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`, after T11), T11 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`), T13 (pan anchor for the loader) · Consumers: B01-SH01 (P30, P34 locked), B02-SH02 (FARMER), B02-SH04 (salute, line-up), B02-SH06 (visor, loader), B03-SH05 (GUNNER-2 P34 at the edge), B06-SH01 (P44 back, shoulder and hat)
 Model: sonnet, medium
@@ -37,6 +37,35 @@ These override any older value in this ticket that they name.
 ## r5 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R6`)
 These override any older value in this ticket that they name.
 - **G0 (first, from the T36 r2 look check).** `C30-gunner-34` in `proof-cast.tsx` becomes `man(); gun(); fists()` (the T36 `paintGunnerFists` call right after the gun), as `C30-gunner-front` already is. Pass: the 540 px crop of the 3/4 view at j 0 and j 1 shows the grip entering the near RIGHT fist with no grip pixel across the fist's central 60 % (logged); the other three views' stroke hashes unchanged; archive `T12-G0-crop-34-j{0,1}.png`. Every other T12 pose that holds the gun from in front of it follows the same order.
+
+## r6 decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`): look check of r5 and rulings on Boss's eight notes
+These override any older value in this ticket that they name. Viewed: store `T12-sheet.png` (14 frames at 270 px) and `T12-hands.png` (four 540 px hand crops).
+
+**Look check of r5.**
+- **G0: pass** (0 grip pixels across either fist; three other views' hashes unchanged).
+- **Line-up (B), kit P30/P34 (C, E): pass.**
+- **P44 back (D): pass.** Forearms cross at the small of the back above the belt; the right flat fist and the left mitten over the wrist read in the full test view.
+- **Loader (F) L 0/25/30/46: pass.** He leans in to the gun and both fists stay on the pan rim; at 140 px in B02-SH06 it reads as seating the pan.
+- **Farmer face and talk (G face): pass** (angry; the eyes go to the lens by L 53).
+- **Salute (A) L 8: fix.** The mitten sits behind the hat brim at the side of the head and the elbow hangs about 45° below the shoulder, so it reads as a hand on the hat or a head-scratch, not a crisp salute (row A2).
+- **Farmer point (G) L 9/45: fix.** The mitten touches the side of his head beside the hat, which reads as clutching his head. It also points nowhere near the bird: in B02-SH02 the emu's head is at (−3.6, 1.0, 3.0), projected at about (286, 916), which is screen left of him and below his shoulder, not above his hat (row G2).
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| A2 salute hand (replaces A's hand target; keys L 0–2 P01, 2–8 rise ease-out, hold 8–22, 22–28 lower stay) | at the hold, the RIGHT mitten centre sits at the **front edge of the brim above his right eye**: 0.30 head widths to his right of the face centre line, at brim height, 0.04 m in front of the head surface, and is **painted after the head and hat** (over the brim edge and the upper forehead). The elbow is solved by IK with the pole out to his right (screen left) and slightly forward, so the **elbow is raised: elbow y = shoulder y ± 0.06 m**. The mitten is an oval with its long axis along the forearm; palm forward, so no thumb is drawn (note 1). `MEREDITH RIGHT hand, flat mitten at the brim, shows palm, fingers screen up-right` → right arm screen left | L 8: mitten bbox overlaps the brim's front edge and the forehead above the right eyebrow (overlap px > 0 with each, logged); elbow y − shoulder y within ± 0.06 m (logged); arm ratio ≤ 1.05; viewed at 540: reads as a salute |
+| G2 farmer point (replaces G's arm values; keys L 0–3 P01, 3–9 rise ease-out, hold 9–45, 45–60 lower ease-in-out stay) | at the hold, the RIGHT mitten centre = right shoulder + **0.50 m × d**, with **d = unit(−0.80, −0.45, −0.40)** in world (his right, down and back; farmer at (−2.5, 0, 5.2) facing +z). Elbow flexion **15°**, pole down. The mitten points along d, edge to the lens. `FARMER RIGHT hand, mitten pointing at the emu, shows edge (little-finger side down), fingers screen lower-left` → right arm screen left, thumb hidden behind the hand. P41 lean, face, gaze and talk keys unchanged | L 9 and L 45 at the B02-SH02 camera of that frame: the screen line from the shoulder through the mitten centre passes **within 60 px** of the projected emu head (−3.6, 1.0, 3.0) (logged); mitten clear of the head and hat silhouette by **≥ 40 px**; arm ratio ≤ 1.05; viewed: reads as pointing at the bird behind him |
+
+**Rulings on the eight notes in Result.**
+1. **Thumbs on open hands: accepted.** Open mittens on the unshaped kit are plain ovals with no thumb (salute, farmer point, P44 left). Their thumb-check line reads `thumb check: <hand>: open oval, no thumb drawn (unshaped kit)`. Kit gap for intake (W8.4): an open mitten with a thumb for the unshaped kit.
+2. **P44 left hand: measured wins.** The line becomes `MEREDITH LEFT hand, mitten over the right wrist, shows back, fingers screen right` → thumb screen lower-left.
+3. **P44 elbows 86 / 87°: accepted.** The wrist height (0.95 m) wins over "about 100°".
+4. **P44 back repaint in T12's module: accepted for EP30.** At intake the kit back view (`kit/back.ts`) should paint arms behind the back itself; filed as a kit intake item, not a ticket.
+5. **P44 full test camera yaw 0: accepted.** Yaw 180 was a Film slip.
+6. **Loader lean 25° in the picture plane: accepted.** The kit kneel has no 3/4 view. The look check passes and the 3D reach holds.
+7. **Held pan over the seated pan: accepted.** No T13 change. T22 paints the held pan over the seated one and logs how many rows of the seated pan show below it at L 0–29; ≤ 4 px rows at 140 px is accepted (T22 r7 notes).
+8. **Farmer arm angles: superseded by G2.**
+
+**r6 Files:** `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (only if a proof call changes), `tests/edu30-cast.test.ts`. Only the salute and farmer solves change; every other T12 and T11 stroke hash stays (test). **Proof:** re-render `C30-crew-salute` L 0, 8, 28 and `C30-crew-farmer` L 0, 9, 45, 53, 60; 540 px crops of salute L 8 and farmer L 9; archive as `T12r6-*.png` with `T12r6-sheet.png`.
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: arm ratio ≤ 1.05 on every key frame of A, D, F, G; loader reach ≤ 0.52 m both arms with the pan at its seat.

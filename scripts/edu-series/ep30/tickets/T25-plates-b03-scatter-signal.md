@@ -34,6 +34,11 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **B03-SH02 casings continue B03-SH01 (T05 r5).** Ten of the 23 casings are still in the air at the B03-SH01 cut, so B03-SH02 paints them with `paintCasings(p, c, 72 + L, rounds, spec)` (the B03-SH01 rounds, spec and seed; L = B03-SH02 local), not `restingCasings`: the last ten land by local 26 and stay. Proof row: at B03-SH02 local 0 the count at rest equals T05's count at B03-SH01 L 72 (logged), and at local 26 all 23 rest inside the B03 box.
 
+## r7 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`)
+These override any older value in this ticket that they name.
+- **B03-SH02 burst (T08 r5 B1–B4, TF25).** Six tight groups at L 0 run outward; nobody needs to leave the frame by L 45. Read the burst with T08 r5 `burst(L)` as built. The acceptance stays "six distinct groups read at 270 px"; the exit state becomes "six groups spreading out, the hero group heading for the B03-SH03 mark". Only the 40 birds and their dust are painted.
+- **B03-SH03 halves (T08 r5 H1–H3, TF24).** 12 m/s; the left half is fully off screen left by local 24 and the right half off screen right by local 40, so EMU-HERO is alone from about local 40 to 56 (the blink at 44–46 falls inside).
+
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.
 - `scripts/qa-sheet.sh out/edu30-T25/sheet.png --cols 7 --width 270 out/edu30-T25/s*.png`; `measure-shots.ts B03-SH03 0,56`; clean SH03 L 8 and L 24 through `caption-zone.py`.

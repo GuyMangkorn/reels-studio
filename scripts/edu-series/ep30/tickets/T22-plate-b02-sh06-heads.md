@@ -28,6 +28,13 @@ Files: `src/painted/edu30/shots/B02-SH06.tsx`
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
 
+## r7 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`)
+These override any older value in this ticket that they name.
+- **Wheat interleave (T08 r4 look check).** Paint the near wheat per z band in front of the field birds, so that no sitting body shows above the stalks: only necks and heads come out of the wheat. EMU-HERO's legs stay hidden ("legs hidden in the wheat", sheet). The T08 proof shows bodies and the hero's legs only because it overpaints per band without interleaving.
+- **LOD and render cost.** EMU-HERO paints at near detail. The 36 field members use the library's automatic `LOD_PX` rule; when one frame takes more than 120 s (the stills timeout is 180 s), force `lod: 'far'` on every field member except the hero and log the frame time (T08: 36 near birds exceeded 180 s).
+- **Loader pan (T12 r6 note 7).** For L < 30 the held pan is painted over the seated one. Log the seated-pan rows visible below it; ≤ 4 px rows is accepted.
+- T12's P30, P34 and loader poses pass the R7 look check; T22 still waits on T12 r6 only because of the same-file order (T12 r6 changes only the salute and the farmer, which this plate does not use), and on T07 r6 (the hero's blink at local 33–35).
+
 ## Proof
 - Stills (`out/edu30-T22/`): L 0, 7, 10, 30, 44, 52, 58, 64, 74.
 - `scripts/qa-sheet.sh out/edu30-T22/sheet.png --cols 5 --width 270 out/edu30-T22/s*.png`; `measure-shots.ts B02-SH06 0,74`; clean L 0 and L 74 through `caption-zone.py`.
