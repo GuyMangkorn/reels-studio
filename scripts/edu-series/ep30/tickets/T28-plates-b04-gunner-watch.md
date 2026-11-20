@@ -1,5 +1,5 @@
 # T28 — plates B04-SH06 (GUNNER-1 racks the dead gun, "โธ่เอ๊ย…") and B04-SH05 (PB01: EMU-HERO checks an invisible watch, three foot taps) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T15, T16, T17 done) · was: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (gunner arm and face, emu mime)
 Blocked by: T03, T05, T07, T10, T11, T13, T15, T16, T17 · Consumers: B04-SH06, B04-SH05 (global 1062–1149; play order SH06 then SH05)
 Model: sonnet, medium
@@ -36,6 +36,13 @@ These override any older value in this ticket that they name.
 ## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
 These override any older value in this ticket that they name.
 - **TF21.** B04-SH06 face start ≈ (530, 690), end ≈ (492, 695) (estimate, T11 r4); log the measured points. Leads read to the hat crown (T11 r4).
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **EMU-HERO in B04-SH05 (T15 R9).** `queue(L, 'B04-SH05', {hero: (L) => ({pose: {...emuWatchCheck(L, {lensYaw: emuLensYaw(<B04-SH05 camera>, <bird 0>)}), ...emuFootTap(L)}})})`.
+- **GUNNER-1 in B04-SH06 (T17 R9).** `thumb check: GUNNER-1 RIGHT: up ok` on the rack frames (TF38); talk cycles restart at local 7 and 18.
+- **Queue shadows (TF37).** `shadowOp: 45`.
+- **Caption zone (TF46).**
 
 ## Proof
 - Stills (`out/edu30-T28/`): SH06 L 0, 3, 6, 8, 14, 23; SH05 L 0, 6, 12, 18, 30, 38, 40, 47, 54, 60, 63.

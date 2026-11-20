@@ -1,5 +1,5 @@
 # T29 — plates B05-SH01 (chase locked to the truck) and B05-SH02 (the barrel bounces at the sky) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass 1 built (Boss 2026-11-20, awaiting Film look check); was: r5 fix pass ready (R8 Film look check, 2026-11-20: SH02 passes; SH01 G2 reads as a pipe at his mouth, rest elevation +15° (C1, TF31); GUNNER-1 rows set to the built figure (TF32); SH02 emus as built (TF33); thumb waived in the chase; fix pass 1) · was: built (Boss 2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (R9 Film look check: accept with value change) · was: r5 fix pass 1 built (Boss 2026-11-20, awaiting Film look check); was: r5 fix pass ready (R8 Film look check, 2026-11-20: SH02 passes; SH01 G2 reads as a pipe at his mouth, rest elevation +15° (C1, TF31); GUNNER-1 rows set to the built figure (TF32); SH02 emus as built (TF33); thumb waived in the chase; fix pass 1) · was: built (Boss 2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (rider arms on a bouncing body, running emus)
 Blocked by: T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 · Consumers: B05-SH01, B05-SH02 (global 1150–1293)
 Model: sonnet, medium
@@ -90,7 +90,7 @@ Commit: see `git log` on this worktree branch (T29 commit) · fix passes used: 0
 
 
 ## Result r5 (Boss, Sonnet medium, 20 Nov 2026, fix pass 1 of 2)
-Commit: see `git log` on branch `worktree-agent-a3b84bcdbed4bef74` (T29 r5 commit). Files touched: `B05-SH01.tsx` (`g2Elev: st.g2Elev + 15 * D`), `B05-SH02.tsx` (`g2Elev: st.g2Elev + 15 * D * (1 - easeIO(L / 8))`, smoothstep). Proof: store `projects/edu/EDU/previews/T29r5-sheet.png` (7 frames, 270 px), `T29r5-crop-s1_0.png` (540 px gunner and gun), `T29r5-roofzoom.png`, `T29r5-s1_{0,15,30,59}.png`, `T29r5-s2_{0,8,11}.png`; local `out/edu30-T29r5/`; measuring script `out/edu30-T29r5/m.ts` (not committed). `npx tsc`: 8 error lines, none in the two shot files; full `npm test` did not finish in this environment (stalled after 59 subtests, killed); `edu30-props`, `edu30-flock`, `edu30-cast` tests 45 of 45 pass (`out/logs/T29r5-edu30test.log`).
+Commit: see `git log` on branch `worktree-agent-a3b84bcdbed4bef74` (T29 r5 commit). Files touched: `B05-SH01.tsx` (`g2Elev: st.g2Elev + 15 * D`), `B05-SH02.tsx` (`g2Elev: st.g2Elev + 15 * D * (1 - easeIO(L / 8))`, smoothstep). Proof: store `projects/edu/EDU/previews/T29r5-sheet.png` (7 frames, 270 px), `T29r5-crop-s1_0.png` (540 px gunner and gun), `T29r5-roofzoom.png`, `T29r5-s1_{0,15,30,59}.png`, `T29r5-s2_{0,8,11}.png`; local `out/edu30-T29r5/`; measuring script `out/edu30-T29r5/m.ts` (not committed). `npx tsc`: 8 error lines, none in the two shot files; full `npm test` finished: 477 / 486 pass, 9 known failures (corrected by Film, R9; the earlier text said it stalled and was killed); `edu30-props`, `edu30-flock`, `edu30-cast` tests 45 of 45 pass (`out/logs/T29r5-edu30test.log`).
 
 | Row | Measured | Pass | Result |
 | --- | --- | --- | --- |
@@ -105,3 +105,11 @@ Commit: see `git log` on branch `worktree-agent-a3b84bcdbed4bef74` (T29 r5 commi
 | C5 caption zone | not re-measured (SH01 L 0 mean 0.425 accepted R8); the gun now rises into the upper left of the band-free area, no new run | logged | accepted |
 
 **Value I could not follow:** C1 muzzle-to-roof clearance (about 7 px vs >= 10 px). The ticket fixes the rest at 25°; raising or lowering it, or moving the gun, is outside these rows. Film to accept the gap or revise the rest elevation (not tried).
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T29r5-sheet.png` (SH01 L 0–59, SH02 L 0–11), `T29r5-crop-s1_0.png`, `T29r5-roofzoom.png`. **Verdict: accept with value change; no further pass.** The gun climbs screen right over the cab and reads as a machine gun; the SH02 settle and kicks read.
+| Item | Decision | Reason |
+| --- | --- | --- |
+| C1 muzzle vs cab roof | **≥ 5 px with no overlap** (≈ 7 px measured): pass; the 25° rest stays. TF41 | changing the rest re-opens the pipe-at-the-mouth read or crosses the roof; no overlap is the real condition |
+| Result correction (Film, R9) | the r5 Result's "full `npm test` did not finish … killed" is wrong: the full run finished, **477 / 486 pass**, the 9 failures being the known set (HIPPO.YAWN/CHARGE/HALT, loudness, new-shot, render-inputs, segments, store adopt, `canvasStyleOf` (d) before T24 r5 merged) | coordinator report, 2026-11-20 |

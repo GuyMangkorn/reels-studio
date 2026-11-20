@@ -1,5 +1,5 @@
 # T31 — plates B06-SH01 (emus advance like tanks over MEREDITH's back) and B06-SH02 (the silent bow, L15 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built (Film look check pending) · r2: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T38 (R9 Film look check: fix) · was: built (Film look check pending) · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (slow-motion walk contacts, bow on the story clock)
 Blocked by: T03, T06, T07, T08, T09, T12 · Consumers: B06-SH01, B06-SH02 (global 1434–1579)
 Model: sonnet, medium
@@ -60,3 +60,14 @@ Decisions where a value could not be followed as written:
 
 Caption zone (`caption-zone.py`, clean frames): SH01 L 96 mean 0.672 / p95 0.989 and SH02 L 19 p95 0.932, both `pass: false`: the band y 1150-1344 is pale sand and sky-lit ground in both plates (shared set look, not a plate choice). Editor's caption stroke carries the contrast; Film to judge.
 Hand lines: none (MEREDITH's arms hang in the T12 P44-back pose, no hand close-up; thumb and arm checks N/A). Open question: none blocking.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T31-sheet.png` (14 frames). **Verdict: fix (in T38): set flag and the bow; sizes accepted as built.**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| Clearing wall (decision 1) | B06 has **no clearing wall**: by B06 (eaten 0.7) the wheat round the camp is trampled. Built as a T09 option, `paintPaddockScene({…, clearing: false})` (T38 rows P2, B1, B2); `paintOpenPaddock` is retired. TF43 | one home for set layers; the same flag serves any later shot |
+| Bow head (decision 2) | **the locked bow as painted** (VD30-05b): remove `BOW_LIFT` (T38 row B3). Acceptance "bow head above y 1100" → "bow head inside the frame and ≥ 120 px above the toe line; may enter the caption band". TF44 | the lifted head reads as a swan-neck dip, not a bow; B06-SH02 has no caption (script R2.2 mime), so the band is free |
+| Sizes (decision 3) | as built: SH01 EMU-HERO **531 ± 25** (L 0), **706 ± 30** (L 109); SH02 standing **1210 ± 40** px; SH02 head point at L 19 is re-measured with the locked bow. TF43 | the cast is never scaled; the sheet numbers were for a smaller bird |
+| Ruffle (decision 4), slow-walk read, MEREDITH partial figure | accepted as built (walk reads: 531 → 697 px, alternating stance legs) | — |
+| Caption zone | SH01 L 96 0.672 / 0.989: pass under TF46; SH02 has no caption (N/A) | — |

@@ -1,5 +1,5 @@
 # T22 — plate B02-SH06 ("สามคนเหรอ…": EMU-HERO counts the crew, then the crane over a field of rising heads) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, open question (Film) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: r8 fix pass 1 ready, blocked by T18 and T38 (R9 Film look check: fix; Q-T22-1 answered) · was: built, open question (Film) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (emu face and nods, rising heads, loader hands)
 Blocked by: T03, T07, T08, T09, T11, T12, T13 · Consumers: B02-SH06 (global 592–666)
 Model: sonnet, medium
@@ -34,6 +34,23 @@ These override any older value in this ticket that they name.
 - **LOD and render cost.** EMU-HERO paints at near detail. The 36 field members use the library's automatic `LOD_PX` rule; when one frame takes more than 120 s (the stills timeout is 180 s), force `lod: 'far'` on every field member except the hero and log the frame time (T08: 36 near birds exceeded 180 s).
 - **Loader pan (T12 r6 note 7).** For L < 30 the held pan is painted over the seated one. Log the seated-pan rows visible below it; ≤ 4 px rows is accepted.
 - T12's P30, P34 and loader poses pass the R7 look check; T22 still waits on T12 r6 only because of the same-file order (T12 r6 changes only the salute and the farmer, which this plate does not use), and on T07 r6 (the hero's blink at local 33–35).
+
+## r8 fix rows (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`): look check of the built plate and the answer to Q-T22-1
+These override any older value in this ticket that they name. Viewed: store `T22-sheet.png` (L 0–74), `T22-crew-zoom.png`. **Verdict: fix (fix pass 1).** The count, the nods, the look back and the rising heads read; the crew does not read as three at L 0, the near stalks turn into dark leaf shapes once the crane rises, and the interleave rows read as light/dark rings at L 58–74.
+
+**Q-T22-1 answered (Film): drop the loader's lean outside the pan seat.** The count beat needs three men at L 0 (three nods on three syllables). GUNNER-2 kneels upright with the pan held toward him until L 14, leans in to seat it over L 14–20 (the built 25°), and the built hold release (L 40–46) stands.
+
+| Row | Value | Pass |
+| --- | --- | --- |
+| F1 loader lean | `paintCrewPose(p, c, GUNNER2, LOADER_AT, {pose: 'loader', L, seed: 34700, pan: heldAt(L), loaderLean: leanK(L), …})` with `leanK(L) = L <= 14 ? 0 : L < 20 ? easeIO((L − 14) / 6) : 1` (T18 row R9-1 adds `loaderLean`) | L 0, 4, 8, 12: GUNNER-1 hat + face box covered by GUNNER-2's figure **≤ 25 %** (logged from the probes); head centres **≥ 30 px** apart at L 0 (logged); viewed at 270 px: three men read |
+| F1b held pan | `heldAt(L) = [pan[0] + 0.18 × (1 − easeIO(seg(L, 14, 20))), pan[1], pan[2]]` (m; toward the loader), passed both to the loader (rim targets) and to `heldPan` while L < 30; the seated pan is unchanged | arm ratio **≤ 1.05** every 2 frames L 0–34 (logged); rims on the seated pan at L 30 within 0.01 m |
+| F1c fallback | if the L 0 cover stays > 25 %, raise the 0.18 m offset to 0.25 m (only that); if the arm ratio then exceeds 1.05, set Status blocked with both numbers | — |
+| F2 near stalks | stalk stroke colour = `mixColor(<built stalk colour>, PAD.wheatLit, easeIO(seg(L, 48, 64)))`; positions, count and weights unchanged | L 58, 64, 74 viewed: no dark leaf shapes at the lower left; lower-left 300 × 300 box mean luma at L 74 within 20 of the mid-field box (logged) |
+| F3 interleave tone | every interleave `paintWheatRidges` call passes `tone: 'even'` (T38 row P3) | L 58, 64, 74 viewed: no alternating light/dark rings; heads still come out of the wheat with bodies hidden |
+| Leads | unchanged | L 0 EMU-HERO 604 ± 30, MEREDITH 141 ± 15 to the head top; L 74 EMU-HERO 301 ± 30 |
+| Caption zone | TF46 | L 0 0.715 / 0.910, L 74 0.709 / 0.898 already pass |
+
+**r8 Files:** `src/painted/edu30/shots/B02-SH06.tsx` only. **Blocked by:** T18 (`loaderLean` in `cast.ts`), T38 (`tone` in `paddock.ts`). **Proof:** re-render L 0, 4, 8, 12, 20, 30, 52, 58, 64, 74; sheet at 270 px plus the crew zoom at L 0; archive as `T22r8-*.png` with `T22r8-sheet.png`.
 
 ## Proof
 - Stills (`out/edu30-T22/`): L 0, 7, 10, 30, 44, 52, 58, 64, 74.

@@ -1,5 +1,5 @@
 # T32 — plates B06-SH03 (the sequel and the time-lapse) and B06-SH04 (withdrawal two, one silent wave) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready, waits on T30 (R9) · was: ready
 Class: set (plates) · Hard: yes (time-lapse state driver, back-view wave)
 Blocked by: T30 (`vantage.ts`), T01, T03, T08, T09, T14, T15 · Consumers: B06-SH03, B06-SH04 (global 1580–1736)
 Model: sonnet, medium
@@ -26,6 +26,11 @@ Files: `src/painted/edu30/shots/B06-SH03.tsx`, `src/painted/edu30/shots/B06-SH04
 
 ## r7 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R7`)
 - **Render cost of the fence birds (T08 r4).** A nine-bird `fenceBirds` frame at near detail took 191 s per still. EMU-HERO paints near. The other fence birds use the automatic `LOD_PX` rule, with the back row (z 0.5 m behind) forced to `lod: 'far'` when a frame takes more than 120 s. Log the frame time of the L 90 (nine-bird) frame.
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **Wave (T15 R9, TF35).** B06-SH04 one swing of `emuWingWave(L, {back: true})` local 36–44, folded by 50.
+- **Caption zone (TF46).**
 
 ## Proof
 - Stills (`out/edu30-T32/`): SH03 L 0, 27, 45, 59, 65, 71, 77, 83, 89, 98; SH04 L 0, 20, 36, 39, 43, 50, 57; plus B05-SH03 at the matching truck x for the side-by-side.

@@ -1,5 +1,5 @@
 # T23 — plate B03-SH05 (MEREDITH's order "ยิง!" on a low heroic three-quarter) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, waits on T18 (R9) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (arm chop, talking face)
 Blocked by: T03, T09, T11, T12, T13, T18 · Consumers: B03-SH05 (global 667–687)
 Model: sonnet, medium
@@ -29,6 +29,10 @@ Files: `src/painted/edu30/shots/B03-SH05.tsx`
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **Caption zone (TF46).** Measure with `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`.
 
 ## Proof
 - Stills (`out/edu30-T23/`): L 0, 4, 6, 7, 12, 20; `scripts/qa-sheet.sh out/edu30-T23/sheet.png --cols 6 --width 270 out/edu30-T23/s*.png`; `measure-shots.ts B03-SH05 0,20`; clean L 7 through `caption-zone.py`.

@@ -1,5 +1,5 @@
 # T26 — plates B04-SH01 (ambush at the water, LF02) and B04-SH02 (the queue, the unison step) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T16 done) · was: ready · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (queue walk and unison step)
 Blocked by: T03, T10, T11, T12, T16 · Consumers: B04-SH01, B04-SH02 (global 868–992)
 Model: sonnet, medium
@@ -30,6 +30,12 @@ References (store): `projects/edu/EDU/previews/LF02.58933d6b.png` (B04-SH01 L 0)
 ## r3 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R3`)
 These override any older value in this ticket that they name.
 - **Lewis gun (T13 r3).** After the gun's `placeBuild`, call `paintLewisPanTicks(p, c, seed, at, heading, magTurn, {elev, recoil})` in the next paint slot (before anything in front of the gun); without it the pan step per round is invisible. Every gun point (muzzle, pan, port, grip, stock, cock) comes from `lewisAnchors(at, heading, {elev, recoil, cock})`, never from a sheet literal: the locked gun is 1.32 m long with the muzzle 0.66 m ahead of the tripod head, so the sheet anchors that assumed a 1.1 m gun are superseded (index TF17).
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **Queue shadows (TF37).** Every queue bird paints with `shadowOp: 45`.
+- **Queue as built (T16 R9).** B04-SH02 head stands at x 4.6 to L 40, one unison step L 41–49 (0.57–0.64 m by scale), walks on to x 3.797 at L 68.
+- **Caption zone (TF46).**
 
 ## Proof
 - Stills (`out/edu30-T26/`): SH01 L 0, 30, 55; SH02 L 0, 40, 45, 49, 68.

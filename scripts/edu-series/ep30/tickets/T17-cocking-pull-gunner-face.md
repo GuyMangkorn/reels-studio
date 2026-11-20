@@ -1,5 +1,5 @@
 # T17 — GUNNER-1 racks the cocking handle and groans at the gun: `new: cocking-pull` and the angry talking face on `man-crop` front three-quarter
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (R9 Film look check: accept with value change) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T12 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`; T11's `front34` view), T13 (`cock` anchor and rack keys) · Consumers: B04-SH06
 Model: sonnet, medium
@@ -56,3 +56,12 @@ Commit d1086a0 · built 2026-11-20 on Sonnet medium · fix passes used 0 · no o
 - arm check: GUNNER-1 r/l: attached ok (L 0-23).
 - Face keys: `angry`, `look` (0.8, 0.35) toward the gun (screen right, down), `frown` when silent, `talk` open 0 -> 0.7 -> 0 per 6 f from L 7 (restart at L 18); shake [dx, 0] 0 / +0.10 / -0.10 / 0 at L 12 / 14 / 17 / 20.
 - Values not followed as written: (1) the proof row "handle (674, 987) at L 0" and "593-624 px" are the pre-r3/pre-r4 numbers, superseded by the r3/r4 notes (663, 961) and the T11 r4 lean (572.1 accepted for the 3/4 lead); built to the notes. (2) "thumb screen right" is measured up (forearm geometry); see above. (3) Talk cycles: read as phase (L - 7) mod 6 for L 7-17 and (L - 18) mod 6 for L 18-23 (hard restart at the onsets).
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T17-sheet-rack.png` (L 0–17), `T17-hands.png` (540 px L 3, L 8), `T17-faces.png`. **Verdict: accept with value change; no Boss pass.** One practised pull with the elbow low, the far fist on the stock, brows down, the shake and the talk mouth read at 270 px.
+| Item | Decision | Reason |
+| --- | --- | --- |
+| Thumb on the cocking knob | `thumb check: GUNNER-1 RIGHT: up ok` at L 0, 3, 6, 8 (crease reads up on the 540 px crop). The B04-SH06 hand line "thumb screen right" becomes "thumb screen up". TF38 | the forearm lies near-horizontal on screen; the measured side wins when line, code and picture agree (common rules) |
+| 6 f talk cycle | hard restart at the onsets: phase (L − 7) mod 6 for L 7–17, (L − 18) mod 6 for L 18–23 | the jump at L 18 is from open ≤ 0.25 to 0, invisible at 30 fps under the second word's onset |
+| Proof rows superseded | (663, 961) knob, 572.1 / 605.1 px leads, head (547, 692) → (516, 695) accepted; TF21 end point now measured | r3/r4 notes |

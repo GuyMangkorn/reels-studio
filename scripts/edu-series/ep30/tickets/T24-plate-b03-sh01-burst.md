@@ -1,5 +1,5 @@
 # T24 — plate B03-SH01, the first full-frame firing beat (VD30-11, 23 rounds from the order), is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass built (Boss 2026-11-20; R1 smoke row not met, see Result r5; Film look check pending) · was: r5 fix pass ready (R8 Film look check of the built plate, 2026-11-20: muzzle, flash, shake, casings, strikes, bolt stop and composition pass; smoke drift flipped to screen right (TF28), L 4 row moves to L 5 (TF30), registered-vs-QA row runs where `@remotion/three` resolves, test (d) edit owned here; fix pass 1) · was: built (R7, Boss 2026-11-20) · ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (R9 Film look check: accept with value change) · was: r5 fix pass built (Boss 2026-11-20; R1 smoke row not met, see Result r5; Film look check pending) · was: r5 fix pass ready (R8 Film look check of the built plate, 2026-11-20: muzzle, flash, shake, casings, strikes, bolt stop and composition pass; smoke drift flipped to screen right (TF28), L 4 row moves to L 5 (TF30), registered-vs-QA row runs where `@remotion/three` resolves, test (d) edit owned here; fix pass 1) · was: built (R7, Boss 2026-11-20) · ready (Q8 answered: burst from the order as written; r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plate) · Hard: yes (gunner arms and jolt, flock startle and scatter)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T08, T09 (r4, done), T11, T13, T34, T36 · Consumers: B03-SH01 (global 688–759)
 Model: sonnet, medium
@@ -110,3 +110,12 @@ Measured vs rows:
 - **R4 test (d):** edited as written (two assertions on the real def at L 2 / global 690 and L 71 / global 759, comment "B03-SH01 sets `shake` (T24)"); synthetic-shake and B01-SH01 assertions kept. `node scripts/test.mjs tests/painted-canvas-style.test.ts`: 5 / 5 pass.
 - **R5 lead:** `measure-shots.ts B03-SH01 2,68`: GUNNER-1 top **746**, bottom 1910, head x **159** (row 746 +-10, 159 +-10: pass); muzzle (437, 1016) at both frames.
 Caption zone and the other r4 rows are unchanged by a drift edit (not re-measured). Not run: `npm test` in full (machine load; only the owned test file was run) and `tsc`.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T24r5-sheet.png` (L 0–71) and `T24r5-s71w.png` (540 px). **Verdict: accept with value change; no further pass.** A faint grey-brown haze right of the muzzle at L 68 and L 71, the flash core still the frame max, the flock band visible through it.
+| Item | Decision | Reason |
+| --- | --- | --- |
+| R1 smoke row | **≥ 4** luma lower at L 71 than L 0 in the 100 × 100 box at (620, 960) (4.66 measured: pass). No T04 alpha-cap change, no plate tint. TF40 | the T04 cap is shared kit tuned against VD30-11 and at its fix-pass budget; the firing beat is carried here by the flash, shake and casings, and B03-SH02's top shot carries the burst |
+| R2–R5 | pass as measured (L 5 82.5 %, L 6 100 %; registered vs QA MAD 0.00047; test (d) 5/5; lead 746 / x 159) | — |
+| Caption zone | L 2 0.64 / 0.913: pass under TF46 | — |

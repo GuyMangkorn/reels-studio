@@ -1,5 +1,5 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T16 done) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35 (done), T36 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
@@ -48,6 +48,12 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **Jam casing keys (T05 r5).** `casingKeyed` keys with angle (rad, tilt out of the horizontal) and heading 0 at every key: L 13 port `lewisAnchors(...).port` angle 0; L 17 stone top `STONE_AT` + (0, 0.05, 0) angle 5.80; L 19 stone top + (0, 0.04, 0) angle 6.78; L 21 stone top angle 9.42 (lying flat, to the shot end); no glint. Paint with `paintCasing(p, c, pos, angle, 0, seed)`.
 - **Fists over the gun (T36 r2, index common rule R5).** If this plate paints G1 after GUNNER-1, call `paintGunnerFists` right after the gun so the fists wrap the grip and stock.
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **Queue shadows (TF37).** `shadowOp: 45` for every queue bird.
+- **Bunching (TF36).** B04-SH03 bunches at the front only (birds 0–5 stop L 12–28, bird 6 closes to 1.0 m L 24–28); birds 2 and 4 hop and land at L 25 (splash crowns from L 27).
+- **Caption zone (TF46).**
 
 ## Proof
 - Stills (`out/edu30-T27/`): SH03 L 0, 10, 11, 19, 25, 40, 42, 43, 46; SH04 L 0, 8, 12, 17, 21.

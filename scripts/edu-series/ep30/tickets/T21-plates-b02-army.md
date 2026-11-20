@@ -1,5 +1,5 @@
 # T21 — plates B02-SH03 (one small truck arrives) and B02-SH04 (the line-up: three men, two guns) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: fix pass 1 in T38 (R9 Film look check: SH03 accept; SH04 one value fix) · was: built, awaiting Film look check (2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (truck stop, salute)
 Blocked by: T03, T09, T12, T13, T14 · Consumers: B02-SH03, B02-SH04 (global 440–591)
 Model: sonnet, medium
@@ -60,3 +60,13 @@ Values I could not follow:
 - B02-SH03 cab 486 ± 25 px: the T14 truck geometry (roof 2.12 m, cab front a 2.6, stop at cab front x -3.6 per its Decided values) at the SD03 camera projects to 440 px by my probe (front low 1225 matches the sheet's 1223, roof at 785 vs the sheet's 737, about 0.24 m higher on the sheet). The sheet number likely came from other dimensions; I changed neither the camera, the stop x nor the locked truck. Film: widen the row, move the camera closer, or ask T14 for a taller cab.
 - Gun placement: the ticket's `y 0.1` is read as T13's "receiver bottom on the canvas at y 0.1": the gun `at` is (x, -0.41, 13.4) with `tripod: false`, `elev: 0`, heading 0, so the gun centre (tripod-head height) is at y 0.56 - 0.41 = 0.15.
 - Canvas sheet `#b9a77c` reads close to the warm-graded dirt, so the sheet edge is faint on the 270 px sheet; no value changed.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T21-sheet.png` (11 frames). **Verdict: SH03 accept with value change; SH04 fix one value (in T38).**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| SH03 cab | **440 ± 25** px at L 44 (TF22 already); the truck reads as one small truck, brakes and its dust overtakes | the locked truck geometry |
+| SH04 line-up and guns | pass: three men, salute crisp, guns read as machine guns; gun `at` y −0.41 (receiver bottom on the canvas) accepted | as built |
+| SH04 canvas sheet | **fix**: `#b9a77c` → **`#8a8160`** (T38 row C1); the sheet edge is invisible on the warm dirt | the sheet must read as the guns' display cloth |
+| Caption zone | SH03 0.668 / 0.962, SH04 0.722 / 0.796: pass under TF46 | — |

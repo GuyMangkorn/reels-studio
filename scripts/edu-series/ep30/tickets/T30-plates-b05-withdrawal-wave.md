@@ -1,5 +1,5 @@
 # T30 — the shared retreat vantage, plate B05-SH03 (withdrawal one) and plate B05-SH04 (EMU-HERO waves the truck off, "ไว้มาใหม่นะ!") are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (wing wave, talking beak)
 Blocked by: T03, T07, T08, T09, T14, T15 · Consumers: B05-SH03, B05-SH04 (global 1294–1433); T32 (vantage helper)
 Model: sonnet, medium
@@ -35,6 +35,11 @@ These override any older value in this ticket that they name.
 ## r4 notes (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
 These override any older value in this ticket that they name.
 - **Wire contrast (T09 r4).** In B05-SH04 the top-wire contrast ≥ 20 luma is measured at a column between the fence birds; across a bird body no contrast is required. "No body pixel in front of the wire" unchanged.
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **Wave (T15 R9, TF35).** B05-SH04 `emuWingWave(L)` as built: ±20° swing, tip y 1.54–1.83 m; the sheet acceptance "wing and head above the wire and above y 1100" stands.
+- **Caption zone (TF46).**
 
 ## Proof
 - Stills (`out/edu30-T30/`): SH03 L 0, 46, 69, 93; SH04 L 0, 6, 10, 14, 30, 42, 45.

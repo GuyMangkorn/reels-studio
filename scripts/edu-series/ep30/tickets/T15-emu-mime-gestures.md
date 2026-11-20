@@ -1,5 +1,5 @@
 # T15 — EMU-HERO's mime gestures exist: wing flick (both sides), invisible-watch check, foot tap, wing wave (front three-quarter and back)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (R9 Film look check: accept with value change) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal, movement, wing as a gesturing limb)
 Blocked by: T07 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses the T06 wing rig and T07 head controls) · Consumers: B03-SH03 (flick), B04-SH05 (watch check, foot tap), B05-SH04 (wave, front three-quarter), B06-SH04 (one wave swing, back)
 Model: sonnet, medium
@@ -77,3 +77,14 @@ Not followed:
 3. **Look.** At 270 px the T06 plume wing (thin drooping plumes) reads as a short row of dark strokes: the flick reads as a wing pointing out, but the watch check reads mostly through the head tipped down to a short dark stroke by the neck, not as a forearm across the chest, and the wave wing from the front three-quarter is a vertical line of strokes. This is the T06 r3 plume drawing the ticket names, unchanged; Film's look check decides whether the mime wing needs a fuller plume at reach > 0.8 (a T06 follow-up).
 
 Checks: `npx tsc --noEmit -p .` clean for the files this ticket touches (the other tsc errors are in files outside it and predate it). `node scripts/test.mjs tests/edu30-emu.test.ts`: 34 pass, 0 fail (10 new T15 tests; the pre-change hashes unchanged). `npm test` (log `out/logs/T15-npmtest.log`): 487 pass, 9 fail, none in the T15 files: `HIPPO.YAWN`/`CHARGE`/`HALT joints hold` (Maximum call stack size exceeded), `loudness`, `new-shot`, `render-inputs`, `segments`, `(d) canvasStyleOf` (the T24 r5 fix-pass row) and `adopt reuses stored bytes`: environment (shared node_modules symlink, no store checkout) or other tickets, not run against a clean baseline here. Stills crashed once on a 183 s page-render timeout while other worktrees loaded the machine; the three missing strip frames were re-rendered.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T15-sheet.png` (six KPs at 270 px) and `T15-watch-strip.png` (L 8–58). **Verdict: accept with value change; no Boss pass.**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| Wave tip height (Not followed 1) | keep the built ±20° swing and pose centre. Rows: tip y **1.65–1.80 at swing 0** (1.728 measured), **1.50–1.85 at the swing extremes** (1.539 / 1.830 measured). TF35 | the bigger swing reads as a wave at plate size; the range only guarded "wing above the head line", which 1.54 m still meets at the plate cameras |
+| Watch wrist z (Not followed 2) | 0.314 accepted (test tolerance 0.025 stands) | the eye-to-wrist row (0.391 m, eye above) is the read and passes |
+| Flick distance | the row is the horizontal distance from the body axis, 0.85–0.95 m (0.903 measured); the 3D 0.951 to the body centre is not a row | as built |
+| Plume wing look (Not followed 3) | accepted, no T06 follow-up. The watch strip reads lift (L 12–16), hold with the head dipped to the wing (L 16–38), lower (L 40–58); the wave reads by its motion | the thin T06 r3 plume is the locked wing; a tiny wing used as a hand is the joke; the plates frame the mime at 505–670 px leads, 2–3× the sheet size |
+| Plate calls | `emuWatchCheck(L, {lensYaw: emuLensYaw(<plate camera>, <bird>)})`; `emuFootTap` spread over the watch pose; `emuWingFlick`, `emuWingWave(L, {back})` as built | T25, T28, T30, T32 notes (R9) |

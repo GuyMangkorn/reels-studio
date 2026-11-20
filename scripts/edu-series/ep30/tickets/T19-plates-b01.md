@@ -1,5 +1,5 @@
 # T19 — plates B01-SH01, B01-SH02, B01-SH03 (the hook) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (R9 Film look check: accept with value change) · was: done · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (emu head turn and sac, walking extras)
 Blocked by: T03, T07, T08, T09, T11, T14 · Consumers: B01-SH01, B01-SH02, B01-SH03 (global 0–199)
 Model: sonnet, medium
@@ -69,3 +69,16 @@ Values I could not follow (sheet or ticket numbers that disagree with the sheet'
 - **SH03 head + neck 515 -> 609:** at the decided camera (about 1.0 m to the chest) the head top is 448 and the `neck.base` joint 1204 (sheet head top 493, neck base 1008). The head top matches the locked KP-face frame (same lens), so the plate follows the look. If Film means the visible neck-to-bib junction (about y 1000 to 1080 in the still), head top to it is about 550 to 630.
 - Hard checks: EMU-HERO tuft visible in SH01 and SH03; GUNNER-1 fists painted by `paintGunnerFists` over grip and stock; thumb check: GUNNER-1 right: not measured on screen, left: not measured on screen (crew still, mitten fists from the T11 solve, viewed at 270 px only); arm check: GUNNER-1 front: attached ok (viewed); the emu's pads come from the stance default and no mixed pose sets pads, so the feet do not move across L0-89 (not measured numerically).
 - Not verified: seek parity with `EDU30-SEQ` frame 120 (not run); the SH02 foreground wheat bars are the T09 ridge look at this low camera (heavier than the T09 p3 proof) and were not tuned; SH03 blink (L7) is visible only at full size.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T19-sheet.png` (13 frames) and `T19-cmp-LF01a.png`. **Verdict: accept with value change; no Boss pass.** SH01 matches LF01a; the lens turn, the reverse wide with the truck leaving and the deadpan stare read.
+| Row | New value (as built) | Reason |
+| --- | --- | --- |
+| SH01 L 89 EMU-HERO | **642 ± 30** px (was 586) | the locked `look(0)` bird is 1.75 m to the head top; 586 was computed for 1.60 m; the cast is not scaled. TF39 |
+| SH01 L 89 body left edge | **≥ 40** px (inside the frame, not cut); head column ≥ 120 holds (163) | the LF01a bird's tail already sits near x 80 at L 0 |
+| SH02 EMU1 | L 0 centre x ≈ 127 (a foreground framing bird part-cut at the left edge, accepted); L 0 / L 58 heights ≥ **475** (567 / 479) | the sheet's x 468 → 562 assumed yaw 180; the decided yaw 200 → 194 stands |
+| SH02 truck x | **510 → 314 ± 30** (L 0 → L 58) | the projection of the decided yaw 200 → 194 |
+| SH03 head + neck | head top to the visible neck–bib junction **550–630 ± 30** (head top 448 → 408, matching KP-face) | `neck.base` is a rig joint under the bib, not a picture landmark |
+| Caption zone | TF46 thresholds; SH01 0.716 / 0.853, SH02 0.667 / 0.933, SH03 0.598 / 0.898: pass | edu stroke captions |
+| Foreground wheat bars (SH02, SH03) | accepted as the T09 ridge look at a low lens | locked set; reads as standing crop |

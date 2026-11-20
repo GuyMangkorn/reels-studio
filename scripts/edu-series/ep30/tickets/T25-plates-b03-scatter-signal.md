@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, **dispatchable** (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium
@@ -43,6 +43,11 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **B03-SH02 smoke continues B03-SH01 r5 (TF28).** Call `paintSmoke` with L + 72, the B03-SH01 rounds and the same options as B03-SH01 r5: `drift: [0.25, 0.06, 0]`, `seed: 7100`, `fadeAfter: 45` (not the preset's −x drift), so the haze over the gun keeps drifting +x across the cut.
 - **Crowd phase (T08 r5).** `burst` uses the 1/96 phase step; log one B03-SH02 frame's paint time in Result.
+
+## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+- **T15 as built (R9).** B03-SH03 flick: `emuWingFlick(L)` (both sides, tip 0.903 m out, head yaw ±0.26); the thin T06 plume wing is accepted (T15 R9).
+- **Caption zone (TF46).** Measure with `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`.
 
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.

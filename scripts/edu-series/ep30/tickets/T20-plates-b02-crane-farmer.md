@@ -1,5 +1,5 @@
 # T20 — plates B02-SH01 (crane into the buffet, place tag) and B02-SH02 (the farmer at the gate) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready · r2: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T38 (R9 Film look check: SH02 accept; SH01 fix) · was: ready · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (flock peck sync, farmer arm and face)
 Blocked by: T03, T08, T09, T12 · Consumers: B02-SH01, B02-SH02 (global 200–439)
 Model: sonnet, medium
@@ -69,3 +69,13 @@ Commit: see `git log` on this worktree branch (T20 commit) · fix passes used: 0
 - **SH01 L 60 arcs.** At L 60 pitch is -16.7 deg, past the -20 deg switch, so the T09 ridge rows paint (concentric arcs near the lens, a T09 limit): visible from the switch (L about 56) while the camera descends, as in the viewed L 60 frame; reported, not fixed (T09 owns the ridge painter).
 - **Seek and walkers.** Every helper is a pure function of L; F1 walkers' foot slip was not measured (far birds, > 12 m).
 - Render note: pose keys are cached, so continuous blends of a 40-bird flock (not quantised) rebuilt every bird and timed out at 180 s; F1 peck blends are quantised to eighths.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T20-sheet.png` (12 frames). **Verdict: SH02 accept with value change; SH01 fix (in T38).**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| SH02 emu carriage | accepted: grazing carriage (u 0.75, head 0.69 m) all shot, full peck at L 40; line to head 13.0 / 15.7 px. TF42 | the pointing line meets the bird's head; a standing head would miss it by 177 px |
+| SH01 stripe test | met on the clean band y 800–1180 (6.6 ≤ 12); the full-frame number holds scene content | frame viewed: no stripes at L 0 |
+| SH01 L 56–100 ridge arcs | **fix**: concentric ridge rings show while the eye is high after the −20° switch (L 60 viewed). Cause in T09's ridge painter (rings round the eye seen from 8–10 m up). Fixed in `paddock.ts` by **T38 row P1** (ridges start at r0 = 2.5 + 6 (eye y − 3) m above 3 m, high-view texture inside); B02-SH01 is re-proven there. TF47 | one owner for the set painter; no plate workaround |
+| Caption zone | L 0 0.894 / 0.907 under the TF46 high-view exception (≤ 0.92); L 100 0.65 / 0.914 pass | edu stroke captions; Editor confirms legibility in the draft cut |

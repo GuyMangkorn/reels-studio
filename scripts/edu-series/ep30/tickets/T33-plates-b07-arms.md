@@ -1,5 +1,5 @@
 # T33 — plates B07-SH01 (burn-out to full colour, crane to the coat of arms) and B07-SH02 (push in; the relief emu looks at the lens) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T39 (R9 Film look check: fix) · was: ready
 Class: set (plates) · Hard: yes (relief emu head turn and blink)
 Blocked by: T01, T03, T07 · Consumers: B07-SH01, B07-SH02 (global 1737–1976)
 Model: sonnet, medium
@@ -45,3 +45,14 @@ Built 2026-11-20, Boss (Sonnet 5.5), fix passes 0. Commit: see the index row.
 - Additions beyond the rows: (1) SH01 paving fill `wFill(41790, '#bfae8c')` below the bed so the crane's first frames have ground (off screen from about L 40); (2) SH02 `reel` strength 0 because DEFAULT_REEL is strength 1 (warm newsreel) and the sheet puts SH02 out of the old filter.
 - Not followed: painted emu height range of SH02 (above). Hand and thumb lines N/A (no hands); emu identity N/A (relief emus are not hero).
 - Checks: `npx tsc --noEmit -p .` 8 errors, all in unrelated tests (render-options, arm-depth, edu18-girl, loudness), none in B07 files. `npm test`: 486 tests, 477 pass, 9 fail (HIPPO.YAWN/CHARGE/HALT joints, loudness, new-shot, render-inputs, segments file-level failures, canvasStyleOf (d) B03-SH01), none touch B07 or my files (`grep -c B07` in the log is 0); log `out/logs/T33-test.log`.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T33-sheet.png` (13 frames). **Verdict: fix (in T39): the word and the crane start; sizes and scroll accepted.**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| AUSTRALIA on the scroll | **fix** (T39 rows W1–W5): one shared `ReliefWord30` in `shot.tsx`, rendered inside the canvas wrapper from `stackCam`, used by `look.tsx` and the B07 plates | the plates show a blank scroll; a DOM word must follow the crane, so it is projected per frame |
+| SH01 opening | **fix** (T39 row K1): crane start pitch 4 → 12 (end LF03 unchanged); the L 0–10 frames were half bare paving. TF48 | the opening should read as the scroll and wattle at the wall foot during the colour burn-out |
+| SH02 emu height | as built: probe **719 → 808 ± 30**, painted ≈ 785 px (the row 630–705 used an LF03 ratio that does not apply at this camera). TF45 | the sheet's own tool numbers from the locked camera |
+| Scroll y at SH01 L 100 | accepted as LF03 (diff 0.65 / 255): scroll centre (625, 1076) per the sheet, word baseline above y 1150 (T39 logs it) | LF03 is user-locked |
+| Caption zone | SH01 L 100 0.70 / 0.853, SH02 L 90 0.621 / 0.927: pass under TF46 | edu stroke captions on sunlit sandstone |

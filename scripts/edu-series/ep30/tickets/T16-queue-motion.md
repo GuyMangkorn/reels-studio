@@ -1,5 +1,5 @@
 # T16 — the queue at the dam walks the shore, steps in unison, flinches and re-forms under fire, stares, and turns away
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built (r4, 2026-11-20, awaiting Film look check; Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (R9 Film look check: accept with value change) · was: built (r4, 2026-11-20, awaiting Film look check; Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: movement · Hard: yes (animal movement)
 Blocked by: T10 (r4: the 0.6 m ease at each waterline crossing; r3: `QUEUE_PATH`, `queuePoint` with the wading y), T35 (hop `air`), T08 (same files `flock.ts`, `proof-flock.tsx`, `tests/edu30-flock.test.ts`) · Consumers: B04-SH02, B04-SH03, B04-SH05 (no queue bird is in B04-SH01, SH04 or SH06)
 Model: sonnet, medium
@@ -71,3 +71,13 @@ Fix passes used: 0. Open question: none (values Film must see, below).
 8. **Contact shadows.** The proof uses the default `shadowOp` 80; the foot contact shadows read as dark green discs on the brown rim at 270 px (kit `#1e2418`); plates may pass a lower `shadowOp`.
 9. **Hopper and tail reflections in the water** are not in the proof (the plates pass `reflect`).
 Checks: `npx tsc --noEmit -p .` has no error in the three files (pre-existing errors in `tests/arm-depth`, `edu18-girl`, `loudness`, `render-options`); `npm test` 484 pass, 9 fail, none in files this ticket touched (HIPPO joints ×3 known, `loudness`, `new-shot`, `canvasStyleOf` (T24 test d), `render-inputs`, `segments`, `store adopt`; logs `out/logs/T16-npmtest.log`). Render cost: near birds are about 3 min per still under load 15–30 (25 birds + dam); one run timed out at 183 s under load 29 and was rerun.
+
+## R9 look check and decisions (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+These override any older value in this ticket that they name.
+Viewed: store `T16-sheet.png` and `T16-sh03-L27-crop.png`, `T16-sh03-crops.png`. **Verdict: accept with value change; no Boss pass.**
+| Item | Decision | Reason |
+| --- | --- | --- |
+| B04-SH03 bunching (value 1) | **front only**, as built: birds 0–5 stop for the duck-flap L 12–28, bird 6 closes to a 1.0 m gap L 24–28 and holds to L 40, birds 7+ keep walking; 1.4 m spacing at L 40. No backward step. TF36 | an emu stepping backward reads as a glitch; the flinch reads at the head of the line, where the strikes land |
+| Head speed, hop return 0.72 m, unison step 0.57–0.64 m by scale, bird 4 at x 9.0 (values 2–4) | accepted as built | the step frames are shared (unison) and every planted foot holds |
+| Contact shadows (value 8) | plates T26, T27, T28 pass **`shadowOp: 45`** for every queue bird. TF37 | the kit 80 reads as dark green discs on the brown rim at 270 px |
+| Wading ellipse, far mass, reflections (values 6, 7, 9) | accepted; plates pass `reflect` where the sheet shows water | as built |

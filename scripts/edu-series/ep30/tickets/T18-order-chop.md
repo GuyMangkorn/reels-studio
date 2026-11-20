@@ -1,5 +1,5 @@
 # T18 — MEREDITH gives the order: `new: order-chop` (raised arm chopped forward into a point) with the shouted "ยิง!" mouth
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready (Q8 answered by the user: values as written)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready, dispatchable (R9: row R9-1 added) · was: ready (Q8 answered by the user: values as written)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T17 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: B03-SH05
 Model: sonnet, medium
@@ -27,6 +27,11 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 **Open-question dependency (Q8, index O9).** As written B03-SH05 is 21 f (667–688). The alternative holds the shot to 704 (37 f): the keys stay and the end key holds to L 36.
 
 **Judgment for the builder (Hard, arm, hand, face).** One decisive chop, the arm whole from shoulder to mitten in every frame, ending in a straight point that aims at the flock off screen; the body stays planted and upright, the face set. It must read as a real commander's order, not a comic flail.
+
+## R9 row (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
+| Row | Value | Pass |
+| --- | --- | --- |
+| R9-1 loader lean scale (for T22 r8, same file) | `CrewSolveOpts.loaderLean?: number` (0..1, default 1): the loader's lean becomes `LOADER_LEAN × hold × loaderLean`; nothing else changes | a test in `tests/edu30-cast.test.ts`: `loaderLean: 0` → solve `lean` 0 at L 0; default calls keep their stroke hashes (T11/T36/T12/T17 tests unchanged) |
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: arm ratio ≤ 1.05 at every frame L 0–8; right wrist reach ≤ 0.52 m from the shoulder at every frame.
