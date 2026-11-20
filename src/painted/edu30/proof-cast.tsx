@@ -8,9 +8,10 @@ import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import type {YCam} from '../kit/ycam';
 import {wFill} from '../kit/world';
-import {FARMER, GUNNER1, GUNNER2, LOADER_AT, MEREDITH, PAN_R, loaderLift, paintCrew, paintCrewPose, paintGunnerFists, paintSeatedGunner, type GunnerView} from './cast';
+import {FARMER, GUNNER1, GUNNER2, LOADER_AT, MEREDITH, PAN_R, loaderLift, paintCrew, paintCrewPose, paintGunnerFists, paintSeatedGunner, rackGunnerOpts, type GunnerOpts, type GunnerView} from './cast';
+import {paintDam} from './dam';
 import {CAM_LF01} from './looks';
-import {GUN_PX, buildLewisGun, lewisAnchors, lewisRecoil, paintLewisPanTicks, placeBuild} from './props';
+import {GUN_PX, buildLewisGun, lewisAnchors, lewisCock, lewisRecoil, paintLewisPanTicks, placeBuild} from './props';
 import {camLine, Proof30, stubPaint, type ProofDef} from './shot';
 
 const OFF = () => ({strength: 0, tint: 'warm' as const, tintAmount: 1, pop: 0});
@@ -95,6 +96,24 @@ export const CREW_PROOFS: ProofDef[] = [
   {id: 'C30-crew-farmer', N: 61, cam: () => CAM_FARMER, reel: OFF, paint: (p: Painter, L, c) => { stubPaint(p, c); paintCrewPose(p, c, FARMER, AT.farmer, {pose: 'farmer', L, seed: 34900}); }},
 ];
 
-const PROOFS: ProofDef[] = [...GUNNER_PROOFS.map(gunnerProof), gunner34NoGun(GUNNER_PROOFS[3]), ...CREW_PROOFS];
+// T17 (Boss, 2026-11-20): GUNNER-1 racks the cocking handle and groans at the gun, B04-SH06 (local 0-23). Camera: the sheet line, eye (-4.6, 1.45, -3.9) yaw -57 -> eye (-4.68, 1.45, -3.95)
+// yaw -55, pitch -12, f 950, hy 800, ease-in-out over the shot. Newsreel off; the T10 dam with `nearSlope`.
+export const RACK = {seat: [-6.2, 0.36, -4.75] as V3, gun: [-5.6, 0.32, -5.0] as V3, heading: 0, N: 24};
+const easeIOr = (t: number) => t * t * (3 - 2 * t);
+export const rackCam = (L: number): YCam => { const u = easeIOr(Math.max(0, Math.min(1, L / (RACK.N - 1)))); return camLine({eye: [-4.6 - 0.08 * u, 1.45, -3.9 - 0.05 * u], yaw: -57 + 2 * u, pitch: -12, f: 950, hy: 800}); };
+/** Gun anchors of the rack at frame L (cock drawn by `lewisCock`), the knob/grip/stock points and the GUNNER-1 options. */
+export const rackAt = (L: number) => {
+  const a = lewisAnchors(RACK.gun, RACK.heading, {cock: lewisCock(L)}), cock = (k: number) => lewisAnchors(RACK.gun, RACK.heading, {cock: k}).cock;
+  return {a, opts: {...rackGunnerOpts(L, {cock, grip: a.grip, stock: a.stock}), view: 'front34', t: 1.2, seed: 33200} as GunnerOpts};
+};
+const rackProof: ProofDef = {id: 'C30-rack', N: RACK.N, cam: rackCam, reel: OFF, paint: (p: Painter, L, c) => {
+  paintDam(p, c, 38000, {nearSlope: true});
+  const {opts} = rackAt(L), co = {cock: lewisCock(L)};
+  paintSeatedGunner(p, c, GUNNER1, RACK.seat, opts);
+  placeBuild(p, c, buildLewisGun(co), RACK.gun, RACK.heading, {seed: 33300}); paintLewisPanTicks(p, c, 33400, RACK.gun, RACK.heading, 0);
+  paintGunnerFists(p, c, GUNNER1, RACK.seat, opts);
+}};
+
+const PROOFS: ProofDef[] = [...GUNNER_PROOFS.map(gunnerProof), gunner34NoGun(GUNNER_PROOFS[3]), ...CREW_PROOFS, rackProof];
 
 registerRoot(() => createElement(Fragment, null, ...PROOFS.map(Proof30)));
