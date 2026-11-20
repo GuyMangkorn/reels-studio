@@ -15,16 +15,19 @@ import type {Brush} from './BrushCanvas';
  * sample and composites 1 - e^-sum, which is 1 - 0.1^k for k covered samples). Only the edge pixels differ: they mix linearly in
  * RGB instead of by pigment. Convex polygons (drawn as a fan, every pixel covered once) go out as one draw call per run whatever
  * their colours; other polygons use stencil-then-cover as the library does, and go back to the library when the canvas has no
- * stencil buffer. Everything else (lines, textured fills, washes under 255, a polygon with a stroke) is passed through untouched.
+ * stencil buffer. `rotring` splines join the same queue as flat ribbons (`inkRibbon`,
+ * DF-20261121-flat-ink-lines). Everything else (other brushes' lines, textured fills, washes under 255, a polygon with a stroke) is passed through untouched.
  */
 
-type Mat = {a: number; b: number; c: number; d: number; x: number; y: number};
+export type Mat = {a: number; b: number; c: number; d: number; x: number; y: number};
 type Modes = Record<'fill' | 'stroke' | 'hatch' | 'mass', boolean | null>;
 type Wash = {on: boolean; opaque: boolean; rgb: [number, number, number]};
 
 /** Calls that change brush state but paint nothing: they neither draw the queue nor mark the library as having painted. */
 const QUIET = new Set(['noStroke', 'noFill', 'noHatch', 'noMass', 'noWash', 'wash', 'fill', 'fillBleed', 'fillTexture', 'push', 'pop', 'translate', 'scale', 'rotate',
   'seed', 'noiseSeed', 'set', 'pick', 'stroke', 'strokeWeight', 'hatch', 'hatchStyle', 'mass', 'angleMode', 'getAngleMode']);
+/** Calls the library may take while its stroke state is still held back (flat ink lines). */
+const LAZY_OK = new Set(['noFill', 'noHatch', 'noMass', 'noWash', 'wash', 'fill', 'fillBleed', 'fillTexture', 'translate', 'scale', 'rotate', 'seed', 'noiseSeed', 'hatch', 'hatchStyle', 'mass', 'angleMode', 'getAngleMode']);
 const MODE_ON: Record<string, keyof Modes> = {fill: 'fill', set: 'stroke', stroke: 'stroke', hatch: 'hatch', mass: 'mass'};
 const MODE_OFF: Record<string, keyof Modes> = {noFill: 'fill', noStroke: 'stroke', noHatch: 'hatch', noMass: 'mass'};
 const unknownModes = (): Modes => ({fill: null, stroke: null, hatch: null, mass: null});
@@ -47,7 +50,9 @@ void main() {
 const FRAG = `#version 300 es
 precision highp float;
 in vec3 v_color; out vec4 outColor;
-void main() { outColor = vec4(v_color, ${SAMPLE_ALPHA}); }`;
+uniform float u_ink;
+// u_ink > 0: the per-sample alpha of an ink run (a hairline is lighter than a wash).
+void main() { outColor = u_ink > 0.0 ? vec4(v_color, u_ink) : vec4(v_color, ${SAMPLE_ALPHA}); }`;
 
 /** Convex and wound once: all turns one way, and the outline changes x direction and y direction at most twice each. */
 export const isConvex = (pts: readonly (readonly number[])[]) => {
@@ -64,21 +69,104 @@ export const isConvex = (pts: readonly (readonly number[])[]) => {
   return flipsX <= 2 && flipsY <= 2;
 };
 
-export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null) => {
+type Pen = {name: string; rgb: [number, number, number]; weight: number; col: unknown[]};
+/** p5.brush's `rotring` (stroke.js): tip weight 0.15, at BrushCanvas's default `scaleBrushes(5)`. */
+export const ROTRING_TIP = 0.75;
+const QUAD = [0, 1, 2, 0, 2, 3];
+const unit = (n: number) => { const x = Math.sin(n * 127.1) * 43758.5453; return x - Math.floor(x); };
+
+/**
+ * One `rotring` spline as a flat ribbon in device pixels (DF-20261121-flat-ink-lines): quads [ax, ay, bx, by, cx, cy, dx, dy], the ink's
+ * opacity and how far (0..1) the pigment mix deepens its colour. It follows what the library's stroke does, without the stamped dots:
+ *  - corners are rounded over `curvature` * half the shorter side (primitives.js `_createSpline`);
+ *  - the width is pressure^2 * tip * weight, pressure 1 through a flat middle and 1.3 toward the ends (stroke.js `gauss`, min_max [1.3, 1]),
+ *    plus the dots' scatter on a wide stroke; an open stroke wide enough to show it ends in a round cap;
+ *  - a hairline's dots barely overlap, so it is lighter; a wide stroke's dots pile up and the pigment mix deepens its colour.
+ * `seed` moves the pressure peak, the edge wobble and the width jitter, so a boiling line still boils.
+ */
+export const inkRibbon = (pts: readonly (readonly number[])[], curvature: number, m: Mat, [w, h]: readonly [number, number], weight: number, tip: number, seed: number) => {
+  const none = {quads: [] as number[][], alpha: 1, deepen: 0};
+  const n0 = pts.length;
+  if (n0 < 2) return none;
+  const closed = n0 > 3 && pts[0][0] === pts[n0 - 1][0] && pts[0][1] === pts[n0 - 1][1];
+  const P = closed ? pts.slice(0, -1) : pts, n = P.length;
+  const k = Math.sqrt(Math.abs(m.a * m.d - m.b * m.c));
+  const rnd = (i: number) => unit(i + (seed % 9973) * 2.4537);
+  const xs: number[] = [], ys: number[] = [];
+  const add = (x: number, y: number) => { xs.push(m.a * x + m.c * y + m.x + w / 2); ys.push(m.b * x + m.d * y + m.y + h / 2); };
+  for (let i = 0; i < n; i++) {
+    const [x, y] = P[i];
+    if ((!closed && (i === 0 || i === n - 1)) || n < 3 || curvature <= 0) { add(x, y); continue; }
+    const [px, py] = P[(i + n - 1) % n], [nx, ny] = P[(i + 1) % n];
+    const d1 = Math.hypot(px - x, py - y), d2 = Math.hypot(nx - x, ny - y), c = curvature * 0.5 * Math.min(d1, d2);
+    if (c * k < 1.5 || !d1 || !d2) { add(x, y); continue; }
+    const ax = x + ((px - x) / d1) * c, ay = y + ((py - y) / d1) * c, bx = x + ((nx - x) / d2) * c, by = y + ((ny - y) / d2) * c;
+    add(ax, ay); add(0.25 * ax + 0.5 * x + 0.25 * bx, 0.25 * ay + 0.5 * y + 0.25 * by); add(bx, by);
+  }
+  const N = xs.length, len = new Array<number>(N).fill(0);
+  for (let i = 1; i < N; i++) len[i] = len[i - 1] + Math.hypot(xs[i] - xs[i - 1], ys[i] - ys[i - 1]);
+  if (!(len[N - 1] > 0)) return none;
+  const mid = weight * tip * k, scatter = 0.2 * Math.min(1, Math.max(0, (mid - 1) / 3));
+  const peak = 0.5 + 0.35 * (rnd(901) * 2 - 1), spread = 1 - 0.2 * (1 + 0.5 * rnd(902)), shape = 3 + 0.5 * rnd(903);
+  const widthAt = (i: number) => {
+    const t = len[i] / len[N - 1], half = (t < peak ? spread * 1.2 : spread * 0.8) / 2, pressure = 1.3 - 0.3 / (1 + Math.pow(Math.abs((t - peak) / half), 2 * shape));
+    return Math.max(0.6, weight * (tip * pressure * pressure + scatter) * k);
+  };
+  const lx = new Array<number>(N), ly = new Array<number>(N), rx = new Array<number>(N), ry = new Array<number>(N);
+  for (let i = 0; i < N; i++) {
+    const a = closed ? (i + N - 1) % N : Math.max(0, i - 1), b = closed ? (i + 1) % N : Math.min(N - 1, i + 1);
+    let ux = xs[i] - xs[a], uy = ys[i] - ys[a], vx = xs[b] - xs[i], vy = ys[b] - ys[i];
+    const ul = Math.hypot(ux, uy), vl = Math.hypot(vx, vy);
+    if (ul) { ux /= ul; uy /= ul; } else { ux = vx / (vl || 1); uy = vy / (vl || 1); }
+    if (vl) { vx /= vl; vy /= vl; } else { vx = ux; vy = uy; }
+    let tx = ux + vx, ty = uy + vy; const tl = Math.hypot(tx, ty);
+    if (tl < 1e-6) { tx = ux; ty = uy; } else { tx /= tl; ty /= tl; }
+    // Mitred join, capped at twice the width on a sharp turn.
+    const half = (widthAt(i) / 2) * Math.min(2, 1 / Math.max(0.5, tx * ux + ty * uy)) * (0.9 + 0.2 * rnd(i + 77)), off = (rnd(i) - 0.5) * 0.6;
+    lx[i] = xs[i] - ty * (half + off); ly[i] = ys[i] + tx * (half + off); rx[i] = xs[i] + ty * (half - off); ry[i] = ys[i] - tx * (half - off);
+  }
+  const quads: number[][] = [];
+  for (let i = 0; i < (closed ? N : N - 1); i++) { const j = (i + 1) % N; quads.push([lx[i], ly[i], lx[j], ly[j], rx[j], ry[j], rx[i], ry[i]]); }
+  // Round caps: a half octagon beyond each end, which does not overlap the ribbon.
+  if (!closed && Math.max(widthAt(0), widthAt(N - 1)) > 3) for (const [e, o] of [[0, 1], [N - 1, N - 2]]) {
+    const cx = (lx[e] + rx[e]) / 2, cy = (ly[e] + ry[e]) / 2, ax = lx[e] - cx, ay = ly[e] - cy;
+    const s = ax * (ys[e] - ys[o]) - ay * (xs[e] - xs[o]) > 0 ? 1 : -1;
+    const arc = [0.25, 0.5, 0.75].map((t) => { const c = Math.cos(t * Math.PI), sn = Math.sin(t * Math.PI) * s; return [cx + ax * c - ay * sn, cy + ay * c + ax * sn]; });
+    quads.push([lx[e], ly[e], arc[0][0], arc[0][1], arc[1][0], arc[1][1], arc[2][0], arc[2][1]], [lx[e], ly[e], arc[2][0], arc[2][1], rx[e], ry[e], rx[e], ry[e]]);
+  }
+  return {quads, alpha: Math.round(Math.min(1, Math.max(0.5, 0.45 + 0.3 * mid)) * 20) / 20, deepen: Math.min(1, Math.max(0, (mid - 1) / 3))};
+};
+
+/** `lines: false` (paint-bench A/B, `paintFlatLinesOff`) leaves ink lines to p5.brush. `tip`: the rotring's tip in px per unit of stroke weight, as scaled by `scaleBrushes`. */
+export type FlatOptions = {lines?: boolean; tip?: () => number};
+export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null, opt: FlatOptions = {}) => {
+  const lines = opt.lines !== false, tip = opt.tip ?? (() => ROTRING_TIP);
+  let pen: Pen = {name: '', rgb: [0, 0, 0], weight: 1, col: ['#000']};
+  // What the library itself holds. With flat lines on, stroke setters stop here and are sent only before a call that may draw with them.
+  let libPen: Pen | null = null, libStroke: boolean | null = null;
+  const sync = () => {
+    if (on.stroke === true && (libPen !== pen || libStroke !== true)) {
+      const b = base as unknown as Record<string, (...a: unknown[]) => void>;
+      b.pick(pen.name); b.stroke(...pen.col); b.strokeWeight(pen.weight);
+      libPen = pen; libStroke = true;
+    } else if (on.stroke === false && libStroke !== false) { base.noStroke(); libStroke = false; }
+  };
+  /** The seed of the next ink line (the deferred-seeding wrapper hands it over instead of seeding the library). */
+  let seed = 0;
   let m: Mat = {a: 1, b: 0, c: 0, d: 1, x: 0, y: 0};
   let wash: Wash = {on: false, opaque: false, rgb: [0, 0, 0]};
   let on = unknownModes();
-  const stack: {m: Mat; wash: Wash; on: Modes}[] = [];
+  const stack: {m: Mat; wash: Wash; on: Modes; pen: Pen}[] = [];
   /** The library has painted since its last `render()`: composite that before a queue starts, so the queue lands over it. */
   let libraryPainted = true;
   const colors = new Map<string, [number, number, number]>();
-  const stats = {flat: 0, stencil: 0, draws: 0, flushes: 0};
+  const stats = {flat: 0, stencil: 0, draws: 0, flushes: 0, lines: 0};
 
   // Queue: vertex data for all four samples of each polygon, and runs of [first vertex, vertex count, stencil?].
   let data = new Float32Array(1 << 16), used = 0;
   const runs: number[] = [];
   let gl: WebGL2RenderingContext | null = null, program: WebGLProgram | null = null, vao: WebGLVertexArrayObject | null = null, buffer: WebGLBuffer | null = null;
-  let uSize: WebGLUniformLocation | null = null, uJitter: WebGLUniformLocation | null = null, hasStencil = false;
+  let uSize: WebGLUniformLocation | null = null, uJitter: WebGLUniformLocation | null = null, uInk: WebGLUniformLocation | null = null, hasStencil = false;
 
   const context = () => {
     const canvas = getCanvas();
@@ -96,6 +184,7 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
     if (!gl.getProgramParameter(program, gl.LINK_STATUS)) throw new Error(`flatFill shader: ${gl.getProgramInfoLog(program)}`);
     uSize = gl.getUniformLocation(program, 'u_size');
     uJitter = gl.getUniformLocation(program, 'u_jitter');
+    uInk = gl.getUniformLocation(program, 'u_ink');
     vao = gl.createVertexArray();
     buffer = gl.createBuffer();
     gl.bindVertexArray(vao);
@@ -161,6 +250,30 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
     return true;
   };
 
+  /** Queue one spline as ink: the ribbon's quads, two triangles per sample each, in a run of their own opacity. */
+  const line = (pts: readonly (readonly number[])[], curvature: number) => {
+    const g = context();
+    if (!g) return false;
+    const {quads, alpha, deepen} = inkRibbon(pts, curvature, m, [g.drawingBufferWidth, g.drawingBufferHeight], pen.weight, tip(), seed);
+    if (!quads.length) return true;
+    if (libraryPainted) { base.render(); libraryPainted = false; }
+    // A wide stroke's piled-up dots come out about a third darker than the ink's nominal colour (matched by eye on EDU-EP30 wheat, light and dark).
+    const f = 1 - 0.32 * deepen, r = pen.rgb[0] * f, gr = pen.rgb[1] * f, b = pen.rgb[2] * f, kind = 2 + alpha;
+    grow(quads.length * 24);
+    const first = used;
+    let o = used * WORDS;
+    for (const q of quads) for (const [jx, jy] of JITTER) for (const i of QUAD) {
+      data[o] = q[i * 2] + jx; data[o + 1] = q[i * 2 + 1] + jy; data[o + 2] = r; data[o + 3] = gr; data[o + 4] = b; o += 5;
+    }
+    used += quads.length * 24;
+    const last = runs.length - 3;
+    if (last >= 0 && runs[last + 2] === kind) runs[last + 1] += used - first; else runs.push(first, used - first, kind);
+    stats.lines++;
+    // A frame of some 20,000 lines would otherwise hold its whole vertex data until the next library call.
+    if (used > 1 << 19) flush();
+    return true;
+  };
+
   const flush = () => {
     if (!used) return;
     const g = gl!;
@@ -175,12 +288,20 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
     g.useProgram(program);
     g.uniform2f(uSize, g.drawingBufferWidth, g.drawingBufferHeight);
     g.uniform2f(uJitter, 0, 0);
+    g.uniform1f(uInk, 0);
     g.bindVertexArray(vao);
     g.bindBuffer(g.ARRAY_BUFFER, buffer);
     g.bufferData(g.ARRAY_BUFFER, data.subarray(0, used * WORDS), g.STREAM_DRAW);
     for (let k = 0; k < runs.length; k += 3) {
       const first = runs[k], count = runs[k + 1];
       if (!runs[k + 2]) { g.drawArrays(g.TRIANGLES, first, count); stats.draws++; continue; }
+      if (runs[k + 2] >= 2) {
+        const a = runs[k + 2] - 2;
+        g.uniform1f(uInk, a >= 1 ? SAMPLE_ALPHA : 1 - Math.pow(1 - a, 0.25));
+        g.drawArrays(g.TRIANGLES, first, count); stats.draws++;
+        g.uniform1f(uInk, 0);
+        continue;
+      }
       // Stencil-then-cover, as p5.brush's flushFill: count the winding number, then paint where it is non-zero and reset it.
       g.enable(g.STENCIL_TEST);
       g.stencilMask(0xff);
@@ -222,6 +343,7 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
   };
   const mul = (t: Mat): Mat => ({a: m.a * t.a + m.c * t.b, b: m.b * t.a + m.d * t.b, c: m.a * t.c + m.c * t.d, d: m.b * t.c + m.d * t.d, x: m.a * t.x + m.c * t.y + m.x, y: m.b * t.x + m.d * t.y + m.y});
 
+  const takesLine = () => lines && on.stroke === true && pen.name === 'rotring';
   const wrap = {} as Record<string, unknown>;
   for (const [name, fn] of Object.entries(base)) {
     if (typeof fn !== 'function' || name === 'Color' || name === 'Polygon' || name === 'Plot') { wrap[name] = fn; continue; }
@@ -229,10 +351,23 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
     wrap[name] = (...args: unknown[]) => {
       if (name === 'polygon' && wash.on && wash.opaque && on.fill === false && on.stroke === false && on.hatch === false && on.mass === false
         && Array.isArray(args[0]) && queue(args[0] as number[][])) return undefined;
+      if (name === 'spline' && takesLine() && Array.isArray(args[0]) && line(args[0] as number[][], (args[1] as number | undefined) ?? 0.5)) return undefined;
+      if (name === 'seed') seed = Number(args[0]) || 0;
+      else if (name === 'set') pen = {name: String(args[0]), rgb: rgbOf([args[1]]), weight: (args[2] as number | undefined) ?? 1, col: [args[1]]};
+      else if (name === 'pick') pen = {...pen, name: String(args[0])};
+      else if (name === 'stroke') pen = {...pen, rgb: rgbOf(args), col: args};
+      else if (name === 'strokeWeight') pen = {...pen, weight: args[0] as number};
+      if (lines) {
+        if (name === 'set' || name === 'stroke') { on.stroke = true; return undefined; }
+        if (name === 'pick' || name === 'strokeWeight') return undefined;
+        if (name === 'noStroke') { on.stroke = false; return undefined; }
+        // `pop` needs no sync: the library's own pop puts back what it held at the matching push, which was synced.
+        if (!LAZY_OK.has(name) && name !== 'pop') sync();
+      }
       if (name === 'clear') { used = 0; runs.length = 0; libraryPainted = true; return call(...args); }
       if (!QUIET.has(name)) { flush(); libraryPainted = true; }
-      if (name === 'push') stack.push({m, wash, on: {...on}});
-      else if (name === 'pop') { const s = stack.pop(); if (s) ({m, wash, on} = s); }
+      if (name === 'push') stack.push({m, wash, on: {...on}, pen});
+      else if (name === 'pop') { const s = stack.pop(); if (s) { ({m, wash, on, pen} = s); if (lines) { libPen = pen; libStroke = on.stroke; } } }
       else if (name === 'translate') m = mul({a: 1, b: 0, c: 0, d: 1, x: args[0] as number, y: args[1] as number});
       else if (name === 'scale') m = mul({a: args[0] as number, b: 0, c: 0, d: (args[1] ?? args[0]) as number, x: 0, y: 0});
       else if (name === 'rotate') {
@@ -247,7 +382,9 @@ export const flatFills = (base: Brush, getCanvas: () => HTMLCanvasElement | null
   }
   return {
     brush: wrap as Brush,
+    /** For the deferred-seeding wrapper: will the next spline be drawn here (then the library needs no seed), and that line's seed. */
+    lines: lines ? {takes: takesLine, hint: (n: number) => { seed = n; }} : undefined,
     /** Per-frame counts for the paint profile: polygons drawn flat (convex / stencil), GL draw calls and queue flushes. */
-    stats: () => { const s = {...stats}; stats.flat = stats.stencil = stats.draws = stats.flushes = 0; return s; },
+    stats: () => { const s = {...stats}; stats.flat = stats.stencil = stats.draws = stats.flushes = stats.lines = 0; return s; },
   };
 };
