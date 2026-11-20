@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import type {Brush} from '../src/painted/BrushCanvas';
 import {createHash} from 'node:crypto';
 import {CREW_REACH_3D, FARMER, GUNNER1, GUNNER2, GUNNER_JOLT, GUNNER_REACH, LOADER_AT, LOADER_LEAN, MEREDITH, PAN_RIM, farmerTalk, gunnerCheck, gunnerReach, gunnerShoulders, paintCrewPose, paintSeatedGunner, solveCrewPose} from '../src/painted/edu30/cast';
-import {AT, CAM_FARMER, CAM_LOADER, CAM_P44, CAM_P44_FULL, CAM_SALUTE, GUNNER_PROOFS, gunnerProof, gunnerProofAt, loaderPan} from '../src/painted/edu30/proof-cast';
+import {AT, CAM_FARMER, CAM_LOADER, CAM_P44, CAM_P44_FULL, CAM_SALUTE, CREW_PROOFS, GUNNER_PROOFS, gunnerProof, gunnerProofAt, loaderPan} from '../src/painted/edu30/proof-cast';
 import {mittenThumbSide} from '../src/painted/kit/hand-gestures';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {camPoint, camUnit} from '../src/painted/kit/ycam';
@@ -101,17 +101,37 @@ test('T12 purity: a frame solved alone equals the same frame after others', () =
   for (const k of CASES) { const a = JSON.stringify(sv(k, k.N - 1)); for (let L = 0; L < k.N; L++) sv(k, L); assert.equal(JSON.stringify(sv(k, k.N - 1)), a, k.name); }
 });
 
-test('T12 A: salute right arm is screen left; at L 8 the palm-forward right hand sits at the brim and its thumb is screen lower-right; P01 at L 0 and L 28', () => {
-  const k = CASES[0], s = sv(k, 8), E = s.rTo!, via = (s.fig.rArm as {via: Pt}).via;
-  assert.ok(s.shoulders.r[0] < s.shoulders.l[0], 'right shoulder screen left (front)');
-  assert.equal(s.lTo, null);
-  const side = thumbSide(via, E, mittenThumbSide('right', 'palm'));
-  console.log(`thumb check: MEREDITH RIGHT: screen ${side} ok (oval kit mitten, palm forward; the unshaped hand draws no thumb, so the side is the rule's, hand-drawing section 2)`);
-  assert.equal(side, 'lower-right');
+/** Pixel samples inside the oval `h` (centre, forearm angle, radii) that also satisfy `inside`. */
+const ovalPx = (h: {c: Pt; ang: number; rx: number; ry: number}, inside: (x: number, y: number) => boolean) => {
+  let n = 0;
+  for (let y = Math.floor(h.c[1] - h.rx - 2); y <= h.c[1] + h.rx + 2; y++) for (let x = Math.floor(h.c[0] - h.rx - 2); x <= h.c[0] + h.rx + 2; x++) {
+    const dx = x - h.c[0], dy = y - h.c[1], a = dx * Math.cos(h.ang) + dy * Math.sin(h.ang), b = -dx * Math.sin(h.ang) + dy * Math.cos(h.ang);
+    if ((a / h.rx) ** 2 + (b / h.ry) ** 2 <= 1 && inside(x, y)) n++;
+  }
+  return n;
+};
+test('T12 A2 (r6): salute right arm is screen left; at the hold the mitten centre is at the brim front edge 0.30 head widths to his right, over the brim and the forehead; the elbow is raised (lowest reachable)', () => {
+  const k = CASES[0], u = camUnit(CAM_SALUTE, AT.meredith);
   assert.equal(sv(k, 0).rTo, null);
   assert.equal(sv(k, 28).rTo, null);
-  const u = camUnit(CAM_SALUTE, AT.meredith), head = paintCrewPose(dryP(), CAM_SALUTE, MEREDITH, AT.meredith, {pose: 'salute', L: 15, seed: 1})!, hand = sv(k, 15).rTo!;
-  assert.ok(hand[0] < head.head[0] && Math.abs(hand[1] - (head.headTop + 0.13 * u)) < 0.05 * u, 'wrist at the brim row, screen left of the head');
+  assert.equal(sv(k, 0).hand, undefined);
+  for (const L of [8, 15, 22]) {
+    const s = sv(k, L), h = s.hand!, [S, E] = h.chain!, a = paintCrewPose(dryP(), CAM_SALUTE, MEREDITH, AT.meredith, {pose: 'salute', L, seed: 1})!;
+    assert.ok(s.shoulders.r[0] < s.shoulders.l[0], 'right shoulder screen left (front)');
+    assert.equal(s.lTo, null);
+    const hw = 0.88 * (a.chin - a.headTop), yB = a.headTop + 0.1 * u, r = 0.23 * u, hx = a.head[0];
+    const widths = (hx - h.c[0]) / hw, elbowDy = (S[1] - E[1]) / u;   // + = elbow above the shoulder
+    const brim = ovalPx(h, (x, y) => y >= yB && ((x - hx) / r) ** 2 + ((y - yB) / (0.028 * u)) ** 2 <= 1);
+    const browY = a.head[1] - 0.24 * ((a.chin - a.headTop) / 2.27), fore = ovalPx(h, (x, y) => y > yB + 0.028 * u && y < browY && x < hx && x > hx - 0.5 * hw);
+    console.log(`A2 salute L${L}: mitten centre ${widths.toFixed(3)} head widths right of the face line (head width ${hw.toFixed(1)} px); centre y ${((h.c[1] - yB) / u).toFixed(3)} m below the brim row; elbow y - shoulder y ${(-elbowDy).toFixed(3)} m (- = above; row limit +-0.06 is out of reach: the brim is ${((S[1] - h.chain![2][1]) / u).toFixed(2)} m above the shoulder, the forearm reaches ${(1.05 * 0.26).toFixed(2)} m; built to the lowest elbow, limit 0.15 above); brim overlap ${brim} px, forehead overlap ${fore} px; arm ratio ${s.rRatio.toFixed(3)}`);
+    console.log(`thumb check: MEREDITH RIGHT: open oval, no thumb drawn (unshaped kit); palm forward, fingers screen up-right (forearm ${(h.ang * 180 / Math.PI).toFixed(0)} deg)`);
+    if (L >= 8) {
+      assert.ok(Math.abs(widths - 0.3) < 0.005, `centre ${widths}`);
+      assert.ok(elbowDy >= 0 && elbowDy <= 0.15, `elbow ${elbowDy}`);
+      assert.ok(brim > 0 && fore > 0, `overlap brim ${brim} forehead ${fore}`);
+      assert.ok(s.rRatio <= 1.05);
+    }
+  }
 });
 
 test('T12 D: P44 back, crossed wrists at the sacrum (0.95 m), thumbs and elbows measured', () => {
@@ -142,11 +162,22 @@ test('T12 F: loader reaches the pan rim (3D) within 0.52 m lifted and seated; ha
   console.log(`thumb check: GUNNER-2 RIGHT: screen ${thumbSide(s30.shoulders.r, s30.rTo!, mittenThumbSide('right', 'back'))} (flat fist, back); LEFT: screen ${thumbSide(s30.shoulders.l, s30.lTo!, mittenThumbSide('left', 'back'))}`);
 });
 
-test('T12 G: farmer arm key frames, gaze, lean, talk windows and lead height', () => {
-  const k = CASES[1], s = (L: number) => sv(k, L);
+test('T12 G2 (r6): farmer point: the line from the shoulder through the mitten centre passes within 60 px of the emu head; mitten clear of head and hat by 40 px; talk, gaze, lean unchanged', () => {
+  const k = CASES[1], s = (L: number) => sv(k, L), c = CAM_FARMER, emu = camPoint(c, [-3.6, 1.0, 3.0])!;
   assert.equal(s(3).rFlex, 0);
-  assert.ok(Math.abs(s(9).rFlex - 70) < 0.5 && Math.abs(s(45).rFlex - 70) < 0.5, 'elbow bent 70 deg at the hold');
-  assert.ok(s(9).rTo![1] < s(9).shoulders.r[1], 'mitten above the shoulder');
+  assert.equal(s(0).hand, undefined);
+  for (const L of [9, 45]) {
+    const x = s(L), h = x.hand!, S = x.shoulders.r, a = paintCrewPose(dryP(), c, FARMER, AT.farmer, {pose: 'farmer', L, seed: 1})!, u = camUnit(c, AT.farmer);
+    const dx = h.c[0] - S[0], dy = h.c[1] - S[1], len = Math.hypot(dx, dy), dist = Math.abs((emu[0] - S[0]) * dy - (emu[1] - S[1]) * dx) / len, ahead = ((emu[0] - S[0]) * dx + (emu[1] - S[1]) * dy) / len;
+    const hh = a.chin - a.headTop, hw = 0.88 * hh, yB = a.headTop + 0.1 * u, rb = 0.25 * u;
+    const boxes = [[a.head[0] - rb, yB - 0.15 * u, a.head[0] + rb, yB + 0.03 * u], [a.head[0] - hw / 2, a.headTop, a.head[0] + hw / 2, a.chin]];
+    const m = [h.c[0] - h.rx, h.c[1] - h.rx, h.c[0] + h.rx, h.c[1] + h.rx], gap = Math.min(...boxes.map((b) => Math.hypot(Math.max(b[0] - m[2], m[0] - b[2], 0), Math.max(b[1] - m[3], m[1] - b[3], 0))));
+    console.log(`G2 farmer L${L}: emu head px (${emu[0].toFixed(0)}, ${emu[1].toFixed(0)}); shoulder (${S[0].toFixed(0)}, ${S[1].toFixed(0)}) mitten (${h.c[0].toFixed(0)}, ${h.c[1].toFixed(0)}); line-to-emu ${dist.toFixed(1)} px (limit 60, ahead ${ahead.toFixed(0)} px); gap to head and hat ${gap.toFixed(1)} px (limit 40); arm ratio ${x.rRatio.toFixed(3)}; 3D reach ${x.g2!.reach.toFixed(3)} m, 3D elbow flexion ${x.g2!.flex3.toFixed(1)} deg, drawn ${x.rFlex.toFixed(1)} deg; d ${x.g2!.d.map((v) => v.toFixed(3)).join(', ')}`);
+    assert.ok(dist <= 60 && ahead > 0, `line ${dist}`);
+    assert.ok(gap >= 40, `gap ${gap}`);
+    assert.ok(x.rRatio <= 1.05);
+  }
+  console.log('thumb check: FARMER RIGHT: open oval, no thumb drawn (unshaped kit); edge to the lens, fingers screen lower-left');
   assert.deepEqual([s(0).lean, s(46).lean, s(53).lean], [-0.06, -0.06, 0]);
   const look = (L: number) => solveCrewPose(k.cam, FARMER, AT.farmer, {pose: 'farmer', L, seed: 1})!.faceState!.look!;
   assert.deepEqual([look(0), look(46), look(53)], [[-0.8, 0], [-0.8, 0], [0, 0]]);
@@ -154,6 +185,18 @@ test('T12 G: farmer arm key frames, gaze, lean, talk windows and lead height', (
   assert.ok(talk[2] === null && talk[3] !== null && talk[38] !== null && talk[39] === null && talk[46] === null && talk[47] !== null && talk[75] !== null);
   assert.ok(Math.abs(Math.max(...talk.map((x) => x ?? 0)) - 0.7) < 0.01 && farmerTalk(6) === 0 && Math.abs(farmerTalk(9)! - 0.7) < 1e-9);
   const a = paintCrewPose(dryP(), k.cam, FARMER, k.at, {pose: 'farmer', L: 9, seed: 1})!, lead = a.bottom - a.top;
-  console.log(`farmer lead (visible top to feet) ${lead.toFixed(1)} px at the start camera (sheet 604); thumb: oval pointing hand, edge to the lens, none drawn`);
+  console.log(`farmer lead (visible top to feet) ${lead.toFixed(1)} px at the start camera (sheet 604)`);
   assert.ok(lead >= 480, `lead ${lead}`);
+});
+
+// r6: only the salute hold and the farmer rise/hold/lower change; every other T12 stroke list (recorded painter) is the r5 one.
+test('T12 r6: stroke hashes of the unchanged poses (salute L 0 and 28, kit, P44 back x2, loader, farmer L 0 and 60) equal r5', () => {
+  const want: Record<string, Record<number, string>> = {
+    'C30-crew-salute': {0: '955499eec8cc', 28: '955499eec8cc'}, 'C30-crew-kit': {0: '52be5f62c0d9'}, 'C30-crew-p44back': {0: 'e2c643d40f56'}, 'C30-crew-p44back-full': {0: 'eb83acf1e4cf'},
+    'C30-crew-loader': {0: '16ea4b4382e4', 25: '4b47c9077c23', 28: '2cfaa618c384', 30: 'ff29f9f394f9', 45: 'a9b593eb9fa5', 46: '14b5a0c9778f'}, 'C30-crew-farmer': {0: 'e8ee1df53ce1', 60: '5bad13134d9f'}};
+  for (const d of CREW_PROOFS) for (const [L, h] of Object.entries(want[d.id] ?? {})) {
+    const log: string[] = [], brush = new Proxy({}, {get: (_, k) => (...a: unknown[]) => { log.push(String(k) + JSON.stringify(a)); }}) as Brush;
+    d.paint(makePainter(brush, {t: 0, frame: 0}), Number(L), d.cam(0));
+    assert.equal(createHash('sha1').update(log.join('\n')).digest('hex').slice(0, 12), h, `${d.id} L${L}`);
+  }
 });
