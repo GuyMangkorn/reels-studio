@@ -184,12 +184,12 @@ const tD2 = (): LookDef => {
 const EYE_LF03: V3 = [-0.3, 2.6, 4.5];
 /** B07-SH01 end: the whole coat of arms in frame, kangaroo left, emu right, sunlit sandstone, blue sky (no newsreel layer). */
 export const CAM_LF03: YCam = {x: EYE_LF03[0], y: EYE_LF03[1], z: EYE_LF03[2], yaw: 0, pitch: 20 * DEG, f: 1200, hy: 760};
-export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
+export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number, emuLid = 0.15) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
   MEASURE[id] = [];
   paintArmsSky(p, c);
   paintSandstoneWall(p, c, 41000);
   paintWattleBed(p, c, 41800);
-  const r = paintArms(p, c, 42000, emuYaw === undefined ? {} : {emuPose: EMU_POSES.stand({head: [0.36, 1.62, 0], headYaw: emuYaw, lid: 0.15})});
+  const r = paintArms(p, c, 42000, emuYaw === undefined ? {} : {emuPose: EMU_POSES.stand({head: [0.36, 1.62, 0], headYaw: emuYaw, lid: emuLid})});
   lead(id, 'EMU-RELIEF', r.emu);
   lead(id, 'ROO-RELIEF', r.roo);
 }});
@@ -237,6 +237,9 @@ export const LOOK_DEFS: Record<string, () => LookDef> = {
   TD2: tD2,
   LF03: armsLook(CAM_LF03, 'LF03', 'B07-SH01 end (L17)', 'ส่วนนกอีมู อยู่บนตราแผ่นดินออสเตรเลีย\nมาตั้งแต่ปี 1908'),
   TA2: armsLook(CAM_A2, 'TA2', 'thumb A2 · B07-SH02 push-in end, relief emu looks to the lens', 'ไม่เคยถอยสักรอบ', -1.25),
+  // T07 r6 proof stills: blink frame 0 (lid 0.8) on the KP-face camera; the relief emu blink at B07-SH02 local 54-57 on the TA2 camera (blinkLid base 0.15)
+  'KP-blink08': () => kpFace('KP-blink08', {lid: blinkLid(0, 0.32), headYaw: 0.25})(),
+  ...Object.fromEntries([54, 55, 56, 57].map((l) => [`TA2-blink${l}`, armsLook(CAM_A2, `TA2-blink${l}`, `B07-SH02 relief blink local ${l}`, 'ไม่เคยถอยสักรอบ', -1.25, blinkLid(l - 54, 0.15))])),
   'KP-stand': kp('stand', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.stand(), scale: 1, seed: 36000, hero: true}), 'stand'),
   'KP-walk': kp('walk', () => ({at: KP_AT, heading: Math.PI + 0.25, pose: EMU_POSES.walk(0.3), scale: 1, seed: 36000, hero: true}), 'walk'),
   'KP-peck': kp('peck', () => ({at: KP_AT, heading: Math.PI - 0.35, pose: EMU_POSES.peck(), scale: 1, seed: 36000, hero: true}), 'peck'),

@@ -153,20 +153,27 @@ export const buildEmu = (o: EmuPose = {}): Build => {
     return {p: add(k.p, mul(fwd, g * k.b)), a: k.a * (1 + 0.6 * sac * w), b: k.b * (1 + g)};
   });
   const nmix = (u: number) => Math.max(0, Math.min(1, (u - 0.3) / 0.35));   // feathered base -> bare blue-grey skin, a soft blend (no collar edge)
-  R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: (u, sd) => {
+  const neckColAt = (u: number, sd: number): string => {
     const neckCol = mixColor(tc(EMU_PX.neckFeather), sd > 0.4 ? EMU_PX.skinDark : EMU_PX.skin, nmix(u));
     if (!(o.hero && u < 0.5 && sd < -0.1)) return neckCol;
     const bibCol = mixColor(EMU_PX.bib, EMU_PX.skin, nmix(u) * 0.6);
     return u < 0.15 ? bibCol : mixColor(bibCol, neckCol, (u - 0.15) / 0.35);   // r5 N1: the bib fades into the neck colour over u 0.15-0.50 (no step at u 0.5)
-  }});
-  if (sac > 0.02) {   // T07 sac patch: an oval of bare skin 0.10 x 0.14 m at sac 1 (scaling with sac) on the throat front at u 0.40, painted over the neck colour (its own colour)
+  };
+  R.loft(neck, {m: 12, tex: {n: 2, amp: 0.06, px: 9}, keys: nk, col: neckColAt});
+  if (sac > 0.02) {   // T07 r6 sac patch: a small oval of skin 0.055 x 0.085 m at sac 1 (scaling with sac) at u 0.40, its colour the neck colour there mixed 35 % toward skin; a soft rim disc 1.25 x it (halfway colour) is painted first, then 6 short dark strokes on the rim pointing down and out (feathers lifted around the skin)
     const iu = Math.round(0.4 * nkN), kk = nk[iu], T = nrm(sub(nk[Math.min(nkN, iu + 1)].p, nk[Math.max(0, iu - 1)].p)), fwd = nrm(sub([1, 0, 0], mul(T, T[0])));
-    const hw = 0.05 * sac, hh = 0.07 * sac;   // half width (across the neck) and half height (along it)
-    const pts: L3[] = Array.from({length: 14}, (_, q) => {   // conforms to the swollen neck ellipse (a across, b front-back) and floats 14 mm off it (the painter sorts quads by depth: closer in, the neck quads draw over the patch)
-      const th = (q / 14) * Math.PI * 2, zl = hw * Math.cos(th), ul = hh * Math.sin(th), front = kk.b * Math.sqrt(Math.max(0.04, 1 - (zl / kk.a) ** 2)) + 0.014;
-      return add(add(add(kk.p, mul(fwd, front)), mul([0, 0, 1], zl)), mul(T, ul));
-    });
-    R.flat(neck, {pts, col: mixColor(EMU_PX.skin, '#ffffff', 0.18), two: true});
+    const hw = 0.0275 * sac, hh = 0.0425 * sac;   // half width (across the neck) and half height (along it)
+    const onNeck = (zl: number, ul: number, off: number): L3 => add(add(add(kk.p, mul(fwd, kk.b * Math.sqrt(Math.max(0.04, 1 - (zl / kk.a) ** 2)) + off)), mul([0, 0, 1], zl)), mul(T, ul));   // conforms to the swollen neck ellipse (a across, b front-back) and floats off it (the painter sorts quads by depth: closer in, the neck quads draw over the patch)
+    const ring = (k: number, off: number): L3[] => Array.from({length: 14}, (_, q) => { const th = (q / 14) * Math.PI * 2; return onNeck(hw * k * Math.cos(th), hh * k * Math.sin(th), off); });
+    const nc = neckColAt(0.4, -0.5), pc = mixColor(mixColor(nc, EMU_PX.skin, 0.35), '#000000', 0.15);   // flats are unshaded where the neck loft is shaded on its side: 15 % toward black matches the neck luma (measured, logged)
+    R.flat(neck, {pts: ring(1.25, 0.012), col: mixColor(mixColor(nc, '#000000', 0.15), pc, 0.5), two: true});
+    R.flat(neck, {pts: ring(1, 0.014), col: pc, two: true});
+    for (let i = 0; i < 6; i++) {   // lifted feathers around the skin, seeded, pointing down and out
+      const th = (0.2 + i / 6) * Math.PI * 2 + (hsh(300 + i) - 0.5) * 0.4, c = Math.cos(th), sn = Math.sin(th), k = 1.15;
+      const a0 = onNeck(hw * k * c, hh * k * sn, 0.016), b0 = onNeck(hw * k * c + 0.004, hh * k * sn, 0.016);
+      const out = nrm(add(mul([0, 0, c], 0.7), mul(T, sn * 0.7 - 0.8)));
+      feather(R, neck, a0, b0, out, (0.012 + 0.006 * hsh(310 + i)) * sac, EMU_PX.neckFeather, 0.3);
+    }
   }
   for (let i = 0; i < 9; i++) for (const g of [1, -1]) {   // neck-base ruff
     const u = 0.05 + i * 0.045, r = hsh(++fk), a = onLoft(nk, u, g * 0.95, 0), b = onLoft(nk, u + 0.04, g * 0.95, 0);
@@ -201,11 +208,13 @@ export const buildEmu = (o: EmuPose = {}): Build => {
   const lid = clamp(o.lid ?? 0);
   for (const [g, n] of [[1, 'L'], [-1, 'R']] as const) {
     const e = HP(0.012, 0.012, g * 0.038), out = nrm(add(mul(hside, g), mul(hd, 0.35))), eb = R.bone(`eye.${n}`, skull, `eye.${n}.pivot`, e);
-    R.loft(eb, {m: 12, col: () => EMU_PX.eyeRing, keys: ballKeys(e, 0.021, out)});
-    R.loft(eb, {m: 12, col: () => EMU_PX.iris, keys: ballKeys(add(e, mul(out, 0.006)), 0.0165, out)});
-    R.loft(eb, {m: 6, col: () => EMU_PX.catch, keys: ballKeys(add(add(e, mul(out, 0.02)), add(mul(hup, 0.006), mul(hd, 0.004))), 0.0045, out)});
-    if (lid > 0.7) {   // T07 blink frames (lid 0.8, 1.0): a skin-coloured lid ball over the whole eye, so a shut eye hides ring and iris from any view (a flat cap slid off the eye in three-quarter views)
-      R.loft(eb, {m: 12, col: () => EMU_PX.skinDark, keys: ballKeys(add(e, mul(out, 0.007)), 0.026, out)});
+    if (lid <= 0.7) {   // r6 S3: on the shut frames (lid > 0.7) ring, iris and catch-light are not drawn at all (the lid ball alone), so no iris or catch-light pixel can show
+      R.loft(eb, {m: 12, col: () => EMU_PX.eyeRing, keys: ballKeys(e, 0.021, out)});
+      R.loft(eb, {m: 12, col: () => EMU_PX.iris, keys: ballKeys(add(e, mul(out, 0.006)), 0.0165, out)});
+      R.loft(eb, {m: 6, col: () => EMU_PX.catch, keys: ballKeys(add(add(e, mul(out, 0.02)), add(mul(hup, 0.006), mul(hd, 0.004))), 0.0045, out)});
+    }
+    if (lid > 0.7) {   // T07 blink frames (lid 0.8, 1.0): a skin-coloured lid ball over the whole eye (r6 S3: radius 0.018 sunk 2 mm, so it stays inside the head outline), so a shut eye hides ring and iris from any view (a flat cap slid off the eye in three-quarter views)
+      R.loft(eb, {m: 12, col: () => EMU_PX.skinDark, keys: ballKeys(add(e, mul(out, -0.002)), 0.018, out)});
     } else if (lid > 0.02) {   // the lid: a skin-coloured cap over the upper part of the eye, its edge a straight line
       const c0 = add(e, mul(out, 0.022)), top = 0.026, edge = top - lid * 0.052;
       R.flat(eb, {pts: [add(add(c0, mul(hd, -0.026)), mul(hup, top)), add(add(c0, mul(hd, 0.026)), mul(hup, top)), add(add(c0, mul(hd, 0.026)), mul(hup, edge)), add(add(c0, mul(hd, -0.026)), mul(hup, edge))], col: EMU_PX.skinDark, two: true, ink: '#2a2f36'});

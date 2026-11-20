@@ -266,3 +266,16 @@ test('T07 KP-nod: the 0.04 m nod lowers the head joint on the KP-face camera (px
   console.log(`T07 nod: head joint ${d.toFixed(1)} px lower at nod 0.04 m (KP-face camera)`);
   assert.ok(d > 20 && d < 60);
 });
+
+test('T07 r6 S1/S2: the sac patch is 0.055 x 0.085 m inside a 1.25 x rim disc, with 6 lifted-feather strokes; sac 0 has none; the shut-eye ball (S3) stays small', () => {
+  const ext = (pts: number[][], i: number) => Math.max(...pts.map((p) => p[i])) - Math.min(...pts.map((p) => p[i]));
+  const B = buildEmu({hero: true, sac: 1}), disc = B.flats.filter((f) => f.bone === 'neck' && f.pts.length === 14);
+  assert.equal(disc.length, 2);
+  const [rim, patch] = disc;
+  assert.ok(Math.abs(ext(patch.pts, 2) - 0.055) < 0.002, `patch width ${ext(patch.pts, 2)}`);
+  assert.ok(Math.abs(ext(rim.pts, 2) / ext(patch.pts, 2) - 1.25) < 0.02);
+  assert.equal(B.flats.filter((f) => f.bone === 'neck' && f.pts.length === 4 && f.col === '#2c241d').length >= 6, true);
+  assert.equal(buildEmu({hero: true, sac: 0}).flats.filter((f) => f.bone === 'neck' && f.pts.length === 14).length, 0);
+  const eyeBalls = (lid: number) => buildEmu({hero: true, lid}).parts.filter((q) => q.bone.startsWith('eye.'));
+  assert.equal(eyeBalls(0.32).length, 6); assert.equal(eyeBalls(1.0).length, 2);   // shut frames draw the lid ball only (no ring, iris, catch-light)
+});
