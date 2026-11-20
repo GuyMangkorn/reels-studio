@@ -148,11 +148,13 @@ def active_db(path, rng):
     pk = max(e); act = [x for x in e if x > pk * 10 ** (-rng / 10)]
     return 10 * math.log10(sum(act) / len(act)), 20 * math.log10(max(abs(v) for v in s) or 1e-6), len(s) / 48000
 VOICE = active_db(NARR, 30)[0]
+USER_QUIETER = {'bed': 8.0, 'texture': 6.0, 'accent': 6.0}   # dB further under the voice than the cue table's dV
 INFO = {i: active_db(p, 25) for i, p in SRC.items()}
 
 items = []
 for c in CUES:
     name = c['cue']; spec = L[name]; layer, dv = spec[0], spec[1]; pan = spec[2] if len(spec) > 2 else 'centre'
+    dv += USER_QUIETER[layer]   # user, 21 Nov 2026: effects and music covered the narration in the draft; every layer sits further under the voice
     act, peak, dur = INFO[c['id']]
     start = c['frame']
     end = start + c['durationFrames'] if 'durationFrames' in c else start + math.ceil(dur * FPS)
