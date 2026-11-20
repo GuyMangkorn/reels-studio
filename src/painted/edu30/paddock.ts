@@ -247,16 +247,19 @@ const paintHighWheat = (p: Painter, c: YCam, seed: number, st: number, eaten?: n
   paintWheatTexture(p, c, seed + 100, 0, 200, 1400, {stubble: st, eaten});
 };
 
+/** Ridge start radius (T38 P1): from a high eye (y > 3 m, not the high view) the ridges start farther out so no arcs read under the camera. */
+export const ridgeR0 = (y: number, high = false) => (!high && y > 3 ? 2.5 + 6 * (y - 3) : 2.5);
+
 /** Standing wheat as stacked ridges round the camera (far to near): each ridge a band from the ground to the ear line at one radius, with a
  *  bumpy ear-top edge, alternating lit and shaded values, only where the ground is wheat (not the clearing, the eaten patch or south of the
  *  fence). Near ridges carry ear strokes. This is what makes the plain read as a tall crop, at any camera height. */
-export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: number; r1?: number; rows?: number; fov?: number; light?: PadLightArg; stubble?: number; eaten?: number} = {}) => {
-  const r0 = o.r0 ?? 2.5, r1 = o.r1 ?? 140, rows = o.rows ?? 26, fov = o.fov ?? 0.75, S = 64, st = o.stubble ?? 0, top = 1 - 0.8 * st;
-  // high view (pitch <= -20 deg): no ridge rows at any distance (they read as stripes far and as arcs near), a flat wash plus texture and broken patches instead (T09 r3)
+export const paintWheatRidges = (p: Painter, c: YCam, seed: number, o: {r0?: number; r1?: number; rows?: number; fov?: number; light?: PadLightArg; stubble?: number; eaten?: number; tone?: 'alt' | 'even'} = {}) => {
   const high = (c.pitch ?? 0) <= HIGH_PITCH;
-  if (high) paintHighWheat(p, c, seed + 7000, st, o.eaten);
+  const r0 = o.r0 ?? ridgeR0(c.y, high), r1 = o.r1 ?? 140, rows = o.rows ?? 26, fov = o.fov ?? 0.75, S = 64, st = o.stubble ?? 0, top = 1 - 0.8 * st;
+  // high view (pitch <= -20 deg): no ridge rows at any distance (they read as stripes far and as arcs near), a flat wash plus texture and broken patches instead (T09 r3)
+  if (high || (o.r0 === undefined && c.y > 3)) paintHighWheat(p, c, seed + 7000, st, o.eaten);
   for (let k = rows - 1; k >= 0; k--) {
-    const r = r0 * Math.pow(r1 / r0, k / (rows - 1)), col = mixColor(mixColor(PAD.wheat, k % 2 ? PAD.wheatLit : PAD.wheatShade, 0.25 + 0.35 * h(k * 7.7)), STRAW, st);
+    const r = r0 * Math.pow(r1 / r0, k / (rows - 1)), col = mixColor(o.tone === 'even' ? mixColor(PAD.wheat, PAD.wheatLit, 0.12) : mixColor(PAD.wheat, k % 2 ? PAD.wheatLit : PAD.wheatShade, 0.25 + 0.35 * h(k * 7.7)), STRAW, st);
     if (high) continue;
     let run: V3[] = [];
     const flush = () => {
@@ -293,6 +296,8 @@ export type PadSceneOpts = {
   wire?: {wireW?: number; wireCol?: string}; far?: {n: number; x: [number, number]; z: [number, number]};
   /** nothing but ground and wheat (the P2 stripe measure) */
   bare?: boolean;
+  /** false: no gun clearing (the open paddock, T38 P2); default true */
+  clearing?: boolean;
 };
 export const paintPaddockScene = (p: Painter, c: YCam, o: PadSceneOpts, cast: () => void = () => {}) => {
   const light = o.light ?? 'morning';
@@ -302,7 +307,9 @@ export const paintPaddockScene = (p: Painter, c: YCam, o: PadSceneOpts, cast: ()
   paintPadGround(p, c, 30300, {eaten: o.eaten, light});
   if (!o.bare) paintFarmhouse(p, c, 30400, [-90, 0, -160]);
   if (o.far && !o.bare) paintFarFlock(p, c, 30500, o.far.n, o.far.x, o.far.z);
-  paintWheatRidges(p, c, 30600, {light, stubble: o.stubble, eaten: o.eaten});
+  const clr = o.clearing !== false, prevNo = noClearing;
+  if (!clr) setNoClearing(true);
+  try { paintWheatRidges(p, c, 30600, {light, stubble: o.stubble, eaten: o.eaten}); } finally { setNoClearing(prevNo); }
   if (o.bare) return;
   paintGum(p, c, 30700, [-22, 0, -38], 14, light);
   paintGum(p, c, 30720, [36, 0, -70], 12, light);
@@ -310,9 +317,9 @@ export const paintPaddockScene = (p: Painter, c: YCam, o: PadSceneOpts, cast: ()
   paintCamp(p, c, 30800, light);
   if (o.verge) paintVerge(p, c, 30850);
   const fromTrack = c.z > 6;
-  if (fromTrack) paintClearing(p, c, 31200);
+  if (fromTrack && clr) paintClearing(p, c, 31200);
   cast();
   if (o.fence !== false) paintFence(p, c, 31000, -60, 60, light, o.wire);
-  if (!fromTrack) paintClearing(p, c, 31200);
+  if (!fromTrack && clr) paintClearing(p, c, 31200);
   if (o.stalks) paintNearStalks(p, c, 31800, o.stalks, {stubble: o.stubble, lean: o.lean, leanFrom: o.leanFrom});
 };

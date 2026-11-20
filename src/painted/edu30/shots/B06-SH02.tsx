@@ -1,8 +1,7 @@
 import {EMU_POSES, emuLensYaw, mixEmuPose, type EmuPose} from '../emu';
 import {emuBuild, scaled} from '../flock';
 import {paintBeast, type BeastAnchors} from '../../survival/beast';
-import {sunOf} from '../paddock';
-import {paintOpenPaddock} from './B06-SH01';
+import {paintPaddockScene, sunOf} from '../paddock';
 import {camLine, DEFAULT_REEL, makeShot, type Shot30} from '../shot';
 import type {YCam} from '../../kit/ycam';
 
@@ -15,14 +14,13 @@ const A = camLine({eye: [0.3, 1.5, -3.15], yaw: -12.2, pitch: -2, f: 1000, hy: 7
 const CAM = (L: number): YCam => { const u = ease(L / 35), m = (a: number, b: number) => a + (b - a) * u; return {...A, z: m(A.z, B.z), yaw: m(A.yaw, B.yaw)}; };
 const rnd = (n: number) => { const s = Math.sin(n * 78.233 + 12.9898) * 43758.5453; return s - Math.floor(s); };
 
-/** Locked bow, head lifted to the sheet's world point (0, 1.1, -4.6): see Result (T31). */
-const BOW_LIFT: Partial<EmuPose> = {head: [0.72, 1.20, 0], neckMid: [0.58, 1.44, 0]};
+/** The locked KP-EMU bow as painted (T38 B3, VD30-05b), no lift. */
 /** Bow amount u (0 upright, 1 bottom): rises over L 5-19, returns over L 19-31. */
 export const bowU = (L: number) => (L < 5 ? 0 : L < 19 ? ease((L - 5) / 14) : 1 - ease((L - 19) / 12));
 const ruffleAmp = (L: number) => (L < 5 || L > 15 ? 0 : 0.01 * Math.sin((Math.PI * (L - 5)) / 10));
 const poseAt = (L: number, cam: YCam): EmuPose => {
   const yaw = emuLensYaw(AT, HEADING, cam);
-  return mixEmuPose(EMU_POSES.stand({lid: 0.3, headYaw: yaw}), EMU_POSES.bow({headYaw: yaw * 0.5, ...BOW_LIFT}), bowU(L));
+  return mixEmuPose(EMU_POSES.stand({lid: 0.3, headYaw: yaw}), EMU_POSES.bow({headYaw: yaw * 0.5}), bowU(L));
 };
 type V = [number, number, number];
 const ruffled = (L: number, pose: EmuPose) => {
@@ -41,7 +39,7 @@ export const def: Shot30 = {
   paint: (p, L, c, pr) => {
     const sun = sunOf(LIGHT), Bd = scaled(ruffled(L, poseAt(L, c)), 1);
     let an: BeastAnchors | null = null;
-    paintOpenPaddock(p, c, {light: LIGHT, eaten: EATEN, stubble: 0}, () => {
+    paintPaddockScene(p, c, {light: LIGHT, eaten: EATEN, stubble: 0, clearing: false}, () => {
       an = paintBeast(p, c, Bd, {at: [AT[0], AT[2]], heading: HEADING, ground: 0, seed: SEED, sun, shadowOp: 80});
     });
     const a = an as BeastAnchors | null;

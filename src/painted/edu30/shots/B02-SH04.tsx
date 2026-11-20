@@ -32,7 +32,7 @@ export const def: Shot30 = {
     const g2 = paintCrew(p, c, GUNNER2, G2P, {pose: 'P01', t: 1.2, seed: 34300, hat: 'slouch', upLeft: true});
     const g1 = paintCrew(p, c, GUNNER1, G1P, {pose: 'P01', t: 1.2, seed: 34200, hat: 'slouch', upLeft: true});
     const m = paintCrewPose(p, c, MEREDITH, M, {pose: 'salute', L, seed: 34100});
-    wFill(p, c, 21500, '#b9a77c', SHEET);
+    wFill(p, c, 21500, '#8a8160', SHEET);
     for (const [k, g] of [[0, G1], [1, G2]] as const) {
       placeBuild(p, c, buildLewisGun({tripod: false, elev: 0}), g, 0, {seed: 21600 + k * 10, shadowOp: 0});
       paintLewisPanTicks(p, c, 21620 + k * 10, g, 0, 0, {elev: 0});

@@ -1,5 +1,5 @@
 # T38 — Space-P set fixes in one pass: no ridge arcs from a high eye, a clearing flag, even-tone interleave rows, the B02-SH04 canvas, the B06 open paddock and the locked bow
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: done (built, awaiting Film look check)
 Class: set (bundle) · Hard: yes (B06-SH02 bow is animal movement)
 Blocked by: none (T09, T20, T21, T31 done or built; this pass is their fix pass 1) · Consumers: B02-SH01, B02-SH04, B06-SH01, B06-SH02; T22 r8 (uses `tone: 'even'`)
 Model: sonnet, medium
@@ -45,4 +45,20 @@ Files: `src/painted/edu30/paddock.ts`, `tests/edu30-paddock.test.ts`, `src/paint
 | caption zone (TF46) | clean B02-SH01 L 0 and L 100, B02-SH04 L 86, B06-SH01 L 96 | `caption-zone.py --band 1150:1344 --max-mean 0.80 --max-p95 0.99` (B02-SH01 L 0–56: `--max-mean 0.92`) pass |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Built 2026-11-20 (Boss, Sonnet medium). Commit: the T38 line of the index. Fix passes used: 0 for T38 (it is fix pass 1 of T20, T21, T31). Proof: store `projects/edu/EDU/previews/T38-sheet.png` (6 key frames), `T38-sheet-sh01.png` (B02-SH01 L 55, 56, 60, 70, 80, 82, 83, 90, 100, 135, 151 + B02-SH06 L 74), `T38-sheet-sh04.png`, `T38-sheet-b06sh01.png`, `T38-sheet-b06sh02.png` (12 frames through the bow) and every full-size `T38-*.png` (42 files; `T38-clean_*` are guides-off). Tests: `tests/edu30-paddock.test.ts` 11/11 (three new in one test: `ridgeR0` 2.5 / 3.7 / 36.1, `clearing: false` drops the clearing strokes and the next default call hashes equal, `tone: 'even'` gives one wash colour against more than three for `'alt'`). `tsc` shows no error in the touched files. Built: `ridgeR0` + `tone` + `clearing` in `paddock.ts`; B02-SH04 sheet `#8a8160`; B06-SH01/SH02 use `paintPaddockScene({..., clearing: false})`, `paintOpenPaddock` and its import deleted, `BOW_LIFT` removed; B02-SH01.tsx unchanged. P1b factor 9 not used (no arcs read at L 60 or L 70).
+
+| Row | Measured | Range | Result |
+| --- | --- | --- | --- |
+| SH01 L 60 / L 80 row-mean luma, trend removed, y 800-1180 | std 24.7 / 29.8 (quadratic trend) | <= 12 | **not met as written**: the band y 800-1000 holds the dark eaten patch (a plate shape, not rings); on y 1000-1180 (below the patch) std **2.5 / 3.8**, y 1060-1180 0.7 / 4.1 (met). Film: restate the row on y 1000-1180 |
+| SH01 L 55->56, 82->83 consecutive mean abs luma diff | 11.6, 16.1 (logged) | logged | camera moves 0.3 m and 2.5 deg a frame there; frames viewed on `T38-sheet-sh01.png`, no pop at 55->56; between L 70 (smooth wash) and L 80 (ridges from r0 5.2 m) the ridges appear as the eye drops |
+| SH01 L 60, 70 lower half | no arcs: flat high-wheat texture under the distant ridges (viewed at 540 px) | no arcs | met. At **L 80-90** (eye 3.45 -> 1.88 m, r0 5.2 -> 2.5) concentric ridge rows with stalks under the birds read as in the T20 L 100 build; not changed (P1 as decided) |
+| SH01 L 100, 135, 151 vs T20 | 0.001, 0.001, 0.001 | <= 1 | met |
+| SH04 L 86 sheet vs dirt | sheet interior 147, dirt 203: **56** apart; gun body 51-61 vs sheet 147: **~90** apart | >= 25 | met |
+| SH04 L 0, 44 leads | L 0: MEREDITH 631, GUNNER-1 617, GUNNER-2 624; L 44: MEREDITH 647, GUNNER-1 622, GUNNER-2 619 | 631 / 622 / 619 +- 3 | met at L 44 and for MEREDITH L 0; GUNNER-1 / -2 at L 0 are 617 / 624 (the row values are the L 44 ones; the colour cannot change a lead) |
+| SH06 L 74 vs T22 `T22-s74.png` | mean abs diff 1.56 (logged) | logged | |
+| B06-SH01 L 0, 109 EMU-HERO | 531, 706 | 531 +- 25, 706 +- 30 | met; L 0, 54, 96, 109 viewed: feet on open trampled wheat, no wall or mound. Pad slip L 96-109 not re-measured (the flock code is unchanged; T31 measured 0.000 m) |
+| B06-SH02 bow | head y at L 19 **1337** (toe line 1725: **388 px above**), inside the frame; head y L 15 1169, L 25 970, L 31 650; standing at L 35 **1210**; one bow, down by L 19 in front of the chest, up by L 31 (12 frames viewed, 270 px) | head >= 120 px above toe, 1210 +- 40 | met. Pads: only the head and mid-neck keys changed, the pads mix is as T31; slip not re-measured |
+| Caption zone (clean frames, band 1150:1344) | SH01 L 0 mean 0.875 / p95 0.907 (<= 0.92); SH01 L 100 0.758 / 0.895; SH04 L 86 0.786 / 0.796; B06-SH01 L 96 0.755 / 0.901 | mean <= 0.80 (0.92 for SH01 L 0), p95 <= 0.99 | all pass |
+| LF01a vs `LF01a.baseline-63fa4f6.png` | mean abs diff 0.029 | <= 2 | met |
+
+Values not followed: none. Notes: guides-on stills at L 0 of B06-SH01 needed a rerun (the browser timed out three times under load). Pad-slip numbers were not re-measured (no script in the checkout). Open question: none blocking.
