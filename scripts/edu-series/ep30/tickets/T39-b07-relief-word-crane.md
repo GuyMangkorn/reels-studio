@@ -39,7 +39,7 @@ Files: `src/painted/edu30/shot.tsx`, `src/painted/edu30/look.tsx`, `src/painted/
 
 ## Result (Boss fills)
 
-Commit: see `git log` on branch `worktree-agent-a30b4d6e16e30fe64` (subject "T39"). Proof sheet: `~/ReelsStore/projects/edu/EDU/previews/T39-sheet.png` (9 frames: SH01 L 0, 2, 9, 10, 50, 100; SH02 L 0, 49, 90) plus `T39-s1_*`, `T39-s2_*`, clean `T39-c1_100`, `T39-c2_090`, registered `T39-reg_100`, look stills `T39-LF03`, `T39-TA2` in the same folder. Local `out/edu30-T39/`, logs `out/logs/T39-*.log`. Fix passes used: 1 of 2 on T33 (this ticket).
+Commit: `d1b08ec` on `worktree-agent-a30b4d6e16e30fe64`. Proof sheet: `~/ReelsStore/projects/edu/EDU/previews/T39-sheet.png` (9 frames: SH01 L 0, 2, 9, 10, 50, 100; SH02 L 0, 49, 90) plus `T39-s1_*`, `T39-s2_*`, clean `T39-c1_100`, `T39-c2_090`, registered `T39-reg_100`, look stills `T39-LF03`, `T39-TA2` in the same folder. Local `out/edu30-T39/`, logs `out/logs/T39-*.log`. Fix passes used: 1 of 2 on T33 (this ticket).
 
 Built: `ReliefWord30` + `Word30` + optional `Shot30.word` in `shot.tsx`; `look.tsx` imports it (local `ReliefWord` deleted); `ARMS_WORD` in `looks.ts`; `word: () => ARMS_WORD` on B07-SH01/SH02; B07-SH01 pitch `12 + 8 × u`.
 
