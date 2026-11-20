@@ -195,6 +195,8 @@ export const loaderHold = (L: number) => 1 - easeIO(seg(L, 40, 46));
 /** Loader kneeling seat (m) and the pan rim half-width and pan radius the hands hold. The turn toward the gun is `LOADER_LEAN`. */
 export const LOADER_AT: V3 = [0.5, 0, 0.35], PAN_RIM = 0.11, PAN_R = 0.135;
 export const CREW_REACH_3D = 0.52;
+/** G2 point direction before normalising (world: his right = -x, down = -y, back = -z for the farmer facing +z). */
+export const FARMER_D_RAW: V3 = [-0.8, -0.2, -0.4];
 /** The loader's 25 degree turn toward the gun (-x): the kit kneel has no three-quarter, so it is the picture-plane `lean` toward the gun (screen right here). */
 export const LOADER_LEAN = (25 * Math.PI) / 180;
 
@@ -202,7 +204,11 @@ export type CrewSolveOpts = {pose: CrewPoseKey; L: number; seed: number; pan?: V
 export type CrewSolve = {view: 'front' | 'back'; fig: Partial<FigPose>; face: ExpressionId; faceState?: {look?: Pt; mouth?: Mouth; open?: number}; hat: 'slouch' | 'felt'; pose?: AnyPoseId;
   /** longest drawn bone / the 0.26 m bone (the drawn arms) */ rRatio: number; lRatio: number; /** wrist targets (px) of the gesture arms, null where the arm is the kit's */ rTo: Pt | null; lTo: Pt | null; lean: number;
   /** drawn elbow flexion (deg; 0 = straight) per arm */ rFlex: number; lFlex: number; shoulders: {r: Pt; l: Pt}; /** px per metre at the figure */ u: number;
-  /** back view only: the drawn chains (shoulder, elbow, wrist) repainted over the torso, which the kit's back view paints over the hands (T12 D) */ over?: {r: [Pt, Pt, Pt]; l: [Pt, Pt, Pt]}};
+  /** back view only: the drawn chains (shoulder, elbow, wrist) repainted over the torso, which the kit's back view paints over the hands (T12 D) */ over?: {r: [Pt, Pt, Pt]; l: [Pt, Pt, Pt]};
+  /** r6 (A2, G2): the right open mitten, painted by `paintCrewPose` after the head and hat (the kit hand is off). `c` the mitten centre, `ang` the forearm direction, `rx` along it, `ry` across it
+   *  (px); `chain` (salute) = shoulder, elbow, wrist, repainted with the mitten so the forearm stays in front of the head. */
+  hand?: {c: Pt; ang: number; rx: number; ry: number; u: number; chain?: [Pt, Pt, Pt]};
+  /** r6 (G2): the 3D chain facts, metres and degrees: elbow flexion, shoulder-to-wrist distance, unit direction of the point */ g2?: {flex3: number; reach: number; d: V3}};
 const flexOf = (S: Pt, E: Pt, W: Pt) => { const a = Math.atan2(E[1] - S[1], E[0] - S[0]), b = Math.atan2(W[1] - E[1], W[0] - E[0]); let d = Math.abs(b - a) * 180 / Math.PI; if (d > 180) d = 360 - d; return d; };
 const ratioOf = (S: Pt, E: Pt, W: Pt, L: number) => Math.max(Math.hypot(E[0] - S[0], E[1] - S[1]), Math.hypot(W[0] - E[0], W[1] - E[1])) / L;
 
@@ -215,21 +221,42 @@ export const solveCrewPose = (c: YCam, def: CastDef, at: V3, o: CrewSolveOpts): 
   const hang = poseFor('P01', def, g as Pt, u, 'front');
   const base = {faceState: undefined as CrewSolve['faceState'], rTo: null as Pt | null, lTo: null as Pt | null, lean: 0, rFlex: 0, lFlex: 0, rRatio: 1, lRatio: 1, u};
   if (o.pose === 'salute') {
-    const uu = saluteU(o.L), an = dry({})!, S = an.rShoulder;
-    const hx = an.head[0], yB = an.headTop + 0.1 * u;   // the hat brim row (`paintHat`)
-    const Tfull: Pt = [hx - 0.2 * u, yB + 0.03 * u], T0 = hang.rArm!.to, T = mixPt(T0, Tfull, uu);
-    const E = ikElbow(S, T, L, -1);
-    const rArm = uu > 0 ? {to: T, via: E, exact: true} : undefined;
-    return {...base, view, fig: rArm ? {rArm} : {}, face: 'neutral', hat: 'slouch', rTo: uu > 0 ? T : null, rRatio: uu > 0 ? ratioOf(S, E, T, L) : 1, rFlex: uu > 0 ? flexOf(S, E, T) : 0, shoulders: {r: S, l: an.lShoulder}};
+    // r6 A2: the right mitten centre at the front edge of the brim above his right eye (0.30 head widths to his right of the face centre line, screen left); the elbow is
+    // solved with the pole out to his right (the candidate farther screen left), below; see the raised elbow note; the mitten is painted after head and hat.
+    const uu = saluteU(o.L), an = dry({})!, S = an.rShoulder, hx = an.head[0], yB = an.headTop + 0.1 * u, hw = 0.88 * (an.chin - an.headTop);
+    const Cfull: Pt = [hx - 0.3 * hw, yB + 0.03 * u], T0 = hang.rArm!.to;
+    const left = (W: Pt): Pt => { const dx = W[0] - S[0], dy = W[1] - S[1], d = Math.min(Math.hypot(dx, dy), 2 * L - 0.5), a = Math.atan2(dy, dx), off = Math.acos(Math.min(1, d / (2 * L)));
+      const cs = [a + off, a - off].map((b): Pt => [S[0] + L * Math.cos(b), S[1] + L * Math.sin(b)]); return cs[0][0] <= cs[1][0] ? cs[0] : cs[1]; };
+    // The raised elbow. The brim row is about 0.40 m above the shoulder, more than a forearm and hand (0.26 x 1.04 + 0.04 m) reach from an elbow at shoulder height (row A2's +-0.06 m), so the
+    // elbow is the lowest point that keeps both bones <= 1.04 x 0.26 m with the upper arm 0.12 m out to his right (foreshortened: it also points toward the lens).
+    const raised = (W: Pt): Pt | null => { const Lf = 1.04 * L, ex = S[0] - 0.12 * u, dx = W[0] - ex; if (Math.abs(dx) > Lf) return null; const ey = W[1] + Math.sqrt(Lf * Lf - dx * dx); return Math.hypot(S[0] - ex, S[1] - ey) <= Lf ? [ex, ey] : null; };
+    let Wf: Pt = Cfull, Ef = raised(Wf) ?? left(Wf);
+    for (let i = 0; i < 12; i++) { Ef = raised(Wf) ?? left(Wf); const dd = Math.hypot(Wf[0] - Ef[0], Wf[1] - Ef[1]) || 1; Wf = [Cfull[0] - ((Wf[0] - Ef[0]) / dd) * 0.04 * u, Cfull[1] - ((Wf[1] - Ef[1]) / dd) * 0.04 * u]; }
+    const W = mixPt(T0, Wf, uu), E = mixPt(left(W), raised(W) ?? left(W), uu), ang = Math.atan2(W[1] - E[1], W[0] - E[0]), off = (0.03 + 0.01 * uu) * u;
+    const hand = {c: [W[0] + Math.cos(ang) * off, W[1] + Math.sin(ang) * off] as Pt, ang, rx: (0.045 + 0.017 * uu) * u, ry: (0.052 - 0.01 * uu) * u, u, chain: [S, E, W] as [Pt, Pt, Pt]};
+    const rArm = uu > 0 ? {to: W, via: E, exact: true, noHand: true} : undefined;
+    return {...base, view, fig: rArm ? {rArm} : {}, face: 'neutral', hat: 'slouch', rTo: uu > 0 ? W : null, rRatio: uu > 0 ? ratioOf(S, E, W, L) : 1, rFlex: uu > 0 ? flexOf(S, E, W) : 0, shoulders: {r: S, l: an.lShoulder}, hand: uu > 0 ? hand : undefined};
   }
   if (o.pose === 'farmer') {
+    // r6 G2: the right mitten centre = right shoulder + 0.50 m x d, d = unit(-0.80, -0.45, -0.40) in world (his right, down, back); the chain is built in 3D (pole down) and projected, the
+    // mitten (long axis along the forearm, edge to the lens) is painted over the figure. L 0-3 and 45-60 blend to and from the P01 arm.
     const uu = farmerU(o.L), turn = farmerTurn(o.L), lean = -0.06 * (1 - turn) + 0, an = dry({lean}, 'P41')!, S = an.rShoulder;
-    const th = (130 * Math.PI / 180) * uu, ua = Math.atan2(Math.cos(th), -Math.sin(th)), fa = ua + (70 * Math.PI / 180) * uu;   // y-down: angle grows clockwise
-    const E: Pt = [S[0] + L * Math.cos(ua), S[1] + L * Math.sin(ua)], W: Pt = [E[0] + L * Math.cos(fa), E[1] + L * Math.sin(fa)];
+    const base0 = camPoint(c, at)!, px = camPoint(c, [at[0] + 0.1, 0, at[2]])!, py = camPoint(c, [at[0], 0.1, at[2]])!;
+    const ax = (px[0] - base0[0]) / 0.1, ay = (px[1] - base0[1]) / 0.1, bx = (py[0] - base0[0]) / 0.1, by = (py[1] - base0[1]) / 0.1, det = ax * by - ay * bx;
+    const dpx = S[0] - base0[0], dpy = S[1] - base0[1], mx = (dpx * by - dpy * bx) / det, my = (ax * dpy - ay * dpx) / det;
+    const S3: V3 = [at[0] + mx, my, at[2]], dl = Math.hypot(...FARMER_D_RAW), d: V3 = [FARMER_D_RAW[0] / dl, FARMER_D_RAW[1] / dl, FARMER_D_RAW[2] / dl], Lm = BONE * (def.armScale ?? 1);
+    const add = (a: V3, b: V3, k: number): V3 => [a[0] + b[0] * k, a[1] + b[1] * k, a[2] + b[2] * k];
+    const C3 = add(S3, d, 0.5), W3 = add(C3, d, -0.04), mid = add(S3, [W3[0] - S3[0], W3[1] - S3[1], W3[2] - S3[2]], 0.5), reach = Math.hypot(W3[0] - S3[0], W3[1] - S3[1], W3[2] - S3[2]);
+    const dn: V3 = [0, -1, 0], dd = dn[0] * d[0] + dn[1] * d[1] + dn[2] * d[2], pv: V3 = [dn[0] - dd * d[0], dn[1] - dd * d[1], dn[2] - dd * d[2]], pl = Math.hypot(...pv), hh = Math.sqrt(Math.max(0, Lm * Lm - (reach / 2) ** 2));
+    const E3 = add(mid, pv, hh / pl), s3 = camPoint(c, S3)!, prj = (v: V3): Pt => { const q = camPoint(c, v)!; return [q[0] + S[0] - s3[0], q[1] + S[1] - s3[1]]; };
+    const Ef = prj(E3), Wf = prj(W3), E0: Pt = [S[0], S[1] + L], W0: Pt = [S[0], S[1] + 2 * L];
+    const E = mixPt(E0, Ef, uu), W = mixPt(W0, Wf, uu), ang = Math.atan2(W[1] - E[1], W[0] - E[0]), off = (0.03 + 0.01 * uu) * u;
+    const hand = {c: [W[0] + Math.cos(ang) * off, W[1] + Math.sin(ang) * off] as Pt, ang, rx: (0.045 + 0.017 * uu) * u, ry: (0.052 - 0.01 * uu) * u, u};
     const talk = farmerTalk(o.L);
-    const rArm = {to: W, via: E, exact: true};
+    const rArm = uu > 0 ? {to: W, via: E, exact: true, noHand: true} : {to: W, via: E, exact: true};
     return {...base, view, pose: 'P41', fig: {lean, rArm, lArm: hang.lArm}, face: 'angry', hat: 'felt', faceState: {look: [-0.8 * (1 - turn) + 0, 0], ...(talk !== null ? {mouth: 'talk' as Mouth, open: talk} : {})},
-      rTo: W, rRatio: ratioOf(S, E, W, L), rFlex: flexOf(S, E, W), lean, shoulders: {r: S, l: an.lShoulder}};
+      rTo: W, rRatio: ratioOf(S, E, W, L), rFlex: flexOf(S, E, W), lean, shoulders: {r: S, l: an.lShoulder}, hand: uu > 0 ? hand : undefined,
+      g2: {flex3: (2 * Math.acos(Math.min(1, reach / (2 * Lm))) * 180) / Math.PI, reach, d}};
   }
   if (o.pose === 'p44-back') {
     const an = dry({rise: 0.01})!, cx = g[0], y = (m: number) => g[1] - m * u;
@@ -272,6 +299,19 @@ const paintBackChains = (q: Painter, ch: NonNullable<CrewSolve['over']>, def: Ca
   hardFill(q, seed + 20, skin, oval); inkLine(q, seed + 21, oval, {weight: 0.8, color: mixColor(skin, '#2a1810', 0.5), still: true});
 };
 
+/** T12 r6: the open right mitten (A2, G2) after the head and hat. With `chain` (salute) the sleeved forearm and upper arm are repainted first (the kit's order: forearm, then the upper arm over its start cap)
+ *  so the forearm stays in front of the head. The mitten is a skin oval, long axis along the forearm. */
+const paintMitten = (q: Painter, h: NonNullable<CrewSolve['hand']>, def: CastDef, seed: number) => {
+  const skin = def.head.skin, ink = mixColor(skin, '#2a1810', 0.5), sleeve = def.outfit.sleeve, sInk = mixColor(sleeve, '#141008', 0.55);
+  if (h.chain) {
+    const [S, E, W] = h.chain, u = h.u, fore = capsule(E, W, 0.066 * u, 0.056 * u), up = capsule(S, E, 0.08 * u, 0.068 * u);
+    hardFill(q, seed, sleeve, fore); inkLine(q, seed + 1, fore, {weight: 0.8, color: sInk, still: true});
+    hardFill(q, seed + 2, sleeve, up); inkLine(q, seed + 3, up, {weight: 0.8, color: sInk, still: true});
+  }
+  const oval = ell(h.c[0], h.c[1], h.rx, h.ry, 14, h.ang);
+  hardFill(q, seed + 4, skin, oval); inkLine(q, seed + 5, oval, {weight: 0.8, color: ink, still: true});
+};
+
 /** Paint one T12 pose. Returns the anchors and the solve. `onFists` receives the repaint functions of the flat fists (the loader repaints them over the pan). */
 export const paintCrewPose = (p: Painter, c: YCam, def: CastDef, at: V3, o: CrewSolveOpts & {tint?: {to: string; u: number}; onFists?: (r: (q: Painter) => void) => void}): (FigAnchors & {solve: CrewSolve}) | null => {
   const s = solveCrewPose(c, def, at, o);
@@ -284,6 +324,7 @@ export const paintCrewPose = (p: Painter, c: YCam, def: CastDef, at: V3, o: Crew
     held: (q, an, uu) => {
       paintHat(q, an, uu, o.seed + 900, {kind: s.hat, view: s.view === 'back' ? 'back' : 'front', upLeft: s.hat === 'slouch'});
       if (s.over) paintBackChains(q, s.over, def, uu, o.seed + 950, fists);
+      if (s.hand) paintMitten(q, s.hand, def, o.seed + 960);
     }});
   return a && {...a, solve: s};
 };
