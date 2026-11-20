@@ -31,7 +31,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready, **dispatchable** (all blockers done) | 0 | — |
 | [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | ready, **dispatchable** (r2 notes: farmer point as built, line ≤ 60 px) | 0 | — |
-| [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | ready, **dispatchable** (r4 notes: salute as built) | 0 | — |
+| [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | built 2026-11-20 (Boss, Sonnet medium), awaiting Film look check; SH03 cab 440 px vs 486 ± 25 (T14 geometry, see Result) | 0 | — |
 | [T22](T22-plate-b02-sh06-heads.md) plate B02-SH06 | set | yes | T03, T07, T08, T09, T11, T12, T13 | ready, **dispatchable** (r7 notes: wheat interleave, LOD cap, held pan) | 0 | — |
 | [T23](T23-plate-b03-sh05-order.md) plate B03-SH05 | set | yes | T03, T09, T11, T12, T13, T18 | ready (Q8 answered) | 0 | — |
 | [T24](T24-plate-b03-sh01-burst.md) plate B03-SH01 (burst) | set | yes | T03, T04 (r4), T05, T06 (r4), T08, T09, T11, T13, T34, T36 | r5 fix pass ready, **dispatchable** (R8 look check: composition, flash, shake, casings, strikes, bolt stop pass; R1 smoke drift screen right (TF28), R2 startle row at L 5 (TF30), R3 registered-vs-QA where `@remotion/three` resolves, no `npm ci`, R4 test (d) edit owned here, R5 lead 746 (TF29)) | 1 (r5) | `3a63061` (built) |

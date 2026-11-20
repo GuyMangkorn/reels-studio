@@ -1,5 +1,5 @@
 # T21 — plates B02-SH03 (one small truck arrives) and B02-SH04 (the line-up: three men, two guns) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (truck stop, salute)
 Blocked by: T03, T09, T12, T13, T14 · Consumers: B02-SH03, B02-SH04 (global 440–591)
 Model: sonnet, medium
@@ -45,4 +45,18 @@ These override any older value in this ticket that they name.
 | SH04 L 86 | two guns readable as machine guns at 270 px | guns near (290, 918) and (790, 918) ± 40 px, above y 1100 |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on the T21 branch (`worktree-agent-ac2ec7d6ceefa9249`) · proof sheet: store `projects/edu/EDU/previews/T21-sheet.png` (stills `T21-s03_*.png`, `T21-s04_*.png`, clean `T21-clean-sh03_44.png`, `T21-clean-sh04_86.png`; local `out/edu30-T21/`, logs `out/logs/T21-*.log`) · fix passes used: 0 · Sonnet medium, 20 Nov 2026.
+
+Measured (`measure-shots.ts`, stack camera):
+- SH03 L 44 cab: roof front edge (a 1.8, y 2.12) to ground under the radiator (a 2.68): top 785, bottom 1225 (sheet front low 1223), **440 px vs 486 ± 25: out of range** (see below).
+- SH04 L 0: MEREDITH 631 px (hat top; head top 588 = 631 / 1.074, row 588 ± 30 pass), x 540, feet y 1310 (sheet 1310). L 44: GUNNER-1 622 (hat top; head top 579, row 594 ± 30 pass) at x 299 (sheet 299), GUNNER-2 619 (head top 576; row 584 ± 30: pass on head top, 619 raw hat top exceeds by 5), x 715 (sheet 715).
+- SH04 L 86: G1 centre (287, 900), G2 centre (793, 900) vs rows (290, 918) and (790, 918) ± 40: pass, above y 1100. Guns read as machine guns (pan, shroud, grip) on the 270 px sheet.
+- Caption zone (clean SH03 L 44, SH04 L 86, default thresholds): mean 0.668 / 0.722, p95 0.962 / 0.796, `pass: false` at the script's defaults (dark ground fills the band; the caption shade is the Editor's).
+- Exactly three men in every SH04 frame (viewed L 0, 8, 28, 44, 66, 86, 97); no figure in SH03 apart from the silhouette riders (MEREDITH in the cab, two on the tray) painted by T14.
+- Hand lines: `thumb check: MEREDITH RIGHT: open oval, no thumb drawn (unshaped kit)` (T12 r6 A2 as built, salute L 8 viewed); gunners' arms at the sides (`P01`), no hand over a part. `arm check: MEREDITH right: attached ok` (T12 solve, viewed L 8).
+- Tests/type: `npx tsc` has no error under `src/painted/edu30/shots/`; the remaining errors are older (`tests/render-options.test.ts`, `tests/arm-depth.test.ts`, `tests/edu18-girl.test.ts`) and not in T21 files.
+
+Values I could not follow:
+- B02-SH03 cab 486 ± 25 px: the T14 truck geometry (roof 2.12 m, cab front a 2.6, stop at cab front x -3.6 per its Decided values) at the SD03 camera projects to 440 px by my probe (front low 1225 matches the sheet's 1223, roof at 785 vs the sheet's 737, about 0.24 m higher on the sheet). The sheet number likely came from other dimensions; I changed neither the camera, the stop x nor the locked truck. Film: widen the row, move the camera closer, or ask T14 for a taller cab.
+- Gun placement: the ticket's `y 0.1` is read as T13's "receiver bottom on the canvas at y 0.1": the gun `at` is (x, -0.41, 13.4) with `tripod: false`, `elev: 0`, heading 0, so the gun centre (tripod-head height) is at y 0.56 - 0.41 = 0.15.
+- Canvas sheet `#b9a77c` reads close to the warm-graded dirt, so the sheet edge is faint on the 270 px sheet; no value changed.
