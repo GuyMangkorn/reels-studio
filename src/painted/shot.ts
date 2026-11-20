@@ -1,4 +1,4 @@
-import type {ReactNode} from 'react';
+import type {CSSProperties, ReactNode} from 'react';
 import type {Camera} from './kit/camera';
 import type {Painter} from './kit/painter';
 
@@ -8,6 +8,9 @@ export type ShotContext = {
   width: number;
   height: number;
 };
+
+/** What `canvasStyle` receives: the plate clock (after `clock`), the frame size and the composition rate. */
+export type CanvasStyleContext = ShotContext & {fps: number};
 
 /**
  * One registered painted plate. A timeline scene selects it by `id` (`scene.painted.shots[].shot`) and supplies only
@@ -38,6 +41,13 @@ export type PaintedShot = {
   paint: (p: Painter, ctx: ShotContext) => void;
   /** Screen-space marks after the camera (rain, particles). */
   screen?: (p: Painter, ctx: ShotContext) => void;
+  /** Optional CSS on the wrapper of the shared canvas (filter, weave, shake, scale), a pure function of the plate clock. Applied only while this
+   * plate is the one visible plate (no dissolve, no crossfade layer); absent = the canvas is unstyled. EDU-EP30 T34. */
+  canvasStyle?: (ctx: CanvasStyleContext) => CSSProperties;
   /** Remotion glow layers: a `CameraLayer` given `camera` and `opacity` (the plate's glow opacity during dissolves). */
   Overlay?: (props: ShotContext & {camera: Camera; opacity: number}) => ReactNode;
 };
+
+/** Style of the shared canvas wrapper: the sole visible plate's `canvasStyle`, else `{}` (two or more visible plates, a crossfade layer, or no hook). */
+export const stageCanvasStyle = (visible: {shot: PaintedShot; tl: number}[], crossfading: boolean, o: {width: number; height: number; fps: number}): CSSProperties =>
+  visible.length === 1 && !crossfading && visible[0].shot.canvasStyle ? visible[0].shot.canvasStyle({tl: visible[0].tl, ...o}) : {};

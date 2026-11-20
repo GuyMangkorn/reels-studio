@@ -1,0 +1,120 @@
+# T04 — kit gunfire effects: round schedule, muzzle flash with halation, smoke haze, muzzle blast and canvas shake
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: done (r5 Film look check, 2026-11-20: pass, no Boss pass; r4 built: per-circle smoke alpha, smoke cover 0.245, blast 0.274; r3 built: haze caps; r1 built, Q8 answered: rounds as written)
+Class: capability · Hard: no
+Blocked by: T03 (`proof-fx.tsx` exists) · Consumers: B03-SH01, B04-SH03, B05-SH02 (two single shots); T05
+Model: sonnet, medium
+
+Read first: [common rules](index.md#common-rules); brief [VD30-11](../short/film-brief.md#vd30-11) steps 1, 2, 5, 6 and Value; index [VD30-11 round frames](../short/scene-sheets/index.md#voice-anchors-measured-voice-r22); sheet blocks b03 B03-SH01 and b04 B04-SH03 (Staging, Camera). Kit bases: [glow.tsx](../../../../src/painted/kit/glow.tsx) (`GLOW_PEAK` rule only), [fog.ts](../../../../src/painted/kit/fog.ts) `fogPuffs`, [anchors.ts](../../../../src/painted/kit/anchors.ts) `paintPlume`.
+
+## Build
+A new reusable kit module of story-clock gunfire effects drawn on the plate canvas through the shot's `YCam`, seeded, plain fills and strokes only (no brush fills, [DF-20261031-paint-seed-defer](../../../../docs/dev-findings.md#df-20261031-paint-seed-defer)), deterministic per frame (no state carried between frames).
+Files: `src/painted/kit/gunfire.ts` (new), `tests/gunfire.test.ts` (new), `src/painted/edu30/proof-fx.tsx` (adds `FX30-fire`)
+
+## Decided values
+| What | Value | Source |
+| --- | --- | --- |
+| `roundFrames(first, count, every)` | `[first, first+every, …]`; plates call **(2, 23, 3)** for B03-SH01 → local 2 … 68 (global 690 … 756) and **(10, 11, 3)** for B04-SH03 → local 10 … 40 (global 1003 … 1033) | index VD30-11 round frames, SD13 |
+| `roundPhase(L, rounds)` | `{n: index of the latest round ≤ L, k: L − that round}`; k 0 flash, 1 decay, ≥ 2 off; `n = −1` before round 1 | VD30-11 step 1 |
+| `paintMuzzleFlash(p, c, muzzle: V3, dir: V3, L, rounds, o: {halo; seed})` | k 0: pure white `#ffffff` core, diameter seeded 0.25–0.35 m, shape a seeded pick per round among 4-point star (points along dir, up, −dir, −up; inner radius 0.25 × outer), forward cone (apex at the muzzle, 0.45 m along dir, half-angle 22°), round bloom; k 1: one shape at half size, `#ffd27a`; k ≥ 2 nothing | VD30-11 step 1 |
+| Halation (same call) | on the plate canvas at the projected muzzle: 6 concentric filled circles, radius R × (1, 0.83, 0.67, 0.5, 0.33, 0.17), alpha 0.05 each in `#fff2cc` (summed 0.30 = `GLOW_PEAK`); R = `o.halo` (B03 180 px, B04 260 px, B05-SH02 160 px) on k 0, R/2 with alpha 0.025 on k 1. Drawn on the canvas so it shakes with the picture | VD30-11 step 1; sheets Projection |
+| Water mirror of the flash (B04-SH03) (r3: **dropped**, TF20) | the plate calls `paintMuzzleFlash` a second time with `muzzle` and `dir` through T10 `reflect`, `halo` × 0.6, clipped to the water area; T04 only needs `o.clip?: (x, y) => boolean` on the picture point of the mirrored muzzle (built; r3: kept as an unused option: B04-SH03 paints no mirror, TF20, see r3 decision 3) | b04 B04-SH03 ("mirrors every flash") |
+| `popFor(L, rounds)` | 0.08 on k 0, 0.03 on k 1, else 0; the plate passes it to the newsreel `pop` (T01) | VD30-11 step 1 |
+| `paintSmoke(p, c, muzzle, L, rounds, o: {drift: V3; seed; fadeAfter})` | one puff born per round at the muzzle; radius 0.12 → 0.45 m linear over 30 f; colour `#6b5f50` (darker than the wheat under the tint), alpha **0.35 at birth → 0.15 at 30 f** (r3; was 0.55 → 0.30); **haze cap (r3):** each frame, every live puff's alpha (after the fade) × min(1, 0.6 / Σ live alphas), so where all puffs overlap the haze covers at most 1 − e^−0.6 ≈ 0.45; centre moves by `drift` m/s; after the last round all alphas × (1 − (L − last)/fadeAfter), 0 at fadeAfter; each puff = 5 overlapping circles seeded ± 0.3 radius, **each circle filled at α_c = 1 − (1 − α)^(1/5)** where α is the puff's alpha after the fade and the cap (r4), so the five stacked circles give the puff alpha at its centre and the table alphas and caps mean what they say | VD30-11 step 2; Film r4 |
+| Drift and fade per shot | B03-SH01: drift (−0.25, 0.06, 0) m/s (screen left at yaw −3°), fadeAfter 45; B04-SH03: drift = 0.25 × (0.37, 0, −0.93) + (0, 0.06, 0) (screen left at yaw 112°), fadeAfter 45 (still drifting past E 42 to the cut, sheet) | b03, b04 Smoke rows |
+| `paintBlast(p, c, muzzle, dir, L, rounds, o: {ground: 'wheat' \| 'mud'; seed})` | from round 1 a ground cloud centred 2.0 m ahead of the muzzle along `dir` on the ground; one puff added per round, radius 0.3 → 1.2 m over 40 f, `#a08a66` alpha **0.20** (`'mud'`: `#7d6a52`, **0.15**) (r3; was 0.35 / 0.25); the same cap as the smoke with Σ 0.5 (cover ≤ 0.40) | VD30-11 step 6 |
+| `blastLean(L, rounds, distM)` | lean away from the muzzle (rad) for stalks 1–3 m ahead: 0.44 (25°) on k 0, 0.17 (10°) on k ≥ 1 while the burst runs, 0 before round 1, easing back to 0 over 15 f after the last round; T09's `lean` option consumes it | VD30-11 step 6 |
+| `shakeAt(L, rounds, s: {x; y; roll; tremor; stop?; seed})` | per round an impulse in a seeded direction: factor 1.0 on k 0, 0.5 on k 1, 0.2 on k 2, 0 after; `dx = ±s.x`, `dy = ±s.y`, `rot = ±s.roll` deg (seeded sign per round); plus a seeded tremor ± `s.tremor` px each frame from the first to the last round; for L ≥ `stop` exactly 0 | VD30-11 step 5 |
+| Shake specs | B03-SH01: x 5, y 7, roll 0.3, tremor 2, no stop (decays to 0 by local 70); B04-SH03: x 7, y 9, roll 0.4, tremor 2, **stop 42** (E, hard stop) | sheets Camera rows |
+| Single shots (B05-SH02) | rounds [72, 79] (local), halo 160 px, one smoke puff each, no haze build-up, no shake, no blast | b05 B05-SH02 Staging |
+
+References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/LF01a.png` (wheat and sky values under the full tint: the flash core is the lightest value in its frame).
+
+**Open-question dependency (Q8, index O9).** If the user picks "rounds from L06's ยิง only", B03-SH01 calls `roundFrames` with a new first frame and count; the module itself is unchanged. Only the B03 numbers in this table change.
+
+## Proof
+- `npx tsc --noEmit -p . > out/logs/T04-tsc.log 2>&1` · `node scripts/test.mjs tests/gunfire.test.ts`: `roundFrames(2, 23, 3)` ends at 68 and `(10, 11, 3)` at 40; `shakeAt` is 0 for every L ≥ stop and deterministic for a seed; `popFor` values; `roundPhase(3, roundFrames(2, 23, 3))` = {n 0, k 1}.
+- `FX30-fire` in `proof-fx.tsx` (80 f): the `EDU30-CAL` set and camera, a G1 at (1.2, 0, 0) barrel −x firing `roundFrames(2, 23, 3)`, newsreel strength 1 warm with `pop`.
+- `printf 'FX30-fire 2 out/edu30-T04/fx02.png\nFX30-fire 3 out/edu30-T04/fx03.png\nFX30-fire 4 out/edu30-T04/fx04.png\nFX30-fire 30 out/edu30-T04/fx30.png\nFX30-fire 75 out/edu30-T04/fx75.png\n' | node scripts/stills.mjs src/painted/edu30/proof-fx.tsx --gl=angle > out/logs/T04-stills.log 2>&1`; `scripts/qa-sheet.sh out/edu30-T04/sheet.png --cols 5 --width 270 out/edu30-T04/fx*.png`
+
+| Frame | What must be visible | Measured number and its pass range |
+| --- | --- | --- |
+| fx02 | white core + halation; the core is the lightest thing in the picture (sky may tie) | core luma ≥ 250 and frame max inside the core bbox; r3: a clipped sky at the same max value is a pass (tie), no pixel outside the core is lighter than the core max |
+| fx03 | half-size warm decay | core area 20–35 % of fx02's |
+| fx04 | no flash; smoke darker than the ground behind it | smoke mean luma < ground mean luma (sample boxes logged) |
+| fx30 / fx75 | haze built / thinning (fx75 is 7 f after the last round); blast cloud on the ground ahead; r3: the emu's legs and the gun's muzzle end read through the haze (a haze, not a solid mass) | haze alpha at fx75 ≤ 0.9 × the same puffs' alpha without the fade (fade factor 1 − 7/45 = 0.84, logged, measured on the pre-cap alpha); r3: smoke cover in the densest 16 × 16 box at fx30 ≤ 0.45 and blast cover ≤ 0.40, cover = (L_fx00 − L_frame) / (L_fx00 − L_colour), boxes logged |
+
+## r3 decisions (Film, 2026-11-19)
+1. **Sky tie accepted, no sky cap.** The CAL and LF01a skies clip to 255 under the locked newsreel grade; capping the sky would change a locked look. The rule for this ticket and every gunfire plate (T24, T27, T29): the core reaches the frame max (≥ 250) and nothing outside the core is lighter; clipped sky at the same value is a pass.
+2. **Smoke and blast are a haze.** The r1 picture (23 puffs stacking to a near-opaque brown mass over the emu and the muzzle) is not the intent of VD30-11 step 2. Per-puff alpha 0.35 → 0.15, blast 0.20 (mud 0.15), and a per-frame cap on the summed live alphas (smoke Σ 0.6, blast Σ 0.5) as in the Decided values table. The fade rule and the fx75 ratio are unchanged and are measured before the cap. The 11-round B04 list and the B05-SH02 single shots use the same numbers.
+3. **No flash mirror in B04-SH03 (TF20); the clip question is moot.** Checked against the locked dam: the waterline at the gun runs at z ≈ −5.65 (`overWater`), 0.65 m in front of G1, and the B04-SH03 lens sits 0.62 m above the water at z −5.75. The ray from the lens to the mirrored muzzle (−4.94, −0.31, −5.0) crosses the water plane at (−5.61, −5.37), which is the dry south bank, and the same holds for the whole cone. So no reflection of the flash can be seen from this lens; painting one would be a picture of something the water cannot show. B04-SH03 keeps the halation (260 px), the T05 spouts in the shallows and the casings plopping in, which carry the water side of the burst. `o.clip` stays in the module as built, unused. No T04 code change for this item.
+- r3 work for Boss: `paintSmoke` and `paintBlast` alphas and the two caps, `GUNFIRE_PRESETS` unchanged otherwise; re-run `FX30-fire` fx00, fx02, fx04, fx30, fx75, the sheet and the measure script; add the two cover numbers to Result. Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts` (one test: summed live alpha ≤ the cap at L 68), `src/painted/edu30/proof-fx.tsx` only if the measure boxes move.
+
+## r4 decisions (Film, 2026-11-19, `EDU-EP30-TICKETS-R4`)
+Viewed: the r3 sheet `out/edu30-T04/sheet.png` (fx00 … fx75, worktree `agent-a8355525945b878e7`): at fx30 and fx75 the smoke is a dark near-opaque disc over the muzzle end and the emu's lower body, the same mass r3 set out to remove; the blast is a thin pale ground cloud (pass).
+1. **Per-circle alpha (a): α_c = 1 − (1 − α)^(1/5).** It makes the puff read its table alpha at the centre (the rule the r3 caps were written against), keeps the soft overlapping edge of five circles, and Boss's variant measured smoke cover 0.245 at fx30 and 0.316 at fx75 with the legs and the muzzle readable. (b) α/5 lands below the table alpha at the centre (1 − (1 − α/5)^5 = 0.297 for α 0.34), a number no rule asks for; (c) would pass the solid mass VD30-11 step 2 rejects.
+2. **The rule holds for every gunfire plate**: T24 (B03-SH01, 23 rounds), T27 (B04-SH03, 11 rounds), T29 (B05-SH02 single shots); no plate overrides the smoke alpha. The caps (smoke Σ 0.6, blast Σ 0.5) and the fade are unchanged and are applied before α_c.
+3. Pass ranges unchanged: smoke cover ≤ 0.45 and blast cover ≤ 0.40 in the densest 16 × 16 box at fx30, measured as in r3 (`measure.py`, `L_colour` from the alpha-1 draw).
+- r4 work for Boss: the one expression in `paintSmoke` (each circle's alpha); one test in `tests/gunfire.test.ts` (α_c for α 0.34 = 0.0797 ± 0.0005 and 1 − (1 − α_c)^5 = α); re-run `FX30-fire` fx00, fx02, fx04, fx30, fx75, the sheet and `measure.py`; record smoke and blast cover at fx30 and fx75 in Result. Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts`. Proof archive: `--path out/edu30-T04`, files renamed `T04r4-*.png` before archiving so the shared store `sheet.png` is not overwritten.
+
+## r5 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R5`)
+Viewed: store `T04r4-sheet.png` (fx00, fx02, fx03, fx04, fx30, fx75) downscaled to 1100 px wide (about 180 px a tile). **Pass.** fx02 reads as one hot flash at the muzzle with a warm halo; fx03/fx04 decay without a hard edge; at fx30 and fx75 the smoke is a thin grey haze that leaves the gun, the emu's legs and the figure readable, and the blast is a low pale ground puff, not a wall. No change. The plate look (shake, overscan, newsreel filter over the flash) is judged in T24 and T27. Status **done**.
+
+## Result (Boss fills)
+Built by Boss (Sonnet medium), 2026-11-19, branch `worktree-agent-a58fca69d4e9c2d39` on `3c3d6d3`; commit = the commit that carries this edit (see index). 0 fix passes. Q8: B03 list kept at `roundFrames(2, 23, 3)`.
+- Files: `src/painted/kit/gunfire.ts` (new), `tests/gunfire.test.ts` (new, 10 tests pass), `src/painted/edu30/proof-fx.tsx` (`FX30-fire`, 80 f), `docs/context-map.md` (EP30 entry links the two new files; they left the Pending line). `npx tsc --noEmit` (`out/logs/T04-tsc.log`): no error in these files; the log holds 22 errors in untouched files (`tests/loudness`, `tests/render-options`, ...), present before this ticket. `npm test` (`out/logs/T04-test.log`): 230 pass, 16 fail, all outside this ticket (12 `Cannot find module '@remotion/three'`, 3 `fs.globSync` missing on this Node; the worktree reuses the main checkout's `node_modules`). `tests/gunfire.test.ts` is in the 230.
+- Proof sheet: `out/edu30-T04/sheet.png` (5 full frames, 270 px) and the muzzle crops `out/edu30-T04/crops_s.png` (700 x 500 px crops of fx02, fx03, fx04, fx30, fx75, fx75); both viewed. Store: `projects/edu/EDU/previews/` (`sheet.png`, `crops_s.png`, `fx00` ... `fx75.png`). Measure script `out/edu30-T04/measure.py`, log `out/logs/T04-measure.log`.
+- Measured:
+
+| Frame | Number | Range | Result |
+| --- | --- | --- | --- |
+| fx02 | core bbox (602, 985)-(658, 1040); core max luma 255, 2543 of its 3248 px >= 250; frame max 255 with 2410 of the 6200 max-valued px inside the core bbox | core >= 250 and frame max inside the core bbox | core pass; the frame max is a **tie**: the plain sky is clipped at 255 on its own (fx00, pop 0, no effect: 3775 px at 255; fx02 outside the core: 3790) so the core is not the single lightest value (see Open question 1) |
+| fx03 | core polygon area 606 px vs 2424 px in fx02, ratio 0.25 (the shape at half size, `#ffd27a`) | 20-35 % | pass |
+| fx04 | no flash; 16 x 16 box at the muzzle (622, 1004)-(638, 1020): smoke mean luma 108.7 vs 180.1 in the same box of fx00 (ground) | smoke < ground | pass |
+| fx30 / fx75 | fx75 alpha of puff 22 0.4152 against 0.4917 without the fade, ratio 0.8444 = 1 - 7/45; 23 puffs; blast cloud 2.0 m ahead of the muzzle on the ground visible and grown at fx30 and fx75 | <= 0.9 | pass |
+
+- The proof sheet shows the picture as the numbers are written: the 23 smoke puffs at alpha 0.30 plus the fade-less 0.55 births pile up into a near-opaque dark brown mass (fx75: about 160 px wide, covering the emu's lower half and the gun's muzzle end) and the blast ellipse is a large flat brown pool. Film judges whether that is the intended haze (see Open question 2); no value was changed.
+- Fix passes used: 0 (two corrections during the first build, before proof: `washAt` takes the brush 0-255 opacity scale, so alphas are passed as alpha x 255; the round bloom faces the lens instead of lying in the plane across the barrel, where it was edge-on).
+- Decided where the ticket was silent (nothing else): `roundPhase` returns `{n: -1, k: -1}` before round 1; the flash shapes are three (star, cone, bloom; the ticket text says "4-point star", the forward cone and "round bloom"), picked per round by `hash`; the bloom is a 14-gon facing the lens, star and cone lie in the vertical plane through the barrel (foreshortened when the lens looks along it); the smoke puff circle offsets are +-0.3 of its screen radius; the blast puff is a ground-flat ellipse (height 0.6 of width) on y 0, jittered +-0.3 of its radius, no fade; `blastLean` after the last round is linear from 0.17 over 15 f and is 0 for `distM` outside 1-3; `shakeAt` sums the impulses of rounds still at k 0-2 and returns +0 (never -0) from `stop`; `clip` drops a flash whose muzzle picture point fails the predicate (not a polygon clip). `GUNFIRE_PRESETS` holds the B03-SH01, B04-SH03 and B05-SH02 numbers of the Decided values table. Seeds are the plate's.
+- Open questions for Film (none blocks the ticket; none was decided by Boss):
+  1. fx02 "brightest pixel in the frame is in the core": the CAL morning sky already clips to 255 under the newsreel grade, so the core can tie but never exceed it in a sky-filled frame; B03-SH01 and B04-SH03 plates will hit the same tie where sky shows. Accept the tie, or name a sky value cap.
+  2. Smoke build-up as written (alpha 0.55 to 0.30 per puff, 23 puffs, no cap on the sum) reads as a solid mass, not a haze. Keep, or give a haze alpha cap or a lower per-puff alpha for the 23-round list (the 11-round B04 list builds less).
+  3. `o.clip` for the B04-SH03 water mirror is a centre test; if T10 needs the mirrored flash cut along the shore line, say so and give the polygon test, which this module does not have.
+- Answered r3 (Film): 1 tie accepted; 2 haze caps and lower alphas (fix pass); 3 no mirror in B04-SH03 (TF20: the mirrored flash would sit on the bank from this lens), `o.clip` unused.
+
+### r3 fix pass 1 (Boss, Sonnet medium, 2026-11-19, worktree branch `worktree-agent-a8355525945b878e7` from `8bbfa0d`; commit = the commit carrying this edit, see index)
+- Built exactly as the r3 table: `smokePuffs` alpha 0.35 → 0.15 (pre-cap, fade unchanged), `blastPuffs` 0.20 / mud 0.15, new `hazeCap(puffs, cap)` (alpha × min(1, cap / Σ live alphas)) with `SMOKE_CAP` 0.6 and `BLAST_CAP` 0.5 applied inside `paintSmoke` and `paintBlast`. `GUNFIRE_PRESETS` unchanged. Files: `src/painted/kit/gunfire.ts`, `tests/gunfire.test.ts` (alphas updated, one new test: summed live alpha at L 68 ≤ cap, and the uncapped smoke sum is > 0.6; 11 pass). `proof-fx.tsx` unchanged. `npx tsc` 22 errors, all in untouched files as in r1; `npm test` 264 pass, 16 fail, the same 16 outside this ticket as r1.
+- Proof: `out/edu30-T04/sheet.png` (fx00 fx02 fx03 fx04 fx30 fx75, viewed), measure script `out/edu30-T04/measure.py`, logs `out/logs/T04-measure.log` (as built) and `T04-measure-variant.log` (variant below). Store: `projects/edu/EDU/previews/` (the `out/edu30-T04` files, archived 14).
+- Measured (cover = (L_fx00 − L_frame) / (L_fx00 − L_colour), 16 × 16 boxes on flat ground, stepped 4 px, figures excluded by a flatness test; `L_colour` is the luma of the colour under the newsreel grade, 108.7 smoke and 170.2 blast, read from the same effect drawn at alpha 1, because the raw hex lumas 96.9 and 140.5 are not what the grade shows):
+
+| Frame | Check | Number | Range | Result |
+| --- | --- | --- | --- | --- |
+| fx02 | core ≥ 250, nothing outside the core lighter than the core max (sky tie) | core max 255, 2552 of the bbox px ≥ 250; frame max 255 (tie with the clipped sky) | pass | pass |
+| fx03 | half-size decay | flash code unchanged since r1, area ratio 0.25 (r1) | 20–35 % | pass (not re-measured) |
+| fx04 | smoke darker than ground | box (622, 1004): 111.3 vs 180.4 | smoke < ground | pass |
+| fx75 | alpha ratio on the pre-cap alpha | 1 − 7/45 = 0.844 (unit test, exact) | ≤ 0.9 | pass |
+| fx30 | blast cover, densest box (360, 1072) | 0.274 | ≤ 0.40 | pass |
+| fx30 | smoke cover, densest box (600, 1016) | **0.900** | ≤ 0.45 | **FAIL** |
+
+- Why the smoke cover fails although the alphas follow the table: each puff is 5 overlapping circles, each filled at the puff alpha (the r1 rule "each puff = 5 overlapping circles" says nothing about dividing the alpha), so one puff already reads 1 − (1 − 0.34)^5 ≈ 0.87 at its centre (measured at fx04: one puff at alpha 0.34 gives luma 111.3, the alpha-1 value is 108.7, cover 0.97). The Σ 0.6 cap then limits the puffs against each other, not the circles inside a puff. The blast puff is one ellipse, so its numbers are literal and pass.
+- Variant tried and not committed (a value Boss may not pick): each circle at alpha_c = 1 − (1 − puff alpha)^(1/5), so the 5 stacked circles give the puff alpha at the centre. Measured with `measure.py x`: smoke cover 0.245 at fx30 (box (604, 1012)), 0.316 at fx75; blast unchanged 0.274; the picture keeps the emu legs and gun readable.
+- fx30 and fx75 as built: the haze at the muzzle is still a dark, mostly opaque disc (about 100 px at fx75) with the emu's lower body dimmed but its legs readable; the blast is a pale, thin ground cloud.
+- **Open question for Film (blocks done):** which per-circle alpha for the five circles of a smoke puff? (a) the variant above, alpha_c = 1 − (1 − α)^(1/5) (smoke cover 0.245 at fx30, inside ≤ 0.45); (b) per-circle alpha α / 5 (cover lower still); (c) keep as built and change the pass range. One line in the table fixes it; the code change is one expression in `paintSmoke`. The same rule then holds for T24, T27, T29.
+- Answered r4 (Film): per-circle alpha (a), see r4 decisions.
+
+### r4 fix pass 1 (Boss, Sonnet medium, 2026-11-19, worktree branch `worktree-agent-a1ef5e47577572fc7` from `ea37ad9`; commit = the commit carrying this edit, see index)
+- Built exactly as the r4 table: new `circleAlpha(a) = 1 - (1 - a)^(1/5)` in `src/painted/kit/gunfire.ts`, used for each of the five circles in `paintSmoke` (applied after fade and `hazeCap`). `tests/gunfire.test.ts`: one new test (`circleAlpha(0.34)` = 0.0797 ± 0.0005 and `1 - (1 - α_c)^5 = α` for α 0.15, 0.34, 0.6); 12 pass (`out/logs/T04r4-test.log`). `npx tsc` 22 errors, none in `gunfire` (`out/logs/T04r4-tsc.log`). `proof-fx.tsx` unchanged.
+- Proof (store `projects/edu/EDU/previews/`, ticket-prefixed): `T04r4-sheet.png` (fx00 fx02 fx03 fx04 fx30 fx75, viewed), `T04r4-crop30.png`, `T04r4-crop75.png` (700 x 500 muzzle crops, crop75 viewed), `T04r4-fx*.png`. Measure script `out/edu30-T04/measure.py` (r3's, unchanged; the alpha-1 references `opaque30/31` came from a temporary patch making `hazeCap` return alpha 1 and `circleAlpha` 1, reverted, not committed), logs `out/logs/T04r4-measure.log`, `T04r4-checks.log`.
+- Measured:
+
+| Frame | Check | Number | Range | Result |
+| --- | --- | --- | --- | --- |
+| fx02 | core ≥ 250, frame max in the core (sky tie) | core max 255, 2532 px ≥ 250; frame max 255 (tie with clipped sky) | pass | pass |
+| fx03 | half-size decay | flash code unchanged since r1: area ratio 0.25 (r1); not re-measured | 20–35 % | pass (carried) |
+| fx04 | smoke darker than ground | box (622, 1004): 168.1 vs 180.4 | smoke < ground | pass |
+| fx75 | alpha ratio on the pre-cap alpha | 1 − 7/45 = 0.844 (unit test, unchanged) | ≤ 0.9 | pass |
+| fx30 | smoke cover, densest box (604, 1012) | **0.245** (L_colour 108.7) | ≤ 0.45 | pass |
+| fx30 | blast cover, densest box (360, 1072) | 0.274 (L_colour 170.2) | ≤ 0.40 | pass |
+| fx75 | smoke cover, densest box (588, 1012) | 0.316 | n/a (logged) | logged |
+
+- Picture: at fx30 and fx75 the smoke is a soft translucent haze about 100 px wide; the emu's legs and the gun's muzzle end read through it; the blast is a thin pale ground cloud. fx04 is lighter than r3 (168 vs 111) because one puff now reads its table alpha, not 0.87.
+- Fix passes used: 1 (r4). Open questions: none. Values not followed: none.
