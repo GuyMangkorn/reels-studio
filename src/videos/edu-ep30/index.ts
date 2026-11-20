@@ -16,13 +16,15 @@ import {edu30CaptionEvents} from './cues';
  * Sound: the stem `audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav` is baked from scripts/edu-series/ep30/sound-cues.json (90 cues, EDU-EP30-SCENE-R2) by the mix script after Ton's
  * sound-lock (`short/sound-mix.py`, not written in pass 1); until it exists the composition has no audio track (see `STEM`).
  */
-const LABEL = 'แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง';
+/** The sheet's one-string label ("แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง", VD30-10) runs as one 952 px line, x 120 to 1072, and crosses the T02 title boxes (y 300-475); the same words are set in the label's two slots (the "·" becomes the line break) at y 180-290, under the mark and above the title band, on every shot (open question to Film, build-notes). */
+const LABEL_SLOTS = ['แต่งเติมจากเรื่องจริง', 'ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง'];
+const LABEL_TOP = 180;
 if (DURATION !== 1977 || EDU30_SHOTS.length !== 28) throw new Error(`EDU-EP30-SHORT: shot index has ${EDU30_SHOTS.length} shots / ${DURATION} f, the sheet says 28 / 1977`);
 
 const cuts = EDU30_SHOTS.map((s) => ({id: s.id, start: s.start, end: s.start + s.N}));
 const timeline = assemblePaintedTimeline({
   clockRate: FPS, precision: 4, cuts,
-  shots: cuts.map((cut) => ({at: cut.start, cue: {shot: plateId(cut.id), label: LABEL}})),
+  shots: cuts.map((cut) => ({at: cut.start, cue: {shot: plateId(cut.id), label: LABEL_SLOTS, labelTop: LABEL_TOP}})),
   captions: edu30CaptionEvents(cuts.map((c) => c.start)),
 });
 
