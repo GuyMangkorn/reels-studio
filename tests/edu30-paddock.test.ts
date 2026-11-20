@@ -162,3 +162,25 @@ test('paintPaddockScene: bare variant is ground and wheat only; cast and fence o
   assert.notEqual(a.n(), 0);
   assert.equal(a.hash(), b.hash());
 });
+
+test('T38: ridge start radius from a high eye, clearing flag, even interleave tone', () => {
+  assert.equal(pad.ridgeR0(1.55), 2.5);
+  assert.ok(Math.abs(pad.ridgeR0(3.2) - 3.7) < 1e-9);
+  assert.ok(Math.abs(pad.ridgeR0(8.6) - 36.1) < 1e-9);
+  assert.equal(pad.ridgeR0(8.6, true), 2.5);
+  // clearing: false paints no clearing and leaves noClearing as it was
+  const a = recorder(), b = recorder(), c = recorder(), d = recorder();
+  pad.paintPaddockScene(a.p, C1, {eaten: 0}); pad.paintPaddockScene(b.p, C1, {eaten: 0, clearing: false});
+  const lone = recorder(); pad.paintClearing(lone.p, C1, 31200);
+  const has = (log: string[]) => lone.log.filter((l) => log.includes(l)).length;
+  assert.equal(has(a.log), lone.log.length);   // default paints every clearing stroke
+  assert.ok(has(b.log) < lone.log.length * 0.5, `clearing strokes in open scene ${has(b.log)}/${lone.log.length}`);
+  assert.notEqual(a.hash(), b.hash());
+  pad.paintPaddockScene(c.p, C1, {eaten: 0, clearing: true});
+  pad.paintPaddockScene(d.p, C1, {eaten: 0});
+  assert.equal(a.hash(), c.hash()); assert.equal(a.hash(), d.hash());   // default = true; flag state restored
+  // even tone: every ridge row one fill colour; alt tone has several
+  const fills = (tone?: 'alt' | 'even') => { const r = recorder(); pad.paintWheatRidges(r.p, C1, 5, {tone}); return new Set(r.log.filter((l) => l.startsWith('brush.wash')).map((l) => (l.match(/#[0-9a-f]{6}/i) ?? [''])[0]).filter(Boolean)); };
+  assert.ok(fills('alt').size > 3, `alt ${fills('alt').size}`);
+  assert.equal(fills('even').size, 1, `even ${[...fills('even')]}`);
+});
