@@ -1,5 +1,5 @@
 # T20 — plates B02-SH01 (crane into the buffet, place tag) and B02-SH02 (the farmer at the gate) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T38 (R9 Film look check: SH02 accept; SH01 fix) · was: ready · r2: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: **done** (R10: T38 accepted; SH01 rows restated TF61) · was: ready · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (flock peck sync, farmer arm and face)
 Blocked by: T03, T08, T09, T12 · Consumers: B02-SH01, B02-SH02 (global 200–439)
 Model: sonnet, medium
@@ -32,6 +32,10 @@ References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TP2.png` (t
 ## r2 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
 These override any older value in this ticket that they name.
 - **Farmer point (T12 r6, TF27 as built).** Paint FARMER through T12's solve as built: right mitten 0.50 m from the shoulder along d = (−0.873, −0.218, −0.436), elbow flexion 55.6°, open oval mitten with no thumb. At L 9 and L 45 log the screen distance from the shoulder → mitten line to the emu head (T12 measured 50.1 px on the sheet camera; pass ≤ 60 px on the plate camera). The SH02 row's `thumb check` line reads `thumb check: FARMER RIGHT: open oval, no thumb drawn (unshaped kit); edge to the lens`.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T38-sheet.png`, `T38-sheet-sh01.png`. **Verdict: accept with value change (done).** No arcs at L 60/70; ridges grow in from L 80 as the eye drops, matching L 100–151. Row-mean luma row restated to y 1000–1180 ≤ 12 (TF61; measured 2.5 / 3.8). The dark eaten patch and the pale broken patches of the high view are the T09 set as accepted (story: the eaten ground), not reopened. Fix passes: 1 (T38).
 
 ## Proof
 - Stills (`out/edu30-T20/`): SH01 L 0, 60, 100, 134, 135, 151; SH02 L 0, 9, 40, 47, 53, 84.

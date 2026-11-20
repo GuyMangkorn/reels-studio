@@ -1,5 +1,5 @@
 # T18 — MEREDITH gives the order: `new: order-chop` (raised arm chopped forward into a point) with the shouted "ยิง!" mouth
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done (built 2026-11-20; awaiting Film look check) · was: ready (Q8 answered by the user: values as written)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built; fix pass 1 in **T41** (R10: face only) · was: ready (Q8 answered by the user: values as written)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T17 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: B03-SH05
 Model: sonnet, medium
@@ -32,6 +32,16 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 | Row | Value | Pass |
 | --- | --- | --- |
 | R9-1 loader lean scale (for T22 r8, same file) | `CrewSolveOpts.loaderLean?: number` (0..1, default 1): the loader's lean becomes `LOADER_LEAN × hold × loaderLean`; nothing else changes | a test in `tests/edu30-cast.test.ts`: `loaderLean: 0` → solve `lean` 0 at L 0; default calls keep their stroke hashes (T11/T36/T12/T17 tests unchanged) |
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T18-sheet-chop.png`, `T18-hands-L0-L7.png`, `T23-sheet.png`. **Verdict: accept with value change; face fix in [T41](T41-order-shout-face.md) (fix pass 1).**
+- Arm, chop ease, end point, lean, left arm, gaze, thumb and arm checks: pass.
+- **Lead (TF50):** row 654–696 → **700–780 px** (built 725 L 0, 737 L 7). The decided staging and f 1000 give ~403 px/m; a bigger commander in the low heroic three-quarter is right for the beat. Test bound 654–745 may stay.
+- **Start key (TF51):** accepted as keyed, mitten (434, 620) in `C30-chop`; the kit P07 target and the sheet guide could not both be met.
+- **End key (TF51):** the sheet's "about 20° below the shoulder line" was wrong: the world point (−0.35, 1.45, 0.45) is a near-horizontal arm at shoulder height, which this low lens shows above the shoulder on screen. The screen guide wins; built (254, 718) accepted.
+- **Face (TF65):** the `talk` 0.8 mouth with neutral brows reads as a surprised "oh" at L 7–12; T41 sets stern brows from L 5 and the kit `shout` mouth L 7–14.
+- 21 f shot as built (Q8).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-cast.test.ts`: arm ratio ≤ 1.05 at every frame L 0–8; right wrist reach ≤ 0.52 m from the shoulder at every frame.

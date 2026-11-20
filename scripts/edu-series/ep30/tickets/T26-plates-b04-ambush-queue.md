@@ -1,5 +1,5 @@
 # T26 — plates B04-SH01 (ambush at the water, LF02) and B04-SH02 (the queue, the unison step) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built 2026-11-20, awaiting Film look check · was: ready, dispatchable (R9: T16 done) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R10: accept with value change, TF54) · was: ready, dispatchable (R9: T16 done) · r3: Film notes added (TICKETS-R3)
 Class: set (plates) · Hard: yes (queue walk and unison step)
 Blocked by: T03, T10, T11, T12, T16 · Consumers: B04-SH01, B04-SH02 (global 868–992)
 Model: sonnet, medium
@@ -36,6 +36,13 @@ These override any older value in this ticket that they name.
 - **Queue shadows (TF37).** Every queue bird paints with `shadowOp: 45`.
 - **Queue as built (T16 R9).** B04-SH02 head stands at x 4.6 to L 40, one unison step L 41–49 (0.57–0.64 m by scale), walks on to x 3.797 at L 68.
 - **Caption zone (TF46).**
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T26-sheet.png`. **Verdict: accept with value change (done), no Boss pass.**
+- SH01 matches LF02; breath idle and ambient wheel accepted. Caption mean 0.806 / 0.809 → B04-SH01 row **≤ 0.81** (TF54; the locked LF02 water, reflection alpha makes it worse, captions carry the edu stroke). The reverted alpha trial stays reverted.
+- SH02 head (TF54): row 484 → **583 ± 30 px painted at L 0** (794 at L 68); feet in the band at L 68 accepted (band mean 0.632 passes). Unison step reads (25 / 25 feet lifted).
+- No queue reflections and the static far mass: accepted (not in the sheet).
 
 ## Proof
 - Stills (`out/edu30-T26/`): SH01 L 0, 30, 55; SH02 L 0, 40, 45, 49, 68.

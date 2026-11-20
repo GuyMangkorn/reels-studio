@@ -1,5 +1,5 @@
 # T39 — B07 plates show the word AUSTRALIA on the scroll (one shared relief-word element in the plate stack) and B07-SH01 starts its crane higher
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: done
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: **done** (R10: accept with value change, TF62)
 Class: capability + set (bundle) · Hard: no
 Blocked by: none · Consumers: B07-SH01, B07-SH02; LF03 / TA2 look stills (`look.tsx`)
 Model: sonnet, medium
@@ -23,6 +23,12 @@ Files: `src/painted/edu30/shot.tsx`, `src/painted/edu30/look.tsx`, `src/painted/
 | W5 | B07 plates | `word: () => ARMS_WORD` on B07-SH01 and B07-SH02 | b07 (the scroll carries the country name in LF03) |
 | K1 | B07-SH01 crane start | pitch **4 → 12** at L 0; the move stays `pitch: 12 + 8 × u` (u = ease-in-out L / 100, hold L 100–117); eye, f, hy unchanged; end = LF03 exactly | T33 R9 (TF48) |
 | K2 | paving fill | keep Boss's `wFill(41790, '#bfae8c')` below the bed (it still shows at L 0–20 under K1) | T33 build |
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+**Verdict: accept with value change (done).**
+- SH02 word clipped to "RALIA" (TF62): **keep**. The scroll is a world object that runs out of frame on the push-in; hiding the word would leave a blank scroll and break continuity with SH01, and moving the camera would re-open the accepted emu framing (719 → 808).
+- SH01 word centre row 6 → **≤ 8 px per axis** (L 50 dx 7.2 accepted; DOM box per the ticket formula).
 
 ## Proof
 `npx tsc --noEmit -p .`; `node scripts/test.mjs tests/painted-canvas-style.test.ts tests/edu30-titles.test.ts`; `npm test` to `out/logs/T39-npmtest.log` (known failures as the index lists). Stills: `render-looks.sh T39 LF03 TA2` and `shots-index.tsx` B07 frames; archive `out/edu30-T39` as `T39-*.png` with `T39-sheet.png`.

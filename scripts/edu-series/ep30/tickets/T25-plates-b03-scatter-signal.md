@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built 2026-11-20, awaiting Film look check (was: ready, dispatchable, R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; SH03 re-proof in **T40** (R10) · was: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium
@@ -48,6 +48,14 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **T15 as built (R9).** B03-SH03 flick: `emuWingFlick(L)` (both sides, tip 0.903 m out, head yaw ±0.26); the thin T06 plume wing is accepted (T15 R9).
 - **Caption zone (TF46).** Measure with `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T25-sheet.png`, `T25-wing-crop-L10.png`. **Verdict: SH02 accept with value change; SH03 fix via [T40](T40-gesture-wing-read.md) (T15 fix pass 1; this plate is re-rendered, no code change).**
+- SH02: six groups, casings, smoke, crew: pass. Caption band mean 0.851 → the high-view exception **≤ 0.92** applies to B03-SH02 as to B02-SH01 (TF53). Back-view P01 crew accepted.
+- SH03 hero height (TF53): row 510–567 → **614–660 px** (T15 base `look`, 1.84 m head). Feet at y 1215–1252 in the band accepted (band mean passes).
+- SH03 wing: points correctly, unreadable at 270 px against the dark group. T40 raises the flick (tip ≈ 1.51 m) and gives it a fuller, paler plume fringe; new tip rows (270, 738) / (836, 738) ± 60 in T40.
+- Pad slip: accepted by construction (`emuPads(stand)`, T15 test).
 
 ## Proof
 - Stills (`out/edu30-T25/`): SH02 L 0, 14, 30, 45; SH03 L 0, 6, 10, 16, 22, 26, 34, 40, 56.

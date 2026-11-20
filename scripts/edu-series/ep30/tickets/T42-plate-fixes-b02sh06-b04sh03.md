@@ -1,0 +1,45 @@
+# T42 — plate fixes: B02-SH06 near field birds culled (T22 fix pass 2) and B04-SH03 spouts in the shallows + one casing spec (T27 fix pass 1)
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: ready
+Class: set (fix bundle, two plates) · Hard: yes (CAT02 bird reading; effects)
+Blocked by: none (T22 r8, T27, T28 built) · Consumers: B02-SH06, B04-SH03
+Model: sonnet, medium
+
+Read first: [common rules](index.md#common-rules) (CAT02); [T22](T22-plate-b02-sh06-heads.md) r8 rows and Result; [T27](T27-plates-b04-burst-jam.md) Result; [T28](T28-plates-b04-gunner-watch.md) Result item 3 (`B04_CASINGS`).
+
+**Fix-pass cap.** This is T22's **second and last** fix pass (cap reached after it) and T27's first. Anything still off in B02-SH06 after this pass is Film's value change or accept, not another pass.
+
+## Why (Film, R10 look check)
+- **B02-SH06** (viewed `T22r8-sheet.png`, `T22r8-ll74-box.png`): F1, F1b and F3 pass; the near stalks no longer turn dark. The lower-left dark mass at L 52–74 is the nearest heads-field birds seen from above as the crane rises: their body and wing flats show as dark angular slabs, and at L 52 one reads as a bird lying flat in the wheat (CAT02). The luma row was a proxy; the fix is to remove those birds, not to repaint the ridge stalks (the ridge stalk colour is accepted as built).
+- **B04-SH03** (viewed `T27-sheet.png`): flash, stop dead, smoke and the queue pass; the "water kicked up by the spouts" does not read because 10 of 11 strikes land on the dry rim. The casings use their own spec while B04-SH06/SH05 use `B04_CASINGS`; one spec keeps the three shots in agreement.
+
+## Build
+Files: `src/painted/edu30/shots/B02-SH06.tsx`, `src/painted/edu30/shots/B04-SH03.tsx` (reads, never writes, `shots/B04-SH06.tsx`).
+
+## Decided values
+| Row | What | Value | Source |
+| --- | --- | --- | --- |
+| H1 | B02-SH06 near-bird cull | compute once, at the L 74 camera (`stackCam(def, 74)`), the screen point of each `headsField` bird's ground anchor; drop from **every** frame each bird whose ground point projects below **y 1450** or whose camera distance at L 74 is **< 6.0 m**. Same set every frame (no popping); the six rising groups and their timing unchanged for the birds kept | ticket |
+| H2 | B02-SH06 count | heads up at L 74: **≥ 28** (was 36); log the count kept | ticket |
+| H3 | B02-SH06 rest | F1, F1b, F2 stalk fade, F3 even tone, leads and caption rows as r8 built; the F2 luma row is **withdrawn** (R10): lower-left 300 × 300 box luma at L 74 logged only | Film R10 |
+| W1 | B04-SH03 strikes | 11 strikes as built (count, seed 9300, minDist 1.5 against `queueAvoid`, x −1.0 … +1.4) with the z rule split: strikes i = 1, 2, 4, 5, 7, 8, 10 at `z = −5.70 − 0.50·r` (in the shallows: spouts), strikes i = 0, 3, 6, 9 at `z = −4.9 − 0.7·r` as built (mud on the rim). Each point keeps its `overWater` test for spout vs mud | Boss T27 note 2 |
+| W2 | B04-SH03 casings | import `B04_CASINGS` from `./B04-SH06` and paint the casings of SH03 from it (`paintCasings` with that spec at the shot clock); the plate's own casing spec is deleted. Visible or not, log how many casings land inside the SH03 frame (with the factual right-side ejection most fall uphill, off frame: accepted) | Film R10 (one spec, TF57) |
+| W3 | B04-SH03 rest | everything else as built; no GUNNER-1 forearm in frame is accepted (R10, TF55) | Film R10 |
+
+**Judgment for the builder.** B02-SH06: as the crane rises, only heads and necks come out of the wheat; no dark slab, no body seen lying down anywhere in the lower half. B04-SH03: the burst throws several white spouts out of the shallows near the far shore while the mud kicks on the rim; no strike lands within 1.5 m of a bird.
+
+## Proof
+- Stills (clean and guides-on) → `out/edu30-T42/`: B02-SH06 L 0, 30, 52, 58, 64, 74; B04-SH03 L 10, 19, 25, 27, 42, 43. Sheet `scripts/qa-sheet.sh … --cols 6 --width 270`; 540 px crops: B02-SH06 lower half at L 52 and L 74, B04-SH03 strike area at L 19 and L 27. `measure-shots.ts B02-SH06 0,74`, `B04-SH03 10`. Archive `out/edu30-T42` as `T42-*.png`.
+
+| Frame | What must be visible | Measured number and its pass range |
+| --- | --- | --- |
+| B02-SH06 L 52, 58, 64, 74 | heads-only field; no dark slab or lying-bird shape in the lower half | viewed at 270 and 540 px; heads kept **≥ 28** (logged); birds dropped logged with ids |
+| B02-SH06 L 0, 74 | leads unchanged | EMU-HERO L 0 **594 ± 10**, L 74 **326 ± 10**; MEREDITH L 0 **141 ± 15** to the head top |
+| B02-SH06 L 0, 4, 8, 12 | three men read (r8 F1) | unchanged: cover **≤ 25 %** (r8 11.4 %) |
+| B04-SH03 L 19 / 25 / 27 | several spouts out of the water, mud on the rim | spouts over water **≥ 6** of 11 (logged by `overWater`); nearest bird to any strike **≥ 1.5 m** over L 0–46 (logged) |
+| B04-SH03 L 42 / 43 | stop dead holds | shake 0 at both; smoke centroid moves **≥ 1 px** |
+| B04-SH03 L 10 | flash and muzzle unchanged | muzzle **(633, 832) ± 3** |
+| caption zone (TF46) | clean B02-SH06 L 0, L 74; B04-SH03 L 10 | pass |
+| smoke (TF56) | B04-SH03 L 42 | analytic smoke bound **≤ 0.46**, blast **≤ 0.40** (as built 0.451 / 0.393) |
+
+## Result (Boss fills)
+Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked

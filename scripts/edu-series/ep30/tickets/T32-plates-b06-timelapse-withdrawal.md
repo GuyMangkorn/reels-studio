@@ -1,5 +1,5 @@
 # T32 — plates B06-SH03 (the sequel and the time-lapse) and B06-SH04 (withdrawal two, one silent wave) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built 2026-11-20, awaiting Film look check (Boss, Sonnet medium) · was: ready, waits on T30 (R9)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built; SH04 re-proof in **T40** (R10) · was: ready, waits on T30 (R9)
 Class: set (plates) · Hard: yes (time-lapse state driver, back-view wave)
 Blocked by: T30 (`vantage.ts`), T01, T03, T08, T09, T14, T15 · Consumers: B06-SH03, B06-SH04 (global 1580–1736)
 Model: sonnet, medium
@@ -31,6 +31,14 @@ Files: `src/painted/edu30/shots/B06-SH03.tsx`, `src/painted/edu30/shots/B06-SH04
 These override any older value in this ticket that they name.
 - **Wave (T15 R9, TF35).** B06-SH04 one swing of `emuWingWave(L, {back: true})` local 36–44, folded by 50.
 - **Caption zone (TF46).**
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T32-sheet.png`, `T32-zoom.png`. **Verdict: SH03 accept with value change; SH04 fix via [T40](T40-gesture-wing-read.md) (back wave; re-render only).**
+- SH03 time-lapse: six held days, truck arrival, nine birds: pass. Hero row (TF60) restated: **hero state identical in code; probe height drift ≤ 15 px across the jumps** (520–535 measured, camera push only).
+- SH04 wing tip (TF60): "−100 px above the head row" withdrawn; tip **y ≤ 800** at L 43 with a readable fringe (T40).
+- Match B05-SH03 (TF60): same world path and speed; screen x difference logged only (20–75 px from the two decided camera lines). Changing a camera to meet ±10 px would cost a re-proof of an accepted plate for no visible gain.
+- All non-hero birds far LOD: accepted.
 
 ## Proof
 - Stills (`out/edu30-T32/`): SH03 L 0, 27, 45, 59, 65, 71, 77, 83, 89, 98; SH04 L 0, 20, 36, 39, 43, 50, 57; plus B05-SH03 at the matching truck x for the side-by-side.

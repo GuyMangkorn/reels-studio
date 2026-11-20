@@ -1,5 +1,5 @@
 # T30 — the shared retreat vantage, plate B05-SH03 (withdrawal one) and plate B05-SH04 (EMU-HERO waves the truck off, "ไว้มาใหม่นะ!") are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built (Boss 2026-11-20, awaiting Film look check) · was: ready, dispatchable (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; SH04 re-proof in **T40** (R10) · was: ready, dispatchable (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (wing wave, talking beak)
 Blocked by: T03, T07, T08, T09, T14, T15 · Consumers: B05-SH03, B05-SH04 (global 1294–1433); T32 (vantage helper)
 Model: sonnet, medium
@@ -40,6 +40,14 @@ These override any older value in this ticket that they name.
 These override any older value in this ticket that they name.
 - **Wave (T15 R9, TF35).** B05-SH04 `emuWingWave(L)` as built: ±20° swing, tip y 1.54–1.83 m; the sheet acceptance "wing and head above the wire and above y 1100" stands.
 - **Caption zone (TF46).**
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T30-sheet.png`, `T30-zoom.png`. **Verdict: SH03 accept with value change; SH04 fix via [T40](T40-gesture-wing-read.md) (wave wing; this plate is re-rendered only).**
+- SH03 cool light, five backs, truck: pass. Title box y ≈ 292–464 accepted; its timing (1363–1388, adapter) belongs to T02/Editor; the plate is right not to draw it before L 69 (TF59).
+- Far-LOD fence birds read flatter and darker than the hero: accepted (the textured hero stands out, which helps identity; render budget).
+- SH04 (TF59): hero row 617–670 → **750–810 px at L 10 with the wing** (712 at L 0); wing tip x row withdrawn, tip y **≤ 800** on L 6 / 10 / 14 (T40). Head mostly to the lens with a slight turn right: accepted (cheerful goodbye reads once the wing reads).
+- Pad slip: by construction (T15 gesture pads).
 
 ## Proof
 - Stills (`out/edu30-T30/`): SH03 L 0, 46, 69, 93; SH04 L 0, 6, 10, 14, 30, 42, 45.

@@ -1,5 +1,5 @@
 # T23 — plate B03-SH05 (MEREDITH's order "ยิง!" on a low heroic three-quarter) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (Boss, 2026-11-20; two lead rows not met, see Result; awaiting Film look check) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; re-proof in **T41** (R10) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (arm chop, talking face)
 Blocked by: T03, T09, T11, T12, T13, T18 · Consumers: B03-SH05 (global 667–687)
 Model: sonnet, medium
@@ -33,6 +33,15 @@ These override any older value in this ticket that they name.
 ## R9 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R9`)
 These override any older value in this ticket that they name.
 - **Caption zone (TF46).** Measure with `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T23-sheet.png`. **Verdict: accept with value change; re-proof with the T41 face.**
+- Lead (TF50): rows 654 / 696 ± 30 → **717 ± 30 at L 0, 763 ± 30 at L 20** (as built).
+- Mittens read off the frame accepted (no mitten probe needed).
+- F1 flock band behind the lens (TF52): accepted, nothing visible; the point aims off screen left, toward the lens side, which is the eyeline of the B03-SH01 reverse. Leaving the paint call is harmless.
+- GUNNER-2's spare pan off frame: accepted.
+- Face: T41 changes only `cast.ts`; this plate is re-rendered there, no code change here.
 
 ## Proof
 - Stills (`out/edu30-T23/`): L 0, 4, 6, 7, 12, 20; `scripts/qa-sheet.sh out/edu30-T23/sheet.png --cols 6 --width 270 out/edu30-T23/s*.png`; `measure-shots.ts B03-SH05 0,20`; clean L 7 through `caption-zone.py`.

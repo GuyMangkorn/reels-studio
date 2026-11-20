@@ -1,5 +1,5 @@
 # T22 — plate B02-SH06 ("สามคนเหรอ…": EMU-HERO counts the crew, then the crane over a field of rising heads) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: r8 fix pass 1 built, awaiting Film look check (F2 luma row not met) · was: built, open question (Film) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: r8 accepted in part; fix pass 2 (last) in **T42** (R10: near field birds culled) · was: built, open question (Film) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (emu face and nods, rising heads, loader hands)
 Blocked by: T03, T07, T08, T09, T11, T12, T13 · Consumers: B02-SH06 (global 592–666)
 Model: sonnet, medium
@@ -51,6 +51,13 @@ These override any older value in this ticket that they name. Viewed: store `T22
 | Caption zone | TF46 | L 0 0.715 / 0.910, L 74 0.709 / 0.898 already pass |
 
 **r8 Files:** `src/painted/edu30/shots/B02-SH06.tsx` only. **Blocked by:** T18 (`loaderLean` in `cast.ts`), T38 (`tone` in `paddock.ts`). **Proof:** re-render L 0, 4, 8, 12, 20, 30, 52, 58, 64, 74; sheet at 270 px plus the crew zoom at L 0; archive as `T22r8-*.png` with `T22r8-sheet.png`.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T22r8-sheet.png`, `T22r8-crew-zoom.png`, `T22r8-ll74-box.png`. **Verdict: fix (fix pass 2 = [T42](T42-plate-fixes-b02sh06-b04sh03.md) rows H1–H3; cap reached after it).**
+- F1 / F1b (three men read, cover 11.4 %, 38.9 px apart), F3 (no rings) and the leads: pass, accepted.
+- F2: near stalks fade correctly; the luma row is **withdrawn** (TF63). The remaining dark mass is the nearest heads-field birds seen from above (body and wing flats as slabs; at L 52 one reads as a bird lying flat, CAT02). T42 H1 drops the birds whose ground point projects below y 1450 or lies within 6.0 m at the L 74 camera; heads up ≥ 28. Ridge stalk colour accepted as built.
+- The thin vertical sky hairline is the newsreel scratch layer (T01): accepted.
 
 ## Proof
 - Stills (`out/edu30-T22/`): L 0, 7, 10, 30, 44, 52, 58, 64, 74.

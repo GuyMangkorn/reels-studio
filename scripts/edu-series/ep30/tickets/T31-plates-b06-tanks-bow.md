@@ -1,5 +1,5 @@
 # T31 — plates B06-SH01 (emus advance like tanks over MEREDITH's back) and B06-SH02 (the silent bow, L15 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T38 (R9 Film look check: fix) · was: built (Film look check pending) · r2: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: **done** (R10: T38 B1–B3 accepted) · was: built (Film look check pending) · r2: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (slow-motion walk contacts, bow on the story clock)
 Blocked by: T03, T06, T07, T08, T09, T12 · Consumers: B06-SH01, B06-SH02 (global 1434–1579)
 Model: sonnet, medium
@@ -27,6 +27,10 @@ Files: `src/painted/edu30/shots/B06-SH01.tsx`, `src/painted/edu30/shots/B06-SH02
 ## r2 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
 These override any older value in this ticket that they name.
 - **Slow line (T08 r5, TF26).** B06-SH01 reads `slow(L)` as built: 84 f cycle, hero contacts L 12 / 54 / 96 on alternate feet, hero frozen from L 100 with both feet down at z −3.87. The proof camera was too small to judge the walk: at the plate size view stills L 0, 12, 33, 54, 75, 96 and say in Result whether the slow steps read as walking (yes / no, with the hero's lead height); a "no" comes back to Film, not a change here.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T38-sheet.png`, `T38-sheet-b06sh01.png`, `T38-sheet-b06sh02.png`. **Verdict: accept (done).** Open trampled ground, no wall; one slow bow, head well down in front of the chest at L 19, up by L 31. Pad slip accepted by construction (flock code unchanged, T31 measured 0.000 m; bow pads mix unchanged). Fix passes: 1 (T38).
 
 ## Proof
 - Stills (`out/edu30-T31/`): SH01 L 0, 54, 96, 109; SH02 L 0, 5, 12, 19, 25, 31, 35.

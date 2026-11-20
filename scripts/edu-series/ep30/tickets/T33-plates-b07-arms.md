@@ -1,5 +1,5 @@
 # T33 — plates B07-SH01 (burn-out to full colour, crane to the coat of arms) and B07-SH02 (push in; the relief emu looks at the lens) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: fix pass 1 in T39 (R9 Film look check: fix) · was: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: **done** (R10: T39 accepted) · was: ready
 Class: set (plates) · Hard: yes (relief emu head turn and blink)
 Blocked by: T01, T03, T07 · Consumers: B07-SH01, B07-SH02 (global 1737–1976)
 Model: sonnet, medium
@@ -24,6 +24,10 @@ Files: `src/painted/edu30/shots/B07-SH01.tsx`, `src/painted/edu30/shots/B07-SH02
 References (store): `projects/edu/EDU/previews/EDU-EP30-W3-r2/LF03.png` (B07-SH01 end, locked LF03 R2), `projects/edu/EDU/previews/EDU-EP30-W3-r1/thumbs/TA2.png` (B07-SH02 end).
 
 **Judgment for the builder (Hard, face).** The relief emu turns its head like the B01-SH03 stare, a small proud look and one blink, and stays a carved relief (35 % depth, sandstone light): no living-bird texture, no colour change.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T39-sheet.png`. **Verdict: accept with value change (done).** The word sits on the scroll in every frame with the newsreel filter at L 0–9; the crane opens on scroll and wattle. Fix passes: 1 (T39). See T39 R10 notes (TF62).
 
 ## Proof
 - Stills (`out/edu30-T33/`): SH01 L 0, 2, 9, 10, 50, 100, 117; SH02 L 0, 34, 49, 55, 90, 121.

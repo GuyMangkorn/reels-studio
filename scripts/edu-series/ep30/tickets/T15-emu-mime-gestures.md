@@ -1,5 +1,5 @@
 # T15 — EMU-HERO's mime gestures exist: wing flick (both sides), invisible-watch check, foot tap, wing wave (front three-quarter and back)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (R9 Film look check: accept with value change) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: fix pass 1 in **T40** (R10: gesture wing does not read at 270 px in B03-SH03, B05-SH04, B06-SH04) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal, movement, wing as a gesturing limb)
 Blocked by: T07 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses the T06 wing rig and T07 head controls) · Consumers: B03-SH03 (flick), B04-SH05 (watch check, foot tap), B05-SH04 (wave, front three-quarter), B06-SH04 (one wave swing, back)
 Model: sonnet, medium
@@ -37,6 +37,10 @@ All `WingPose` values are for the bird's LEFT wing in the creature frame (+x for
 These override any older value in this ticket that they name.
 - **Mixer rule (T06 r3).** Add every gesture field of this ticket (flick, watch, tap, wave) to `mixEmuPose`, mixing from its default (0 / FOLD) when one side lacks it; only `stride` and `pads` stay one-sided. Tests: `mixEmuPose(a, a, u) = a` and both endpoints for each new field.
 - **Wing look (T06 r3).** The mime wing at reach up to 1 uses the r3 plume drawing (drooping seeded plumes, no three-plume tip): at the watch check and the wave it reads as a feathered wing, never a hand or an arm with fingers; Film's look check of the mime stills stays in the index.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T25-sheet.png`, `T25-wing-crop-L10.png`, `T30-sheet.png`, `T30-zoom.png`, `T32-sheet.png`, `T32-zoom.png`. **Verdict: fix (fix pass 1 = [T40](T40-gesture-wing-read.md)).** The flick and both waves point correctly but read as thin dark dashes at 270 px; T40 adds `WingPose.show` (fuller, paler plume fringe, no flat) on `WING_FLICK` and `WING_WAVE` and raises the flick (TF64). Watch check unchanged (it reads in B04-SH05).
 
 ## Proof
 - `node scripts/test.mjs tests/edu30-emu.test.ts`: wing tip length at reach 0.8 = 0.73 m and reach 1 = 0.85 m; the planted pads are identical at every frame of `emuFootTap` and `emuWatchCheck`; `emuWingFlick(0)` = `emuWingFlick(56)` apart from lid and head yaw.

@@ -1,5 +1,5 @@
 # T38 — Space-P set fixes in one pass: no ridge arcs from a high eye, a clearing flag, even-tone interleave rows, the B02-SH04 canvas, the B06 open paddock and the locked bow
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: done (built, awaiting Film look check)
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: **done** (R10: accept with value change, TF61)
 Class: set (bundle) · Hard: yes (B06-SH02 bow is animal movement)
 Blocked by: none (T09, T20, T21, T31 done or built; this pass is their fix pass 1) · Consumers: B02-SH01, B02-SH04, B06-SH01, B06-SH02; T22 r8 (uses `tone: 'even'`)
 Model: sonnet, medium
@@ -29,6 +29,10 @@ Files: `src/painted/edu30/paddock.ts`, `tests/edu30-paddock.test.ts`, `src/paint
 | B3 | B06-SH02 bow | `mixEmuPose(EMU_POSES.stand({lid: 0.3, headYaw: yaw}), EMU_POSES.bow({headYaw: yaw * 0.5}), bowU(L))`: **remove `BOW_LIFT`** (the locked KP-EMU bow as painted, VD30-05b); timing (L 5–19 down, 19–31 up), ruffle, pads mix and camera unchanged | T31 R9 (TF44: the lifted head read as a swan-neck dip; B06-SH02 has no caption) |
 
 **Judgment for the builder (Hard, B06-SH02).** One slow gracious bow: the neck lowers the head well down in front of the chest at L 19 and rises again by L 31; the feet stay as the bow's pads mix (one foot draws back and returns). No second dip, no hold.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+**Verdict: accept with value change (done).** B02-SH01 luma row restated to y 1000–1180 ≤ 12 (met); B02-SH04 L 0 leads restated to 631 / 617 / 624; B06-SH01, B06-SH02 bow, caption zones and LF01a pass. Pad slips not re-measured: accepted by construction (flock and pad code unchanged).
 
 ## Proof
 `npx tsc --noEmit -p .`; `node scripts/test.mjs tests/edu30-paddock.test.ts` with three new tests: (i) `r0` rule: c.y 1.55 → 2.5, c.y 3.2 → 3.7, c.y 8.6 → 36.1 (or the P1b factor); (ii) `clearing: false` paints no clearing polygon (count or hash) and restores `noClearing`; (iii) `tone: 'even'` gives one fill colour for every row. LF01a locked-look render vs `LF01a.baseline-63fa4f6.png`: mean abs diff ≤ 2. Stills through `shots-index.tsx`; sheet at 270 px; archive `out/edu30-T38` as `T38-*.png` with `T38-sheet.png`.

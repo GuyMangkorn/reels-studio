@@ -1,5 +1,5 @@
 # T28 — plates B04-SH06 (GUNNER-1 racks the dead gun, "โธ่เอ๊ย…") and B04-SH05 (PB01: EMU-HERO checks an invisible watch, three foot taps) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaits Film look check (Boss, 2026-11-20; R9: T15, T16, T17 done) · was: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R10: accept with value change, TF57, TF58) · was: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (gunner arm and face, emu mime)
 Blocked by: T03, T05, T07, T10, T11, T13, T15, T16, T17 · Consumers: B04-SH06, B04-SH05 (global 1062–1149; play order SH06 then SH05)
 Model: sonnet, medium
@@ -43,6 +43,14 @@ These override any older value in this ticket that they name.
 - **GUNNER-1 in B04-SH06 (T17 R9).** `thumb check: GUNNER-1 RIGHT: up ok` on the rack frames (TF38); talk cycles restart at local 7 and 18.
 - **Queue shadows (TF37).** `shadowOp: 45`.
 - **Caption zone (TF46).**
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T28-sheet.png`. **Verdict: accept with value change (done), no Boss pass.**
+- SH06 rack, angry face, thumb up, arm checks: pass. GUNNER-1 row 593–624 → **562–595 ± 15 px** (T11 r4 lean, TF58).
+- SH05 watch, taps, turn-away: pass. EMU-HERO row 505 → **578 ± 30 px** (TF58).
+- Casings (TF57): `B04_CASINGS` keeps side +1 (the Lewis gun ejects to its right); the casings rest uphill behind both lenses, so the "casings on the rim and in the shallows" staging rows of SH05/SH06 are **dropped**. B04-SH04's jam casing on the stone is the visible casing. T27 imports the spec (T42 W2).
+- Flat spare pan at the left edge, faint jam wisp (T13 as built), queue in profile at the far shore, no reflections: accepted.
 
 ## Proof
 - Stills (`out/edu30-T28/`): SH06 L 0, 3, 6, 8, 14, 23; SH05 L 0, 6, 12, 18, 30, 38, 40, 47, 54, 60, 63.

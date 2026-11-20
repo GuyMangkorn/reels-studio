@@ -1,5 +1,5 @@
 # T21 — plates B02-SH03 (one small truck arrives) and B02-SH04 (the line-up: three men, two guns) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: fix pass 1 in T38 (R9 Film look check: SH03 accept; SH04 one value fix) · was: built, awaiting Film look check (2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R10: T38 C1 accepted; L 0 leads restated TF61) · was: built, awaiting Film look check (2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (truck stop, salute)
 Blocked by: T03, T09, T12, T13, T14 · Consumers: B02-SH03, B02-SH04 (global 440–591)
 Model: sonnet, medium
@@ -33,6 +33,10 @@ These override any older value in this ticket that they name.
 ## r4 notes (Film, 2026-11-20, `EDU-EP30-TICKETS-R8`)
 These override any older value in this ticket that they name.
 - **Salute (T12 r6 A2, as built).** MEREDITH's salute uses T12's solve: mitten on the brim's front edge above his right eye, painted over the brim, elbow raised up to 0.15 m above the shoulder (accepted, TF34). `thumb check: MEREDITH RIGHT: open oval, no thumb drawn (unshaped kit)`.
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T38-sheet.png` (B02-SH04 L 86). **Verdict: accept with value change (done).** Canvas sheet reads under both guns (56 / ~90 luma apart). L 0 leads restated to the built figure: MEREDITH 631, GUNNER-1 617, GUNNER-2 624 ± 3 (the 622 / 619 values are L 44's) (TF61). Fix passes: 1 (T38).
 
 ## Proof
 - Stills (`out/edu30-T21/`): SH03 L 0, 30, 44, 46, 53; SH04 L 0, 8, 28, 44, 66, 86, 97.

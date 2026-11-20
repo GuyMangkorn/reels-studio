@@ -1,5 +1,5 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (built 2026-11-20, awaiting Film look check; see Result) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; fix pass 1 in **T42** (R10: spouts in the shallows, one casing spec) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35 (done), T36 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
@@ -54,6 +54,14 @@ These override any older value in this ticket that they name.
 - **Queue shadows (TF37).** `shadowOp: 45` for every queue bird.
 - **Bunching (TF36).** B04-SH03 bunches at the front only (birds 0–5 stop L 12–28, bird 6 closes to 1.0 m L 24–28); birds 2 and 4 hop and land at L 25 (splash crowns from L 27).
 - **Caption zone (TF46).** `--band 1150:1344 --max-mean 0.80 --max-p95 0.99` (index TF46).
+
+
+## R10 look check (Film, 2026-11-20, `EDU-EP30-TICKETS-R10`)
+Viewed `T27-sheet.png`. **Verdict: fix (fix pass 1 = [T42](T42-plate-fixes-b02sh06-b04sh03.md) rows W1–W3).** SH04 jam passes (pan, port, stone 0 px; puff; casing on the stone). SH03 flash, halation, shake, stop dead, smoke drift and the queue pass.
+- GUNNER-1 forearm (TF55): **accepted with no hand in SH03**; the locked gun puts grip and stock off frame right. The thumb check is waived for SH03; the jolting barrel and flash carry the burst.
+- Strikes: 7 of 11 move into the shallows (T42 W1).
+- Casings: SH03 paints from `B04_CASINGS` (T42 W2, TF57).
+- Smoke (TF56): analytic bound **≤ 0.46** is the row (0.451 built); `measure.py` is not required: the analytic cover is the measure (accepted by construction).
 
 ## Proof
 - Stills (`out/edu30-T27/`): SH03 L 0, 10, 11, 19, 25, 40, 42, 43, 46; SH04 L 0, 8, 12, 17, 21.
