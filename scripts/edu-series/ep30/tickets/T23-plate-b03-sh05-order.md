@@ -1,5 +1,5 @@
 # T23 — plate B03-SH05 (MEREDITH's order "ยิง!" on a low heroic three-quarter) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready, waits on T18 (R9) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: done (Boss, 2026-11-20; two lead rows not met, see Result; awaiting Film look check) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (arm chop, talking face)
 Blocked by: T03, T09, T11, T12, T13, T18 · Consumers: B03-SH05 (global 667–687)
 Model: sonnet, medium
@@ -44,4 +44,8 @@ These override any older value in this ticket that they name.
 | L 20 | held point | MEREDITH 696 ± 30 px |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit (this branch, see git log "T23") · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question.
+- Code: `src/painted/edu30/shots/B03-SH05.tsx` (plate replaces the stub; N 21; camera ease-out L 0-20; MEREDITH T18 `chop`; GUNNER-1 T11 front fists on G1; GUNNER-2 `loader` pose at (0.75, 0, 0.45) with a spare pan drum (T12 `heldPan` shape) at y 0.5 in both mittens; G1 loaded, `paintLewisPanTicks` in the next slot, anchors from `lewisAnchors`; F1 40 birds stand/peck over the paddock; newsreel default reel warm strength 1; no text).
+- Proof: store `projects/edu/EDU/previews/T23-sheet.png` (L 0, 4, 6, 7, 12, 20), frames `T23-s00/04/06/07/12/20.png` (clean, no guides or tag).
+- Measured (`measure-shots.ts B03-SH05 0,4,6,7,12,20`): MEREDITH lead L 0 **717** px (x 542), L 20 **763** (x 475), L 7 742; GUNNER-1 408 / 436; GUNNER-2 448 / 483 (head x 124 to 37, leaves frame). Caption zone clean L 7 `--band 1150:1344 --max-mean 0.80 --max-p95 0.99`: mean 0.736, p95 0.877, pass. Raised mitten L 0 about (432, 608) read off the frame (guide 470, 591: 38 / 17 px, inside 40); point mitten L 7 about (228, 708) (end guide 250, 712: 22 / 4 px); mitten y far above 1100. Mouth open L 7, face set. tsc: 0 errors in `src`; `edu30-cast` and `edu30-props` tests pass.
+- **Not followed:** (1) MEREDITH lead 717 (L 0) and 763 (L 20) vs rows 654 and 696 ±30: same cause as T18 (decided staging (-0.6, 0, 1.05) and the camera give 1.78 m + hat at about 403 px/m); left as decided, Film to rule (figure 0.2 m farther or f about 920 would meet the row). (2) Mitten rows were read off the frame, not a probe number (no mitten anchor in `measure-shots`). (3) The flock band beyond is behind the lens at yaw 148 (flock at z -60..-30, camera looks +z), so F1 is painted but clips out; no flock is visible. (4) The spare pan on GUNNER-2's thighs is at the left edge and not visible in any frame.
