@@ -76,7 +76,7 @@ T24 and T29 only read `emu.ts` and `flock.ts`. Their proofs may show the r5 emu 
   - T32 after T30 and T15.
   - T33 after T07 r6.
 
-## User question Q-R7-1 (open, for the coordinator): T14 stop dust at the fix-pass cap
+## User question Q-R7-1 (answered 2026-11-20 by the user: (a) accept r5 as built, row <= 27 %): T14 stop dust at the fix-pass cap
 
 T14 has used both fix passes (r4, r5). R6 promised that a further miss goes to the user. The r5 stop frame misses one row by 1.25 points (dust covers 26.25 % of the truck's full projected box at L 44 against ≤ 25 %), but the picture reads as asked: the truck is clear at the stop and the dust overtakes by L 53. Show `projects/edu/EDU/previews/T14r5-stop-44.png` (and `T14r5-sheet.png`):
 - **(a) Recommended: accept r5 as built**, with the row widened to ≤ 27 %. No code change, T14 stays done.
