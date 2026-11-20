@@ -1,5 +1,5 @@
 # T22 — plate B02-SH06 ("สามคนเหรอ…": EMU-HERO counts the crew, then the crane over a field of rising heads) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: r8 accepted in part; fix pass 2 (last) in **T42** (R10: near field birds culled) · was: built, open question (Film) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: r8 accepted in part; fix pass 2 (last) = **T42 r2**, ready (R11: rows restated TF70; acceptance pre-decided in T42 r2) · was: r8 accepted in part; fix pass 2 (last) in **T42** (R10: near field birds culled) · was: built, open question (Film) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (emu face and nods, rising heads, loader hands)
 Blocked by: T03, T07, T08, T09, T11, T12, T13 · Consumers: B02-SH06 (global 592–666)
 Model: sonnet, medium

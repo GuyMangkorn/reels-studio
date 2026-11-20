@@ -1,5 +1,5 @@
 # T18 — MEREDITH gives the order: `new: order-chop` (raised arm chopped forward into a point) with the shouted "ยิง!" mouth
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built; fix pass 1 in **T41** (R10: face only) · was: ready (Q8 answered by the user: values as written)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: **done** (R11: fix pass 1 = T41, accepted, TF65, TF68) · was: built; fix pass 1 in **T41** (R10: face only) · was: ready (Q8 answered by the user: values as written)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T17 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: B03-SH05
 Model: sonnet, medium

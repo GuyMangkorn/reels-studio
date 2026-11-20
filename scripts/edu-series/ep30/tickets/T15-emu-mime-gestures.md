@@ -1,5 +1,5 @@
 # T15 — EMU-HERO's mime gestures exist: wing flick (both sides), invisible-watch check, foot tap, wing wave (front three-quarter and back)
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: fix pass 1 in **T40** (R10: gesture wing does not read at 270 px in B03-SH03, B05-SH04, B06-SH04) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R11: fix pass 1 = T40, accepted as built, TF64, TF66, TF67) · was: fix pass 1 in **T40** (R10: gesture wing does not read at 270 px in B03-SH03, B05-SH04, B06-SH04) · was: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: movement · Hard: yes (animal, movement, wing as a gesturing limb)
 Blocked by: T07 (same files `emu.ts`, `looks.ts`, `tests/edu30-emu.test.ts`; uses the T06 wing rig and T07 head controls) · Consumers: B03-SH03 (flick), B04-SH05 (watch check, foot tap), B05-SH04 (wave, front three-quarter), B06-SH04 (one wave swing, back)
 Model: sonnet, medium

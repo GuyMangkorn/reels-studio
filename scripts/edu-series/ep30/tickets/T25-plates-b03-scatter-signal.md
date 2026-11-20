@@ -1,5 +1,5 @@
 # T25 — plates B03-SH02 (top shot: six groups burst out) and B03-SH03 (EMU-HERO's silent wing signal splits its group, L07 mime) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; SH03 re-proof in **T40** (R10) · was: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R11: SH03 re-proof in T40 accepted, TF53, TF66) · was: built; SH03 re-proof in **T40** (R10) · was: ready · r3: Film notes added (TICKETS-R3) · r5: Film note added (TICKETS-R5) · r8: Film notes added (TICKETS-R8)
 Class: set (plates) · Hard: yes (running flock, wing gestures)
 Blocked by: T03, T04, T05, T07, T08, T09, T11, T12, T15 · Consumers: B03-SH02, B03-SH03 (global 760–867)
 Model: sonnet, medium

@@ -1,5 +1,5 @@
 # T23 — plate B03-SH05 (MEREDITH's order "ยิง!" on a low heroic three-quarter) is built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; re-proof in **T41** (R10) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R11: re-proof in T41 accepted, TF50, TF52) · was: built; re-proof in **T41** (R10) · was: ready (Q8 answered by the user: values as written) · r3: Film notes added (TICKETS-R3)
 Class: set (plate) · Hard: yes (arm chop, talking face)
 Blocked by: T03, T09, T11, T12, T13, T18 · Consumers: B03-SH05 (global 667–687)
 Model: sonnet, medium

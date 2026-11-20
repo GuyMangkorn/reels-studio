@@ -1,5 +1,5 @@
 # T42 — plate fixes: B02-SH06 near field birds culled (T22 fix pass 2) and B04-SH03 spouts in the shallows + one casing spec (T27 fix pass 1)
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: partial (B04-SH03 built; B02-SH06 blocked on H1 vs H2, question for Film)
+Deliverable: EDU-EP30-SHORT · Revision: **r2** (`EDU-EP30-TICKETS-R11`: B04-SH03 accepted; B02-SH06 rows H1/H2 restated, see [r2](#r2-film-r11-b02-sh06-only)) · Status: **ready** (B02-SH06 only; T22 fix pass 2, the last)
 Class: set (fix bundle, two plates) · Hard: yes (CAT02 bird reading; effects)
 Blocked by: none (T22 r8, T27, T28 built) · Consumers: B02-SH06, B04-SH03
 Model: sonnet, medium
@@ -51,3 +51,34 @@ Commit: see git log (`T42`). Proof (store `projects/edu/EDU/previews/`, T42-pref
 **B02-SH06 not built: H1 and H2 conflict (blocked, no fix pass used).** At `stackCam(def, 74)` the heads-field birds have ground y (px) and camera distance (m) as follows: rule "y > 1450 or distance < 6.0 m" drops **27** of 36 (kept **9**, dropped ids 1, 3, 4, 5, 6, 8, 9, 10, 11, 14, 16, 18-24, 26, 28-35); y > 1450 alone drops 12 (kept 24); distance < 6.0 alone drops 26 (kept 10). H2 (>= 28 kept) cannot hold with H1 under any form. Question for Film: relax to y-only (24 kept) or a smaller distance limit, or accept the near birds hidden by a different method (e.g. drop only those under the lower-left dark region, ids with y > 1450 and distance < 3.5 m), or accept B02-SH06 as built (cap reached). Nothing in B02-SH06.tsx changed.
 
 Fix passes used: T27 1 (done), T22 pass 2 not spent.
+
+<a id="r2-film-r11-b02-sh06-only"></a>
+## r2 — Film R11 (2026-11-20): B04-SH03 accepted; B02-SH06 only, T22 fix pass 2 (last)
+Viewed `T42-T42-sheet.png`, `T42-T42-c03_L19.png`, `T42-T42-c03_L27.png` (B04-SH03) and `T22r8-sheet.png` (B02-SH06 r8).
+
+**B04-SH03: accepted as built (TF69); not re-rendered in r2.** 7 of 11 strikes over water, nearest bird 1.79 m, muzzle (633, 832), caption zone pass, one casing spec. The spouts are faint white on the palest part of the frame (the lit shallows); the miss is carried by the mud kicks on the rim, the flash, the stop dead and the queue that never breaks. A darker spout tone would be a change to the shared T05 spout in `kit/gunfire.ts` for one shot; not taken. Smoke, shake and blast rows: code untouched, analytic values as T27 built (0.451 / 0.393, TF56). T27 closes with fix pass 1.
+
+**B02-SH06: build now.** Boss's measurements show H1's distance term drops 26 of 36 birds (every bird near the crane); the slabs on `T22r8-sheet.png` (L 52 lying shape lower left, dark wedges at L 58, 64, 74 lower left) all sit in the lower quarter of the frame, which is what the y term catches. H1 and H2 are replaced by H1r2 and H2r2; H3 stands.
+
+| Row | What | Value | Source |
+| --- | --- | --- | --- |
+| H1r2 | near-bird cull | at the L 74 camera (`stackCam(def, 74)`) project each `headsField` bird's ground anchor; drop from **every** frame each bird whose ground point is below **y 1450** (Boss r1 log: 12 dropped, 24 kept). The distance term is **withdrawn**. Same set every frame (no popping); the six rising groups and their timing unchanged for the birds kept | Film R11, TF70 |
+| H1b | L 52 backstop | after H1r2, view L 52, 58, 64 at 540 px (lower half). If a dark slab or a lying shape remains, also drop every bird whose ground point is below y 1450 at the L 52 camera (`stackCam(def, 52)`), as long as heads kept stay **≥ 20**; if that union would keep fewer than 20, keep H1r2 alone and log the ids that would have gone | Film R11 |
+| H2r2 | count | heads kept **≥ 20** (24 expected from H1r2); log kept count and dropped ids | Film R11, TF70 |
+| H3 | rest | unchanged (r1 row) | Film R10 |
+
+**Judgment for the builder.** As r1: as the crane rises only heads and necks come out of the wheat; no dark slab, no body seen lying down in the lower half. Do not repaint stalks, change the camera or move birds; removing birds is the whole fix.
+
+**Proof (r2).** Files: `src/painted/edu30/shots/B02-SH06.tsx` only. Stills (clean and guides-on) → `out/edu30-T42r2/`: B02-SH06 L 0, 4, 8, 12, 30, 52, 58, 64, 74. Sheet `scripts/qa-sheet.sh out/edu30-T42r2/sheet.png --cols 5 --width 270 …`; 540 px crops of the lower half at L 52 and L 74. `measure-shots.ts B02-SH06 0,74`. Archive `out/edu30-T42r2` as `T42r2-*.png`.
+
+| Frame | What must be visible | Measured number and its pass range |
+| --- | --- | --- |
+| B02-SH06 L 52, 58, 64, 74 | heads-only field; no dark slab or lying-bird shape in the lower half | viewed at 270 and 540 px; heads kept **≥ 20** (logged); dropped ids logged |
+| B02-SH06 L 0, 74 | leads unchanged | EMU-HERO L 0 **594 ± 10**, L 74 **326 ± 10**; MEREDITH L 0 **141 ± 15** to the head top |
+| B02-SH06 L 0, 4, 8, 12 | three men read (r8 F1) | cover **≤ 25 %** (r8 11.4 %) |
+| caption zone (TF46) | clean L 0, L 74 | `--band 1150:1344 --max-mean 0.80 --max-p95 0.99` pass |
+
+**Cap and acceptance (decided now, no R12 look check).** This is T22's last pass. If every r2 row passes, B02-SH06 is accepted by this ticket's result; the coordinator views `T42r2-sheet.png` before handing on. If a slab still shows after H1b, B02-SH06 is accepted with the r2 build as it stands (Film R11: fewer slabs than r8; no further Boss pass, no user gate). If a lead or cover row fails (it should not: no camera or cast code changes), revert `B02-SH06.tsx` to r8 (`3d963b8`) and B02-SH06 is accepted as r8 built.
+
+## Result r2 (Boss fills)
+Commit · proof sheet path · kept count and dropped ids · measured numbers · open question, if blocked

@@ -1,5 +1,5 @@
 # T32 — plates B06-SH03 (the sequel and the time-lapse) and B06-SH04 (withdrawal two, one silent wave) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built; SH04 re-proof in **T40** (R10) · was: ready, waits on T30 (R9)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: **done** (R11: SH04 re-proof in T40 accepted, TF60, TF67) · was: built; SH04 re-proof in **T40** (R10) · was: ready, waits on T30 (R9)
 Class: set (plates) · Hard: yes (time-lapse state driver, back-view wave)
 Blocked by: T30 (`vantage.ts`), T01, T03, T08, T09, T14, T15 · Consumers: B06-SH03, B06-SH04 (global 1580–1736)
 Model: sonnet, medium

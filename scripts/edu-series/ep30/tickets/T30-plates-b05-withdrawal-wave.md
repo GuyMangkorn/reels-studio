@@ -1,5 +1,5 @@
 # T30 — the shared retreat vantage, plate B05-SH03 (withdrawal one) and plate B05-SH04 (EMU-HERO waves the truck off, "ไว้มาใหม่นะ!") are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; SH04 re-proof in **T40** (R10) · was: ready, dispatchable (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R11: SH04 re-proof in T40 accepted, TF59, TF67) · was: built; SH04 re-proof in **T40** (R10) · was: ready, dispatchable (R9: T15 done) · was: ready · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (wing wave, talking beak)
 Blocked by: T03, T07, T08, T09, T14, T15 · Consumers: B05-SH03, B05-SH04 (global 1294–1433); T32 (vantage helper)
 Model: sonnet, medium

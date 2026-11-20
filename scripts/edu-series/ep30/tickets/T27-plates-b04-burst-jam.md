@@ -1,5 +1,5 @@
 # T27 — plates B04-SH03 (second firing beat, stop dead at E) and B04-SH04 (the jam close-up) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built; fix pass 1 in **T42** (R10: spouts in the shallows, one casing spec) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: **done** (R11: fix pass 1 = T42 r1 accepted, TF55–TF57, TF69) · was: built; fix pass 1 in **T42** (R10: spouts in the shallows, one casing spec) · was: ready (r2 adds T34 to Blocked by: the registered plate needs the overscan and shake canvas hook) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4) · r5: Film note added (TICKETS-R5)
 Class: set (plates) · Hard: yes (queue flinch and hops, gunner mitten, jam action)
 Blocked by: T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35 (done), T36 · Consumers: B04-SH03, B04-SH04 (global 993–1061)
 Model: sonnet, medium
