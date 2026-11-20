@@ -48,6 +48,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-20, Film (W5.2 plate ticket
     - T05 built 2026-11-19 (Boss, Sonnet medium, branch `worktree-agent-a07e395bd5f082c0f`, on T04 r4 + T10 r4): casings, strike spurts, spouts, splash in `kit/gunfire.ts`, `FX30-debris`; 18 tests pass; spout 5.0 px at 270, spurts 0.68-1.09 m; L 75 row not met (15 of 23 casings at rest, all by L 98; the shot ends at L 71) and jam-casing key angles open, both returned to Film in the ticket; proof `T05-*` in the store previews.
   - [x] W5.2s Ton sounds and cue sheet (90 cues, 67 sounds: 66 generated + filed, 1 library = 4 cue uses; `scripts/edu-series/ep30/sound-cues.json` for SCENE-R2; episode lock waits for `src/videos/edu-ep30/`, `short/sound-lock.py`; not listened; [notes](short/sound-notes.md))
   - [ ] W5.3 Draft passed (0/N shots)
+    - Editor pass 1b (2026-11-20, Sonnet medium): `src/videos/edu-ep30/` built and registered (`EDU-EP30-SHORT`, 28 plates, VOICE-R2.2 narration, 36 caption cards, label in two slots above the title band); tsc clean for it; 13 stills viewed (sheet `EDITOR-P1-sheet`), caption zone measured on 6 plates, all pass. **Not passed:** no draft render yet, no sound stem (`short/sound-mix.py` waits for Ton's sound-lock), no shot-by-shot review. Open: label split (Film), bold lines (Film). See [build-notes](build-notes.md#w53-editor-pass-1b-2026-11-20-sonnet-medium).
 - [ ] W6 Final passed (0/N shots)
 - [ ] W7 Pinned (0/N shots)
 - [ ] W8 Deliver
