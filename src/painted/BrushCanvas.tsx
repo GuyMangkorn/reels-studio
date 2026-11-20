@@ -24,7 +24,7 @@ export type PaintContext = {
 // p5.brush keeps one global WebGL runtime, so one canvas is shared by every mount on the page.
 let canvas: HTMLCanvasElement | null = null;
 
-type RenderProps = {paintScale?: number; soundOnly?: boolean; paintProfile?: boolean; paintSeedEager?: boolean; paintDraft?: boolean; paintFlatOff?: boolean};
+type RenderProps = {paintScale?: number; soundOnly?: boolean; paintProfile?: boolean; paintSeedEager?: boolean; paintDraft?: boolean; paintFlatOff?: boolean; paintFlatLinesOff?: boolean};
 /** Canvas resolution factor, from the `paintScale` input prop (render.mjs --preview). 1 for every delivery render. */
 const paintScale = () => {
   const value = Number((getInputProps() as RenderProps).paintScale ?? 1);
@@ -45,7 +45,7 @@ const MODE_ON: Record<string, string> = {fill: 'fill', set: 'stroke', hatch: 'ha
 const MODE_OFF: Record<string, string> = {noFill: 'fill', noStroke: 'stroke', noHatch: 'hatch', noMass: 'mass'};
 type Modes = Record<string, boolean | null>;
 const unknownModes = (): Modes => ({fill: null, stroke: null, hatch: null, mass: null});
-const deferredSeeding = (brush: Brush) => {
+const deferredSeeding = (brush: Brush, flatLines?: {takes: () => boolean; hint: (seed: number) => void}) => {
   let seed: number | null = null, noise: number | null = null, on = unknownModes();
   const stack: Modes[] = [];
   const apply = () => {
@@ -62,7 +62,10 @@ const deferredSeeding = (brush: Brush) => {
       name === 'noiseSeed' ? (n: number) => { noise = n; } :
       (...args: unknown[]) => {
         const washOnly = name === 'polygon' && Object.values(on).every((v) => v === false);
-        if (!STATE_ONLY.has(name) && !washOnly) apply();
+        // Flat ink lines: stroke setters read no random numbers, and a spline that flatFill draws itself takes its seed as a hint.
+        const flatLine = !!flatLines && (['set', 'pick', 'stroke', 'strokeWeight'].includes(name) || (name === 'spline' && flatLines.takes()));
+        if (flatLine && name === 'spline' && seed !== null) flatLines!.hint(seed);
+        if (!STATE_ONLY.has(name) && !washOnly && !flatLine) apply();
         if (name === 'push') stack.push({...on});
         else if (name === 'pop') on = stack.pop() ?? unknownModes();
         else if (MODE_ON[name]) on[MODE_ON[name]] = true;
@@ -81,8 +84,10 @@ const deferredSeeding = (brush: Brush) => {
   };
 };
 let deferred: ReturnType<typeof deferredSeeding> | null = null;
-/** Opaque flat fills drawn straight to the canvas, under every other wrapper (flatFill.ts). `paintFlatOff` (paint-bench A/B only) leaves them to p5.brush. */
+/** Opaque flat fills and `rotring` ink lines drawn straight to the canvas, under every other wrapper (flatFill.ts). `paintFlatOff` (paint-bench A/B only) leaves both to p5.brush, `paintFlatLinesOff` the lines. */
 let flat: ReturnType<typeof flatFills> | null = null;
+/** The factor the library's brushes were last scaled by: flatFill sizes its ink lines from it. */
+let tipScale = 5;
 
 /**
  * Flat fills, for every render (user, 6 Nov 2026: "use the Draft as the Final"; it was the `paintDraft` blocking draft only).
@@ -200,6 +205,7 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
       host.current.appendChild(canvas);
       (brush as unknown as {load: (target: HTMLCanvasElement) => void}).load(canvas);
       brush.scaleBrushes(brushScale);
+      tipScale = brushScale;
       // A preview paints a smaller canvas; the browser stretches it back to the composition size.
       Object.assign(canvas.style, {width: '100%', height: '100%'});
     } else if (canvas.parentElement !== host.current) {
@@ -212,10 +218,10 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
     const step = Math.floor(frame / boilEvery);
     // `paintSeedEager` (paint-bench A/B only) hands `paint` the plain brush with eager seeding.
     const props = getInputProps() as RenderProps;
-    if (!props.paintFlatOff) flat ??= flatFills(brush, () => canvas);
+    if (!props.paintFlatOff) flat ??= flatFills(brush, () => canvas, {lines: !props.paintFlatLinesOff, tip: () => 0.15 * tipScale});
     // Frame-level calls go through the flat-fill wrapper too: it mirrors the transform and draws its queue before `render`.
     const lib = flat?.brush ?? brush;
-    if (!props.paintSeedEager) deferred ??= deferredSeeding(lib);
+    if (!props.paintSeedEager) deferred ??= deferredSeeding(lib, flat?.lines);
     if (props.paintProfile) profiler ??= profiled(deferred?.brush ?? lib, deferred?.modes, lib.render, flat ? () => ({flat: flat!.stats()}) : undefined);
     const inner = profiler?.brush ?? deferred?.brush ?? lib;
     const b = (draftBrush ??= drafted(inner));
