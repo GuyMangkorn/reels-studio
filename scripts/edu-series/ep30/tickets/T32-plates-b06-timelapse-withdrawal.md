@@ -1,5 +1,5 @@
 # T32 — plates B06-SH03 (the sequel and the time-lapse) and B06-SH04 (withdrawal two, one silent wave) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready, waits on T30 (R9) · was: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: built 2026-11-20, awaiting Film look check (Boss, Sonnet medium) · was: ready, waits on T30 (R9)
 Class: set (plates) · Hard: yes (time-lapse state driver, back-view wave)
 Blocked by: T30 (`vantage.ts`), T01, T03, T08, T09, T14, T15 · Consumers: B06-SH03, B06-SH04 (global 1580–1736)
 Model: sonnet, medium
@@ -45,4 +45,27 @@ These override any older value in this ticket that they name.
 | SH04 vs B05-SH03 | same framing and truck path | camera lines identical within T30 values; truck screen x ± 10 px at equal world x |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T32 commit) · fix passes used: 0 · proof sheet: store `projects/edu/EDU/previews/T32-sheet.png` (17 frames, 270 px), `T32-zoom.png` (SH04 L 39, L 43, SH03 L 89 at 540 px), per-frame `T32-s03_L<L>.png`, `T32-s04_L<L>.png`, clean `T32-clean-c04_L39.png`, `T32-clean-c03_L89.png`, `T32-c04_L15.png`, B05-SH03 reference `T32-s05_L20.png` (local `out/edu30-T32/`).
+
+**Built** (`B06-SH03.tsx`, `B06-SH04.tsx`, no other file): both on `VANTAGE_CAM` / `paintVantageSet` / `fenceLine`. SH03: `dayOf(L)` is the time-lapse state driver (jump j = floor((L-59)/6), light [1,0,1,0,1,1], eaten 0.7+0.06j, stubble 0.4+0.12j, bird count 5,6,7,8,8,9 from the add frames 66/74/82/90); truck from T14 `truckState` (arrival dust only L < 59); hero frozen (`heroFrozen`, no head turn); reel cool with `tintMix` = clamp((L-94)/4). SH04: light 1, eaten/stubble 1, nine birds, T14 drive, hero `emuWingWave(L, {back: true})`.
+
+**Measured** (`measure-shots.ts`, px; frame time from `stills.mjs`)
+| Row | Number | Pass range | Result |
+| --- | --- | --- | --- |
+| SH03 L 27 truck | truck state centre x 28.0 m at L 27 (enters from the left; viewed `T32-s03_L27.png`, truck body beyond the left edge) | left of x 200 | pass |
+| SH03 L 59 ... 89 six days | viewed sheet: light, stubble, truck present/absent alternate over the six blocks | six distinct days | pass |
+| SH03 hero identical | probe EMU-HERO 520 / 522 / 526 / 530 / 531 / 532 / 533 / 534 / 535 / 535 px (L 0, 27, 45, 59, 65, 71, 77, 83, 89, 98), x 661 -> 633: state identical in code, size drift is the camera push only. Literal bbox pixel diff L 59 vs L 71 (both m 1, crop x 560-740, y 780-1300): mean luma diff 16.6 | <= 2 | **fail as written** (see deviations) |
+| SH03 L 89 birds | `dayOf(89).count` = 9, painted via `fenceLine(9)`; viewed `T32-zoom.png` | 9 | pass (counted by state, heavy overlap in the picture) |
+| SH04 L 39 EMU-HERO | 556 px (L 0 541, L 20 547, L 36 555, L 43 623 with the wing, L 57 561) | 542-563 | pass |
+| SH04 L 39 / 43 wing tip | tip y 823 (x 398) at L 39; y 734 (x 544) at L 43; head top y 768 | tip 100 px above the head row (y <= 668) | **fail** (see deviations) |
+| SH04 vs B05-SH03 truck x | at equal world x (2.5, 6, 12, 20 m): B05 screen x 438 / 114 / -311 / -762, SH04 375 / 42 / -386 / -782 | within 10 px | **fail**: 20-75 px |
+| Caption zone (TF46: band 1150:1344, mean <= 0.80, p95 <= 0.99) | SH04 L 39 0.480 / 0.758, SH03 L 89 0.547 / 0.864, SH04 L 15 0.485 / 0.761 | pass | pass |
+| Nine-bird frame time (r7 note) | SH03 L 89 51.6 s (clean still, loaded machine) | log | logged; under the 120 s trigger, still `far` for all non-hero birds (as T30) |
+
+**Deviations and values I could not follow**
+1. R9 note "Caption zone (TF46)." was empty; the rule given in the dispatch was used.
+2. **Wing tip above the head row -100 px** cannot hold with T15 as built: TF35 caps the tip at 1.85 m, about the head height (head top y 768 at 1.95 m scale), so the tip reaches y 734 at best (L 43). Not redesigned; sheet acceptance (wing up at the flank, toward the truck, one swing, fold by 50) holds in the frames.
+3. **Truck x +-10 px vs B05-SH03** is not reachable with the T30 camera lines: B05-SH03 yaws 160 -> 166 while B06-SH04 holds 164 from eye z 2.5, so the same world x differs by about 20-75 px (grows toward frame centre). Both follow their decided camera rows; world path and speed (12 m/s) match. Film to relax the row or change a camera line.
+4. **Hero pixel diff <= 2** is a mean-diff the plates cannot meet: the ground, shadows and neighbouring birds in the bbox change per day and the camera moves 10 px; the hero itself is identical (same pose, seed, position).
+5. **LOD:** the hero paints `near`; all other birds `far` for every frame (as T30; the automatic rule would paint the front row near).
+6. R7 sound/Editor items untouched; title comes from the adapter (visible in the SH04 frames L 39-57; absent L 0-36 as timed 1715-1737).
