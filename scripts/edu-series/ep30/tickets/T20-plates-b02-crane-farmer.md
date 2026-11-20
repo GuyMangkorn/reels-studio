@@ -45,4 +45,27 @@ These override any older value in this ticket that they name.
 | SH02 L 9 / 53 | arm pointing back (screen left) / eyes at the lens | FARMER 604 → 715 ± 30 px; `thumb check` line |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: see `git log` on this worktree branch (T20 commit) · fix passes used: 0 · Sonnet medium, 20 Nov 2026 · proof: store `projects/edu/EDU/previews/T20-sheet.png` (12 frames, 270 px), per-frame `T20-s1_<L>.png`, `T20-s2_<L>.png`, clean `T20-clean_s1_0.png`, `T20-clean_s1_100.png`, `T20-clean_s2_40.png` (local `out/edu30-T20/`, logs `out/logs/T20-*.log`). `npx tsc`: 8 error lines, none in the two shot files (environment `three` / `hippo`). `npm test`: 477/486 pass; the 9 failures are HIPPO.YAWN/CHARGE/HALT (known EP18 debt) and loudness, new-shot, render-inputs, segments, store adopt and `canvasStyleOf` test (d) (B03-SH01 L2 overscan, T24 r5 owns it), none touching these plates.
+
+**Built** (`B02-SH01.tsx`, `B02-SH02.tsx`; no other file): space P, light 0, eaten 0.4, stubble 0 through `paintPaddockScene`. SH01: camera fields eased with smoothstep(L/100) then a 0.15 m linear drift along the view L 100-154; the T09 high-view wheat switches by itself at pitch <= -20 deg (L about 56); `buffetRow(L)` plus F1 `flockIn(31000, 40, [-30, 30], [-60, -30])` re-posed per frame on the shot's own L (peck cycle 15 f in eighths, walkers 0.6 m/s by `gaitPhase`, stand), far mass `far {n 150, x +-150, z -200..-80}`. SH02: eased camera L 0-84, FARMER through T12 `paintCrewPose` 'farmer' at (-2.5, 0, 5.2), one emu at (-3.6, 0, 3.0) facing -x.
+
+**Measured against the Proof table** (`measure-shots.ts`, px)
+
+| Row | Number | Pass range | Result |
+| --- | --- | --- | --- |
+| SH01 L 0 stripe test, row-mean luma, trend removed | 6.6 over y 800-1180 (clean ground band); 18.3 over y 450-640; 54.3 over y 450-1180 | <= 12 | band pass; the full-height number holds the eaten patch, fence, vignette and flock (T09 Q-A measured the same way on a bare variant, which this plate has none of); frame viewed: no stripes or arc rows |
+| SH01 L 100 / 154 nearest bird (head-up) | 537 / 567 | >= 480 (sheet 510) | pass |
+| SH01 L 135 six heads down | all six at u = 1 (`buffetRow`, T08), viewed L 134, 135 down, L 151 up | 6 of 6 | pass |
+| SH02 L 0 / 9 / 53 / 84 FARMER | 619 / 622 / 694 / 735 | 604 -> 715 +- 30 | pass |
+| SH02 L 9 / 45 line shoulder -> mitten to emu head | 13.0 / 15.7 (head anchor, grazing u 0.75); 50.4 / 56.1 to the sheet's head point (-3.6, 1.0, 3.0) | <= 60 | pass |
+| SH02 farmer solve | flexion3 55.6 deg, reach 0.460 m, drawn flexion 69.3 / 71.2 deg, arm ratio 0.833 / 0.807 | 55.6 deg, 0.50 m from the shoulder | as built by T12 |
+| Caption zone (clean frames) | SH01 L 0 mean 0.894, p95 0.907; L 100 mean 0.65, p95 0.914; `pass: false` at the script defaults | no range in the ticket | measured |
+
+`thumb check: FARMER RIGHT: open oval, no thumb drawn (unshaped kit); edge to the lens` · `arm check: FARMER right: attached ok` (arm ratio <= 1.05 on L 9, 45) · emu feet planted (static `at`, stance not animated; slip 0).
+
+**Values I could not follow / judgement calls (return to Film)**
+- **SH02 emu carriage.** The sheet gives a pecking head at 1.0 m; the standing head is 1.60 m and misses the pointing line by 177 px. The emu holds a grazing carriage (u 0.75, head 0.69 m) all shot with the full peck (u 1.0) at L 40, instead of "stand otherwise"; line 13 / 16 px.
+- **SH01 stripe measure.** No bare variant of this camera exists, so the <= 12 test is met only on the clean band y 800-1180 (6.6); the rest of the frame holds scene content. Frame viewed.
+- **SH01 L 60 arcs.** At L 60 pitch is -16.7 deg, past the -20 deg switch, so the T09 ridge rows paint (concentric arcs near the lens, a T09 limit): visible from the switch (L about 56) while the camera descends, as in the viewed L 60 frame; reported, not fixed (T09 owns the ridge painter).
+- **Seek and walkers.** Every helper is a pure function of L; F1 walkers' foot slip was not measured (far birds, > 12 m).
+- Render note: pose keys are cached, so continuous blends of a 40-bird flock (not quantised) rebuilt every bird and timed out at 180 s; F1 peck blends are quantised to eighths.

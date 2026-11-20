@@ -30,7 +30,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12 (done, R8), T13 | ready, **dispatchable** (Q7 answered; r4 notes: TF21, fists) | 0 | — |
 | [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 | ready (Q8 answered) | 0 | — |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | ready, **dispatchable** (all blockers done) | 0 | — |
-| [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | ready, **dispatchable** (r2 notes: farmer point as built, line ≤ 60 px) | 0 | — |
+| [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | built, awaiting Film look check (r2 notes: farmer point as built, line ≤ 60 px) | 0 | see `git log` (T20 commit) |
 | [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | ready, **dispatchable** (r4 notes: salute as built) | 0 | — |
 | [T22](T22-plate-b02-sh06-heads.md) plate B02-SH06 | set | yes | T03, T07, T08, T09, T11, T12, T13 | ready, **dispatchable** (r7 notes: wheat interleave, LOD cap, held pan) | 0 | — |
 | [T23](T23-plate-b03-sh05-order.md) plate B03-SH05 | set | yes | T03, T09, T11, T12, T13, T18 | ready (Q8 answered) | 0 | — |
