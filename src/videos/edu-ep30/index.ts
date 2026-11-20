@@ -13,8 +13,7 @@ import {edu30CaptionEvents} from './cues';
  * `outline` look = edu stroke, no band, block centred on the TF46 band y 1150-1344, scale 1; character lines captioned like narration, none in the three mime beats). Label
  * "แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง" on every plate cue (VD30-10), mark @TamMaiLa top-left (chrome default, outline look as EP26).
  * Ending: closed, the 2.0 s hold is the last 60 f of B07-SH02 (G1917-1976), no picture fade, no extra series ending sound (UT15: Film's SFX-B07-SH02-1/2 from the cue sheet).
- * Sound: the stem `audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav` is baked from scripts/edu-series/ep30/sound-cues.json (90 cues, EDU-EP30-SCENE-R2) by the mix script after Ton's
- * sound-lock (`short/sound-mix.py`, not written in pass 1); until it exists the composition has no audio track (see `STEM`).
+ * Sound: the stem `audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav` is baked from scripts/edu-series/ep30/sound-cues.json (90 cues, EDU-EP30-SCENE-R2) by `short/sound-mix.py` (Ton's sound lock, pass 2), played as the `audio` track beside the narration.
  */
 /** The sheet's one-string label ("แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง", VD30-10) runs as one 952 px line, x 120 to 1072, and crosses the T02 title boxes (y 300-475); the same words are set in the label's two slots (the "·" becomes the line break) at y 180-290, under the mark and above the title band, on every shot (open question to Film, build-notes). */
 const LABEL_SLOTS = ['แต่งเติมจากเรื่องจริง', 'ภาพและเสียงจำลอง ไม่ใช่ฟุเทจจริง'];
@@ -28,8 +27,8 @@ const timeline = assemblePaintedTimeline({
   captions: edu30CaptionEvents(cuts.map((c) => c.start)),
 });
 
-/** Set to the baked stem once `short/sound-mix.py` has written it (then `audio` below carries it). */
-const STEM: string | null = null;
+/** The draft stem baked by `short/sound-mix.py` from the cue sheet (`audio` below carries it; null = no audio track). */
+const STEM: string | null = 'audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav';
 
 const videos: EpisodeVideos = {
   episode: 'edu-ep30',

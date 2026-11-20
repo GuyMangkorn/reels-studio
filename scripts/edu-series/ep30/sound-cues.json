@@ -3,7 +3,8 @@
  "sceneSheets": "EDU-EP30-SCENE-R2",
  "video": "src/videos/edu-ep30",
  "sources": [
-  "src/videos/edu-ep30"
+  "src/videos/edu-ep30",
+  "scripts/edu-series/ep30/short/sound-mix.py"
  ],
  "fps": 30,
  "durationFrames": 1977,
@@ -790,10 +791,10 @@
  "exempt": [{"src": "audio/edu/EDU-EP30-SHORT-draft-stem-v1.wav", "reason": "stem baked by short/sound-mix.py from this sheet"}],
  "levels": {
   "stems": {
-   "voice": "",
-   "bed": "",
-   "texture": "",
-   "accent": ""
+   "voice": "out/stems/voice.wav",
+   "bed": "out/stems/bed.wav",
+   "texture": "out/stems/texture.wav",
+   "accent": "out/stems/accent.wav"
   },
   "checks": [
    {
