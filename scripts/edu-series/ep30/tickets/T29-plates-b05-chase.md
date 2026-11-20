@@ -1,5 +1,5 @@
 # T29 — plates B05-SH01 (chase locked to the truck) and B05-SH02 (the barrel bounces at the sky) are built and proven
-Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass ready (R8 Film look check, 2026-11-20: SH02 passes; SH01 G2 reads as a pipe at his mouth, rest elevation +15° (C1, TF31); GUNNER-1 rows set to the built figure (TF32); SH02 emus as built (TF33); thumb waived in the chase; fix pass 1) · was: built (Boss 2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r5 · Status: r5 fix pass 1 built (Boss 2026-11-20, awaiting Film look check); was: r5 fix pass ready (R8 Film look check, 2026-11-20: SH02 passes; SH01 G2 reads as a pipe at his mouth, rest elevation +15° (C1, TF31); GUNNER-1 rows set to the built figure (TF32); SH02 emus as built (TF33); thumb waived in the chase; fix pass 1) · was: built (Boss 2026-11-20) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: set (plates) · Hard: yes (rider arms on a bouncing body, running emus)
 Blocked by: T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 · Consumers: B05-SH01, B05-SH02 (global 1150–1293)
 Model: sonnet, medium
@@ -88,3 +88,20 @@ Commit: see `git log` on this worktree branch (T29 commit) · fix passes used: 0
 - **Caption zone.** The SH01 L 0 frame fails the default caption-zone numbers (mean 0.425): the truck cab and dark road fill the band. No pass range in the ticket; Film to judge.
 - **Thumb.** No thumb drawn (T11 mitten). T36 `flatFist` on the near right fist (r4 note) needs a `paintTruckRig` hook in `props.ts` (T14's file, outside this ticket's Files): ask Film for a one-line T14 change if the thumb must show in the chase.
 
+
+## Result r5 (Boss, Sonnet medium, 20 Nov 2026, fix pass 1 of 2)
+Commit: see `git log` on branch `worktree-agent-a3b84bcdbed4bef74` (T29 r5 commit). Files touched: `B05-SH01.tsx` (`g2Elev: st.g2Elev + 15 * D`), `B05-SH02.tsx` (`g2Elev: st.g2Elev + 15 * D * (1 - easeIO(L / 8))`, smoothstep). Proof: store `projects/edu/EDU/previews/T29r5-sheet.png` (7 frames, 270 px), `T29r5-crop-s1_0.png` (540 px gunner and gun), `T29r5-roofzoom.png`, `T29r5-s1_{0,15,30,59}.png`, `T29r5-s2_{0,8,11}.png`; local `out/edu30-T29r5/`; measuring script `out/edu30-T29r5/m.ts` (not committed). `npx tsc`: 8 error lines, none in the two shot files; full `npm test` did not finish in this environment (stalled after 59 subtests, killed); `edu30-props`, `edu30-flock`, `edu30-cast` tests 45 of 45 pass (`out/logs/T29r5-edu30test.log`).
+
+| Row | Measured | Pass | Result |
+| --- | --- | --- | --- |
+| C1 SH01 L 0 / 15 / 30 / 59 | elevation 25.0°, muzzle (368, 836), stock (185, 1085): muzzle 248 px above stock; butt to muzzle 309 px; viewed: gun climbs screen right over the cab, no longer a tube at his mouth | >= 60 px / >= 150 px | pass |
+| C1 arm ratio | right 1.00, left 1.00 (all four frames) | <= 1.05 | pass |
+| C1 muzzle vs cab roof | muzzle tip about 7 px under the roof lip's lower edge (540 px zoom `T29r5-roofzoom.png`, no overlap, roof starts right of it) | >= 10 px | **miss by about 3 px, estimated by eye on the zoom** |
+| C1b SH02 L 0 elevation | 25.0° = SH01 L 59 25.0° (L 4: 17.5°, L 8: 10.0°) | ± 2° | pass |
+| C1b muzzle L 8 -> 11 | y 894 -> 738 = 156 px (unchanged from r4) | 120-260 | pass |
+| C2 GUNNER-1 | SH01 L 0 / 15: 444; SH02 L 0: 495; L 72: 460 | 444 ± 15; 495 ± 20; >= 430 | pass |
+| C3 SH02 emus | unchanged, viewed L 0 | as built | pass |
+| C4 thumb | `thumb check: GUNNER-1 RIGHT: mitten fist, no thumb drawn (T14 rig, waived R8)`; `arm check: GUNNER-1 right: attached ok` | waived | logged |
+| C5 caption zone | not re-measured (SH01 L 0 mean 0.425 accepted R8); the gun now rises into the upper left of the band-free area, no new run | logged | accepted |
+
+**Value I could not follow:** C1 muzzle-to-roof clearance (about 7 px vs >= 10 px). The ticket fixes the rest at 25°; raising or lowering it, or moving the gun, is outside these rows. Film to accept the gap or revise the rest elevation (not tried).

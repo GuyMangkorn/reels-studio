@@ -39,7 +39,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T26](T26-plates-b04-ambush-queue.md) plates B04-SH01, SH02 | set | yes | T03, T10, T11, T12, T16 | ready | 0 | — |
 | [T27](T27-plates-b04-burst-jam.md) plates B04-SH03, SH04 | set | yes | T03, T04 (r4), T05, T06 (r4), T10 (r4), T11, T13, T16, T34, T35, T36 | ready (r3 notes: muzzle (637, 827), no mirror, B04-SH04 eye x −5.68; r4 notes: smoke cover, T34 carry-over rows, right mitten with thumb; r5 notes: jam-casing angles, fists over the gun) | 0 | — |
 | [T28](T28-plates-b04-gunner-watch.md) plates B04-SH06, SH05 (PB01) | set | yes | T03, T05, T07, T10, T11, T13, T15, T16, T17 | ready (Q7 answered; r4 notes: TF21) | 0 | — |
-| [T29](T29-plates-b05-chase.md) plates B05-SH01, SH02 | set | yes | T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 | r5 fix pass ready, **dispatchable** (R8 look check: SH02 pass; C1 SH01 gun rest +15° (TF31) with C1b SH02 settle by L 8; C2 heights 444 ± 15 / 495 ± 20 / ≥ 430 (TF32); C3 emus as built (TF33); C4 thumb waived) | 1 (r5) | `6b2649b` (built) |
+| [T29](T29-plates-b05-chase.md) plates B05-SH01, SH02 | set | yes | T03, T04 (r4), T06 (r4), T08, T09, T11, T14, T36 | r5 fix pass 1 **built** 2026-11-20, awaiting Film look check (R8 look check: SH02 pass; C1 SH01 gun rest +15° (TF31) with C1b SH02 settle by L 8; C2 heights 444 ± 15 / 495 ± 20 / ≥ 430 (TF32); C3 emus as built (TF33); C4 thumb waived) | 1 (r5, built) | `6b2649b` (built), r5 commit on branch `worktree-agent-a3b84bcdbed4bef74` |
 | [T30](T30-plates-b05-withdrawal-wave.md) retreat vantage + plates B05-SH03, SH04 | set | yes | T03, T07, T08, T09, T14, T15 | ready (r4 notes: wire contrast between birds) | 0 | — |
 | [T31](T31-plates-b06-tanks-bow.md) plates B06-SH01, SH02 (L15 mime) | set | yes | T03, T06, T07, T08, T09, T12 | ready, **dispatchable** (r2 notes: slow-walk read at plate size) | 0 | — |
 | [T32](T32-plates-b06-timelapse-withdrawal.md) plates B06-SH03, SH04 | set | yes | T30, T01, T03, T08, T09, T14, T15 | ready (r7 notes: fence-bird LOD) | 0 | — |
@@ -47,7 +47,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 
 37 tickets: 22 asset/capability (T01–T18, T34–T37), 15 plate tickets covering all 28 shots once. `needs-input`: none. Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15, with T37 (`survival/beast.ts`, hash re-takes in `tests/edu30-emu.test.ts`) before T07 r6; `flock.ts`/`proof-flock.tsx` T35 → T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T36 → T12 → T17 → T18 (T36 also `kit/cast.ts`, `kit/back.ts`); `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; `dam.ts` T10 alone; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32).
 
-**Done (18):** T01, T02, T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14 (Film accept; user confirms Q-R7-1), T34, T35, T36, T37. **Fix passes ready (2):** T24 r5, T29 r5.
+**Done (18):** T01, T02, T03, T04, T05, T06, T07, T08, T09, T10, T11, T12, T13, T14 (Film accept; user confirms Q-R7-1), T34, T35, T36, T37. **Fix passes ready (1):** T24 r5. **Fix pass built, awaiting Film look check (1):** T29 r5.
 
 **Dispatchable now (R8), in parallel, no shared file** (each in its own worktree, Sonnet medium; every blocker is done):
 1. **T15** emu mime. Files: `src/painted/edu30/emu.ts`, `src/painted/edu30/looks.ts`, `tests/edu30-emu.test.ts`.

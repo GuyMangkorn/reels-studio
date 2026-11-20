@@ -10,6 +10,7 @@ import {DEFAULT_REEL, makeShot, type Shot30} from '../shot';
 const N = 60;
 const SHOT = 'B05-SH01', LIGHT = 0, EATEN = 0.6;
 const hs = (n: number) => { const s = Math.sin(n * 78.233 + 12.9898) * 43758.5453; return s - Math.floor(s); };
+const D = Math.PI / 180;   // r5 C1 (TF31): rest elevation 10 -> 25 deg so the barrel climbs over the cab
 const q16 = (x: number) => Math.round(x * 16) / 16;
 const SEED = 36400, X0 = -17;   // truck centre x at L 0: world = truck-local + this
 
@@ -35,7 +36,7 @@ export const def: Shot30 = {
       runners.forEach((_, i) => paintPuffs(p, sc, SEED + 50 + i * 13, footEvents((f) => state(i, f), L, 10), 0.25));
       paintFlock(p, sc, birds(L), {sun: sunOf(LIGHT)});
     });
-    const rig = paintTruckRig(p, c, {centre: st.centre, dir: st.dir, pitch: 0, roll: 0, riders: 'chase', gear: 'pedestal', g2Elev: st.g2Elev, wheelTurn: st.wheelTurn, t: L / 30, seed: 14100});
+    const rig = paintTruckRig(p, c, {centre: st.centre, dir: st.dir, pitch: 0, roll: 0, riders: 'chase', gear: 'pedestal', g2Elev: st.g2Elev + 15 * D, wheelTurn: st.wheelTurn, t: L / 30, seed: 14100});
     paintTruckDust(p, sc, L, track, {part: 'near', ...dust});
     if (rig.gunner) pr?.lead('GUNNER-1', {top: rig.gunner.top, bottom: rig.gunner.bottom, x: rig.gunner.head[0]});
   },
