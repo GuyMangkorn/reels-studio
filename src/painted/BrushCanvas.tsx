@@ -1,6 +1,7 @@
 import * as brush from 'p5.brush/standalone';
 import {useLayoutEffect, useRef} from 'react';
 import {AbsoluteFill, getInputProps, useCurrentFrame, useVideoConfig} from 'remotion';
+import {flatFills} from './flatFill';
 
 export type Brush = typeof brush;
 
@@ -23,7 +24,7 @@ export type PaintContext = {
 // p5.brush keeps one global WebGL runtime, so one canvas is shared by every mount on the page.
 let canvas: HTMLCanvasElement | null = null;
 
-type RenderProps = {paintScale?: number; soundOnly?: boolean; paintProfile?: boolean; paintSeedEager?: boolean; paintDraft?: boolean};
+type RenderProps = {paintScale?: number; soundOnly?: boolean; paintProfile?: boolean; paintSeedEager?: boolean; paintDraft?: boolean; paintFlatOff?: boolean};
 /** Canvas resolution factor, from the `paintScale` input prop (render.mjs --preview). 1 for every delivery render. */
 const paintScale = () => {
   const value = Number((getInputProps() as RenderProps).paintScale ?? 1);
@@ -44,7 +45,7 @@ const MODE_ON: Record<string, string> = {fill: 'fill', set: 'stroke', hatch: 'ha
 const MODE_OFF: Record<string, string> = {noFill: 'fill', noStroke: 'stroke', noHatch: 'hatch', noMass: 'mass'};
 type Modes = Record<string, boolean | null>;
 const unknownModes = (): Modes => ({fill: null, stroke: null, hatch: null, mass: null});
-const deferredSeeding = () => {
+const deferredSeeding = (brush: Brush) => {
   let seed: number | null = null, noise: number | null = null, on = unknownModes();
   const stack: Modes[] = [];
   const apply = () => {
@@ -80,6 +81,8 @@ const deferredSeeding = () => {
   };
 };
 let deferred: ReturnType<typeof deferredSeeding> | null = null;
+/** Opaque flat fills drawn straight to the canvas, under every other wrapper (flatFill.ts). `paintFlatOff` (paint-bench A/B only) leaves them to p5.brush. */
+let flat: ReturnType<typeof flatFills> | null = null;
 
 /**
  * Flat fills, for every render (user, 6 Nov 2026: "use the Draft as the Final"; it was the `paintDraft` blocking draft only).
@@ -112,12 +115,14 @@ let draftBrush: Brush | null = null;
  * colours) from time inside p5.brush, splits the frame at top-level push/pop (a plate's layers), and forces GPU completion
  * with a 1-pixel readPixels, so queued GL work is not reported as free. Off for every normal render.
  */
-const profiled = (base: Brush, modes?: () => string): {brush: Brush; begin: () => void; end: () => Record<string, unknown>} => {
+const profiled = (base: Brush, modes?: () => string, render: () => void = brush.render, extra?: () => Record<string, unknown>): {brush: Brush; begin: () => void; end: () => Record<string, unknown>} => {
   const now = () => performance.now();
   let inside = 0, depth = 0, calls = 0;
   const open: [number, number][] = [[0, 0], [0, 0]];
   const byCall: Record<string, number> = {}, counts: Record<string, number> = {}, layers: [number, number][][] = [[], []];
   const wrap = {} as Record<string, unknown>;
+  let label = 'start'; const byLabel: Record<string, [number, number]> = {};
+  (globalThis as {__paintMark?: (l: string) => void}).__paintMark = (l) => { label = l; };
   for (const [name, fn] of Object.entries(base)) {
     if (typeof fn !== 'function') { wrap[name] = fn; continue; }
     wrap[name] = (...args: unknown[]) => {
@@ -127,6 +132,7 @@ const profiled = (base: Brush, modes?: () => string): {brush: Brush; begin: () =
       try { return (fn as (...a: unknown[]) => unknown)(...args); } finally {
         const dt = now() - t0;
         inside += dt; calls++;
+        if (name === 'polygon' || name === 'spline') { const e = (byLabel[label] ??= [0, 0]); e[0] += dt; e[1]++; }
         const key = name === 'polygon' && modes ? `polygon:${mode}` : name;
         byCall[key] = (byCall[key] ?? 0) + dt;
         counts[key] = (counts[key] ?? 0) + 1;
@@ -144,18 +150,18 @@ const profiled = (base: Brush, modes?: () => string): {brush: Brush; begin: () =
   };
   return {
     brush: wrap as Brush,
-    begin: () => { syncGpu(); inside = 0; depth = 0; calls = 0; layers[0] = []; layers[1] = []; for (const k in byCall) { delete byCall[k]; delete counts[k]; } start = now(); },
+    begin: () => { syncGpu(); inside = 0; depth = 0; calls = 0; label = 'start'; for (const k in byLabel) delete byLabel[k]; layers[0] = []; layers[1] = []; for (const k in byCall) { delete byCall[k]; delete counts[k]; } start = now(); },
     end: () => {
       const paint = now() - start, brushTime = inside;
       const t1 = now();
-      brush.render();
-      const render = now() - t1;
+      render();
+      const renderMs = now() - t1;
       const t2 = now();
       syncGpu();
       const gpuWait = now() - t2;
       const top = Object.entries(byCall).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([k, v]) => [k, +v.toFixed(2), counts[k]]);
-      return {paint: +paint.toFixed(2), sceneJs: +(paint - brushTime).toFixed(2), brushCalls: +brushTime.toFixed(2), calls, render: +render.toFixed(2), gpuWait: +gpuWait.toFixed(2),
-        layers, top};
+      return {paint: +paint.toFixed(2), sceneJs: +(paint - brushTime).toFixed(2), brushCalls: +brushTime.toFixed(2), calls, render: +renderMs.toFixed(2), gpuWait: +gpuWait.toFixed(2),
+        layers, top, ...extra?.(), byLabel: Object.fromEntries(Object.entries(byLabel).map(([k, v]) => [k, [+v[0].toFixed(0), v[1]]]))};
     },
   };
 };
@@ -187,7 +193,12 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
   useLayoutEffect(() => {
     if (!host.current) return;
     if (!canvas) {
-      canvas = brush.createCanvas(Math.round(width * scale), Math.round(height * scale), {parent: host.current});
+      // Our own context attributes (p5.brush would ask for the defaults): a stencil buffer for flatFill.ts, and no multisampling, so its
+      // polygons are sampled exactly as the library's fill mask is. p5.brush itself only draws scissored rectangles to the canvas.
+      canvas = Object.assign(document.createElement('canvas'), {id: 'brush-canvas', width: Math.round(width * scale), height: Math.round(height * scale)});
+      canvas.getContext('webgl2', {premultipliedAlpha: true, preserveDrawingBuffer: true, antialias: false, stencil: true});
+      host.current.appendChild(canvas);
+      (brush as unknown as {load: (target: HTMLCanvasElement) => void}).load(canvas);
       brush.scaleBrushes(brushScale);
       // A preview paints a smaller canvas; the browser stretches it back to the composition size.
       Object.assign(canvas.style, {width: '100%', height: '100%'});
@@ -201,31 +212,34 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
     const step = Math.floor(frame / boilEvery);
     // `paintSeedEager` (paint-bench A/B only) hands `paint` the plain brush with eager seeding.
     const props = getInputProps() as RenderProps;
-    if (!props.paintSeedEager) deferred ??= deferredSeeding();
-    if (props.paintProfile) profiler ??= profiled(deferred?.brush ?? brush, deferred?.modes);
-    const inner = profiler?.brush ?? deferred?.brush ?? brush;
+    if (!props.paintFlatOff) flat ??= flatFills(brush, () => canvas);
+    // Frame-level calls go through the flat-fill wrapper too: it mirrors the transform and draws its queue before `render`.
+    const lib = flat?.brush ?? brush;
+    if (!props.paintSeedEager) deferred ??= deferredSeeding(lib);
+    if (props.paintProfile) profiler ??= profiled(deferred?.brush ?? lib, deferred?.modes, lib.render, flat ? () => ({flat: flat!.stats()}) : undefined);
+    const inner = profiler?.brush ?? deferred?.brush ?? lib;
     const b = (draftBrush ??= drafted(inner));
     const reseed = (n: number) => {
       b.seed(n);
       b.noiseSeed(n);
     };
     const pass = (draw: (ctx: PaintContext) => void, clearTo: string) => {
-      brush.clear(clearTo);
-      brush.push();
+      lib.clear(clearTo);
+      lib.push();
       // The standalone runtime puts the origin at the canvas centre; scenes draw in top-left pixel coordinates.
-      brush.translate(-width * scale / 2, -height * scale / 2);
-      if (scale !== 1) brush.scale(scale);
+      lib.translate(-width * scale / 2, -height * scale / 2);
+      if (scale !== 1) lib.scale(scale);
       deferred?.begin();
       profiler?.begin();
       reseed(1);
       draw({brush: b, t: frame / fps, frame, width, height, still: (id) => reseed(id + 1), boil: (id) => reseed(id * 7919 + step + 1), textured: inner});
       deferred?.end();
-      brush.pop();
+      lib.pop();
     };
     if (layer && over.current && canvas) {
       // Layer pass first; copied in the same task as its render, so the WebGL buffer needs no preserveDrawingBuffer.
       pass(layer.paint, layer.paper ?? paper);
-      brush.render();
+      lib.render();
       const ctx = over.current.getContext('2d')!;
       if (over.current.width !== canvas.width || over.current.height !== canvas.height) Object.assign(over.current, {width: canvas.width, height: canvas.height});
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -233,7 +247,7 @@ export const BrushCanvas = ({paint, paper = '#efe6d2', boilEvery = 2, brushScale
     }
     pass(paint, paper);
     if (profiler) console.log(`paint-profile ${JSON.stringify({frame, ...profiler.end()})}`);
-    else brush.render();
+    else lib.render();
   }, [frame, fps, width, height, paint, paper, boilEvery, scale, layer]);
 
   // Same element tree with or without a layer, so the host (which holds the shared WebGL canvas) is never remounted.
