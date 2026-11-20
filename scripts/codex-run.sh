@@ -1,13 +1,13 @@
 #!/bin/sh
 # Offload a task to Codex (`codex exec`) so its reading, logs and retries stay out of the Claude session's context.
 # Usage: scripts/codex-run.sh [--write] "PROMPT"   (default read-only sandbox; --write allows edits inside this checkout)
-# Model and effort default to gpt-6.1-sol / medium; override with CODEX_MODEL and CODEX_EFFORT.
+# Model and effort default to gpt-6.2-sol / medium; override with CODEX_MODEL and CODEX_EFFORT.
 # Prints only Codex's final message; the full log goes to out/logs/. Exit 75 = Codex usage limit: the caller does the task itself.
 set -e
 sandbox=read-only
 [ "$1" = --write ] && { sandbox=workspace-write; shift; }
 [ $# -eq 1 ] || { echo "usage: $0 [--write] \"PROMPT\"" >&2; exit 2; }
-model=${CODEX_MODEL:-gpt-6.1-sol}
+model=${CODEX_MODEL:-gpt-6.2-sol}
 effort=${CODEX_EFFORT:-medium}
 mkdir -p out/logs
 stamp=$(date +%Y%m%d-%H%M%S)
