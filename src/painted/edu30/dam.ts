@@ -43,6 +43,8 @@ export type DamOpts = {
   reflect?: () => void;
   /** B04-SH06 / SH05 / SH02 / SH04 lenses on the inner slope (eye z -2.8..-5.0): the slope within 4 m of the camera footprint is painted close (T10) */
   nearSlope?: boolean;
+  /** T26: ambient seconds; the windmill wheel turns 0.25 rev/s and the ripple dashes drift and breathe. Absent = the locked LF02 still. */
+  ambient?: number;
 };
 // ------------------------------------------------------------------ T10: east approach, queue path, reflection helper, jam stone, near slope
 /** Top height of the south bank at x: 1.2 m crest to x 10.5, ramps to the low approach (0.5 m) at x 12, level to x 16, ramps down to the ground at x 17.5. */
@@ -127,7 +129,8 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
       wInk(p, c, seed + 260 + k, [[q[0] - ux * 0.25, q[1], q[2] - uz * 0.25], [q[0] + ux * 0.25, q[1], q[2] + uz * 0.25]], {closed: false, weight: 1.2, color: '#4e3f2e'});
     }
   }
-  paintWindmill(p, c, seed + 300, [mill[0], 0, mill[1]], mill[2]);
+  const wheelT = ((o.ambient ?? 0) * 0.25 * 2 * Math.PI) / 1.6;   // the wheel's `t * 1.6` rad: 0.25 rev/s
+  paintWindmill(p, c, seed + 300, [mill[0], 0, mill[1]], mill[2], wheelT);
   // the water: the white sky mirrored (pale, brightest far off), muddier and darker toward the near shore
   wFill(p, c, seed + 200, DAM.nearWater, SHORE.map(at(DAM.water)));
   wWash(p, c, seed + 201, DAM.skyWater, 90, waterBeyond(-7.5, 0.001), 0.35, 0.2);
@@ -136,18 +139,18 @@ export const paintDam = (p: Painter, c: YCam, seed: number, o: DamOpts = {}) => 
   const nbR = nb.map(([x, y, z]): V3 => [x, 2 * DAM.water - y * 0.8, z]);
   const north = SHORE.filter(([x, z]) => z < -24.5 && x > -22 && x < 8).map(at(DAM.water + 0.003));
   wWash(p, c, seed + 203, DAM.reflection, 55, [...north, ...nbR.filter(([x]) => x > -22 && x < 8).map(([x, y, z]): V3 => [x, y, Math.max(z, -26.5)]).reverse()], 0.25, 0.2);
-  paintWindmill(p, c, seed + 1300, [mill[0], 0, mill[1]], mill[2], 0, DAM.water);
+  paintWindmill(p, c, seed + 1300, [mill[0], 0, mill[1]], mill[2], wheelT, DAM.water);
   trees.forEach(([x, z, ht], i) => paintDeadTree(p, c, seed + 1500 + i * 20, [x, DAM.water, z], ht, DAM.water));
   o.reflect?.();
   // ripple lines: short dashes square to the lens (they read level on screen), pale and dark, rings round the trunks
   const rx = Math.cos(c.yaw), rz = Math.sin(c.yaw);
   for (let k = 0; k < 34; k++) {
-    const z = -6.2 - h(k * 7) * 17, x0 = -20 + h(k * 3) * 34, w = 0.8 + h(k * 5) * 2.4;
+    const rp = o.ambient === undefined ? 0 : Math.sin(2 * Math.PI * (o.ambient / 3 + h(k * 19))), z = -6.2 - h(k * 7) * 17, x0 = -20 + h(k * 3) * 34 + 0.12 * rp, w = (0.8 + h(k * 5) * 2.4) * (1 + 0.18 * rp);
     if (!pointIn(SHORE, [x0, z]) || !pointIn(SHORE, [x0 + w * rx, z + w * rz])) continue;
     wInk(p, c, seed + 2000 + k, [[x0, DAM.water + 0.004, z], [x0 + w * rx, DAM.water + 0.004, z + w * rz]], {closed: false, weight: 1.1, color: k % 3 ? DAM.skyWaterFar : DAM.reflection});
   }
   for (let k = 0; k < 90; k++) {   // near water: short ripple dashes, pale and a few dark, breaking the reflections
-    const z = -5.55 - h(k * 11 + 3) * 3.4, x0 = -5 + h(k * 13 + 1) * 8.2, w = 0.2 + h(k * 17) * 0.5;
+    const rp = o.ambient === undefined ? 0 : Math.sin(2 * Math.PI * (o.ambient / 2.4 + h(k * 23))), z = -5.55 - h(k * 11 + 3) * 3.4, x0 = -5 + h(k * 13 + 1) * 8.2 + 0.06 * rp, w = (0.2 + h(k * 17) * 0.5) * (1 + 0.25 * rp);
     if (!pointIn(SHORE, [x0, z + 0.1]) || !pointIn(SHORE, [x0 + w * rx, z + w * rz + 0.1])) continue;
     wInk(p, c, seed + 2050 + k, [[x0, DAM.water + 0.004, z], [x0 + w * rx, DAM.water + 0.004, z + w * rz]], {closed: false, weight: 1.6, color: k % 3 ? DAM.skyWaterFar : mixColor(DAM.reflection, DAM.nearWater, 0.4)});
   }

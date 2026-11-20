@@ -48,4 +48,17 @@ These override any older value in this ticket that they name.
 | SH02 L 45 | every visible bird mid-step | all rear feet lifted |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit: the T26 commit on branch `worktree-agent-a0d927ddab1a220c0` (see the handoff for the hash). Files: `src/painted/edu30/shots/B04-SH01.tsx`, `B04-SH02.tsx`; shared: `looks.ts` (`crewAtDam(..., mirror, L)`: optional breath `rise` and `paintLewisPanTicks`, both off when `L` is absent so LF02 is unchanged), `dam.ts` (`DamOpts.ambient`: wheel 0.25 rev/s, ripple dashes drift and breathe; absent = locked LF02).
+Proof (store `projects/edu/EDU/previews/`): `T26-sheet.png` (cols 4, 270 px: SH01 L 0, 30, 55; SH02 L 0, 40, 45, 49, 68), per-frame guided `T26-s1_L*.png`, `T26-s2_L*.png`, clean (no guides, no tag) `T26-c1_L00/05/30/55.png`, `T26-c2_L00/68.png`. `npx tsc` errors only in tests unrelated to EP30; `npm test` 498 pass / 8 fail (the known set: HIPPO joints, loudness, new-shot, render-inputs, segments, store adopt).
+
+| Frame | Pass range | Measured |
+| --- | --- | --- |
+| SH01 L 0 MEREDITH | 586 ± 20 | 587 px (458-1045); L 55: 678 px (405-1083); GUNNER-2 348, GUNNER-1 155 |
+| SH01 title | box y 300-475, clear of heads | box 420 wide, x 330-750, viewed at L 5 (`T26-c1_L05.png`): clear of MEREDITH's hat (top 458, x about 150-345) |
+| SH02 L 0 head | 484 ± 30 | **583 px painted** (probe top 504 to bottom 1086, tuft to toe line incl. shadow); the sheet-line projection (head top 1.70 m to ground) is 484 (555 to 1039), the number T16 recorded. The painted bird is taller and reaches lower than the sheet line, as CAL (T03 r3: 290 painted vs 1.70 m). L 68: 794 painted (386-1180) vs 592 sheet. Conflict recorded below |
+| SH02 L 0 corner (712, 869) | ± 30 | not probed (the corner is far-shore mass, no lead); queue recedes to the east shore at the left, viewed |
+| SH02 L 45 | all rear feet lifted | 25 of 25 lifted (T16 test, 0.113-0.127 m), viewed: rear feet up on the visible birds |
+| Caption zone `--band 1150:1344 --max-mean 0.80 --max-p95 0.99` | pass | SH01 L 0 **mean 0.806 FAIL** (p95 0.951 ok); L 30 0.809 fail; L 55 0.797 ok. SH02 L 0 0.643, L 68 0.632 ok |
+
+Fix passes used: 0 (one trial of the ticket's reflection-alpha fix, then reverted). The ticket's fix does not work: reflection alpha 0.6 below y 1150 fades the dark reflection toward the light paper and raises the band mean (0.806 to 0.808), so it was not kept.
+Not followed / open for Film: (1) SH01 caption-zone mean 0.806 / 0.809 vs 0.80 (L 0, 30): reflections are darker than the water, so only a darker or smaller water band (not alpha) could lower it; accept 0.81 or give a different fix. (2) SH02 head row 484 is the sheet-line projection, the painted probe reads 583; Film to restate the row (and the sheet's L 68 feet y 1088 vs painted 1180, which sits in the band). (3) No queue reflections in the water in SH02 (not in the ticket). (4) Far mass beyond 40 m is the static `paintQueueFar`. Hands-fixed breath: arm targets keep the unrisen shoulder, heads and hands do not move; thumb and arm checks: LF02 arms unchanged, not re-measured.
