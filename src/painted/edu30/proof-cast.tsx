@@ -10,6 +10,7 @@ import type {YCam} from '../kit/ycam';
 import {wFill} from '../kit/world';
 import {FARMER, GUNNER1, GUNNER2, LOADER_AT, MEREDITH, PAN_R, loaderLift, paintCrew, paintCrewPose, paintGunnerFists, paintSeatedGunner, rackGunnerOpts, type GunnerOpts, type GunnerView} from './cast';
 import {paintDam} from './dam';
+import {paintPaddockScene} from './paddock';
 import {CAM_LF01} from './looks';
 import {GUN_PX, buildLewisGun, lewisAnchors, lewisCock, lewisRecoil, paintLewisPanTicks, placeBuild} from './props';
 import {camLine, Proof30, stubPaint, type ProofDef} from './shot';
@@ -114,6 +115,15 @@ const rackProof: ProofDef = {id: 'C30-rack', N: RACK.N, cam: rackCam, reel: OFF,
   paintGunnerFists(p, c, GUNNER1, RACK.seat, opts);
 }};
 
-const PROOFS: ProofDef[] = [...GUNNER_PROOFS.map(gunnerProof), gunner34NoGun(GUNNER_PROOFS[3]), ...CREW_PROOFS, rackProof];
+// T18 (Boss, 2026-11-20): MEREDITH's order chop, B03-SH05 (local 0-20; the sheet shot is 21 f). Camera: eye (-2.0, 0.75, -1.2) yaw 148 -> eye (-1.95, 0.75, -1.05) yaw 150, pitch 10, f 1000, hy 860,
+// ease-in-out over the 21 frames. Newsreel off; the T09 paddock, no flock.
+export const CHOP = {at: AT.p30, N: 21};
+export const chopCam = (L: number): YCam => { const u = easeIOr(Math.max(0, Math.min(1, L / (CHOP.N - 1)))); return camLine({eye: [-2.0 + 0.05 * u, 0.75, -1.2 + 0.15 * u], yaw: 148 + 2 * u, pitch: 10, f: 1000, hy: 860}); };
+const chopProof: ProofDef = {id: 'C30-chop', N: CHOP.N, cam: chopCam, reel: OFF, paint: (p: Painter, L, c) => {
+  paintPaddockScene(p, c, {eaten: 0.3}, () => {});
+  paintCrewPose(p, c, MEREDITH, CHOP.at, {pose: 'chop', L, seed: 35100});
+}};
+
+const PROOFS: ProofDef[] = [...GUNNER_PROOFS.map(gunnerProof), gunner34NoGun(GUNNER_PROOFS[3]), ...CREW_PROOFS, rackProof, chopProof];
 
 registerRoot(() => createElement(Fragment, null, ...PROOFS.map(Proof30)));

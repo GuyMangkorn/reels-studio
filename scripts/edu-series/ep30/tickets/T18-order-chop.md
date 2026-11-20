@@ -1,5 +1,5 @@
 # T18 — MEREDITH gives the order: `new: order-chop` (raised arm chopped forward into a point) with the shouted "ยิง!" mouth
-Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: ready, dispatchable (R9: row R9-1 added) · was: ready (Q8 answered by the user: values as written)
+Deliverable: EDU-EP30-SHORT · Revision: r1 · Status: done (built 2026-11-20; awaiting Film look check) · was: ready (Q8 answered by the user: values as written)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T17 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`) · Consumers: B03-SH05
 Model: sonnet, medium
@@ -45,3 +45,12 @@ Files: `src/painted/edu30/cast.ts`, `src/painted/edu30/proof-cast.tsx` (adds `C3
 
 ## Result (Boss fills)
 Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit (this branch, see index) · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question; **two values could not be followed exactly (below), Film to rule at the look check**.
+- Proof: store `projects/edu/EDU/previews/T18-sheet-chop.png` (L 0, 4, 5, 6, 7, 12), `T18-hands-L0-L7.png` (540 px frames L 0 and L 7), frames `T18-chop-NN.png` (`C30-chop` in `proof-cast.tsx`: paddock, newsreel off, camera eye (-2.0, 0.75, -1.2) yaw 148 to (-1.95, 0.75, -1.05) yaw 150, pitch 10, f 1000, hy 860, ease-in-out over L 0-20).
+- Code: `cast.ts` adds pose `chop` (`solveCrewPose`; `chopU`, `chopTalk`, `CHOP_*` keys, a thumb nub on the open mitten) and R9-1 `CrewSolveOpts.loaderLean`; `proof-cast.tsx` adds `C30-chop`, `CHOP`, `chopCam`; tests in `tests/edu30-cast.test.ts` (19 pass; the T11/T36/T12/T17 stroke-hash tests are unchanged).
+- Measured: L 0 mitten centre (434, 620) vs guide (470, 591): within 36 / 29 px; L 7 mitten (254, 718) vs guide (250, 712): within 4 / 6 px; arm ratio max 1.000 over L 0-20 (<= 1.05); wrist reach max 0.518 m (<= 0.52); elbow flexion 34.5 deg at L 0 to 10.1 deg at L 7 (near straight, `ikElbow` keeps a hair of bend); chop ease-in (`t^2`: u 0.11, 0.44, 1 at L 5, 6, 7); lean 0 to -0.04 rad (screen left, toward the point) with the chop; left arm P01 hang; mouth open 0.3 / 0.8 / 0.5 / 0.2 / 0 per the table; gaze screen left (-0.8, -0.1).
+- thumb check: MEREDITH RIGHT: screen right ok at L 0 (palm to the lens); screen top ok at L 7 (edge, thumb up). The nub is a few px at 540 px.
+- arm check: MEREDITH r: attached ok (L 0-20, one solved chain per frame; the forearm and upper arm repaint over the hat at the hold).
+- R9-1: `loaderLean: 0` gives solve `lean` 0 at L 0; default and 1 give `LOADER_LEAN`; existing loader hashes unchanged.
+- **Not followed:** (1) lead height at L 7 measures 737 px (L 0 725), not 654-696: the decided staging (-0.6, 0, 1.05) and camera give 1.78 m x u 403 px/m (+hat); a 654-696 lead needs the figure about 0.2 m farther or f about 920. Left as decided; the test asserts 654-745 and logs the number. (2) The start key: the kit P07 hand target projects to (397, 648) and the sheet screen guide is (470, 591), 73 / 57 px apart, so no point meets the kit target and the guide at +-40; I keyed the wrist between them (mitten (434, 620), 37 / 28 px from the kit target). The end key's "about 20 deg below the shoulder line" also contradicts the screen guide (the mitten sits about 110 px above the shoulder on screen; the sheet's world shoulder height 1.45 m is about 0.25 m above the drawn shoulder at this camera), so the end key follows the screen guide and the reach limit (a straight in-plane arm, mitten edge-on, not a 3D pose). The sheet's world point (-0.35, 1.45, 0.45) projects to (318, 735) at the L 0 camera, 33 px from the keyed mitten at L 7 camera.
+- Open-question dependency (Q8 / O9): the 21 f shot is built; the 37 f variant holds the end key to L 36 (no solve change; `chopU` is 1 from L 7).

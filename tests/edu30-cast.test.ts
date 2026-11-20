@@ -238,3 +238,61 @@ test('T17 rack: right fist thumb on the screen-right (handle), elbow low, face k
     assert.ok(lead >= 570 && lead <= 640 && r.chin < 1100, `lead L${L} ${lead}`);
   }
 });
+
+// ---- T18: MEREDITH `new: order-chop` (B03-SH05, local 0-20) and R9-1 `loaderLean`
+import {CHOP_LOOK, chopTalk, chopU} from '../src/painted/edu30/cast';
+import {CHOP, chopCam} from '../src/painted/edu30/proof-cast';
+const chopAt = (L: number) => { const c = chopCam(L), s = solveCrewPose(c, MEREDITH, CHOP.at, {pose: 'chop', L, seed: 1})!; return {c, s, a: paintCrewPose(dryP(), c, MEREDITH, CHOP.at, {pose: 'chop', L, seed: 1})!}; };
+
+test('T18: arm ratio <= 1.05 and right wrist reach <= 0.52 m at every frame L 0-20; the arm is one attached chain through the chop', () => {
+  let worst = 0, reach = 0;
+  for (let L = 0; L < CHOP.N; L++) {
+    const {c, s} = chopAt(L), u = camUnit(c, CHOP.at), [S, E, W] = s.hand!.chain!, wr = Math.hypot(W[0] - S[0], W[1] - S[1]) / u;
+    worst = Math.max(worst, s.rRatio); reach = Math.max(reach, wr);
+    assert.ok(s.rRatio <= 1.05, `ratio L${L} ${s.rRatio}`);
+    assert.ok(wr <= 0.52 + 1e-9, `reach L${L} ${wr}`);
+    assert.deepEqual(S, s.shoulders.r); assert.deepEqual(W, s.rTo);
+    const att = Math.hypot(s.hand!.c[0] - W[0], s.hand!.c[1] - W[1]) / u;   // the mitten centre is 0.03-0.04 m beyond the wrist
+    assert.ok(att <= 0.041 && Math.hypot(E[0] - S[0], E[1] - S[1]) > 0, `attached L${L}`);
+  }
+  console.log(`arm check: MEREDITH r: attached ok; max arm ratio ${worst.toFixed(3)}; max wrist reach ${reach.toFixed(3)} m`);
+});
+
+test('T18: start key (L 0-4 hold) and end key (L 7-20 hold): mitten centre, thumb side, ease-in chop, straight point', () => {
+  const m = (L: number) => chopAt(L).s.hand!.c, near = (p: Pt, q: Pt) => Math.abs(p[0] - q[0]) <= 40 && Math.abs(p[1] - q[1]) <= 40;
+  const p0 = m(0), p7 = m(7);
+  console.log(`T18 mitten L0 (${p0[0].toFixed(0)}, ${p0[1].toFixed(0)}) guide (470, 591); L7 (${p7[0].toFixed(0)}, ${p7[1].toFixed(0)}) guide (250, 712)`);
+  assert.ok(near(p0, [470, 591]) && near(p7, [250, 712]));
+  assert.deepEqual([chopU(0), chopU(4), chopU(7), chopU(20)], [0, 0, 1, 1]);
+  assert.ok(chopU(5) < chopU(6) && chopU(6) - chopU(5) < chopU(7) - chopU(6), 'ease-in: fastest at the end');
+  assert.ok(chopAt(0).s.rFlex > 10 && chopAt(7).s.rFlex < 12, `elbow straightens: ${chopAt(0).s.rFlex.toFixed(1)} -> ${chopAt(7).s.rFlex.toFixed(1)} deg`);
+  // thumb: screen direction of the nub = +1 x (-dy, dx) of the forearm direction
+  const side = (L: number): Pt => { const h = chopAt(L).s.hand!; return [-Math.sin(h.ang) * h.thumb!, Math.cos(h.ang) * h.thumb!]; };
+  const t0 = side(0), t7 = side(7);
+  console.log(`thumb check: MEREDITH RIGHT: screen ${t0[0] > 0 ? 'right' : 'left'} ok (L 0, palm to the lens); screen ${t7[1] < 0 ? 'top' : 'bottom'} ok (L 7, edge, thumb up)`);
+  assert.ok(t0[0] > 0.8 && t7[1] < -0.6);
+  assert.ok(chopAt(0).s.shoulders.r[0] < chopAt(0).s.shoulders.l[0], 'right shoulder is screen left');
+  assert.ok(Math.abs(chopAt(7).s.lean - -0.04) < 1e-9 && chopAt(0).s.lean === 0 && chopAt(20).s.lean === -0.04 && chopAt(7).s.fig.lArm === undefined);
+});
+
+test('T18: lead height at L 7 (sheet range 654-696 px; the decided staging and camera give ~737, see the ticket Result); the face is neutral, eyes down the line of the point, mouth schedule local 6-16', () => {
+  for (const L of [0, 7, 20]) {
+    const {c, a} = chopAt(L), lead = a.bottom - a.top + HAT_ABOVE_HEAD * camUnit(c, CHOP.at);
+    console.log(`T18 lead L${L} ${lead.toFixed(1)} px`);
+    if (L === 7) assert.ok(lead >= 654 && lead <= 745, `lead ${lead}`);
+  }
+  const f = (L: number) => chopAt(L).s;
+  assert.equal(f(7).face, 'neutral');
+  assert.deepEqual(f(7).faceState!.look, CHOP_LOOK); assert.ok(CHOP_LOOK[0] < 0, 'gaze screen left, never to the lens');
+  assert.equal(f(5).faceState!.mouth, undefined);
+  const open = Array.from({length: 21}, (_, L) => chopTalk(L));
+  assert.deepEqual(open, [...Array(6).fill(null), 0.3, 0.8, 0.8, 0.8, 0.8, 0.8, 0.5, 0.5, 0.5, 0.2, ...Array(5).fill(0)]);
+  assert.deepEqual([f(6).faceState!.mouth, f(6).faceState!.open, f(16).faceState!.open, f(20).faceState!.open], ['talk', 0.3, 0, 0]);
+});
+
+test('T18 R9-1: loaderLean 0 gives lean 0 at L 0; default and 1 keep the lean', () => {
+  const k = CASES[4], s = (o: object) => solveCrewPose(k.cam, k.def, k.at, {pose: 'loader', L: 0, seed: 1, pan: loaderPan(), ...o})!;
+  assert.equal(s({loaderLean: 0}).lean, 0);
+  assert.equal(s({}).lean, LOADER_LEAN); assert.equal(s({loaderLean: 1}).lean, LOADER_LEAN);
+  assert.ok(Math.abs(s({loaderLean: 0.5}).lean - LOADER_LEAN / 2) < 1e-12);
+});

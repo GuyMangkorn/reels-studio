@@ -214,7 +214,7 @@ export const paintSeatedGunner = (p: Painter, c: YCam, def: CastDef, at: V3, o: 
 // is one solved chain per frame (shoulder from the drawn figure, IK or FK elbow, `Arm.exact`). Casting lines: see the ticket (A salute, C P30, D P44-back,
 // F loader-seat-pan, G farmer point-back-over-shoulder). B (P01) and E (P34) are the kit poses through `paintCrew` unchanged.
 // ---------------------------------------------------------------------------------------------------------------------------------------------
-export type CrewPoseKey = 'salute' | 'p44-back' | 'loader' | 'farmer';
+export type CrewPoseKey = 'salute' | 'p44-back' | 'loader' | 'farmer' | 'chop';
 const c01 = (x: number) => Math.max(0, Math.min(1, x)), seg = (L: number, a: number, b: number) => c01((L - a) / (b - a));
 const easeOut = (t: number) => 1 - (1 - t) * (1 - t), easeIn = (t: number) => t * t, easeIO = (t: number) => t * t * (3 - 2 * t);
 const mixPt = (a: Pt, b: Pt, u: number): Pt => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
@@ -239,14 +239,23 @@ export const FARMER_D_RAW: V3 = [-0.8, -0.2, -0.4];
 /** The loader's 25 degree turn toward the gun (-x): the kit kneel has no three-quarter, so it is the picture-plane `lean` toward the gun (screen right here). */
 export const LOADER_LEAN = (25 * Math.PI) / 180;
 
-export type CrewSolveOpts = {pose: CrewPoseKey; L: number; seed: number; pan?: V3};
+/** T18: MEREDITH's order (`new: order-chop`, B03-SH05, local frames). The right wrist moves on an arc about the shoulder: L 0-4 the raised P07 hold, L 4-7 chop (ease-in, fast at the end), L 7 on the straight point.
+ *  Polar keys about the right shoulder in px per metre of `u` (screen, y down): start wrist 0.497 m at -103.7 deg (mitten centre near the sheet guide (470, 591), between it and the kit P07 hand target),
+ *  end wrist 0.518 m at -152.3 deg (mitten centre near the screen guide (250, 712) and the world guide (-0.35, 1.45, 0.45); wrist reach <= 0.52 m). */
+export const CHOP_R0 = 0.4966, CHOP_R1 = 0.518, CHOP_A0 = Math.atan2(-194.6, -47.3), CHOP_A1 = Math.atan2(-103.6, -197.3), CHOP_LEAN = -0.04, CHOP_LOOK: Pt = [-0.8, -0.1];
+export const chopU = (L: number) => easeIn(seg(L, 4, 7));
+/** The shouted "ยิง!" mouth `open` (speech local 6-16): 0.3 at L 6, 0.8 L 7-11, 0.5 L 12-14, 0.2 at L 15, 0 (closed, firm) from L 16; null before L 6. */
+export const chopTalk = (L: number): number | null => (L < 6 ? null : L < 7 ? 0.3 : L <= 11 ? 0.8 : L <= 14 ? 0.5 : L < 16 ? 0.2 : 0);
+
+/** `loaderLean` (R9-1, for T22 r8) scales the loader's turn: lean = `LOADER_LEAN` x hold x loaderLean (default 1). */
+export type CrewSolveOpts = {pose: CrewPoseKey; L: number; seed: number; pan?: V3; loaderLean?: number};
 export type CrewSolve = {view: 'front' | 'back'; fig: Partial<FigPose>; face: ExpressionId; faceState?: {look?: Pt; mouth?: Mouth; open?: number}; hat: 'slouch' | 'felt'; pose?: AnyPoseId;
   /** longest drawn bone / the 0.26 m bone (the drawn arms) */ rRatio: number; lRatio: number; /** wrist targets (px) of the gesture arms, null where the arm is the kit's */ rTo: Pt | null; lTo: Pt | null; lean: number;
   /** drawn elbow flexion (deg; 0 = straight) per arm */ rFlex: number; lFlex: number; shoulders: {r: Pt; l: Pt}; /** px per metre at the figure */ u: number;
   /** back view only: the drawn chains (shoulder, elbow, wrist) repainted over the torso, which the kit's back view paints over the hands (T12 D) */ over?: {r: [Pt, Pt, Pt]; l: [Pt, Pt, Pt]};
   /** r6 (A2, G2): the right open mitten, painted by `paintCrewPose` after the head and hat (the kit hand is off). `c` the mitten centre, `ang` the forearm direction, `rx` along it, `ry` across it
    *  (px); `chain` (salute) = shoulder, elbow, wrist, repainted with the mitten so the forearm stays in front of the head. */
-  hand?: {c: Pt; ang: number; rx: number; ry: number; u: number; chain?: [Pt, Pt, Pt]};
+  hand?: {c: Pt; ang: number; rx: number; ry: number; u: number; chain?: [Pt, Pt, Pt]; /** T18: a thumb nub on the side +1 = (-dy, dx) of the forearm direction (screen, y down) */ thumb?: 1 | -1};
   /** r6 (G2): the 3D chain facts, metres and degrees: elbow flexion, shoulder-to-wrist distance, unit direction of the point */ g2?: {flex3: number; reach: number; d: V3}};
 const flexOf = (S: Pt, E: Pt, W: Pt) => { const a = Math.atan2(E[1] - S[1], E[0] - S[0]), b = Math.atan2(W[1] - E[1], W[0] - E[0]); let d = Math.abs(b - a) * 180 / Math.PI; if (d > 180) d = 360 - d; return d; };
 const ratioOf = (S: Pt, E: Pt, W: Pt, L: number) => Math.max(Math.hypot(E[0] - S[0], E[1] - S[1]), Math.hypot(W[0] - E[0], W[1] - E[1])) / L;
@@ -275,6 +284,15 @@ export const solveCrewPose = (c: YCam, def: CastDef, at: V3, o: CrewSolveOpts): 
     const hand = {c: [W[0] + Math.cos(ang) * off, W[1] + Math.sin(ang) * off] as Pt, ang, rx: (0.045 + 0.017 * uu) * u, ry: (0.052 - 0.01 * uu) * u, u, chain: [S, E, W] as [Pt, Pt, Pt]};
     const rArm = uu > 0 ? {to: W, via: E, exact: true, noHand: true} : undefined;
     return {...base, view, fig: rArm ? {rArm} : {}, face: 'neutral', hat: 'slouch', rTo: uu > 0 ? W : null, rRatio: uu > 0 ? ratioOf(S, E, W, L) : 1, rFlex: uu > 0 ? flexOf(S, E, W) : 0, shoulders: {r: S, l: an.lShoulder}, hand: uu > 0 ? hand : undefined};
+  }
+  if (o.pose === 'chop') {
+    // T18: the right arm is one chain per frame, solved on the screen about the leaned right shoulder (polar keys above); the elbow pole stays out to his right (screen left), below.
+    const uu = chopU(o.L), lean = CHOP_LEAN * uu, an = dry({lean}, 'P01')!, S = an.rShoulder, th = CHOP_A0 + (CHOP_A1 - CHOP_A0) * uu, r = (CHOP_R0 + (CHOP_R1 - CHOP_R0) * uu) * u;
+    const W: Pt = [S[0] + Math.cos(th) * r, S[1] + Math.sin(th) * r], E = ikElbow(S, W, L, -1), ang = Math.atan2(W[1] - E[1], W[0] - E[0]), off = (0.03 + 0.01 * uu) * u;
+    const hand = {c: [W[0] + Math.cos(ang) * off, W[1] + Math.sin(ang) * off] as Pt, ang, rx: (0.045 + 0.017 * uu) * u, ry: (0.052 - 0.01 * uu) * u, u, chain: [S, E, W] as [Pt, Pt, Pt], thumb: 1 as const};
+    const talk = chopTalk(o.L);
+    return {...base, view, pose: 'P01', fig: {lean, rArm: {to: W, via: E, exact: true, noHand: true}}, face: 'neutral', hat: 'slouch', faceState: {look: CHOP_LOOK, ...(talk !== null ? {mouth: 'talk' as Mouth, open: talk} : {})},
+      rTo: W, rRatio: ratioOf(S, E, W, L), rFlex: flexOf(S, E, W), lean, shoulders: {r: S, l: an.lShoulder}, hand};
   }
   if (o.pose === 'farmer') {
     // r6 G2: the right mitten centre = right shoulder + 0.50 m x d, d = unit(-0.80, -0.45, -0.40) in world (his right, down, back); the chain is built in 3D (pole down) and projected, the
@@ -312,7 +330,7 @@ export const solveCrewPose = (c: YCam, def: CastDef, at: V3, o: CrewSolveOpts): 
   if (!A || !B) return null;
   const [TrW, TlW] = A[0] <= B[0] ? [A, B] : [B, A];   // the character's right arm is screen left
   const sh = (lean: number) => dry({kneel: 1, lean}, 'P34')!;
-  const lean = LOADER_LEAN * hold, an = sh(lean), thigh = poseFor('P34', def, g as Pt, u, 'front');
+  const lean = LOADER_LEAN * hold * (o.loaderLean ?? 1), an = sh(lean), thigh = poseFor('P34', def, g as Pt, u, 'front');
   const Tr = mixPt(thigh.rArm!.to, TrW, hold), Tl = mixPt(thigh.lArm!.to, TlW, hold);
   const Er = ikElbow(an.rShoulder, Tr, L, -1), El = ikElbow(an.lShoulder, Tl, L, 1);
   const closed = hold > 0;
@@ -346,6 +364,11 @@ const paintMitten = (q: Painter, h: NonNullable<CrewSolve['hand']>, def: CastDef
     const [S, E, W] = h.chain, u = h.u, fore = capsule(E, W, 0.066 * u, 0.056 * u), up = capsule(S, E, 0.08 * u, 0.068 * u);
     hardFill(q, seed, sleeve, fore); inkLine(q, seed + 1, fore, {weight: 0.8, color: sInk, still: true});
     hardFill(q, seed + 2, sleeve, up); inkLine(q, seed + 3, up, {weight: 0.8, color: sInk, still: true});
+  }
+  if (h.thumb) {   // T18: the thumb nub, behind the palm oval, on the +1 / -1 side of the forearm direction
+    const px = -Math.sin(h.ang) * h.thumb, py = Math.cos(h.ang) * h.thumb, tc: Pt = [h.c[0] + px * h.ry * 0.85 - Math.cos(h.ang) * h.rx * 0.2, h.c[1] + py * h.ry * 0.85 - Math.sin(h.ang) * h.rx * 0.2];
+    const nub = ell(tc[0], tc[1], h.rx * 0.5, h.ry * 0.42, 12, h.ang);
+    hardFill(q, seed + 6, skin, nub); inkLine(q, seed + 7, nub, {weight: 0.8, color: ink, still: true});
   }
   const oval = ell(h.c[0], h.c[1], h.rx, h.ry, 14, h.ang);
   hardFill(q, seed + 4, skin, oval); inkLine(q, seed + 5, oval, {weight: 0.8, color: ink, still: true});

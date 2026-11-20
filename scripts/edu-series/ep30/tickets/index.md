@@ -30,7 +30,7 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 | [T15](T15-emu-mime-gestures.md) emu mime: wing flick, watch check, foot tap, wave front + back | movement | yes | T07 (done) | done (R9 Film: accept with value change; wave ±20° kept, tip 1.50–1.85 at the extremes TF35; plume wing accepted) | 0 | T15 commit (merged before `250dae2`) |
 | [T16](T16-queue-motion.md) queue at the dam: walk, unison step, flinch/hop, stare, turn-away | movement | yes | T10, T08, T35 (done) | done (R9 Film: accept with value change; bunching front only TF36; plates `shadowOp` 45 TF37) | 0 | T16 commit (merged before `250dae2`) |
 | [T17](T17-cocking-pull-gunner-face.md) cocking pull + angry talking face (`man-crop` three-quarter) | figure | yes | T12, T13 (done) | done (R9 Film: accept with value change; thumb up TF38; talk restart at onsets) | 0 | `d1086a0` |
-| [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 (done) | ready, **dispatchable** (R9 adds row R9-1 `loaderLean` for T22 r8) | 0 | — |
+| [T18](T18-order-chop.md) MEREDITH order-chop + shouted mouth | figure | yes | T17 (done) | done, built 2026-11-20, awaiting Film look check (row R9-1 `loaderLean` in; lead 737 px vs 654-696 and start-key guide deviations in Result) | 0 | this branch |
 | [T19](T19-plates-b01.md) plates B01-SH01, SH02, SH03 | set | yes | T03, T07, T08, T09, T11, T14 | done (R9 Film: accept with value change; rows restated to the built bird and camera, TF39) | 0 | T19 commit (merged before `250dae2`) |
 | [T20](T20-plates-b02-crane-farmer.md) plates B02-SH01, SH02 | set | yes | T03, T08, T09, T12 | built; fix pass 1 in **T38** (R9: SH02 accept TF42; SH01 ridge arcs L 56–100, fixed in `paddock.ts` TF47) | 1 (T38) | T20 commit (merged before `250dae2`) |
 | [T21](T21-plates-b02-army.md) plates B02-SH03, SH04 | set | yes | T03, T09, T12, T13, T14 | built; fix pass 1 in **T38** (R9: SH03 cab 440 TF22 accept; SH04 canvas `#8a8160`) | 1 (T38) | T21 commit (merged before `250dae2`) |
@@ -49,12 +49,12 @@ Inputs: scene sheets [EDU-EP30-SCENE-R2](../short/scene-sheets/index.md) (ready-
 
 39 tickets: 22 asset/capability (T01–T18, T34–T37), 15 plate tickets covering all 28 shots once, 2 R9 fix bundles (T38, T39) that carry fix passes of T20, T21, T31 and T33. `needs-input`: none. Same-file chains: `emu.ts`/`looks.ts`/`tests/edu30-emu.test.ts` T06 → T07 → T15, with T37 (`survival/beast.ts`, hash re-takes in `tests/edu30-emu.test.ts`) before T07 r6; `flock.ts`/`proof-flock.tsx` T35 → T08 → T16; `cast.ts`/`proof-cast.tsx` T11 → T36 → T12 → T17 → T18 (T36 also `kit/cast.ts`, `kit/back.ts`); `props.ts`/`proof-props.tsx` T13 → T14; `kit/gunfire.ts`/`proof-fx.tsx` T04 → T05; `dam.ts` T10 alone; every plate writes only its own `shots/<ID>.tsx` (T30 also `vantage.ts`, read by T32). R9 adds: `paddock.ts` T09 → T38; `shot.tsx` T03 → T34 → T39 (with `look.tsx`, `looks.ts`); `cast.ts` … T17 → T18 (R9-1); `B02-SH06.tsx` T22 → T22 r8 after T18 and T38; `B02-SH04.tsx` T21 → T38; `B06-SH01/02.tsx` T31 → T38; `B07-SH01/02.tsx` T33 → T39.
 
-**Done (24):** T01–T17, T19, T24, T29, T34–T37. **Built, fix pass in a bundle (4):** T20, T21, T31 (in T38), T33 (in T39). **Fix pass ready, blocked (1):** T22 r8 (after T18 and T38).
+**Done (24):** T01–T17, T19, T24, T29, T34–T37. **Built 2026-11-20, awaiting Film look check (1):** T18 (R9-1 included; lead 737 px and start-key deviations in its Result). **Built, fix pass in a bundle (4):** T20, T21, T31 (in T38), T33 (in T39). **Fix pass ready, blocked (1):** T22 r8 (after T38; T18 built).
 
 **Dispatchable now (R9), in parallel, no shared file** (each in its own worktree, Sonnet medium; every blocker is done):
 1. **T38** space-P set fixes. Files: `src/painted/edu30/paddock.ts`, `tests/edu30-paddock.test.ts`, `shots/B02-SH04.tsx`, `shots/B06-SH01.tsx`, `shots/B06-SH02.tsx` (and `B02-SH01.tsx` only if its proof needs it).
 2. **T39** relief word + B07 crane. Files: `src/painted/edu30/shot.tsx`, `look.tsx`, `looks.ts`, `shots/B07-SH01.tsx`, `shots/B07-SH02.tsx`. Registered-plate row only where `npm ls @remotion/three` resolves; nobody runs `npm ci` or `npm install`.
-3. **T18** order-chop (+ row R9-1 `loaderLean`). Files: `src/painted/edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`.
+3. ~~T18~~ built (was: order-chop + row R9-1 `loaderLean`). Files: `src/painted/edu30/cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`.
 4. **T25** plates B03-SH02/03. Files: `shots/B03-SH02.tsx`, `B03-SH03.tsx`.
 5. **T26** plates B04-SH01/02. Files: `shots/B04-SH01.tsx`, `B04-SH02.tsx`.
 6. **T27** plates B04-SH03/04. Files: `shots/B04-SH03.tsx`, `B04-SH04.tsx` (needs the T34 hook: done).
