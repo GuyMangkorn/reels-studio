@@ -1,5 +1,6 @@
 import {paintArms, paintArmsSky, paintSandstoneWall, paintWattleBed} from '../arms';
 import {blinkLid, EMU_POSES} from '../emu';
+import {ARMS_WORD} from '../looks';
 import {camLine, makeShot, type Reel30, type Shot30} from '../shot';
 
 // B07-SH02 (Boss T33, 2026-11-20): push in on the relief emu; it turns its head to the lens (L 34-49, the KP-look / TA2 three-quarter yaw -1.25), one blink (L 54-57, base lid 0.30), then holds.
@@ -14,6 +15,7 @@ const camAt = (L: number) => {
 export const def: Shot30 = {
   id: 'B07-SH02', N, paper: '#e8d8b8',
   cam: camAt,
+  word: () => ARMS_WORD,
   paint: (p, L, c, pr) => {
     paintArmsSky(p, c);
     paintSandstoneWall(p, c, 41000);

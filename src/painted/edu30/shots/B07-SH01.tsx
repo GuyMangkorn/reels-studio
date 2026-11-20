@@ -1,19 +1,21 @@
 import {paintArms, paintArmsSky, paintSandstoneWall, paintWattleBed} from '../arms';
 import {wFill} from '../../kit/world';
+import {ARMS_WORD} from '../looks';
 import {camLine, makeShot, type Reel30, type Shot30} from '../shot';
 
 // B07-SH01 (Boss T33, 2026-11-20): cut to full colour, crane up the wall to the coat of arms (LF03 at the end). Space A as LF03 (same seeds, so L 100+ equals the locked look).
 // Newsreel burn-out inside this one plate: strength 1 -> 0 linear over L 0-9, flare pop 0.15 / 0.10 / 0.05 on L 0-2, cool tint released with the strength; from L 10 strength 0.
-// Camera (SD11): eye (-0.3, 1.0, 4.5) pitch 4 -> eye (-0.3, 2.6, 4.5) pitch 20, f 1200, hy 760, ease-in-out over L 0-100, hold L 100-117.
+// Camera (SD11): eye (-0.3, 1.0, 4.5) pitch 12 -> eye (-0.3, 2.6, 4.5) pitch 20, f 1200, hy 760, ease-in-out over L 0-100, hold L 100-117.
 const N = 118;
 const easeIO = (t: number) => { const x = Math.max(0, Math.min(1, t)); return x * x * (3 - 2 * x); };
 const camAt = (L: number) => {
   const u = easeIO(L / 100);
-  return camLine({eye: [-0.3, 1.0 + 1.6 * u, 4.5], yaw: 0, pitch: 4 + 16 * u, f: 1200, hy: 760});
+  return camLine({eye: [-0.3, 1.0 + 1.6 * u, 4.5], yaw: 0, pitch: 12 + 8 * u, f: 1200, hy: 760});
 };
 export const def: Shot30 = {
   id: 'B07-SH01', N, paper: '#e8d8b8',
   cam: camAt,
+  word: () => ARMS_WORD,
   paint: (p, _L, c, pr) => {
     paintArmsSky(p, c);
     paintSandstoneWall(p, c, 41000);

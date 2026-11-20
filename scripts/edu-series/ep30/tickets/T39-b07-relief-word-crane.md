@@ -1,5 +1,5 @@
 # T39 — B07 plates show the word AUSTRALIA on the scroll (one shared relief-word element in the plate stack) and B07-SH01 starts its crane higher
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R9`) · Status: done
 Class: capability + set (bundle) · Hard: no
 Blocked by: none · Consumers: B07-SH01, B07-SH02; LF03 / TA2 look stills (`look.tsx`)
 Model: sonnet, medium
@@ -38,4 +38,24 @@ Files: `src/painted/edu30/shot.tsx`, `src/painted/edu30/look.tsx`, `src/painted/
 | caption zone (TF46) | clean B07-SH01 L 100, B07-SH02 L 90 | `caption-zone.py --band 1150:1344 --max-mean 0.80 --max-p95 0.99`: pass |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+
+Commit: see `git log` on branch `worktree-agent-a30b4d6e16e30fe64` (subject "T39"). Proof sheet: `~/ReelsStore/projects/edu/EDU/previews/T39-sheet.png` (9 frames: SH01 L 0, 2, 9, 10, 50, 100; SH02 L 0, 49, 90) plus `T39-s1_*`, `T39-s2_*`, clean `T39-c1_100`, `T39-c2_090`, registered `T39-reg_100`, look stills `T39-LF03`, `T39-TA2` in the same folder. Local `out/edu30-T39/`, logs `out/logs/T39-*.log`. Fix passes used: 1 of 2 on T33 (this ticket).
+
+Built: `ReliefWord30` + `Word30` + optional `Shot30.word` in `shot.tsx`; `look.tsx` imports it (local `ReliefWord` deleted); `ARMS_WORD` in `looks.ts`; `word: () => ARMS_WORD` on B07-SH01/SH02; B07-SH01 pitch `12 + 8 × u`.
+
+| Row | Measured | Pass |
+| --- | --- | --- |
+| LF03 / TA2 vs pre-change (ffmpeg difference, YAVG, `CAPTION=0`) | 3.3e-05 / 2.8e-05 | pass (≤ 2) |
+| B07-SH01 L 100 clean vs new LF03 (`CAPTION=0`) | 0.42 | pass (≤ 4) |
+| SH01 word ink centre vs projected scroll centre (dx, dy px), L 0 / 2 / 9 / 10 / 50 / 100 | (-3.7, -5.7) / (-4.1, -4.4) / (-6.0, -2.5) / (-6.0, -2.4) / (-7.2, -2.3) / (-3.0, -3.7) | per axis within 6 except L 50 dx 7.2 (see note) |
+| SH01 ribbon fully inside frame at L 0 | ribbon x 292–944, y 464–541 | pass |
+| SH01 newsreel on the word | L 0–2 sepia + flare like the scroll; L 9 strength is 0 by `reel` (1 - 9/9), full colour; L 10+ full colour (viewed) | pass |
+| SH01 L 0 ground | paving below the wall foot y 1308: 31.9 % of frame height (was y 1116, 41.9 %); below the bed front edge 23.7 % (was y 1255, 34.6 %); scroll centre y 502 (est 470), wall foot y 1308 (est 1285) | pass (≈33 %); estimates differ 32 / 23 px |
+| SH02 word at L 0 / 49 / 90 | projected point (4, 1663) / (-52, 1721) / (-70, 1739); ink centre y within 3 px; the scroll is left of the frame, so the word is half clipped ("RALIA") | y pass; x not measurable (see note) |
+| SH02 relief emu probe | 719 at L 0, 808 at L 90 | pass (719 ± 30, 808 ± 30) |
+| registered `EDU30-REG-B07-SH01` L 100 vs QA stack (clean) | MAD 6e-05; word present | pass (≤ 2); `@remotion/three` resolves here |
+| caption zone | `c1_100`, `c2_090` | pass |
+| `tsc` | no error in src/ or touched files (only pre-existing tests/ errors) | pass |
+| tests | `painted-canvas-style`, `edu30-titles`: 9/9; `npm test` 498 pass / 8 fail, all known (HIPPO joints x3, loudness, new-shot, render-inputs, segments, store adopt) | pass |
+
+Notes for Film: (1) The word ink centre sits 3–7 px above-left of the projected point (cap-height line box plus the letter-spacing trailing gap and text shadow); L 50 dx is 7.2 only because the projected x is 620.4 and the ink x 613.2, a 1.2 px excess over the 6 px row. The DOM box follows the ticket formula unchanged, so no change was made. (2) At the SH02 camera the scroll centre projects to x ≈ 0 (eye x 0.95, yaw 4), so only the right half of the word shows ("RALIA"); this is a geometry consequence of the decided camera and word `at`, not a build error. Film decides whether SH02 keeps the clipped word, hides it, or moves the camera. (3) Registered path: `PaintedShot` has no hook inside the shared canvas wrapper, so the registered `Overlay` wraps the word in an `AbsoluteFill` with the same `canvasStyleOf(def, L, G)` style (filter, weave, shake, overscan); output equals the QA stack to MAD 6e-05.

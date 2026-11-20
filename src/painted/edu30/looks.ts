@@ -184,7 +184,9 @@ const tD2 = (): LookDef => {
 const EYE_LF03: V3 = [-0.3, 2.6, 4.5];
 /** B07-SH01 end: the whole coat of arms in frame, kangaroo left, emu right, sunlit sandstone, blue sky (no newsreel layer). */
 export const CAM_LF03: YCam = {x: EYE_LF03[0], y: EYE_LF03[1], z: EYE_LF03[2], yaw: 0, pitch: 20 * DEG, f: 1200, hy: 760};
-export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number, emuLid = 0.15) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: {at: [0, 2.94, 0.17], text: 'AUSTRALIA', h: 0.13}, paint: (p) => {
+/** The word on the B07 scroll (LF03 values), shared by the look stills and the B07 plates. */
+export const ARMS_WORD = {at: [0, 2.94, 0.17] as V3, text: 'AUSTRALIA', h: 0.13};
+export const armsLook = (c: YCam, id: string, shot: string, caption: string, emuYaw?: number, emuLid = 0.15) => (): LookDef => ({shot, cam: c, t: 0, paper: '#e8d8b8', caption, word: ARMS_WORD, paint: (p) => {
   MEASURE[id] = [];
   paintArmsSky(p, c);
   paintSandstoneWall(p, c, 41000);
