@@ -74,7 +74,8 @@ const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const ease = (t: number) => { const x = clamp01(t); return x * x * (3 - 2 * x); };
 const easeOutQ = (t: number) => 1 - (1 - clamp01(t)) ** 2;
 const mixN = (a: number, b: number, u: number) => a + (b - a) * u;
-const q16 = (x: number) => Math.round(x * 16) / 16;
+// T08 r5: the crowd phase step is 1/96 cycle (was 1/16): the run advance is 3.95 m a cycle, so 1/16 left up to 0.25 m of stance slip; 1/96 keeps it near 0.04 m. Name kept for the callers.
+const q16 = (x: number) => Math.round(x * 96) / 96;
 const rnd = (seed: number, i: number) => hh(seed * 1.7 + i * 12.9);
 const angDiff = (a: number, b: number) => { let d = b - a; while (d > Math.PI) d -= 2 * Math.PI; while (d < -Math.PI) d += 2 * Math.PI; return d; };
 const mixAng = (a: number, b: number, u: number) => a + angDiff(a, b) * u;
@@ -193,7 +194,7 @@ export const scatterHero = () => scBirds().findIndex((b) => b.m.hero);
 const runDist = (f: number) => (f <= 0 ? 0 : f <= 6 ? (f * f) / 60 : 0.6 + 0.2 * (f - 6));
 type ScState = {at: V3; heading: number; pose: EmuPose; ph?: number};
 const scState = (b: ScBird, L: number): ScState => {
-  const m = b.m, ts = 4 + b.s, tb = 40 + b.d, adv = gaitAdvance(b.v > 1.5 ? RUN_S : WALK_S), Ar = gaitAdvance(RUN_S);
+  const m = b.m, ts = 4 + b.s, tb = 40 + b.d, adv = gaitAdvance(b.v > 1.5 ? RUN_S : WALK_S) * m.scale, Ar = gaitAdvance(RUN_S) * m.scale;   // advance per cycle scales with the bird (feet are scaled with the body)
   const bunchPose = (l: number): EmuPose => { const d = (b.v * (l - 10)) / 30; return b.v > 1.5 ? runPose(q16(b.ph0 + d / adv), {wing: WING15}) : walkPose(q16(b.ph0 + d / adv), WALK_S, {wing: WING15}); };
   if (L < ts) return {at: m.at, heading: m.heading, pose: m.pose};
   if (L < 10) return {at: m.at, heading: m.heading, pose: emuStartle(L - ts, m.pose)};
@@ -201,29 +202,46 @@ const scState = (b: ScBird, L: number): ScState => {
   const pEnd = mv(m.at, b.hb, (b.v * 28) / 30), alert = EMU_POSES.startle({pads: emuPads(EMU_POSES.stand()), wing: WING15});
   if (L < tb) return {at: pEnd, heading: b.hb, pose: alert};
   const f = L - tb, D = runDist(f), ph = q16(b.ph0 + D / Ar);
-  return {at: mv(pEnd, b.hr, D), heading: mixAng(b.hb, b.hr, ease(f / 4)), pose: blendPoses(alert, runPose(ph, {wing: WING15}), ease(f / 3)), ph};
+  return {at: mv(pEnd, b.hr, D), heading: mixAng(b.hb, b.hr, ease(f / 4)), pose: ((rp) => blendPoses({...alert, pads: emuPads(rp)}, rp, ease(f / 3)))(runPose(ph, {wing: WING15})), ph};   // T08 r5: the alert body takes the run feet at once, so no foot slides while the bolt picks up speed
 };
 export const scatter = (L: number): EmuMember[] => scBirds().map((b) => { const s = scState(b, L); return {...b.m, at: s.at, heading: s.heading, pose: s.pose}; });
-/** Six burst directions: 15 deg + 60 deg k. */
-export const BURST_HEADINGS = [0, 1, 2, 3, 4, 5].map((k) => ((15 + 60 * k) * Math.PI) / 180);
-let burstMemo: {g: number[]; speed: number[]; base: ScState[]; heroGroup: number[]} | null = null;
-const burstSeeds = () => {
+/** T08 r5 (B1-B4): the burst starts fresh from six tight groups of the 40 (it no longer continues from `scatter(71)`). Group 0 = EMU-HERO + 10, groups 1-5 = 6, 6, 6, 6, 5
+ * (scatter order), centres 8 m from (0, 0, -45) along each group heading (group 0 toward the B03-SH03 mark, then +60 deg k), members inside a 2.5 m disc, spacing >= 0.7 m. */
+export const BURST_O: V3 = [0, 0, -45], BURST_R = 8, BURST_DISC = 2.5, BURST_SIZES = [11, 6, 6, 6, 6, 5];
+export const BURST_H0 = toward(BURST_O, SC_TARGET);
+export const BURST_HEADINGS = [0, 1, 2, 3, 4, 5].map((k) => BURST_H0 + (Math.PI / 3) * k);
+export const burstCentre = (k: number): V3 => mv(BURST_O, BURST_HEADINGS[k], BURST_R);
+type BurstSeed = {g: number[]; at: V3[]; hb: number[]; speed: number[]; ph0: number[]; heroGroup: number[]};
+let burstMemo: BurstSeed | null = null;
+const burstSeeds = (): BurstSeed => {
   if (burstMemo) return burstMemo;
-  const bs = scBirds(), base = bs.map((b) => scState(b, 71)), hero = scatterHero();
-  const dT = (i: number) => Math.hypot(base[i].at[0] - SC_TARGET[0], base[i].at[2] - SC_TARGET[2]);
-  const heroGroup = [hero, ...base.map((_, i) => i).filter((i) => i !== hero).sort((a, b) => dT(a) - dT(b)).slice(0, 10)];
-  const nearest = (h: number) => { let bk = 0, bd = 9; BURST_HEADINGS.forEach((x, k) => { const d = Math.abs(angDiff(x, h)); if (d < bd) { bd = d; bk = k; } }); return bk; };
-  const g = base.map((s, i) => (heroGroup.includes(i) ? nearest(toward(s.at, SC_TARGET)) : nearest(s.heading + (rnd(36400, i) - 0.5) * 2 * (Math.PI / 3))));
-  return (burstMemo = {g, speed: base.map((_, i) => 6 + 2 * rnd(36401, i)), base, heroGroup});
+  const hero = scatterHero(), rest = scBirds().map((_, i) => i).filter((i) => i !== hero), g: number[] = [], at: V3[] = [], hb: number[] = [], speed: number[] = [], ph0: number[] = [];
+  const members: number[][] = BURST_SIZES.map(() => []);
+  members[0].push(hero);
+  let r = 0;
+  BURST_SIZES.forEach((n, k) => { while (members[k].length < n) members[k].push(rest[r++]); });
+  members.forEach((mem, k) => {
+    const c = burstCentre(k), placed: V3[] = [];
+    mem.forEach((i, j) => {
+      let pt: V3 = c;
+      for (let t = 0; t < 400; t++) {
+        const a = 2 * Math.PI * rnd(36410 + k, j * 400 + t * 2), rr = BURST_DISC * Math.sqrt(rnd(36410 + k, j * 400 + t * 2 + 1));
+        pt = [c[0] + Math.cos(a) * rr, 0, c[2] + Math.sin(a) * rr];
+        if (placed.every((q) => Math.hypot(q[0] - pt[0], q[2] - pt[2]) >= 0.7)) break;
+      }
+      placed.push(pt);
+      g[i] = k; at[i] = pt; hb[i] = BURST_HEADINGS[k] + (rnd(36420, i) - 0.5) * 2 * ((8 * Math.PI) / 180); speed[i] = 6 + 2 * rnd(36401, i); ph0[i] = q16(rnd(36430, i));
+    });
+  });
+  return (burstMemo = {g, at, hb, speed, ph0, heroGroup: members[0]});
 };
 export const burstHeroGroup = (): number[] => burstSeeds().heroGroup;
 export const burstGroups = (): number[] => burstSeeds().g;
-const burstHeading = (i: number) => { const sd = burstSeeds(); return sd.heroGroup.includes(i) ? toward(sd.base[i].at, SC_TARGET) : BURST_HEADINGS[sd.g[i]]; };
 export const burst = (L: number): EmuMember[] => {
   const sd = burstSeeds(), bs = scBirds(), Ar = gaitAdvance(RUN_S);
-  return sd.base.map((s, i) => {
-    const h = burstHeading(i), d = (sd.speed[i] * L) / 30, ph = q16((s.ph ?? 0) + d / Ar);
-    return {...bs[i].m, at: mv(s.at, h, d), heading: mixAng(s.heading, h, ease(L / 4)), pose: runPose(ph, {wing: WING15})};
+  return sd.at.map((a0, i) => {
+    const d = (sd.speed[i] * L) / 30;
+    return {...bs[i].m, at: mv(a0, sd.hb[i], d), heading: sd.hb[i], pose: runPose(q16(sd.ph0[i] + d / (Ar * bs[i].m.scale)), {wing: WING15})};
   });
 };
 /** Dust trail behind each burst group: three puffs behind the group centroid, per frame. */
@@ -239,16 +257,17 @@ export const paintBurstDust = (p: Painter, c: YCam, L: number) => {
 
 // ---- B03-SH03: the split by halves
 export const HALVES_HERO: V3 = [12.0, 0, -32.0];
-const HALF_SPEED = 5.5;
-const halfD = (f: number) => (f <= 0 ? 0 : f <= 4 ? (HALF_SPEED * f * f) / (8 * 30) : 0.3667 + (HALF_SPEED / 30) * (f - 4));
+export const HALF_SPEED = 12, HALF_RAMP = 3;   // T08 r5 H1: run 0 -> 12 m/s over 3 f (the turn takes the same 3 f)
+const halfD = (f: number) => (f <= 0 ? 0 : f <= HALF_RAMP ? (HALF_SPEED * f * f) / (2 * HALF_RAMP * 30) : (HALF_SPEED * HALF_RAMP) / 60 + (HALF_SPEED / 30) * (f - HALF_RAMP));
+const halfScale = (i: number) => 0.94 + 0.12 * rnd(36300, i + 20);
 const halfState = (i: number, L: number) => {
   const left = i < 5, j = left ? i : i - 5, row = j % 2, x0 = (left ? 10.4 : 12.1) + (1.5 * j) / 4;
   const at0: V3 = [x0, 0, (row ? -35.0 : -33.5) + (rnd(36300, i) - 0.5) * 0.8], t0 = (left ? 7 : 23) + Math.floor(rnd(36301, i) * 4), f = L - t0, hT = left ? Math.PI : 0, D = halfD(f);
-  return {at: mv(at0, hT, D), heading: f > 0 ? mixAng(Math.PI / 2, hT, ease(f / 3)) : Math.PI / 2, ph: f > 0 ? D / gaitAdvance(RUN_S) : 0, f, hT};
+  return {at: mv(at0, hT, D), heading: f > 0 ? mixAng(Math.PI / 2, hT, ease(f / 3)) : Math.PI / 2, ph: f > 0 ? D / (gaitAdvance(RUN_S) * halfScale(i)) : 0, f, hT};
 };
 export const halves = (L: number): EmuMember[] => Array.from({length: 10}, (_, i) => {
   const s = halfState(i, L), stand = EMU_POSES.stand();
-  return {at: s.at, heading: s.heading, pose: s.f > 0 ? blendPoses(stand, runPose(s.ph), ease(s.f / 3)) : stand, scale: 0.94 + 0.12 * rnd(36300, i + 20), seed: 36300 + i};
+  return {at: s.at, heading: s.heading, pose: s.f > 0 ? blendPoses(stand, runPose(s.ph), ease(s.f / HALF_RAMP)) : stand, scale: halfScale(i), seed: 36300 + i};
 });
 export const halvesDust = (p: Painter, c: YCam, L: number) => Array.from({length: 10}, (_, i) => i).forEach((i) => paintPuffs(p, c, 36600 + i * 13, footEvents((f) => { const s = halfState(i, f); return s.f > 0 ? {at: s.at, heading: s.hT, ph: s.ph} : null; }, L, 10), 0.25));
 
@@ -277,20 +296,17 @@ export const fenceBirds = (o: {n?: number; truck?: V3; heroFrozen?: boolean} = {
 };
 
 // ---- B06-SH01: the slow line
-export const SLOW_X = [-4.6, -3.0, -1.4, 0.6, 2.2], SLOW_HERO = 2, SLOW_PERIOD = 42, SLOW_V = 0.22;
+export const SLOW_X = [-4.6, -3.0, -1.4, 0.6, 2.2], SLOW_HERO = 2, SLOW_PERIOD = 84, SLOW_V = 0.22;
+export const SLOW_STOP = 100;   // T08 r5 S3: the hero's pose and position freeze at L 100, inside the double support after the L 96 contact
 const SLOW_OFF = [7, 19, 12, 31, 41];   // first contact frame per bird (the hero's is L 12)
 const SLOW_S = strideForAdvance((SLOW_V * SLOW_PERIOD) / 30);
 const slowState = (i: number, L: number) => {
-  const Lc = i === SLOW_HERO ? Math.min(L, 109) : L;
+  const Lc = i === SLOW_HERO ? Math.min(L, SLOW_STOP) : L;
   return {at: [SLOW_X[i], 0, -4.6 + (SLOW_V * Lc) / 30] as V3, heading: Math.PI / 2, ph: (Lc - SLOW_OFF[i]) / SLOW_PERIOD};
 };
 export const slowLine = (L: number): EmuMember[] => SLOW_X.map((_, i) => {
   const s = slowState(i, L);
-  let pose = walkPose(s.ph, SLOW_S);
-  if (i === SLOW_HERO && L > 100) {   // the stop: the swinging right foot comes down beside the left by L 109
-    const u = ease((Math.min(L, 109) - 100) / 9), pl = emuPads(pose)[0], pr0 = emuPads(walkPose((100 - SLOW_OFF[i]) / SLOW_PERIOD, SLOW_S))[1];
-    pose = {...pose, pads: [pl, [mixN(pr0[0], pl[0], u), 0.06 * Math.sin(Math.PI * u), -0.11]]};
-  }
+  const pose = walkPose(s.ph, SLOW_S);
   return {at: s.at, heading: s.heading, pose, scale: i === SLOW_HERO ? 1 : 0.94 + 0.1 * rnd(36800, i), seed: i === SLOW_HERO ? 36000 : 36800 + i * 3, hero: i === SLOW_HERO};
 });
-export const slowDust = (p: Painter, c: YCam, L: number) => SLOW_X.forEach((_, i) => paintPuffs(p, c, 36900 + i * 17, footEvents((f) => { const s = slowState(i, f); return f > 0 && (i !== SLOW_HERO || f < 109) ? {at: s.at, heading: s.heading, ph: s.ph} : null; }, L, 12), 0.25));
+export const slowDust = (p: Painter, c: YCam, L: number) => SLOW_X.forEach((_, i) => paintPuffs(p, c, 36900 + i * 17, footEvents((f) => { const s = slowState(i, f); return f > 0 && (i !== SLOW_HERO || f <= SLOW_STOP) ? {at: s.at, heading: s.heading, ph: s.ph} : null; }, L, 12), 0.25));
