@@ -1,5 +1,5 @@
 # T41 — MEREDITH's "ยิง!" reads as a shouted order: stern brows and the kit `shout` mouth on the chop (T18 fix pass 1) + re-proof of B03-SH05
-Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: ready
+Deliverable: EDU-EP30-SHORT · Revision: r1 (`EDU-EP30-TICKETS-R10`) · Status: done
 Class: figure (fix bundle) · Hard: yes (face)
 Blocked by: none (T18, T23 built) · Consumers: B03-SH05 (T23)
 Model: sonnet, medium
@@ -36,4 +36,9 @@ Files: `src/painted/edu30/cast.ts`, `tests/edu30-cast.test.ts` (no plate change;
 | hard checks | arm unchanged | `thumb check: MEREDITH RIGHT: screen right ok` (L 0), `screen top ok` (L 7); `arm check: MEREDITH r: attached ok` (unchanged solve) |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit (this branch, see git log "T41") · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question.
+- Code: `src/painted/edu30/cast.ts` (`chopFace(L)`: from L 5 `brow: 'angry'`, `squint: 0.3`; mouth none before L 6, `talk` 0.3 L 6, `shout` 0.8 L 7-11, `shout` 0.5 L 12-14, `talk` 0.2 L 15, `flat` L 16 on; `chop` branch uses it; `CrewOpts.faceState` gained `brow`, `squint`; `chopTalk` unchanged); `tests/edu30-cast.test.ts` (L 8 `shout` + `angry` + squint 0.3 + open 0.8; L 2 and L 4 neutral, no mouth, no brow; mouth per frame; open 0.5/0.5/0.2). `tsc` clean for these files; `node scripts/test.mjs tests/edu30-cast.test.ts` 19 pass, 0 fail (`out/logs/T41-test.log`). No arm hash changed (no arm code touched).
+- Proof: store `projects/edu/EDU/previews/T41-sheet-chop.png` (C30-chop L 0, 5, 6, 7, 12, 16), `T41-sheet-b03sh05.png` (clean L 0, 6, 7, 12, 20), `T41-face-L6/L7/L12.png` (540 px crops), `T41-b03sh05-guides-L*.png` and `T41-b03sh05-clean-L*.png`, `T41-chop_L*.png`.
+- Measured: mouth bbox (dark pixels, C30-chop frame) L 6 **19 x 7** px, L 7 **29 x 30** px: height **4.3 x** (>= 1.6), width **1.5 x** (>= 1.2). `measure-shots.ts B03-SH05 0,7,12,20`: MEREDITH lead L 0 **717**, L 7 **742**, L 12 755, L 20 **763** (unchanged from T23). Caption zone clean L 7: mean 0.736, p95 0.877, pass. Test log: `thumb check: MEREDITH RIGHT: screen right ok (L 0 ...); screen top ok (L 7 ...)`; `arm check: MEREDITH r: attached ok; max arm ratio 1.000; max wrist reach 0.518 m`. Mitten positions follow from unchanged arm code (not re-read off frames).
+- Viewed 540 px L 6/7/12 and the plate sheet: brows down and level-hard, gaze on the flock, mouth wide open; reads as a shouted order, not surprise.
+- **Not followed:** the Judgment asks for a mouth "squarer than round"; the kit `shout` mouth (`KIT-MOUTH-STRIPS`, no kit edit in scope) is a round-oval, so L 7-12 is a tall round open mouth with stern brows. Film to rule if a squarer mouth is wanted (would need a kit mouth).

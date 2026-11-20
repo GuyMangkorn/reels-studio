@@ -4,7 +4,7 @@ import {BONE, ikElbow, shoulderPoint} from '../kit/cast';
 import type {ExpressionId} from '../kit/expressions';
 import {paintFigureAt} from '../kit/figure-at';
 import {mittenThumbSide} from '../kit/hand-gestures';
-import type {Mouth} from '../kit/head';
+import type {Brow, Mouth} from '../kit/head';
 import {capsule, ell, hardFill, inkLine} from '../kit/draw';
 import {makePainter, mixColor, type Painter, type Pt} from '../kit/painter';
 import {PEOPLE} from '../kit/people';
@@ -46,7 +46,7 @@ export const paintHat = (p: Painter, a: FigAnchors, u: number, seed: number, o: 
   inkLine(p, seed + 3, crown, {closed: false, weight: 0.6, color: mixColor(col, '#141008', 0.6), still: true});
 };
 
-export type CrewOpts = {view?: 'front' | 'back' | 'left' | 'right'; pose?: AnyPoseId; face?: ExpressionId; /** face overrides (T12: P30 gaze `look` [0, -0.2] = a little up) */ faceState?: {look?: Pt; mouth?: Mouth; open?: number}; t: number; tint?: {to: string; u: number}; fig?: Record<string, unknown>; seed: number};
+export type CrewOpts = {view?: 'front' | 'back' | 'left' | 'right'; pose?: AnyPoseId; face?: ExpressionId; /** face overrides (T12: P30 gaze `look` [0, -0.2] = a little up) */ faceState?: {look?: Pt; mouth?: Mouth; open?: number; brow?: Brow; squint?: number}; t: number; tint?: {to: string; u: number}; fig?: Record<string, unknown>; seed: number};
 
 /** Paint one standing / kneeling crew member with a hat. Returns anchors. */
 export const paintCrew = (p: Painter, c: YCam, def: CastDef, at: V3, o: CrewOpts & {hat?: 'slouch' | 'felt'; upLeft?: boolean}) => {
@@ -246,10 +246,20 @@ export const CHOP_R0 = 0.4966, CHOP_R1 = 0.518, CHOP_A0 = Math.atan2(-194.6, -47
 export const chopU = (L: number) => easeIn(seg(L, 4, 7));
 /** The shouted "ยิง!" mouth `open` (speech local 6-16): 0.3 at L 6, 0.8 L 7-11, 0.5 L 12-14, 0.2 at L 15, 0 (closed, firm) from L 16; null before L 6. */
 export const chopTalk = (L: number): number | null => (L < 6 ? null : L < 7 ? 0.3 : L <= 11 ? 0.8 : L <= 14 ? 0.5 : L < 16 ? 0.2 : 0);
+/** T41 (S1, S2): MEREDITH's order face. Stern brows (`angry`, squint 0.3) from L 5; the mouth is `talk` 0.3 at L 6, kit `shout` 0.8 at L 7-11, `shout` 0.5 at L 12-14, `talk` 0.2 at L 15, `flat` (closed, firm) from L 16; before L 6 only the brows may change. */
+export const chopFace = (L: number): {brow?: Brow; squint?: number; mouth?: Mouth; open?: number} => {
+  const brows = L >= 5 ? {brow: 'angry' as Brow, squint: 0.3} : {};
+  const o = chopTalk(L);
+  if (o === null) return brows;
+  if (L < 7) return {...brows, mouth: 'talk', open: o};
+  if (L <= 14) return {...brows, mouth: 'shout', open: o};
+  if (L < 16) return {...brows, mouth: 'talk', open: o};
+  return {...brows, mouth: 'flat', open: 0};
+};
 
 /** `loaderLean` (R9-1, for T22 r8) scales the loader's turn: lean = `LOADER_LEAN` x hold x loaderLean (default 1). */
 export type CrewSolveOpts = {pose: CrewPoseKey; L: number; seed: number; pan?: V3; loaderLean?: number};
-export type CrewSolve = {view: 'front' | 'back'; fig: Partial<FigPose>; face: ExpressionId; faceState?: {look?: Pt; mouth?: Mouth; open?: number}; hat: 'slouch' | 'felt'; pose?: AnyPoseId;
+export type CrewSolve = {view: 'front' | 'back'; fig: Partial<FigPose>; face: ExpressionId; faceState?: {look?: Pt; mouth?: Mouth; open?: number; brow?: Brow; squint?: number}; hat: 'slouch' | 'felt'; pose?: AnyPoseId;
   /** longest drawn bone / the 0.26 m bone (the drawn arms) */ rRatio: number; lRatio: number; /** wrist targets (px) of the gesture arms, null where the arm is the kit's */ rTo: Pt | null; lTo: Pt | null; lean: number;
   /** drawn elbow flexion (deg; 0 = straight) per arm */ rFlex: number; lFlex: number; shoulders: {r: Pt; l: Pt}; /** px per metre at the figure */ u: number;
   /** back view only: the drawn chains (shoulder, elbow, wrist) repainted over the torso, which the kit's back view paints over the hands (T12 D) */ over?: {r: [Pt, Pt, Pt]; l: [Pt, Pt, Pt]};
@@ -290,8 +300,7 @@ export const solveCrewPose = (c: YCam, def: CastDef, at: V3, o: CrewSolveOpts): 
     const uu = chopU(o.L), lean = CHOP_LEAN * uu, an = dry({lean}, 'P01')!, S = an.rShoulder, th = CHOP_A0 + (CHOP_A1 - CHOP_A0) * uu, r = (CHOP_R0 + (CHOP_R1 - CHOP_R0) * uu) * u;
     const W: Pt = [S[0] + Math.cos(th) * r, S[1] + Math.sin(th) * r], E = ikElbow(S, W, L, -1), ang = Math.atan2(W[1] - E[1], W[0] - E[0]), off = (0.03 + 0.01 * uu) * u;
     const hand = {c: [W[0] + Math.cos(ang) * off, W[1] + Math.sin(ang) * off] as Pt, ang, rx: (0.045 + 0.017 * uu) * u, ry: (0.052 - 0.01 * uu) * u, u, chain: [S, E, W] as [Pt, Pt, Pt], thumb: 1 as const};
-    const talk = chopTalk(o.L);
-    return {...base, view, pose: 'P01', fig: {lean, rArm: {to: W, via: E, exact: true, noHand: true}}, face: 'neutral', hat: 'slouch', faceState: {look: CHOP_LOOK, ...(talk !== null ? {mouth: 'talk' as Mouth, open: talk} : {})},
+    return {...base, view, pose: 'P01', fig: {lean, rArm: {to: W, via: E, exact: true, noHand: true}}, face: 'neutral', hat: 'slouch', faceState: {look: CHOP_LOOK, ...chopFace(o.L)},
       rTo: W, rRatio: ratioOf(S, E, W, L), rFlex: flexOf(S, E, W), lean, shoulders: {r: S, l: an.lShoulder}, hand};
   }
   if (o.pose === 'farmer') {

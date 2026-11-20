@@ -288,6 +288,13 @@ test('T18: lead height at L 7 (sheet range 654-696 px; the decided staging and c
   const open = Array.from({length: 21}, (_, L) => chopTalk(L));
   assert.deepEqual(open, [...Array(6).fill(null), 0.3, 0.8, 0.8, 0.8, 0.8, 0.8, 0.5, 0.5, 0.5, 0.2, ...Array(5).fill(0)]);
   assert.deepEqual([f(6).faceState!.mouth, f(6).faceState!.open, f(16).faceState!.open, f(20).faceState!.open], ['talk', 0.3, 0, 0]);
+  // T41: stern brows from L 5, kit `shout` on the word, `flat` from L 16
+  assert.deepEqual([f(8).faceState!.mouth, f(8).faceState!.brow, f(8).faceState!.squint, f(8).faceState!.open], ['shout', 'angry', 0.3, 0.8]);
+  assert.deepEqual([f(2).faceState!.brow, f(2).faceState!.mouth, f(2).faceState!.squint], [undefined, undefined, undefined]);
+  assert.equal(f(2).face, 'neutral');
+  assert.deepEqual([4, 5].map(L => f(L).faceState!.brow), [undefined, 'angry']);
+  assert.deepEqual([6, 7, 11, 12, 14, 15, 16, 20].map(L => f(L).faceState!.mouth), ['talk', 'shout', 'shout', 'shout', 'shout', 'talk', 'flat', 'flat']);
+  assert.deepEqual([12, 14, 15].map(L => f(L).faceState!.open), [0.5, 0.5, 0.2]);
 });
 
 test('T18 R9-1: loaderLean 0 gives lean 0 at L 0; default and 1 keep the lean', () => {
