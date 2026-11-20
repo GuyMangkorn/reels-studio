@@ -1,6 +1,6 @@
 # Match the native Codex subagent default in docs/coordinator.md (AI14).
 [agents]
-default_subagent_model = "gpt-6.1-sol"
+default_subagent_model = "gpt-6.2-sol"
 default_subagent_reasoning_effort = "medium"
 
 [mcp_servers.audio-studio]
