@@ -48,7 +48,7 @@ export type BeastLook = {sub?: number; ring?: number; rim?: string; rimK?: numbe
   wetHide?: string[]};
 export type Build = {parts: Part[]; flats: Flat[]; bones: Bone[]; joints: Record<string, L3>; feet: L3[]; shadow: {s: number; l: number; rs: number; rl: number}; anchors: Record<string, L3>; look?: BeastLook};
 
-export type BeastPlace = {at: [number, number]; heading: number; ground?: number; /** nose-up pitch and bank about the body axis (rad), for fliers */ pitch?: number; bank?: number; seed?: number; sun?: V3; amb?: string; ambK?: number; shadowOp?: number; haze?: number; hazeCol?: string; /** comp-card skeleton overlay: joint dots and bone links drawn on top, see-through */ rig?: boolean; /** world y of a water plane: parts below it are clipped away (a wader's legs hidden below the knee); the scene paints the water and the splash rings at `waterRing` */ waterline?: number; /** N16-19: draw only the bones for which this is true (parts, flats and the ground shadow), so a creature can be painted as separate depth-sorted items; the shadow goes with `only('body')`-style root bone (the one with no parent) */ /** B-R15B-05 localized light: a warm band along the segment `a`..`b` (creature-local metres), `r` m wide on each side. Only lofted skin quads facing up (normal y > 0.2) take it, never flats (teeth, mouth lining); the core (d < 0.55 r) mixes `k` of `col` into the shaded colour, the edge half of that. */ glow?: {a: L3; b: L3; r: number; col: string; k: number}; only?: (bone: string) => boolean; /** N16-19 depth slab: draw only the quads/flats whose centre is between `d0` and `d1` m (horizontal) from the camera; `shadow` draws the ground shadow with this slab */ slab?: {d0: number; d1: number; shadow?: boolean; /** bone -> world point used for the slab test of ALL its quads (keeps a head in one slab) */ pin?: Record<string, V3>}};
+export type BeastPlace = {at: [number, number]; heading: number; ground?: number; /** T35: metres above `ground` for the body only (a hop); the ground shadow and foot contact shadows stay on the ground and shrink and fade with height; default 0 paints as before */ air?: number; /** nose-up pitch and bank about the body axis (rad), for fliers */ pitch?: number; bank?: number; seed?: number; sun?: V3; amb?: string; ambK?: number; shadowOp?: number; haze?: number; hazeCol?: string; /** comp-card skeleton overlay: joint dots and bone links drawn on top, see-through */ rig?: boolean; /** world y of a water plane: parts below it are clipped away (a wader's legs hidden below the knee); the scene paints the water and the splash rings at `waterRing` */ waterline?: number; /** N16-19: draw only the bones for which this is true (parts, flats and the ground shadow), so a creature can be painted as separate depth-sorted items; the shadow goes with `only('body')`-style root bone (the one with no parent) */ /** B-R15B-05 localized light: a warm band along the segment `a`..`b` (creature-local metres), `r` m wide on each side. Only lofted skin quads facing up (normal y > 0.2) take it, never flats (teeth, mouth lining); the core (d < 0.55 r) mixes `k` of `col` into the shaded colour, the edge half of that. */ glow?: {a: L3; b: L3; r: number; col: string; k: number}; only?: (bone: string) => boolean; /** N16-19 depth slab: draw only the quads/flats whose centre is between `d0` and `d1` m (horizontal) from the camera; `shadow` draws the ground shadow with this slab */ slab?: {d0: number; d1: number; shadow?: boolean; /** bone -> world point used for the slab test of ALL its quads (keeps a head in one slab) */ pin?: Record<string, V3>}};
 export type DrawnPoly = {bone: string; poly: Pt[]};
 export type BeastAnchors = {drawn: DrawnPoly[]; /** creature-local metres to world metres in this placement */ toWorld: (q: L3) => V3; pt: (name: string) => Pt | null; world: (name: string) => V3; left: number; right: number; top: number; bottom: number};
 
@@ -58,11 +58,27 @@ const SUN: L3 = nrm([-0.4, 0.85, 0.35]);
 export const TEX_MAX_N = 14;
 /** Cells a side for a quad of screen-pixel edge lengths `eu`, `ev` (B-R15B-03): `n` when `px` is unset, else enough cells for `px`-sized squares, clamped to [n, TEX_MAX_N]. */
 export const texCells = (n: number, px: number | undefined, eu: number, ev: number): number => (px ? Math.min(TEX_MAX_N, Math.max(n, Math.round(Math.max(eu, ev) / px))) : n);
+/** Ring frames (X across, Y up-ish) for the stations of a tube. The frame is carried from station to station (T37): X and Y keep their side of the previous station's, so a tube whose tangent turns past vertical never twists or slits. Station 0 keeps Y up, so a tube that never bends past the flip is built as before. */
+export const ringFrames = (pts: L3[]): {X: L3; Y: L3}[] => {
+  const n = pts.length, out: {X: L3; Y: L3}[] = [];
+  for (let i = 0; i < n; i++) {
+    const T = nrm(sub(pts[Math.min(n - 1, i + 1)], pts[Math.max(0, i - 1)]));
+    let X = sub([0, 0, 1], mul(T, T[2]));
+    if (Math.hypot(...X) < 0.05) X = sub([0, 1, 0], mul(T, T[1]));
+    X = nrm(X);
+    const p = out[i - 1];
+    if (p && dot(X, p.X) < 0) X = mul(X, -1);
+    let Y = cross(X, T);
+    if (p ? dot(Y, p.Y) < 0 : Y[1] < 0) Y = mul(Y, -1);
+    out.push({X, Y});
+  }
+  return out;
+};
 export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace): BeastAnchors => {
-  const h = o.heading, fx = Math.cos(h), fz = Math.sin(h), lx = Math.sin(h), lz = -Math.cos(h), gy = o.ground ?? 0, seed = o.seed ?? 70000;
+  const h = o.heading, fx = Math.cos(h), fz = Math.sin(h), lx = Math.sin(h), lz = -Math.cos(h), gy = o.ground ?? 0, ay = o.air ?? 0, aa = clamp(ay, 0, 1), seed = o.seed ?? 70000;
   const pc = Math.cos(o.pitch ?? 0), ps = Math.sin(o.pitch ?? 0), bc = Math.cos(o.bank ?? 0), bs = Math.sin(o.bank ?? 0);
   const rot = ([s0, y0, l0]: L3): L3 => { const y1 = y0 * bc - l0 * bs, l1 = y0 * bs + l0 * bc; return [s0 * pc - y1 * ps, s0 * ps + y1 * pc, l1]; };
-  const W = (q: L3): V3 => { const [s, y, l] = rot(q); return [o.at[0] + s * fx + l * lx, gy + y, o.at[1] + s * fz + l * lz]; };
+  const W = (q: L3): V3 => { const [s, y, l] = rot(q); return [o.at[0] + s * fx + l * lx, gy + ay + y, o.at[1] + s * fz + l * lz]; };
   const WN = (q: L3): L3 => { const [s, y, l] = rot(q); return [s * fx + l * lx, y, s * fz + l * lz]; };
   const sun = o.sun ? nrm(o.sun as L3) : SUN, cam: L3 = [c.x, c.y, c.z];
   const toward = (pl: L3, nl: L3) => dot(WN(nl), sub(cam, W(pl) as L3)) > 0;
@@ -94,13 +110,9 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
     const ks = LK?.sub && part.keys.length > 2 ? spline(part.keys, LK.sub) : part.keys, n = ks.length, m = LK?.ring ? Math.round(part.m * LK.ring) : part.m;
     const mid = ks[Math.floor(n / 2)].p, far = part.side ? dot(WN([0, 0, part.side]), nrm(sub(W(mid) as L3, cam))) > 0.2 : false, dim = far ? LK?.far ?? 0.28 : 0;
     const rv: L3[][] = [], rn: L3[][] = [];
+    const frames = ringFrames(ks.map((k) => k.p));
     ks.forEach((k, i) => {
-      const T = nrm(sub(ks[Math.min(n - 1, i + 1)].p, ks[Math.max(0, i - 1)].p));
-      let X = sub([0, 0, 1], mul(T, T[2]));
-      if (Math.hypot(...X) < 0.05) X = sub([0, 1, 0], mul(T, T[1]));
-      X = nrm(X);
-      const Y = cross(X, T);
-      const Yu: L3 = Y[1] < 0 ? mul(Y, -1) : Y;
+      const {X, Y: Yu} = frames[i];
       rv.push([]); rn.push([]);
       for (let j = 0; j < m; j++) { const th = (j / m) * Math.PI * 2, cs = Math.cos(th), sn = Math.sin(th); rv[i].push(add(k.p, add(mul(X, k.a * cs), mul(Yu, k.b * sn)))); rn[i].push(nrm(add(mul(X, cs / k.a), mul(Yu, sn / k.b)))); }
     });
@@ -191,9 +203,9 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
   });
   // ground shadow first (under everything)
   if (p && B.shadow.rs > 0 && (!o.only || o.only(B.bones.find((b) => b.parent === null)!.id)) && (!o.slab || o.slab.shadow)) {
-    const sh = B.shadow, ring = Array.from({length: 24}, (_, j) => camPoint(c, W([sh.s + sh.rs * Math.cos((j / 24) * 6.283), -gy + gy + 0.01, sh.l + sh.rl * Math.sin((j / 24) * 6.283)])));
-    if (ring.every(Boolean)) washAt(p, seed + 99, '#1e2418', o.shadowOp ?? 110, ring as Pt[], 0.35, 0.2);
-    B.feet.forEach((f, i) => { const pr = Array.from({length: 14}, (_, j) => camPoint(c, W([f[0] + 0.5 * Math.cos((j / 14) * 6.283) * (B.shadow.rs / 6 + 0.3), 0.012, f[2] + 0.4 * Math.sin((j / 14) * 6.283) * (B.shadow.rs / 6 + 0.3)]))); if (f[1] < 0.2 && pr.every(Boolean)) washAt(p, seed + 120 + i, '#141810', 150, pr as Pt[], 0.2, 0.2); });
+    const sh = B.shadow, ak = 1 - 0.6 * aa, ok = Math.max(0.5, 1 - 1.2 * aa), fk = Math.max(0, 1 - 4 * aa), ring = Array.from({length: 24}, (_, j) => camPoint(c, W([sh.s + sh.rs * ak * Math.cos((j / 24) * 6.283), 0.01 - ay, sh.l + sh.rl * ak * Math.sin((j / 24) * 6.283)])));
+    if (ring.every(Boolean)) washAt(p, seed + 99, '#1e2418', (o.shadowOp ?? 110) * ok, ring as Pt[], 0.35, 0.2);
+    B.feet.forEach((f, i) => { const pr = Array.from({length: 14}, (_, j) => camPoint(c, W([f[0] + 0.5 * Math.cos((j / 14) * 6.283) * (B.shadow.rs / 6 + 0.3), 0.012 - ay, f[2] + 0.4 * Math.sin((j / 14) * 6.283) * (B.shadow.rs / 6 + 0.3)]))); if (fk > 0 && f[1] < 0.2 && pr.every(Boolean)) washAt(p, seed + 120 + i, '#141810', 150 * fk, pr as Pt[], 0.2, 0.2); });
   }
   items.sort((x, y) => y.d - x.d).forEach((it) => it.f());
   if (p && o.rig) {
