@@ -4,7 +4,9 @@ import type {V3} from '../kit/space';
 import {camDist, camPoint, camUnit, type YCam} from '../kit/ycam';
 import {paintBeast, type BeastAnchors, type Build} from '../survival/beast';
 import {paintPlume} from '../kit/anchors';
-import {buildEmu, emuPads, emuStartle, EMU_POSES, gaitAdvance, mixEmuPose, WING_FLAP_OUT, WING_FOLD, wingMix, type EmuPose} from './emu';
+import {buildEmu, emuDuckFlap, emuHop, emuLensYaw, emuPads, emuStartle, EMU_POSES, gaitAdvance, mixEmuPose, WING_FLAP_OUT, WING_FOLD, wingMix, type EmuPose} from './emu';
+import {DAM, DAM_CAMS, queuePoint, QUEUE_LEN} from './dam';
+import {paintRing} from '../kit/gunfire';
 
 // `new: emu-flock` (VD30-05, Film W3 2026-11-19; Boss hardens the instancing): seeded members with varied phase, scale (+/-8 %), plumage tone
 // and facing, one build per pose key (cached, so a 40-bird frame does not rebuild per bird), and a painted far mass for "thousands"
@@ -310,3 +312,115 @@ export const slowLine = (L: number): EmuMember[] => SLOW_X.map((_, i) => {
   return {at: s.at, heading: s.heading, pose, scale: i === SLOW_HERO ? 1 : 0.94 + 0.1 * rnd(36800, i), seed: i === SLOW_HERO ? 36000 : 36800 + i * 3, hero: i === SLOW_HERO};
 });
 export const slowDust = (p: Painter, c: YCam, L: number) => SLOW_X.forEach((_, i) => paintPuffs(p, c, 36900 + i * 17, footEvents((f) => { const s = slowState(i, f); return f > 0 && (i !== SLOW_HERO || f <= SLOW_STOP) ? {at: s.at, heading: s.heading, ph: s.ph} : null; }, L, 12), 0.25));
+
+// ---- T16: the queue at the dam (B04-SH02, SH03, SH05). Pure functions of the shot-local frame L; no state between frames.
+// One path (T10 `queuePoint`, arc length s from the gun end), bird i (0 = EMU-HERO) at s = sHead + 1.4 i. One stride for the whole line: 1.5 m of body advance per cycle (stride 0.9, duty 0.6),
+// so a half cycle (one step) advances the body 0.6 m: that is the unison step. Gait phase comes from the distance walked (stance foot static); a bird at rest holds a double-support phase.
+export type QueueShot = 'B04-SH02' | 'B04-SH03' | 'B04-SH05';
+export const QUEUE_N = 25, QUEUE_GAP = 1.4, QUEUE_ADV = 1.5;
+const QUEUE_S = strideForAdvance(QUEUE_ADV);
+const qScale = (i: number) => (i === 0 ? 1 : 0.94 + 0.12 * rnd(36100, i));
+const qSeed = (i: number) => (i === 0 ? 36000 : 36100 + i * 13);
+const qDs = (k: number) => Math.min(Math.max(k, 0), QUEUE_LEN);
+/** Heading (rad, world xz) of the path toward the gun at arc length s, from points 0.35 m either side. */
+export const queueHeading = (s: number): number => { const a = queuePoint(qDs(s + 0.35)), b = queuePoint(qDs(s - 0.35)); return Math.atan2(b[2] - a[2], b[0] - a[0]); };
+/** A walk pose at phase ph with the head easing from the held stand head (hb 0, plus an idle bob) to the walking head (hb 1). */
+const qPose = (ph: number, hb: number, bobH: number, o: Partial<EmuPose> = {}): EmuPose =>
+  walkPose(ph, QUEUE_S, {head: [mixN(0.42, 0.47 + 0.035 * Math.sin(ph * 4 * Math.PI), hb), mixN(1.6 + bobH, 1.56, hb), 0], bob: -0.015 * Math.cos(ph * 4 * Math.PI) * hb, ...o});
+const qBob = (i: number, L: number) => 0.02 * Math.sin(2 * Math.PI * (L / (20 + 10 * rnd(36150, i)) + rnd(36151, i)));
+/** Double-support phases (both feet on the ground): 0..0.1 and 0.5..0.6 of a cycle. */
+const dsPhase = (i: number, seed: number, second = false) => (second ? 50 : 0) / 96 + (2 + Math.floor(rnd(seed, i) * 7)) / 96;
+type QState = {s: number; lat: number; air?: number; ph: number; hb: number; pose: EmuPose; head?: number};
+const piece = (L: number, k: [number, number][]) => { if (L <= k[0][0]) return k[0][1]; for (let j = 1; j < k.length; j++) if (L <= k[j][0]) return mixN(k[j - 1][1], k[j][1], (L - k[j - 1][0]) / (k[j][0] - k[j - 1][0])); return k[k.length - 1][1]; };
+const hbOf = (trav: (l: number) => number, L: number) => clamp01((trav(L + 1) - trav(L - 1)) / 0.012);
+
+// B04-SH02: stand to L 40, unison step L 41-49 (phase 0.1 -> 0.5: the rear foot lifts at 41 and lands at 49 for every bird), walk on at 0.32 m/s.
+export const Q2_HEAD0 = 7.6;
+const q2D = (L: number) => (L <= 41 ? 0 : L <= 49 ? 0.6 * ease((L - 41) / 8) : 0.6 + (0.32 * (L - 49)) / 30);
+const q2 = (i: number, L: number): QState => {
+  const D = q2D(L), hb = L < 41 ? 0 : L < 49 ? Math.max(0.35, ease((L - 41) / 4)) : 1, ph = L < 41 ? 0.1 : L <= 49 ? 0.1 + D / QUEUE_ADV : q16(0.1 + D / QUEUE_ADV);
+  return {s: Q2_HEAD0 + QUEUE_GAP * i - D * qScale(i), lat: 0, ph, hb, pose: qPose(ph, hb, qBob(i, L) * clamp01((41 - L) / 5))};
+};
+
+// B04-SH03: head x 3.6 -> 3.0. Birds 0-5 duck-flap L 12-28 (stopped, feet planted); birds 2 and 4 hop into the shallows L 19 (land L 25, splash) and walk back by L 40; bird 6 closes up behind
+// bird 5 (gap 1.0) and holds L 24-40; the line is back at 1.4 m spacing at L 40. Forward-only: a bird never walks backward.
+export const Q3_HEAD0 = 6.6, Q3_HOPPERS = [2, 4], Q3_HOP_START = 19, Q3_SPLASH = 25, Q3_DIST = 0.6;
+const Q3_V = 0.39 / 30;
+const gA3 = (L: number) => piece(L, [[0, 0], [12, Q3_V * 12], [28, Q3_V * 12], [40, 0.556], [46, 0.6], [200, 0.6 + Q3_V * 154]]);
+const g6_3 = (L: number) => (L <= 12 ? Q3_V * L : L <= 24 ? mixN(Q3_V * 12, 0.556, ease((L - 12) / 12)) : L <= 40 ? 0.556 : piece(L, [[40, 0.556], [46, 0.6], [200, 0.6 + Q3_V * 154]]));
+const g3 = (i: number, L: number) => (i <= 5 ? gA3(L) : i === 6 ? g6_3(L) : Q3_V * L);
+const hopFrac = (L: number) => (L < Q3_HOP_START ? 0 : L < 28 ? Math.min(1, (L - Q3_HOP_START) / 6) : 1 - ease((L - 28) / 12));
+const q3 = (i: number, L: number): QState => {
+  const hop = Q3_HOPPERS.includes(i), g = (l: number) => g3(i, l) + (hop && l > 28 ? Q3_DIST * ease((l - 28) / 12) : 0);
+  const A = QUEUE_ADV * qScale(i);   // the feet scale with the bird: its cycle advances A m, so the stance foot stays put
+  const ph0 = i <= 5 ? dsPhase(i, 36160) - (Q3_V * 12) / A : i === 6 ? dsPhase(i, 36160, true) - 0.556 / A : q16(rnd(36161, i));
+  const phi = (l: number) => q16(ph0 + g(l) / A), hb = hbOf(g, L), ph = phi(L), walk = qPose(ph, hb, qBob(i, L));
+  const s = Q3_HEAD0 + QUEUE_GAP * i - g3(i, L);
+  if (i > 5) return {s, lat: 0, ph, hb, pose: i === 6 && L > 24 && L < 40 ? qPose(phi(24), 0, qBob(i, L)) : walk};
+  const ph12 = q16(ph0 + (Q3_V * 12) / A), from = qPose(ph12, 0, 0), to = qPose(ph12, 0, 0), lat = -Q3_DIST * hopFrac(L);
+  if (L < 12) return {s, lat: 0, ph, hb, pose: walk};
+  if (!hop) return {s, lat: 0, ph, hb, pose: L <= 28 ? emuDuckFlap(L - 12, {from, to}) : walk};
+  if (L < Q3_HOP_START) return {s, lat: 0, ph, hb, pose: emuDuckFlap(L - 12, {from, to})};
+  const hf = emuDuckFlap(Q3_HOP_START - 12, {from, to}), h = emuHop(L - Q3_HOP_START, {side: -1, dist: Q3_DIST, from: hf});
+  if (L < 28) return {s, lat: h.offset[2], air: h.offset[1], ph, hb, pose: h.pose};
+  const end = emuHop(9, {side: -1, dist: Q3_DIST, from: hf}).pose;
+  return {s, lat, ph, hb, pose: L < 32 ? blendPoses(end, walk, ease((L - 28) / 4)) : walk};
+};
+
+// B04-SH05: stand to L 56 (sHead 4.6, x 1.6), every head to the lens. From L 57 birds 1-6 (2 f apart) turn about over 6 f (one step per 3 f, 0.3 m of travel) and walk off up the shore at 0.4 m/s.
+export const Q5_HEAD0 = 4.6, Q5_TURN0 = 57, Q5_TURN_GAP = 2, Q5_TURN_F = 6, Q5_AWAY_V = 0.4;
+const q5 = (i: number, L: number): QState => {
+  const t = Q5_TURN0 + Q5_TURN_GAP * (i - 1), turning = i >= 1 && i <= 6 && L >= t, ph0 = dsPhase(i, 36170);
+  if (!turning) return {s: Q5_HEAD0 + QUEUE_GAP * i, lat: 0, ph: ph0, hb: 0, pose: qPose(ph0, 0, 0)};
+  const u = clamp01((L - t) / Q5_TURN_F), away = Math.max(0, L - t - Q5_TURN_F), d = (Q5_AWAY_V * away) / 30, ph = u < 1 ? ph0 + u : q16(ph0 + 1 + d / QUEUE_ADV);
+  return {s: Q5_HEAD0 + QUEUE_GAP * i + 0.3 * ease(u) + d, lat: 0, ph, hb: 1, pose: qPose(ph, 1, 0), head: u};
+};
+
+const qState = (i: number, L: number, shot: QueueShot) => (shot === 'B04-SH02' ? q2 : shot === 'B04-SH03' ? q3 : q5)(i, L);
+const qPos = (i: number, L: number, shot: QueueShot): {p: V3; h: number; st: QState} => {
+  const st = qState(i, L, shot), P = queuePoint(qDs(st.s)), h0 = queueHeading(st.s) + (st.head === undefined ? 0 : Math.PI * ease(st.head));
+  const lx = Math.sin(h0), lz = -Math.cos(h0);
+  return {p: [P[0] + lx * st.lat, P[1], P[2] + lz * st.lat], h: h0, st};
+};
+/** The queue at shot-local frame L: 25 members, bird 0 = EMU-HERO (tuft and bib). `o.hero` may replace bird 0's fields (T15 watch-check and foot-tap in B04-SH05). B04-SH05 turns every head to the sheet camera. */
+export const queue = (L: number, shot: QueueShot, o: {hero?: (L: number) => Partial<EmuMember>} = {}): EmuMember[] => Array.from({length: QUEUE_N}, (_, i) => {
+  const {p, h, st} = qPos(i, L, shot);
+  let h1 = h;
+  if (shot === 'B04-SH03' && st.lat !== 0 && L >= 28) {   // the hopper walks back on an arc: face the way it moves
+    const a = qPos(i, L - 1, shot).p, b = qPos(i, L + 1, shot).p, w = clamp01(Math.abs(b[2] - a[2]) / 0.06);
+    h1 = mixAng(h, Math.atan2(b[2] - a[2], b[0] - a[0]), w);
+  }
+  let pose = st.pose;
+  if (shot === 'B04-SH05') pose = {...pose, headYaw: emuLensYaw(p, h1, DAM_CAMS.sh05) * (1 - (st.head === undefined ? 0 : ease(st.head))), lid: 0.3};
+  const m: EmuMember = {at: p, heading: h1, pose, scale: qScale(i), seed: qSeed(i), hero: i === 0 || undefined, air: st.air};
+  return i === 0 && o.hero ? {...m, ...o.hero(L)} : m;
+});
+/** B04-SH03 hops: the landing point (on the ground) and the frame of the splash per hopper (T05 `paintSplash(p, c, L, at, start, seed)`). */
+export const queueSplashes = (): {bird: number; at: V3; start: number}[] => Q3_HOPPERS.map((i) => ({bird: i, at: qPos(i, Q3_SPLASH, 'B04-SH03').p, start: Q3_SPLASH}));
+/** Ground points of every bird over a shot (every `step` frames), for `strikePoints({avoid})` so no strike falls near a bird (CAT02). */
+export const queueAvoid = (shot: QueueShot, N: number, step = 2): V3[] => Array.from({length: Math.floor(N / step) + 1}, (_, k) => k * step).flatMap((L) => queue(L, shot).map((m) => m.at));
+/** World ground position of one foot of a member (foot 0 = left pad), y = pad lift. */
+export const queueFoot = (m: EmuMember, foot: 0 | 1): V3 => { const pad = emuPads(m.pose)[foot], s = m.scale; return [m.at[0] + Math.cos(m.heading) * pad[0] * s + Math.sin(m.heading) * pad[2] * s, m.at[1] + pad[1] * s, m.at[2] + Math.sin(m.heading) * pad[0] * s - Math.cos(m.heading) * pad[2] * s]; };
+/** Far painted mass beyond the 25 instanced birds: hundreds of silhouettes along the path (static). */
+export const paintQueueFar = (p: Painter, c: YCam, seed = 36190) => {
+  const s0 = Q2_HEAD0 + QUEUE_GAP * QUEUE_N;
+  for (let s = s0, k = 0; s < QUEUE_LEN; s += 6, k++) {
+    const a = queuePoint(s), b = queuePoint(Math.min(QUEUE_LEN, s + 6)), w = 1.6;
+    paintFarFlock(p, c, seed + k * 7, Math.round(6 / QUEUE_GAP) * 3, [Math.min(a[0], b[0]) - w, Math.max(a[0], b[0]) + w], [Math.min(a[2], b[2]) - w, Math.max(a[2], b[2]) + w]);
+  }
+};
+/** T10 r3/r4 wading: every bird standing on the water (y at the surface) gets a pale water ellipse 0.14 x 0.05 m at each foot (ankle-deep) after the birds are painted, and a 0.25 m ripple ring per foot-down
+ *  over the last 12 f. Call after `paintFlock` of `queue(L, shot)`; the gait is distance-driven, so the shot clock is the ambient clock here. */
+export const paintQueueWade = (p: Painter, c: YCam, L: number, shot: QueueShot) => {
+  const wet = (m: EmuMember) => m.at[1] <= DAM.water + 0.004, ms = queue(L, shot);
+  for (let f = Math.max(1, L - 11); f <= L; f++) {
+    const a = queue(f - 1, shot), b = queue(f, shot);
+    b.forEach((m, i) => { if (wet(m)) ([0, 1] as const).forEach((ft) => { if (emuPads(a[i].pose)[ft][1] > 1e-6 && emuPads(m.pose)[ft][1] <= 1e-6) { const w = queueFoot(m, ft); paintRing(p, c, [w[0], DAM.water, w[2]], f, L, 0.25, 12, 36200 + i * 5 + ft + f * 13); } }); });
+  }
+  [...ms.keys()].filter((i) => wet(ms[i])).sort((i, j) => camDist(c, [ms[j].at[0], 0, ms[j].at[2]]) - camDist(c, [ms[i].at[0], 0, ms[i].at[2]])).forEach((i) => ([0, 1] as const).forEach((ft) => {
+    const w = queueFoot(ms[i], ft), g = camPoint(c, [w[0], DAM.water, w[2]]);
+    if (!g) return;
+    const u = camUnit(c, [w[0], DAM.water, w[2]]);
+    hardFill(p, 36300 + i * 3 + ft, DAM.waterLight, Array.from({length: 14}, (_, k) => [g[0] + 0.07 * u * Math.cos((k / 14) * 6.283), g[1] + 0.025 * u * Math.sin((k / 14) * 6.283)] as Pt));
+  }));
+};

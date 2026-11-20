@@ -261,3 +261,95 @@ test('headsField at the end camera: no head or neck overlaps the crew bounding b
   log('heads crew bbox px', crew.map((n) => Math.round(n)).join(','), 'overlap px2', Math.round(overlap));
   assert.equal(overlap, 0);
 });
+
+// ---- T16 (r4): the queue at the dam. Positions, headings, pose values and keys only.
+import {queue, queueAvoid, queueSplashes, QUEUE_N, type QueueShot} from '../src/painted/edu30/flock';
+import {emuLensYaw} from '../src/painted/edu30/emu';
+import {DAM_CAMS} from '../src/painted/edu30/dam';
+import {strikePoints} from '../src/painted/kit/gunfire';
+const logQ = (...a: unknown[]) => console.log('T16', ...a);
+const qf = (shot: QueueShot, a: number, b: number) => Array.from({length: b - a + 1}, (_, k) => queue(a + k, shot));
+const lift = (m: EmuMember, foot: 0 | 1) => emuPads(m.pose)[foot][1];
+const qslip = (shot: QueueShot, a: number, b: number, bird: number, foot: 0 | 1) => slip(qf(shot, a, b).map((f) => f[bird]), foot);
+
+test('T16 SH02 L 0: single file 1.4 m apart along the path, EMU-HERO at the head (x 4.6, seed 36000)', () => {
+  const q = queue(0, 'B04-SH02');
+  assert.equal(q.length, QUEUE_N);
+  assert.ok(q[0].hero && q[0].seed === 36000 && q.slice(1).every((m) => !m.hero));
+  assert.ok(Math.abs(q[0].at[0] - 4.6) < 1e-9 && Math.abs(q[0].at[2] + 4.9) < 1e-9);
+  const d = Array.from({length: 8}, (_, i) => Math.hypot(q[i + 1].at[0] - q[i].at[0], q[i + 1].at[2] - q[i].at[2]));
+  logQ('SH02 L0 spacing m', d.map((n) => n.toFixed(3)).join(' '));
+  d.slice(0, 5).forEach((n) => assert.ok(Math.abs(n - 1.4) < 0.01));
+});
+
+test('T16 SH02 unison step: rear foot lifts at L 41, every bird mid-step at L 45, all landed at L 49; head x 4.6 / 4.0 / 3.8', () => {
+  for (const L of [40, 41]) assert.ok(queue(L, 'B04-SH02').every((m) => lift(m, 0) < 1e-9 && lift(m, 1) < 1e-9), `grounded at ${L}`);
+  assert.ok(queue(42, 'B04-SH02').every((m) => lift(m, 1) > 1e-4), 'rear foot lifted at 42');
+  const mid = queue(45, 'B04-SH02').map((m) => lift(m, 1) / m.scale);
+  logQ('SH02 L45 rear-foot lift m (min, max)', Math.min(...mid).toFixed(3), Math.max(...mid).toFixed(3));
+  assert.ok(mid.every((n) => n > 0.05), 'all rear feet lifted at 45');
+  assert.ok(queue(45, 'B04-SH02').every((m) => lift(m, 0) < 1e-9), 'front foot planted');
+  assert.ok(queue(49, 'B04-SH02').every((m) => lift(m, 0) < 1e-6 && lift(m, 1) < 1e-6), 'landed at 49');
+  assert.ok(Math.abs(queue(40, 'B04-SH02')[0].at[0] - 4.6) < 1e-9 && Math.abs(queue(49, 'B04-SH02')[0].at[0] - 4.0) < 1e-9);
+  const x68 = queue(68, 'B04-SH02')[0].at[0];
+  logQ('SH02 head x at 68', x68.toFixed(3));
+  assert.ok(Math.abs(x68 - 3.8) < 0.01);
+  for (let L = 40; L <= 50; L++) { const s = queue(L, 'B04-SH02').map((m) => lift(m, 1) > 1e-6); assert.ok(s.every((b) => b === s[0]), `unison at ${L}`); }
+});
+
+test('T16 SH02 stance slip <= 0.02 m over L 49-68 (birds 0-6) and the planted front foot over the step L 41-49', () => {
+  let worst = 0, front = 0;
+  for (let i = 0; i <= 6; i++) { for (const ft of [0, 1] as const) worst = Math.max(worst, qslip('B04-SH02', 49, 68, i, ft)); front = Math.max(front, qslip('B04-SH02', 41, 49, i, 0)); }
+  logQ('SH02 stance slip m L49-68', worst.toFixed(4), 'front foot L41-49', front.toFixed(4));
+  assert.ok(worst <= 0.02 && front <= 0.02);
+});
+
+test('T16 SH03: head x 3.6 -> 3.0; ducks planted; hoppers land by L 25 into -z with a splash; line re-formed at L 40; no bird walks backward', () => {
+  const q0 = queue(0, 'B04-SH03'), q46 = queue(46, 'B04-SH03');
+  assert.ok(Math.abs(q0[0].at[0] - 3.6) < 1e-9 && Math.abs(q46[0].at[0] - 3.0) < 0.01);
+  for (let i = 0; i <= 5; i++) if (![2, 4].includes(i)) { const s = Math.max(qslip('B04-SH03', 12, 28, i, 0), qslip('B04-SH03', 12, 28, i, 1)); assert.ok(s <= 0.02, `duck planted bird ${i}: ${s}`); }
+  const sp = queueSplashes();
+  assert.equal(sp.length, 2);
+  sp.forEach((s) => { assert.equal(s.start, 25); assert.ok(s.at[2] < -5.3, `landing in the shallows z ${s.at[2]}`); });
+  const gap = (q: EmuMember[], i: number) => Math.hypot(q[i + 1].at[0] - q[i].at[0], q[i + 1].at[2] - q[i].at[2]);
+  const q26 = queue(26, 'B04-SH03'), q40 = queue(40, 'B04-SH03');
+  logQ('SH03 gap birds 5-6 at L 26', gap(q26, 5).toFixed(3), 'spacing birds 0-8 at L 40', Array.from({length: 8}, (_, i) => gap(q40, i).toFixed(3)).join(' '));
+  assert.ok(gap(q26, 5) < 1.06);
+  [2, 4].forEach((i) => { const x = q40[i].at[0], zRim = x > 8 ? -4.9 - (0.3 * (x - 8)) / 6.5 : -4.9; assert.ok(Math.abs(q40[i].at[2] - zRim) < 0.02, `hopper ${i} back on the rim`); });
+  Array.from({length: 7}, (_, i) => i).forEach((i) => assert.ok(Math.abs(gap(q40, i) - 1.4) < 0.05, `gap ${i}`));
+  for (let i = 0; i < 9; i++) { let prev = Infinity; for (let L = 0; L <= 46; L++) { const x = queue(L, 'B04-SH03')[i].at[0]; assert.ok(x <= prev + 1e-9, `bird ${i} L ${L}`); prev = x; } }
+});
+
+test('T16 SH03: no bird within 1.5 m of a strike point (T05 strikePoints with avoid)', () => {
+  const avoid = queueAvoid('B04-SH03', 46, 1);
+  const {points} = strikePoints({count: 11, seed: 9400, minDist: 1.6, x: [-0.5, 4], z: [-5.5, -9], ground: () => 0.3, avoid});
+  let minD = Infinity;
+  for (let L = 10; L <= 40; L++) for (const m of queue(L, 'B04-SH03')) for (const b of points) minD = Math.min(minD, Math.hypot(m.at[0] - b[0], m.at[2] - b[2]));
+  logQ('SH03 min bird-to-strike distance m', minD.toFixed(3));
+  assert.ok(minD >= 1.5);
+});
+
+test('T16 SH05: stand at x 1.6, every head to the lens, birds 1-6 turn from L 57 two frames apart, 7+ keep staring, EMU-HERO stays', () => {
+  const q = queue(0, 'B04-SH05');
+  assert.ok(Math.abs(q[0].at[0] - 1.6) < 1e-9);
+  q.forEach((m) => assert.ok(Math.abs((m.pose.headYaw ?? 0) - emuLensYaw(m.at, m.heading, DAM_CAMS.sh05)) < 1e-9));
+  const turned = (L: number, i: number) => Math.cos(queue(L, 'B04-SH05')[i].heading - q[i].heading) < -0.999;
+  assert.ok(!turned(62, 1) && turned(63, 1) && !turned(64, 2) && turned(65, 2));
+  [0, 7, 8, 20].forEach((i) => assert.ok(!turned(70, i)));
+  const a = queue(63, 'B04-SH05')[1].at, b = queue(69, 'B04-SH05')[1].at;
+  assert.ok(Math.hypot(b[0] - a[0], b[2] - a[2]) > 0.05, 'steps off up the shore, not on the spot');
+  const l = Array.from({length: 7}, (_, k) => (lift(queue(57 + k, 'B04-SH05')[1], 0) > 1e-4 ? 'a' : lift(queue(57 + k, 'B04-SH05')[1], 1) > 1e-4 ? 'b' : '-'));
+  logQ('SH05 bird 1 lift states L57-63', l.join(''));
+  assert.ok(l.includes('a') && l.includes('b'));
+});
+
+test('T16 pure: frame L alone equals frame L after 0..L; wading birds sit on the water surface', () => {
+  for (const [shot, L] of [['B04-SH02', 47], ['B04-SH03', 30], ['B04-SH05', 60]] as [QueueShot, number][]) {
+    const alone = JSON.stringify(queue(L, shot));
+    for (let k = 0; k <= L; k++) queue(k, shot);
+    assert.equal(JSON.stringify(queue(L, shot)), alone);
+  }
+  const wet = queue(0, 'B04-SH02').filter((m) => m.at[1] <= 0.304);
+  logQ('SH02 wading birds at L 0', wet.length);
+  assert.ok(wet.length > 0 && wet.every((m) => Math.abs(m.at[1] - 0.3) < 1e-9));
+});

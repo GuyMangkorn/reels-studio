@@ -7,7 +7,9 @@ import {registerRoot} from 'remotion';
 import {Proof30, type ProofDef} from './shot';
 import type {Painter} from '../kit/painter';
 import type {YCam} from '../kit/ycam';
-import {paintEmu, paintFlock, paintFarFlock, buffetRow, headsField, scatter, burst, paintBurstDust, halves, halvesDust, fenceBirds, slowLine, slowDust, HEADS_HERO} from './flock';
+import {paintEmu, paintFlock, paintFarFlock, buffetRow, headsField, scatter, burst, paintBurstDust, halves, halvesDust, fenceBirds, slowLine, slowDust, HEADS_HERO, queue, queueSplashes, paintQueueFar, paintQueueWade, type QueueShot} from './flock';
+import {DAM_CAMS, paintDam} from './dam';
+import {paintSplash} from '../kit/gunfire';
 import {EMU_POSES, emuHop} from './emu';
 import {KP_AT, KP_EYE} from './looks';
 import {SUN, paintGum, paintKpPatch, paintPadGround, paintPadSky, paintScrub, paintWheatRidges, paintPaddockScene, setNoClearing} from './paddock';
@@ -77,4 +79,22 @@ const FLOCK_PROOFS: ProofDef[] = [
   {id: 'FL30-cost', N: 1, cam: () => SCATTER_CAM, reel: NO_REEL, paint: (p, _L, c) => world(p, c, {far: FAR}, () => { paintFarFlock(p, c, 30510, 20, [-40, 40], [-110, -62]); paintFlock(p, c, scatter(44), sun); })},
 ];
 
-registerRoot(() => createElement(Fragment, null, ...PROOFS.map(Proof30), ...FLOCK_PROOFS.map(Proof30)));
+// T16 (the queue at the dam, 2026-11-20): FL30-queue-sh02, FL30-queue-sh03, FL30-queue-sh05 on the sheet cameras over the T10 dam. Newsreel off; no mirror in the water (the plates add `reflect`).
+// The far mass is painted beyond the 25 instanced birds; wading birds get the ankle ellipses and ripple rings after the birds.
+const D2R = Math.PI / 180;
+const QCAM2 = (L: number): YCam => ({...DAM_CAMS.queue, yaw: (75 + (2 * L) / 68) * D2R});
+const QCAM3: YCam = {x: -6.3, y: 0.92, z: -5.75, yaw: 112 * D2R, pitch: 0, f: 800, hy: 820};
+const QCAM5 = (L: number): YCam => ({...DAM_CAMS.sh05, yaw: (89.3 - 4 * ei(L / 63)) * D2R});
+const queueScene = (p: Painter, c: YCam, L: number, shot: QueueShot) => {
+  paintDam(p, c, 38000);
+  paintQueueFar(p, c);
+  paintFlock(p, c, queue(L, shot), sun);
+  paintQueueWade(p, c, L, shot);
+};
+const QUEUE_PROOFS: ProofDef[] = [
+  {id: 'FL30-queue-sh02', N: 69, cam: QCAM2, reel: NO_REEL, paint: (p, L, c) => queueScene(p, c, L, 'B04-SH02')},
+  {id: 'FL30-queue-sh03', N: 47, cam: () => QCAM3, reel: NO_REEL, paint: (p, L, c) => { queueScene(p, c, L, 'B04-SH03'); queueSplashes().forEach((s, k) => paintSplash(p, c, L, s.at, s.start, 36400 + k * 9)); }},
+  {id: 'FL30-queue-sh05', N: 64, cam: QCAM5, reel: NO_REEL, paint: (p, L, c) => queueScene(p, c, L, 'B04-SH05')},
+];
+
+registerRoot(() => createElement(Fragment, null, ...PROOFS.map(Proof30), ...FLOCK_PROOFS.map(Proof30), ...QUEUE_PROOFS.map(Proof30)));
