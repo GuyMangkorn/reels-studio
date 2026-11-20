@@ -9,7 +9,7 @@ import {EMU_POSES, blinkLid, buildEmu, emuLensYaw, emuLookTurn, emuNod, talkBeak
 import {HEADS_HERO, headsField, paintEmu, scaled, type EmuMember} from '../flock';
 import {PAD, SUN, WHEAT_H, paintPaddockScene, paintWheatRidges} from '../paddock';
 import {GUN_PX, buildLewisGun, lewisAnchors, lewisRecoil, paintLewisPanTicks, placeBuild} from '../props';
-import {camLine, DEFAULT_REEL, makeShot, type Shot30} from '../shot';
+import {camLine, DEFAULT_REEL, makeShot, stackCam, type Shot30} from '../shot';
 
 // B02-SH06 (Boss T22, 2026-11-20): over EMU-HERO's shoulder, "สามคนเหรอ…": the hero counts the crew with three nods (T07 `nod`, L 7, 17, 23), talks (T07 `talkBeak`,
 // L 7, 17, 51, 60), looks back over its LEFT shoulder to the lens (L 30-44, blink from 33), then the camera cranes up and back (L 48-74) while the 36-bird heads field (T08)
@@ -87,6 +87,15 @@ const paintStalks = (p: Parameters<Shot30['paint']>[0], c: YCam, seed: number, s
   });
 };
 
+/** T42 r2 H1r2: birds whose ground point projects below y 1450 at the L 74 camera are dropped from every frame (same set, no popping). */
+let nearDrop: Set<number> | undefined;
+const dropped = (): Set<number> => {
+  if (nearDrop) return nearDrop;
+  const c = stackCam({cam: camAt}, 74), set = new Set<number>();
+  headsField(74).forEach((m, i) => { const g = camPoint(c, [m.at[0], 0, m.at[2]]); if (g && g[1] > 1450) set.add(i); });
+  return (nearDrop = set);
+};
+
 const dist = (c: YCam, m: {at: V3}) => Math.hypot(m.at[0] - c.x, m.at[2] - c.z);
 
 export const def: Shot30 = {
@@ -100,7 +109,7 @@ export const def: Shot30 = {
       // field members and the hero far to near in distance bands; after each band the wheat ridges between it and the next nearer band hide the bodies and legs
       const hero: EmuMember = {at: HEADS_HERO, heading: Math.PI / 2, pose: heroPose(L), scale: 1, seed: 36000, hero: true};
       const field = headsField(L);
-      const items = [...field.map((m, i) => ({m, i})), {m: hero, i: -1}].sort((a, b) => dist(c, b.m) - dist(c, a.m));
+      const drop = dropped(), items = [...field.map((m, i) => ({m, i})).filter((q) => !drop.has(q.i)), {m: hero, i: -1}].sort((a, b) => dist(c, b.m) - dist(c, a.m));
       const bands: {m: EmuMember; i: number}[][] = [];
       items.forEach((it) => { const last = bands[bands.length - 1]; if (last && !it.m.hero && !last.some((q) => q.m.hero) && dist(c, last[0].m) - dist(c, it.m) < 1.6) last.push(it); else bands.push([it]); });
       bands.forEach((b, k) => {

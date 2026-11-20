@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-20, Film (W5.2 plate ticket
 
 ## EDU-EP30-SHORT
 
-**Now:** dispatch Boss (fresh Sonnet medium invocation, own worktree) on [T42 r2](tickets/T42-plate-fixes-b02sh06-b04sh03.md#r2-film-r11-b02-sh06-only) (B02-SH06 only). The coordinator views `T42r2-sheet.png`; the ticket's pre-decided outcome closes B02-SH06 (28 of 28) with no Film R12. Then the [W5.3 gate](tickets/index.md#w53-gate): Editor builds `src/videos/edu-ep30/`, Ton runs `short/sound-lock.py` on it, Editor half-size draft cut.
+**Now:** T42 r2 built (Boss, 2026-11-20; outcome 2: B02-SH06 accepted as built, 24 of 36 heads kept, dark slabs remain at L 58-74; proof `T42r2-sheet.png`, coordinator views it). Was: [T42 r2](tickets/T42-plate-fixes-b02sh06-b04sh03.md#r2-film-r11-b02-sh06-only) (B02-SH06 only). The coordinator views `T42r2-sheet.png`; the ticket's pre-decided outcome closes B02-SH06 (28 of 28) with no Film R12. Then the [W5.3 gate](tickets/index.md#w53-gate): Editor builds `src/videos/edu-ep30/`, Ton runs `short/sound-lock.py` on it, Editor half-size draft cut.
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C110 R19](../concepts/C110.md)
@@ -43,7 +43,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-20, Film (W5.2 plate ticket
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — [EDU-EP30-SCENE-R2](short/scene-sheets/index.md), 28 shots, **1977 frames (65.90 s)**, ready-for-dev, on SCRIPT-R2.2 + VOICE-R2.2; rows EDU-EP30-ROWS-R7 timed, 2026-11-19 (review page: pending). Supersedes SCENE-R1 (26 shots, 2012 frames, VOICE-R1)
   - [x] W5.1t Film plate tickets — [EDU-EP30-TICKETS-R1](tickets/index.md) (now R3, 35 tickets, 2026-11-19) from SCENE-R2 + BRIEF-R3, 33 tickets (T01–T18 assets/capabilities, T19–T33 plates over all 28 shots), all `ready`, none `needs-input`; Q7 and Q8 carried as dependencies (index table); Film fixes TF01–TF15 queued for the next sheet revision; SCENE-R1 tickets deleted, 2026-11-19
-  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R11](tickets/index.md) (**R11: 42 tickets, 40 done; T42 r2 ready (B02-SH06, T22 fix pass 2, last) and T22 close together; 27 of 28 plates accepted; waiting: B02-SH06**; R10 before: 32 done, 22 of 28 accepted)
+  - [ ] W5.2 Boss assets and plates from [EDU-EP30-TICKETS-R11](tickets/index.md) (**R11: 42 tickets, 40 done; T42 r2 done (B02-SH06 accepted as built, T22 closed); 28 of 28 plates accepted**; R10 before: 32 done, 22 of 28 accepted)
     - T04 r4 built 2026-11-19 (Boss, Sonnet medium, branch `worktree-agent-a1ef5e47577572fc7`): per-circle smoke alpha, smoke cover 0.245 and blast 0.274 at fx30, proof `T04r4-*` in the store previews; Film's look check pending; unblocks T05.
     - T05 built 2026-11-19 (Boss, Sonnet medium, branch `worktree-agent-a07e395bd5f082c0f`, on T04 r4 + T10 r4): casings, strike spurts, spouts, splash in `kit/gunfire.ts`, `FX30-debris`; 18 tests pass; spout 5.0 px at 270, spurts 0.68-1.09 m; L 75 row not met (15 of 23 casings at rest, all by L 98; the shot ends at L 71) and jam-casing key angles open, both returned to Film in the ticket; proof `T05-*` in the store previews.
   - [x] W5.2s Ton sounds and cue sheet (90 cues, 67 sounds: 66 generated + filed, 1 library = 4 cue uses; `scripts/edu-series/ep30/sound-cues.json` for SCENE-R2; episode lock waits for `src/videos/edu-ep30/`, `short/sound-lock.py`; not listened; [notes](short/sound-notes.md))
