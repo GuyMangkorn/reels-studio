@@ -8,6 +8,8 @@
 // gpuWait (1-pixel readPixels after render: GPU completion), still (wall time of the whole still incl. screenshot and
 // PNG export). --no-profile measures the plain wall time without the wrappers. Compare two runs with
 // scripts/paint-bench-compare.mjs.
+// A/B props: paintSeedEager (eager seeding), paintFlatOff (opaque washes back through p5.brush, src/painted/flatFill.ts).
+// A shot can label its sections with globalThis.__paintMark?.('name'): the profile's byLabel is [ms in polygon + spline, calls].
 import {bundle} from '@remotion/bundler';
 import {openBrowser, renderStill, selectComposition} from '@remotion/renderer';
 import fs from 'node:fs';
