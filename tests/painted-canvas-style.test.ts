@@ -23,8 +23,11 @@ test('(c) a shot without canvasStyle: {}, and PaintedStage always renders the st
   assert.match(readFileSync('src/painted/PaintedStage.tsx', 'utf8'), /<div style=\{\{position: 'absolute', inset: 0, \.\.\.stageCanvasStyle\([^\n]*\)\}\}>\s*<BrushCanvas/);
 });
 test('(d) canvasStyleOf: B03-SH01 L2 overscan + shake; B01-SH01 L0 neither', () => {
-  // No built shot sets `shake` yet (B03-SH01 is a T03 stub; T04's `shakeAt` lands with its plate ticket), so the shake term is checked on the real def plus a synthetic shake.
-  assert.doesNotMatch(String(canvasStyleOf(SHOT_DEFS['B03-SH01'], 2, 706).transform), /rotate/);
+  // B03-SH01 sets `shake` (T24): rotate at L 2, none after the bolt stop; the synthetic shake below pins the exact wiring.
+  assert.match(String(canvasStyleOf(SHOT_DEFS['B03-SH01'], 2, 690).transform), /translate\(-?[\d.]+px, -?[\d.]+px\) rotate\(-?[\d.]+deg\) scale\(1\.05\)$/);
+  const t71 = String(canvasStyleOf(SHOT_DEFS['B03-SH01'], 71, 759).transform);
+  assert.match(t71, /scale\(1\.05\)$/);
+  assert.doesNotMatch(t71, /rotate\(-?0*\.?0*[1-9]/);
   const a = String(canvasStyleOf({...SHOT_DEFS['B03-SH01'], shake: () => ({dx: 3, dy: -2, rot: 0.4})}, 2, 706).transform);
   assert.match(a, /scale\(1\.05\)/);
   assert.match(a, /translate\(3px, -2px\) rotate\(0\.4deg\) scale\(1\.05\)$/);
