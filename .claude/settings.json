@@ -1,4 +1,5 @@
 {
+  "autoMemoryEnabled": false,
   "permissions": {
     "deny": ["mcp__Claude_Code_iOS_Simulator__*"]
   },
