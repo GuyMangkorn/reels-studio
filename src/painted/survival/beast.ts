@@ -58,6 +58,22 @@ const SUN: L3 = nrm([-0.4, 0.85, 0.35]);
 export const TEX_MAX_N = 14;
 /** Cells a side for a quad of screen-pixel edge lengths `eu`, `ev` (B-R15B-03): `n` when `px` is unset, else enough cells for `px`-sized squares, clamped to [n, TEX_MAX_N]. */
 export const texCells = (n: number, px: number | undefined, eu: number, ev: number): number => (px ? Math.min(TEX_MAX_N, Math.max(n, Math.round(Math.max(eu, ev) / px))) : n);
+/** Ring frames (X across, Y up-ish) for the stations of a tube. The frame is carried from station to station (T37): X and Y keep their side of the previous station's, so a tube whose tangent turns past vertical never twists or slits. Station 0 keeps Y up, so a tube that never bends past the flip is built as before. */
+export const ringFrames = (pts: L3[]): {X: L3; Y: L3}[] => {
+  const n = pts.length, out: {X: L3; Y: L3}[] = [];
+  for (let i = 0; i < n; i++) {
+    const T = nrm(sub(pts[Math.min(n - 1, i + 1)], pts[Math.max(0, i - 1)]));
+    let X = sub([0, 0, 1], mul(T, T[2]));
+    if (Math.hypot(...X) < 0.05) X = sub([0, 1, 0], mul(T, T[1]));
+    X = nrm(X);
+    const p = out[i - 1];
+    if (p && dot(X, p.X) < 0) X = mul(X, -1);
+    let Y = cross(X, T);
+    if (p ? dot(Y, p.Y) < 0 : Y[1] < 0) Y = mul(Y, -1);
+    out.push({X, Y});
+  }
+  return out;
+};
 export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace): BeastAnchors => {
   const h = o.heading, fx = Math.cos(h), fz = Math.sin(h), lx = Math.sin(h), lz = -Math.cos(h), gy = o.ground ?? 0, ay = o.air ?? 0, aa = clamp(ay, 0, 1), seed = o.seed ?? 70000;
   const pc = Math.cos(o.pitch ?? 0), ps = Math.sin(o.pitch ?? 0), bc = Math.cos(o.bank ?? 0), bs = Math.sin(o.bank ?? 0);
@@ -94,13 +110,9 @@ export const paintBeast = (p: Painter | null, c: YCam, B: Build, o: BeastPlace):
     const ks = LK?.sub && part.keys.length > 2 ? spline(part.keys, LK.sub) : part.keys, n = ks.length, m = LK?.ring ? Math.round(part.m * LK.ring) : part.m;
     const mid = ks[Math.floor(n / 2)].p, far = part.side ? dot(WN([0, 0, part.side]), nrm(sub(W(mid) as L3, cam))) > 0.2 : false, dim = far ? LK?.far ?? 0.28 : 0;
     const rv: L3[][] = [], rn: L3[][] = [];
+    const frames = ringFrames(ks.map((k) => k.p));
     ks.forEach((k, i) => {
-      const T = nrm(sub(ks[Math.min(n - 1, i + 1)].p, ks[Math.max(0, i - 1)].p));
-      let X = sub([0, 0, 1], mul(T, T[2]));
-      if (Math.hypot(...X) < 0.05) X = sub([0, 1, 0], mul(T, T[1]));
-      X = nrm(X);
-      const Y = cross(X, T);
-      const Yu: L3 = Y[1] < 0 ? mul(Y, -1) : Y;
+      const {X, Y: Yu} = frames[i];
       rv.push([]); rn.push([]);
       for (let j = 0; j < m; j++) { const th = (j / m) * Math.PI * 2, cs = Math.cos(th), sn = Math.sin(th); rv[i].push(add(k.p, add(mul(X, k.a * cs), mul(Yu, k.b * sn)))); rn[i].push(nrm(add(mul(X, cs / k.a), mul(Yu, sn / k.b)))); }
     });

@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {JOINT_TOL} from '../src/painted/survival/beast';
+import {JOINT_TOL, ringFrames} from '../src/painted/survival/beast';
 import {checkBuild} from '../src/painted/survival/beast-check';
 import {animSamples, BEAST_KIT} from '../src/painted/survival/beast-kit';
 
@@ -17,4 +17,18 @@ for (const [key, e] of Object.entries(BEAST_KIT)) {
       }
     });
   }
+}
+
+// T37 (EDU-EP30): the ring frame is carried along a tube. A neck whose tangent turns from +y through +x to -y (and one that runs +s, up, over and back) keeps both frame axes on one side station to station.
+for (const [name, pts] of Object.entries({
+  'quarter circle +y to +x and on to -y': Array.from({length: 25}, (_, i) => { const a = (i / 24) * Math.PI; return [Math.sin(a), -Math.cos(a), 0] as [number, number, number]; }),
+  'arch with a lateral drift': Array.from({length: 25}, (_, i) => { const a = (i / 24) * Math.PI * 1.1; return [Math.sin(a), -Math.cos(a), 0.2 * Math.sin(a * 2)] as [number, number, number]; }),
+})) {
+  test(`ring frame continuity: ${name}`, () => {
+    const fr = ringFrames(pts), d = (a: number[], b: number[]) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+    for (let i = 1; i < fr.length; i++) {
+      assert.ok(d(fr[i].Y, fr[i - 1].Y) > 0, `Y flips at station ${i}`);
+      assert.ok(d(fr[i].X, fr[i - 1].X) > 0, `X flips at station ${i}`);
+    }
+  });
 }
