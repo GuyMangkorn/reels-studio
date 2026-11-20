@@ -15,7 +15,7 @@ const CAM = camLine({eye: [0.4, 1.0, 1.65], yaw: -3, pitch: 0, f: 900, hy: 860})
 const PRE = GUNFIRE_PRESETS.B03_SH01, ROUNDS = [...PRE.rounds];
 const G1: V3 = [0, 0, 0], H = -Math.PI / 2, SEAT: V3 = [0, 0, 0.85], DIR: V3 = [0, 0, -1];
 const MUZZLE0 = lewisAnchors(G1, H).muzzle;
-const SMOKE = {...PRE.smoke, seed: 7100}, SHAKE = {...PRE.shake, seed: 7500, stop: 70};
+const SMOKE = {...PRE.smoke, drift: [0.25, 0.06, 0] as [number, number, number], seed: 7100}, SHAKE = {...PRE.shake, seed: 7500, stop: 70};
 const CASINGS: CasingSpec = {port: lewisAnchors(G1, H).port, side: 1, seed: 8100, dir: DIR, ground: () => 0, box: {x: [0.8, 1.5], z: [-0.2, 0.4]}};
 const sh = (a: number) => { const v = Math.sin(a * 12.9898) * 43758.5453; return v - Math.floor(v); };
 
