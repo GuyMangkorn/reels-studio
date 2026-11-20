@@ -1,10 +1,11 @@
-import {GUNFIRE_PRESETS, paintBlast, paintCasings, paintMuzzleFlash, paintSmoke, paintSpurts, paintSplash, popFor, roundPhase, shakeAt, strikePoints, type CasingSpec} from '../../kit/gunfire';
+import {GUNFIRE_PRESETS, paintBlast, paintCasings, paintMuzzleFlash, paintSmoke, paintSpurts, paintSplash, popFor, roundPhase, shakeAt, strikePoints} from '../../kit/gunfire';
 import type {V3} from '../../kit/space';
 import {camPoint} from '../../kit/ycam';
 import {GUNNER1, paintGunnerFists, paintSeatedGunner} from '../cast';
 import {DAM, G1_AIM, overWater, paintDam, southBankY} from '../dam';
 import {paintFlock, paintQueueFar, paintQueueWade, queue, queueAvoid, queueSplashes} from '../flock';
 import {SUN} from '../paddock';
+import {B04_CASINGS} from './B04-SH06';
 import {buildLewisGun, lewisAnchors, lewisPanTurn, lewisRecoil, paintLewisPanTicks, placeBuild} from '../props';
 import {camLine, makeShot, type Shot30} from '../shot';
 
@@ -17,12 +18,10 @@ const CAM = camLine({eye: [-6.3, 0.92, -5.75], yaw: 112, pitch: 0, f: 800, hy: 8
 const PRE = GUNFIRE_PRESETS.B04_SH03, ROUNDS = [...PRE.rounds];
 const G1: V3 = [-5.6, 0.32, -5.0], H = 0, SEAT: V3 = [-6.2, 0.36, -4.75], DIR = G1_AIM.fire;
 const SMOKE = {...PRE.smoke, seed: 7100}, SHAKE = {...PRE.shake, seed: 7500};
-const A0 = lewisAnchors(G1, H);
-const CASINGS: CasingSpec = {port: A0.port, side: 1, seed: 8300, dir: DIR, ground: (_x, z) => southBankY(z), water: {y: DAM.water, inside: overWater}};
 
 /** Strike points: 11 points x walking -1.0 to +1.4 along the queue's line, z seeded -4.9..-5.6, never within 1.5 m of a bird at any frame (CAT02); in the water they sit on the water plane. */
 let strikeMemo: ReturnType<typeof strikePoints> | null = null;
-const strikes = () => strikeMemo ??= strikePoints({count: 11, seed: 9300, minDist: 1.5, x: (i) => -1 + (2.4 * i) / 10, z: (_i, r) => -4.9 - 0.7 * r, ground: (_x, z) => southBankY(z), water: {y: DAM.water, inside: overWater}, avoid: queueAvoid('B04-SH03', N, 1)});
+const strikes = () => strikeMemo ??= strikePoints({count: 11, seed: 9300, minDist: 1.5, x: (i) => -1 + (2.4 * i) / 10, z: (i, r) => ([1, 2, 4, 5, 7, 8, 10].includes(i) ? -5.7 - 0.5 * r : -4.9 - 0.7 * r), ground: (_x, z) => southBankY(z), water: {y: DAM.water, inside: overWater}, avoid: queueAvoid('B04-SH03', N, 1)});
 
 export const def: Shot30 = {
   id: 'B04-SH03', N, paper: '#efe6d0', overscan: true,
@@ -39,7 +38,7 @@ export const def: Shot30 = {
     paintSpurts(p, c, L, ROUNDS, {points: none(sk.points, sk.wet.map((w) => !w)), kind: 'mud', h: [0.4, 0.9], seed: 9400});
     paintSpurts(p, c, L, ROUNDS, {points: none(sk.points, sk.wet), kind: 'spout', h: [0.4, 0.9], seed: 9500});
     paintBlast(p, c, a.muzzle, DIR, L, ROUNDS, {ground: 'mud', seed: 7200});
-    paintCasings(p, c, L, ROUNDS, CASINGS);
+    paintCasings(p, c, L, ROUNDS, B04_CASINGS);
     const gopts = {view: 'back' as const, grip: a.grip, stock: a.stock, jolt, t: 1.2, seed: 33200};
     paintSeatedGunner(p, c, GUNNER1, SEAT, gopts);
     placeBuild(p, c, buildLewisGun({recoil: rec}), G1, H, {seed: 35300, sun});
