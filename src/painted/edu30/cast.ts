@@ -60,7 +60,8 @@ export const paintCrew = (p: Painter, c: YCam, def: CastDef, at: V3, o: CrewOpts
  *  arms are drawn exactly as before (the locked LF01a). With them both fists are solved onto the gun's world points (`lewisAnchors` grip and stock; RIGHT
  *  hand on the grip, LEFT on the stock) as `Arm.exact` chains from the drawn shoulders, and each round's recoil jolt (`jolt` 0..1) moves the upper body. */
 export type GunnerView = 'front' | 'back' | 'right' | 'front34';
-export type GunnerOpts = {view?: GunnerView; face?: ExpressionId; mouth?: Mouth; nod?: Pt; t: number; tint?: {to: string; u: number}; seed: number; grip?: V3; stock?: V3; jolt?: number};
+export type GunnerOpts = {view?: GunnerView; face?: ExpressionId; mouth?: Mouth; /** T17: face `look` (kit sign convention, screen y down) and mouth `open` 0..1 */ look?: Pt; open?: number; nod?: Pt; t: number; tint?: {to: string; u: number}; seed: number; grip?: V3; stock?: V3; jolt?: number;
+  /** T17: extra right-wrist world targets the torso lean must also reach (the rack keys), so the lean stays one constant over the motion */ reach?: V3[]; /** T17: extra picture-plane turn (rad, + = shoulders toward screen right) added after the reach search */ turn?: number};
 /** Forward lean of the seated torso (profile `bend`), the wrist reach limit (2 x 0.26 m) and the per-round jolt (m along -barrel at j 1). */
 export const GUNNER_BEND = 0.25, GUNNER_REACH = 0.52, GUNNER_JOLT = 0.015;
 const BODY = {floorSit: 1} as const;
@@ -95,11 +96,11 @@ export const solveGunner = (c: YCam, def: CastDef, at: V3, o: GunnerOpts) => {
   // Jolt: the upper body turns about the hips (`bend` in profile, `lean` in the picture plane otherwise) by the amount that moves the shoulders 0.015 m x j along -barrel.
   const key = pview === 'right' ? 'bend' : 'lean';
   let p0 = pview === 'right' ? GUNNER_BEND : 0;
-  const Wr = camPoint(c, grip), Wl = camPoint(c, stock), L0 = BONE * (def.armScale ?? 1) * u;
+  const Wr = camPoint(c, grip), Wl = camPoint(c, stock), L0 = BONE * (def.armScale ?? 1) * u, Wx = (o.reach ?? []).map((q) => camPoint(c, q)).filter((q): q is NonNullable<typeof q> => !!q);
   if (pview !== 'right' && Wr && Wl) {
     // The kit leans the torso forward only in profile (`bend`). In the front, three-quarter and back views the lean toward the gun is a picture-plane turn about the
     // hips (`lean`): the smallest turn (either side, 0.005 rad steps up to 0.4) that brings both drawn shoulders within 1.01 x 2 bones (the jolt peak then stays under 1.05 x a bone) of their fists; none when already inside.
-    const excess = (lean: number) => { const a = dry({lean}); return a ? Math.max(Math.hypot(a.rShoulder[0] - Wr[0], a.rShoulder[1] - Wr[1]), Math.hypot(a.lShoulder[0] - Wl[0], a.lShoulder[1] - Wl[1])) - 2.02 * L0 : 0; };
+    const excess = (lean: number) => { const a = dry({lean}); return a ? Math.max(...[Wr, ...Wx].map((w) => Math.hypot(a.rShoulder[0] - w[0], a.rShoulder[1] - w[1])), Math.hypot(a.lShoulder[0] - Wl[0], a.lShoulder[1] - Wl[1])) - 2.02 * L0 : 0; };
     if (excess(0) > 0) {
       let best = {lean: 0, e: excess(0)};
       search: for (let n = 1; n <= 80; n++) for (const sg of [1, -1]) {
@@ -119,6 +120,7 @@ export const solveGunner = (c: YCam, def: CastDef, at: V3, o: GunnerOpts) => {
       if (Math.abs(k) > 1e-6) pj = p0 + (b[0] - a[0]) / k;
     }
   }
+  if (o.turn) pj += o.turn;
   const body = {[key]: pj} as Partial<FigPose>, an = dry(body);
   const T = {r: camPoint(c, grip), l: camPoint(c, stock)};
   if (!an || !T.r || !T.l) return null;
@@ -132,6 +134,43 @@ export const solveGunner = (c: YCam, def: CastDef, at: V3, o: GunnerOpts) => {
 };
 /** Bone ratios and drawn shoulders of a gun-fitted placement (no painting). */
 export const gunnerCheck = (c: YCam, def: CastDef, at: V3, o: GunnerOpts & {grip: V3; stock: V3}): GunnerCheck | null => solveGunner(c, def, at, o)?.check ?? null;
+
+/**
+ * T17: the cocking pull and angry talking face of GUNNER-1 at B04-SH06 local frame L (pure functions of L).
+ * Right wrist: on the cocking knob at cock 0 -> 1 (L 0-3) -> 0 (L 3-6, `lewisCock` of T13), then to the grip (L 6-8, ease-in-out), grip to the end.
+ * Casting line: `man-crop + new: aus-army-1932-gunner, new: seated-gunner + new: cocking-pull, angry` (+ `talk` mouth on voiced frames).
+ */
+export const RACK_TURN = (5 * Math.PI) / 180;
+/** `lewisCock` (props.ts): 0 -> 1 ease-out over L 0-3, back to 0 ease-in over L 3-6. Repeated here so cast.ts does not import props.ts. */
+export const rackCock = (L: number) => (L <= 3 ? easeOut(c01(L / 3)) : 1 - easeIn(c01((L - 3) / 3)));
+/** Right wrist world target: `cock(k)` is the knob at cock k, `grip` the grip point. */
+export const cockingPull = (L: number, a: {cock: (k: number) => V3; grip: V3}): V3 => {
+  const k = a.cock(rackCock(Math.min(L, 6))), g = a.grip, u = easeIO(seg(L, 6, 8));
+  return [k[0] + (g[0] - k[0]) * u, k[1] + (g[1] - k[1]) * u, k[2] + (g[2] - k[2]) * u];
+};
+/** Picture-plane shoulder turn (rad) toward the gun: 5 degrees at L 3, 0 at L 0 and L 6 (ease-in-out each way). Sign: + = toward screen right (the gun) in the B04-SH06 view. */
+export const rackTurn = (L: number) => RACK_TURN * (L <= 3 ? easeIO(seg(L, 0, 3)) : 1 - easeIO(seg(L, 3, 6)));
+/** Head shake `nod` [dx, 0] in head units: L 12: 0, 14: +0.10, 17: -0.10, 20: 0 (ease-in-out between keys). */
+export const rackShake = (L: number): Pt => {
+  const K: [number, number][] = [[12, 0], [14, 0.1], [17, -0.1], [20, 0]];
+  if (L <= 12 || L >= 20) return [0, 0];
+  const i = K.findIndex((q, j) => L >= q[0] && L <= K[j + 1][0]), a = K[i], b = K[i + 1];
+  return [a[1] + (b[1] - a[1]) * easeIO((L - a[0]) / (b[0] - a[0])), 0];
+};
+/** Talk mouth `open` on voiced frames, local [7, 24): 0 -> 0.7 -> 0 every 6 f, the cycle restarting at the syllable onsets L 7 and L 18; null when silent (frown). */
+export const rackTalk = (L: number): number | null => {
+  if (L < 7 || L >= 24) return null;
+  const ph = L < 18 ? L - 7 : L - 18;
+  return 0.7 * Math.sin((Math.PI * (ph % 6)) / 6);
+};
+/** Gaze (kit `look`, y down) at the receiver: screen right and down in the B04-SH06 view. Never to the lens. */
+export const RACK_LOOK: Pt = [0.8, 0.35];
+/** All GUNNER-1 options of the B04-SH06 frame L: the arm targets, face and shake. `a` = `lewisAnchors` points; `cock(k)` the knob at cock k. */
+export const rackGunnerOpts = (L: number, a: {cock: (k: number) => V3; grip: V3; stock: V3}): Partial<GunnerOpts> => {
+  const talk = rackTalk(L);
+  return {face: 'angry', look: RACK_LOOK, mouth: talk === null ? 'frown' : 'talk', ...(talk === null ? {} : {open: talk}), nod: rackShake(L), grip: cockingPull(L, a), stock: a.stock, turn: rackTurn(L),
+    reach: [a.cock(0), a.cock(1), a.grip], jolt: 0};
+};
 
 /**
  * T36 r2: repaints only the two flat fists of `paintSeatedGunner` (same solve, same fill, ink and seeds) on `p`. A caller that paints the gun after the man calls this
@@ -151,7 +190,7 @@ export const paintGunnerFists = (p: Painter, c: YCam, def: CastDef, at: V3, o: G
 
 export const paintSeatedGunner = (p: Painter, c: YCam, def: CastDef, at: V3, o: GunnerOpts): (FigAnchors & {check?: GunnerCheck}) | null => {
   const view = o.view ?? 'front', hatView = view === 'back' ? 'back' : view === 'right' ? 'right' : 'front';
-  const faceState = o.mouth ? {mouth: o.mouth} : undefined;
+  const faceState = o.mouth || o.look || o.open !== undefined ? {...(o.mouth ? {mouth: o.mouth} : {}), ...(o.look ? {look: o.look} : {}), ...(o.open !== undefined ? {open: o.open} : {})} : undefined;
   if (o.grip && o.stock) {
     const s = solveGunner(c, def, at, o);
     if (!s) return null;

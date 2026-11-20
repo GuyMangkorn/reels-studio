@@ -1,5 +1,5 @@
 # T17 — GUNNER-1 racks the cocking handle and groans at the gun: `new: cocking-pull` and the angry talking face on `man-crop` front three-quarter
-Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: ready (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
+Deliverable: EDU-EP30-SHORT · Revision: r3 · Status: built, awaiting Film look check (Q7 answered by the user: values as written) · r3: Film notes added (TICKETS-R3) · r4: Film notes added (TICKETS-R4)
 Class: figure · Hard: yes (arm, hand, face)
 Blocked by: T12 (same files `cast.ts`, `proof-cast.tsx`, `tests/edu30-cast.test.ts`; T11's `front34` view), T13 (`cock` anchor and rack keys) · Consumers: B04-SH06
 Model: sonnet, medium
@@ -48,4 +48,11 @@ These override any older value in this ticket that they name.
 | L 14 / 17 | head shaken either way, angry brows, mouth open on a voiced frame | GUNNER-1 593–624 px; face above y 1100 |
 
 ## Result (Boss fills)
-Commit · proof sheet path · measured numbers · fix passes used · open question, if blocked
+Commit COMMIT_T17 · built 2026-11-20 on Sonnet medium · fix passes used 0 · no open question.
+- Proof: store `projects/edu/EDU/previews/T17-sheet-rack.png` (8 frames L 0, 2, 3, 5, 6, 8, 14, 17), `T17-hands.png` (540 px crops L 3 and L 8), `T17-faces.png` (L 14, 17), frames `T17-rack-NN.png` (`C30-rack` in `proof-cast.tsx`; dam with `nearSlope`, newsreel off, camera eye (-4.6, 1.45, -3.9) yaw -57 to (-4.68, 1.45, -3.95) yaw -55, ease-in-out over L 0-23). Note: bare-named copies of the same frames (`rack-NN.png`, `crop-*`, `face-*`, `hands.png`, `faces.png`, `sheet-rack.png`) were archived first by mistake in the same folder and could not be removed by the agent (delete blocked); they are duplicates.
+- Code: `cast.ts` adds `cockingPull`, `rackCock`, `rackTurn`, `rackShake`, `rackTalk`, `RACK_LOOK`, `rackGunnerOpts` and the optional `GunnerOpts` fields `look`, `open`, `reach`, `turn` (defaults unchanged; the T11/T36/T12 stroke-hash tests pass).
+- Measured: right wrist on the knob 0.0000 m at L 0, 3, 6 and on the grip 0.0000 m at L 8-23 (`Arm.exact`, one solved chain); left wrist on the stock 0.0000 m every frame; arm ratio worst 1.023 (r 1.010 / 1.000 at L 0, 1.018 at L 8), all L 0-23 <= 1.05; torso turn 12.89 deg (T11 lean, constant, reach-checked against both knob keys) + 5 deg at L 3 = 17.89 deg; elbow 0.136 m below the shoulder at L 0, 0.250 m at L 3 (low). Knob at cock 0 projects to (663, 961) at L 0 (r3 value, matches exactly) and (640, 981) at L 23. Lead to hat crown 572.1 px at L 0 and 605.1 px at L 23 (acceptance >= 480 px met); head (547, 692) at L 0 and (516, 695) at L 23 (r4 estimates (530, 690) and (492, 695)); chin 822 / 833, face above y 1100.
+- thumb check: GUNNER-1 RIGHT: screen up at L 0, 3, 6, 8 (forearm near-horizontal on screen so the crease lies up; measured side wins per common rules, computed from the rule side `mittenThumbSide('right', 'back')` and the elbow-to-wrist line; the thumb crease is only a few px in the 540 px crops, so the picture read is not independent: Film to confirm on the crops); LEFT on the stock as T11 (unchanged `fists()`).
+- arm check: GUNNER-1 r/l: attached ok (L 0-23).
+- Face keys: `angry`, `look` (0.8, 0.35) toward the gun (screen right, down), `frown` when silent, `talk` open 0 -> 0.7 -> 0 per 6 f from L 7 (restart at L 18); shake [dx, 0] 0 / +0.10 / -0.10 / 0 at L 12 / 14 / 17 / 20.
+- Values not followed as written: (1) the proof row "handle (674, 987) at L 0" and "593-624 px" are the pre-r3/pre-r4 numbers, superseded by the r3/r4 notes (663, 961) and the T11 r4 lean (572.1 accepted for the 3/4 lead); built to the notes. (2) "thumb screen right" is measured up (forearm geometry); see above. (3) Talk cycles: read as phase (L - 7) mod 6 for L 7-17 and (L - 18) mod 6 for L 18-23 (hard restart at the onsets).

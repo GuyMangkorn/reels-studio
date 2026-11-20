@@ -4,6 +4,9 @@ import type {Brush} from '../src/painted/BrushCanvas';
 import {createHash} from 'node:crypto';
 import {CREW_REACH_3D, FARMER, GUNNER1, GUNNER2, GUNNER_JOLT, GUNNER_REACH, LOADER_AT, LOADER_LEAN, MEREDITH, PAN_RIM, farmerTalk, gunnerCheck, gunnerReach, gunnerShoulders, paintCrewPose, paintSeatedGunner, solveCrewPose} from '../src/painted/edu30/cast';
 import {AT, CAM_FARMER, CAM_LOADER, CAM_P44, CAM_P44_FULL, CAM_SALUTE, CREW_PROOFS, GUNNER_PROOFS, gunnerProof, gunnerProofAt, loaderPan} from '../src/painted/edu30/proof-cast';
+import {rackShake, rackTalk, solveGunner as solveG17} from '../src/painted/edu30/cast';
+import {RACK, rackAt, rackCam} from '../src/painted/edu30/proof-cast';
+import {lewisAnchors as lewisAnchors17} from '../src/painted/edu30/props';
 import {mittenThumbSide} from '../src/painted/kit/hand-gestures';
 import {makePainter, type Pt} from '../src/painted/kit/painter';
 import {camPoint, camUnit} from '../src/painted/kit/ycam';
@@ -198,5 +201,40 @@ test('T12 r6: stroke hashes of the unchanged poses (salute L 0 and 28, kit, P44 
     const log: string[] = [], brush = new Proxy({}, {get: (_, k) => (...a: unknown[]) => { log.push(String(k) + JSON.stringify(a)); }}) as Brush;
     d.paint(makePainter(brush, {t: 0, frame: 0}), Number(L), d.cam(0));
     assert.equal(createHash('sha1').update(log.join('\n')).digest('hex').slice(0, 12), h, `${d.id} L${L}`);
+  }
+});
+
+// T17: GUNNER-1 cocking pull and angry talking face at B04-SH06 (local 0-23)
+const rackSolve = (L: number) => { const c = rackCam(L), {opts} = rackAt(L), s = solveG17(c, GUNNER1, RACK.seat, opts as never)!; return {c, opts, s}; };
+const cockW = (k: number) => lewisAnchors17(RACK.gun, RACK.heading, {cock: k}).cock;
+test('T17 rack: right wrist on cock at L 0, 3, 6 (+-0.01 m) and on the grip from L 8; left wrist on the stock every frame', () => {
+  const want: Record<number, number> = {0: 0, 3: 1, 6: 0};
+  for (let L = 0; L <= 23; L++) {
+    const {c, s} = rackSolve(L), a = rackAt(L).a, u = camUnit(c, RACK.seat), r = s.fig.rArm!.to as Pt, l = s.fig.lArm!.to as Pt, sk = camPoint(c, a.stock)!;
+    assert.ok(Math.hypot(l[0] - sk[0], l[1] - sk[1]) / u <= 0.001, `left L${L}`);
+    const tgt = L in want ? camPoint(c, cockW(want[L])) : L >= 8 ? camPoint(c, a.grip) : null;
+    if (L === 0 || L === 23) { const q = camPoint(c, cockW(0))!; console.log(`T17 L${L}: knob at cock 0 projects to (${q[0].toFixed(0)}, ${q[1].toFixed(0)})`); }
+    if (tgt) { const e = Math.hypot(r[0] - tgt[0], r[1] - tgt[1]) / u; console.log(`T17 L${L}: right wrist ${e.toFixed(4)} m from ${L >= 8 ? 'grip' : 'cock'}`); assert.ok(e <= 0.01, `right L${L} ${e}`); }
+  }
+});
+test('T17 rack: arm ratio <= 1.05 on every frame L 0-23; purity (frame alone = frame after others)', () => {
+  let worst = 0;
+  for (let L = 0; L <= 23; L++) { const k = rackSolve(L).s.check; worst = Math.max(worst, k.rRatio, k.lRatio); if (L <= 8) console.log(`T17 L${L}: arm check: GUNNER-1 r/l: attached ok; ratio r ${k.rRatio.toFixed(3)} l ${k.lRatio.toFixed(3)}; turn ${(k.turn * 180 / Math.PI).toFixed(2)} deg`); assert.ok(k.rRatio <= 1.05 && k.lRatio <= 1.05, `ratio L${L}`); }
+  console.log(`T17 worst ratio ${worst.toFixed(3)}`);
+  const a = JSON.stringify(rackSolve(5).s.fig); rackSolve(2); rackSolve(7); assert.equal(JSON.stringify(rackSolve(5).s.fig), a);
+});
+test('T17 rack: right fist thumb on the screen-right (handle), elbow low, face keys, lead and face height', () => {
+  for (const L of [0, 3, 6, 8]) {
+    const {c, s} = rackSolve(L), r = s.fig.rArm!, S = s.check.rShoulder, W = r.to as Pt, E = r.via as Pt;
+    const side = mittenThumbSide('right', 'back'), dx = W[0] - E[0], dy = W[1] - E[1], tv: Pt = [-dy * side, dx * side];
+    const tr = Math.abs(tv[0]) >= Math.abs(tv[1]) ? (tv[0] > 0 ? 'right' : 'left') : (tv[1] > 0 ? 'down' : 'up');
+    console.log(`T17 L${L}: thumb check: GUNNER-1 RIGHT: screen ${tr}; elbow ${((E[1] - S[1]) / camUnit(c, RACK.seat)).toFixed(3)} m below shoulder, ${((E[0] - S[0]) / camUnit(c, RACK.seat)).toFixed(3)} m screen x`);
+  }
+  assert.deepEqual(rackShake(12), [0, 0]); assert.ok(Math.abs(rackShake(14)[0] - 0.1) < 1e-9 && Math.abs(rackShake(17)[0] + 0.1) < 1e-9); assert.deepEqual(rackShake(20), [0, 0]);
+  assert.equal(rackTalk(6), null); assert.equal(rackTalk(7), 0); assert.ok(Math.abs(rackTalk(10)! - 0.7) < 1e-9); assert.equal(rackTalk(18), 0); assert.equal(rackTalk(24), null);
+  for (const L of [0, 23]) {
+    const {c, opts} = rackSolve(L), r = paintSeatedGunner(dry(), c, GUNNER1, RACK.seat, opts)!, lead = r.bottom - r.top + HAT_ABOVE_HEAD * camUnit(c, RACK.seat);
+    console.log(`T17 L${L}: lead ${lead.toFixed(1)} px, head ${r.head[0].toFixed(0)}, ${r.head[1].toFixed(0)}, chin ${r.chin.toFixed(0)}`);
+    assert.ok(lead >= 570 && lead <= 640 && r.chin < 1100, `lead L${L} ${lead}`);
   }
 });
