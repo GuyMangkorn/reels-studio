@@ -5,7 +5,7 @@ import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Pt} from '../kit/painter';
 import {paintCrew, paintSeatedGunner, GUNNER1, GUNNER2, MEREDITH} from './cast';
 import {paintEmu, flockIn, paintFarFlock, type EmuMember} from './flock';
-import {EMU_POSES, type EmuPose, blinkLid, emuHop, emuLensYaw, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
+import {EMU_POSES, type EmuPose, blinkLid, emuFootTap, emuHop, emuLensYaw, emuWatchCheck, emuWingFlick, emuWingWave, wingMix, WING_FLAP_OUT, WING_FOLD} from './emu';
 import {CLEARING, setNoClearing, paintKpPatch, paintWheatRidges, paintCamp, paintClearing, paintFarmhouse, paintFence, paintGum, paintNearStalks, paintPadGround, paintPadSky, paintScrub, paintWheatTexture, SUN, type PadLight} from './paddock';
 import {withSquash} from '../kit/figure-at';
 import {buildLewisGun, paintGear, paintTruck, placeBuild} from './props';
@@ -269,6 +269,15 @@ export const LOOK_DEFS: Record<string, () => LookDef> = {
   'KP-hop': kp('hop', () => { const {pose, offset} = emuHop(3, {side: 1, dist: 0.6}); return {at: [KP_AT[0] + offset[2] * Math.sin(Math.PI), offset[1], KP_AT[2] - offset[2] * Math.cos(Math.PI)], heading: Math.PI, pose, scale: 1, seed: 36000, hero: true}; }, 'hop'),
   'KP-flap': kp('flap', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap'),
   'KP-flap-back': kp('flap-back', () => ({at: KP_AT, heading: -Math.PI / 2, pose: EMU_POSES.duck({wing: wingMix(WING_FOLD, WING_FLAP_OUT, 0.9)}), scale: 1, seed: 36000, hero: true}), 'flap back'),
+  // T15 mime gestures: wing flick right at L 8 and left at L 24 (heading pi/2, front to the lens), watch check at L 25 (3pi/4), foot tap at L 38 (watch pose + toes up), wave at L 10 (3pi/4) and from behind at L 39 (-pi/2)
+  'KP-flick-r': kp('flick-r', () => ({at: KP_AT, heading: Math.PI / 2, pose: emuWingFlick(8), scale: 1, seed: 36000, hero: true}), 'flick right'),
+  'KP-flick-l': kp('flick-l', () => ({at: KP_AT, heading: Math.PI / 2, pose: emuWingFlick(24), scale: 1, seed: 36000, hero: true}), 'flick left'),
+  'KP-watch': kp('watch', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWatchCheck(25), scale: 1, seed: 36000, hero: true}), 'watch'),
+  'KP-tap': kp('tap', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: {...emuWatchCheck(38), ...emuFootTap(38)}, scale: 1, seed: 36000, hero: true}), 'tap'),
+  'KP-wave': kp('wave', () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWingWave(10), scale: 1, seed: 36000, hero: true}), 'wave'),
+  'KP-wave-back': kp('wave-back', () => ({at: KP_AT, heading: -Math.PI / 2, pose: emuWingWave(39, {back: true}), scale: 1, seed: 36000, hero: true}), 'wave back'),
+  // T15 watch-check motion strip frames: KP-watch-8, -12, -16, -18, -38, -40, -58 (heading 3pi/4)
+  ...Object.fromEntries([8, 12, 16, 18, 38, 40, 58].map((L) => [`KP-watch-${L}`, kp(`watch-${L}`, () => ({at: KP_AT, heading: 3 * Math.PI / 4, pose: emuWatchCheck(L), scale: 1, seed: 36000, hero: true}), `watch L${L}`)])),
   'KP-look': kp('look', () => ({at: KP_AT, heading: Math.PI, pose: EMU_POSES.look(lensYaw(KP_AT, Math.PI)), scale: 1, seed: 36000, hero: true}), 'look to lens'),
 };
 
