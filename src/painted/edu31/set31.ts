@@ -234,8 +234,10 @@ export const paintKitchenShell = (p: Painter, c: YCam) => {
   wFill(p, c, 32242, '#e8e6ea', qz(-1.967, -0.88, -0.62, 1.58, 1.63));
   for (let r = 0; r < 4; r++) wInk(p, c, 32243 + r, [[-0.88, 1.36 + r * 0.05, -1.966], [-0.62, 1.36 + r * 0.05, -1.966]], {closed: false, weight: 0.3, color: '#a39c8c'});
 };
-/** Table, chairs, lamp pool and table props. */
-export const kitchenTable = (o: {brokenCamera?: boolean} = {}): {at: V3; draw: (p: Painter, c: YCam) => void}[] => [
+/** Table, chairs, lamp pool and table props. Plate options (W5.2, defaults = the W3 look frames): `camera: false` leaves the table camera out
+ *  (a shot paints its own `paintInstantCam`), `candle` replaces the tall unlit candle with a painter (the stub candle of B02-SH03 on), `bowl: false`
+ *  drops the lemon bowl. */
+export const kitchenTable = (o: {brokenCamera?: boolean; camera?: boolean; candle?: (p: Painter, c: YCam) => void; bowl?: boolean} = {}): {at: V3; draw: (p: Painter, c: YCam) => void}[] => [
   {at: [0, 0, 0.05], draw: (p, c) => {
     paintBox(p, c, 32300, {x0: -0.55, x1: 0.55, y0: 0.64, y1: 0.68, z0: -0.35, z1: 0.35}, '#a37a4c', {}, {ink: true});
     wFill(p, c, 32301, '#e9dfc6', qy(0.681, -0.5, 0.5, -0.3, 0.3)); // checked oilcloth
@@ -243,19 +245,26 @@ export const kitchenTable = (o: {brokenCamera?: boolean} = {}): {at: V3; draw: (
     for (let i = 0; i < 3; i++) wWash(p, c, 32308 + i, '#b24a3a', 70, qy(0.683, -0.5, 0.5, -0.3 + i * 0.2, -0.22 + i * 0.2), 0.05, 0.2);
     for (const [x, z] of [[-0.5, 0.3], [0.5, 0.3]] as const) paintBox(p, c, 32312 + (x > 0 ? 1 : 0), {x0: x - 0.03, x1: x + 0.03, y0: 0, y1: 0.64, z0: z - 0.03, z1: z + 0.03}, '#8a643e', {}, {});
     // lemon bowl
+    if (o.bowl !== false) {
     const b = flatCircle(c, [-0.25, 0.74, 0.05], 0.11, 24); if (b.length > 2) hardFill(p, 32320, '#3b6a8a', b);
     const bb = flatCircle(c, [-0.25, 0.69, 0.05], 0.08, 24); if (bb.length > 2) hardFill(p, 32321, '#2f5672', bb);
     paintLemon(p, c, 32330, [-0.29, 0.77, 0.03], 0.035);
     paintLemon(p, c, 32340, [-0.21, 0.775, 0.08], 0.035, {tilt: 15});
     paintLemon(p, c, 32350, [-0.25, 0.8, 0.0], 0.034, {tilt: -40});
+    }
     // candle in a saucer (unlit in the whisper shot)
+    if (o.candle) o.candle(p, c);
+    else {
     const sa = flatCircle(c, [0.25, 0.685, 0.1], 0.06, 18); if (sa.length > 2) hardFill(p, 32360, '#e8e2d2', sa);
     paintBox(p, c, 32361, {x0: 0.235, x1: 0.265, y0: 0.685, y1: 0.8, z0: 0.085, z1: 0.115}, '#f3ead2', {}, {ink: true});
+    }
+    if (o.camera !== false) {
     // instant camera (generic boxy integral-film camera, no brand); R6: after the slam in B03-SH01 it is the broken one (PR01, B03-SH04)
     if (o.brokenCamera) paintBrokenCamera(p, c, 32370, [0.355, 0.68, -0.15], {spark: true});
     else paintBox(p, c, 32370, {x0: 0.28, x1: 0.43, y0: 0.68, y1: 0.8, z0: -0.2, z1: -0.1}, '#2e2c2a', {}, {ink: true});
     if (!o.brokenCamera) paintBox(p, c, 32371, {x0: 0.28, x1: 0.43, y0: 0.74, y1: 0.76, z0: -0.1, z1: -0.099}, '#d84a3a', {}, {});
     const ln = o.brokenCamera ? null : sphereAt(c, [0.33, 0.755, -0.099], 0.025); if (ln) { hardFill(p, 32372, '#151515', ell(ln.x, ln.y, ln.r, ln.r, 14)); hardFill(p, 32373, '#5a6a7a', ell(ln.x - ln.r * 0.3, ln.y - ln.r * 0.3, ln.r * 0.3, ln.r * 0.3, 8)); }
+    }
     // salt shaker + a mug
     paintBox(p, c, 32380, {x0: 0.05, x1: 0.09, y0: 0.68, y1: 0.76, z0: -0.22, z1: -0.18}, '#f0efe8', {}, {ink: true});
   }},

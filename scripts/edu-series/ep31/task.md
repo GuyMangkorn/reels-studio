@@ -35,6 +35,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 - [ ] W5 Draft
   - [x] W5.1 Film timed scene sheets — `EDU-EP31-SCENE-R1` ready-for-dev, checked-with-audio, 24 shots / 1795 f ([index](short/scene-sheets/index.md), b01–b07); rows `EDU-EP31-ROWS-R7` (R6 + start/end, page not republished); open: O1 Boat recheck of the "สมมุติ" label wording, O2 B07-SH02 camera cheat to review at the Draft; 2026-11-21, Film
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
+    - [x] Batch 1 B01–B03 (12 shots, Boss 2026-11-21): plates built and frame-checked, not committed — [build notes](short/build-notes.md#w52-batch-1-plates-b01b03-2026-11-21-boss-edu-ep31-scene-r1-rows-r7); next batches B04–B07 (VD31-08 presets with B04/B05)
   - [x] W5.2s Ton sounds and cue sheet (76/76 cues; 70 generated, 6 library) — [sound-cues.json](short/sound-cues.json), levels measured, no FAIL; Editor to place and fill `levels.stems`
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
