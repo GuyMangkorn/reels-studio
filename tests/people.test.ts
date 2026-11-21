@@ -20,8 +20,8 @@ const OLD_CUTS = ['short', 'tied', 'bob', 'hood', 'long'];
 const brush = new Proxy({}, {get: () => () => undefined}) as Brush;
 const FACE: FaceState = {brow: 'flat', eyes: 'dot', look: [0, 0], mouth: 'smile'};
 
-test('the library lists 10-14 templates covering men, women, children and older people, each with metadata', () => {
-  assert.ok(PERSON_IDS.length >= 10 && PERSON_IDS.length <= 14, `${PERSON_IDS.length} people`);
+test('the library lists 10-17 templates covering men, women, children and older people, each with metadata', () => {
+  assert.ok(PERSON_IDS.length >= 10 && PERSON_IDS.length <= 17, `${PERSON_IDS.length} people`);
   assert.deepEqual(Object.keys(PEOPLE_INFO).sort(), [...PERSON_IDS].sort());
   const of = (group: string, gender?: string) => PERSON_IDS.filter((id) => PEOPLE_INFO[id].group === group && (!gender || PEOPLE_INFO[id].gender === gender));
   assert.ok(of('working-age', 'male').length >= 3, 'working-age men');

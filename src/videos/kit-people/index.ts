@@ -1,3 +1,4 @@
+import {PEOPLE_TALK_ALL_SEC} from '../../painted/shots/kit-people-talk-all';
 import type {Timeline} from '../../scenes/types';
 import type {EpisodeVideos} from '../types';
 
@@ -12,8 +13,13 @@ const timeline: Timeline = [{
   painted: {shots: [{shot: 'kit-people-talk', atSec: 0}]},
 }];
 
+/** KIT-PEOPLE-TALK-ALL (user 21 Nov 2026): all PEOPLE talking through right profile, front and left profile (10 s, silent).
+ * Render with `node scripts/render.mjs KIT-PEOPLE-TALK-ALL --draft`. */
+const allTimeline: Timeline = [{durationSec: PEOPLE_TALK_ALL_SEC, bg: 'none', actors: [], subtitle: '', painted: {shots: [{shot: 'kit-people-talk-all', atSec: 0}]}}];
+
 const videos: EpisodeVideos = {
   episode: 'kit-people',
-  videos: [{id: 'KIT-PEOPLE-TALK', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}}],
+  videos: [{id: 'KIT-PEOPLE-TALK', format: 'short', timeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}},
+    {id: 'KIT-PEOPLE-TALK-ALL', format: 'short', timeline: allTimeline, ending: 'A_fade', endHoldSec: 0, endFadeSec: 0, chrome: {channelLabel: false, progressBar: false}}],
 };
 export default videos;

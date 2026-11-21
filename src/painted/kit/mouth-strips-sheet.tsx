@@ -28,7 +28,7 @@ const MouthStrips = () => (
       const id: PersonId = 'man-parted', head = {...PEOPLE[id].head, sideDetail: true};
       STATES.forEach(({face}, i) => {
         const x = CELL * (i + 0.5);
-        paintHeadSide(p, 11, x, 210, K, {...face, eyes: 'dot'}, PEOPLE[id].head, 1, T);
+        paintHeadSide(p, 11, x, 210, K, {...face, eyes: 'dot'}, {...PEOPLE[id].head, sideDetail: false}, 1, T);
         paintHeadSide(p, 12, x, 590, K, {...face, eyes: 'dot'}, head, 1, T);
         paintHeadFront(p, 13, x, 970, K, {...face, eyes: 'dot'}, PEOPLE[id].head, T, 0, undefined, 0.7);
       });
