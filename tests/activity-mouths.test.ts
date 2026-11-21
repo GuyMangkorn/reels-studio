@@ -84,6 +84,14 @@ test('paintFigureAt: activity off paints what the kit painted before (resting mo
   assert.equal(placed({pose: 'P38', face: 'happy', t: 0.4}), placed({...ACTIVITY_MOUTHS_OFF, pose: 'P38', face: 'happy', t: 0.4}), 'a smile on a run stays');
 });
 
+test('paintFigureAt: a scene-set talk mouth with no open still cycles over the expression (EDU-EP31 B06-SH02)', () => {
+  // t 0.3 s is mid-syllable (open >= 0.35): `worried` brows and eyes with a talking mouth must not paint the closed line
+  const shut = placed({...ACTIVITY_MOUTHS_OFF, pose: 'P31', face: 'worried', t: 0.3, faceState: {mouth: 'talk'}});
+  assert.notEqual(placed({pose: 'P31', face: 'worried', t: 0.3, faceState: {mouth: 'talk'}}), shut, 'the mouth opens on the syllable cycle');
+  assert.equal(placed({pose: 'P31', face: 'worried', t: 0.3, faceState: {mouth: 'talk', open: 0}}), shut, 'a scene-set open is kept');
+  assert.equal(placed({pose: 'P31', face: 'worried', t: 0.3, faceState: {mouth: 'flat'}}), placed({...ACTIVITY_MOUTHS_OFF, pose: 'P31', face: 'worried', t: 0.3, faceState: {mouth: 'flat'}}), 'any other scene-set mouth is kept');
+});
+
 test('layerMotion: a run motion pants, the talk motion keeps driving its own mouth, false turns it off', () => {
   const run = layerMotion({person: 'man-parted', motion: 'run-left-to-right', t: 0.3, g: [540, 1500], unit: 500});
   assert.equal(run.pose.face.mouth, 'gape');

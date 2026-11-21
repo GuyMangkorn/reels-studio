@@ -100,13 +100,24 @@ export const hairFront = (cut: NewCut): HairFront => {
   }
 };
 
-export const hairSide = (cut: NewCut): HairSide => {
-  const nape: Pt[] = [[-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14]];
+/**
+ * `det` (`HeadStyle.sideDetail`, user 21 Nov 2026): the profile hairline of a full head of hair. The plain edge runs from above the ear
+ * straight up to the crown, so the temple and the front corner of the forehead read bare (a receding hairline). With `det` the edge
+ * runs under the ear (the skin ear is painted over it), up a sideburn in front of the ear, along the temple and forward to a forehead
+ * hairline about 0.3 head units above the brow, then up the forehead edge (egg: x = cos a, y = 1.05 sin a) to the crown arc.
+ */
+const NAPE_DET: Pt[] = [[-0.62, 0.5], [-0.4, 0.28], [-0.14, 0.22], [0.05, 0.16], [0.1, -0.04], [0.22, -0.24]];
+const BROW_DET: Pt[] = [[0.45, -0.42], [0.7, -0.5], [0.9, -0.52], [0.84, -0.64], [0.72, -0.78]];
+export const hairSide = (cut: NewCut, det = false): HairSide => {
+  const plain: Pt[] = [[-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14]];
+  const nape = det ? NAPE_DET : plain;
+  /** Front edge from the temple: the cut's own plain edge, or the `det` hairline (BROW_DET) when the cut has no fringe of its own. */
+  const front = (own: Pt[]): Pt[] => (det ? BROW_DET : own);
   switch (cut) {
     case 'crop':
-      return {ear: true, sheen: true, hair: [[...sarc(1.07, -0.95, -Math.PI - 0.5), ...nape, [0.2, -0.34], [0.5, -0.46], [0.78, -0.56]]]};
+      return {ear: true, sheen: true, hair: [[...sarc(1.07, -0.95, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.34], [0.5, -0.46], [0.78, -0.56]])]]};
     case 'parted':
-      return {ear: true, sheen: true, hair: [[...sarc(1.1, -0.82, -Math.PI - 0.5), ...nape, [0.2, -0.34], [0.48, -0.42], [0.88, -0.5], [0.96, -0.62]]]};
+      return {ear: true, sheen: true, hair: [[...sarc(1.1, -0.82, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.34], [0.48, -0.42], [0.88, -0.5], [0.96, -0.62]])]]};
     case 'spiky': {
       const top: Pt[] = [];
       for (let i = 0; i <= 8; i++) {
@@ -117,26 +128,26 @@ export const hairSide = (cut: NewCut): HairSide => {
           top.push([r * Math.cos(b), r * 1.05 * Math.sin(b) - 0.02]);
         }
       }
-      return {ear: true, hair: [[...top, ...nape, [0.2, -0.36], [0.4, -0.5], [0.52, -0.38], [0.7, -0.6], [0.8, -0.46], [0.98, -0.72]]]};
+      return {ear: true, hair: [[...top, ...nape, ...(det ? [[0.45, -0.4], [0.58, -0.5], [0.7, -0.44], [0.82, -0.56], [0.9, -0.5], [0.86, -0.66], [0.98, -0.8]] as Pt[] : [[0.2, -0.36], [0.4, -0.5], [0.52, -0.38], [0.7, -0.6], [0.8, -0.46], [0.98, -0.72]] as Pt[])]]};
     }
     case 'buzz':
-      return {ear: true, tone: 0.55, hair: [[...sarc(1.04, -0.95, -Math.PI - 0.5), ...nape, [0.2, -0.38], [0.5, -0.52], [0.76, -0.64]]]};
+      return {ear: true, tone: 0.55, hair: [[...sarc(1.04, -0.95, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.38], [0.5, -0.52], [0.76, -0.64]])]]};
     case 'shaved':
-      return {ear: true, tone: 0.88, hair: [[...sarc(1.04, -0.95, -Math.PI - 0.5), ...nape, [0.2, -0.38], [0.5, -0.52], [0.76, -0.64]]]};
+      return {ear: true, tone: 0.88, hair: [[...sarc(1.04, -0.95, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.38], [0.5, -0.52], [0.76, -0.64]])]]};
     case 'balding':
       return {ear: true, hair: [[[-0.96, -0.4], [-1.06, 0.05], [-0.98, 0.5], [-0.82, 0.6], [-0.62, 0.34], [-0.54, 0.0], [-0.56, -0.3], [-0.72, -0.44]]]};
     case 'bowl':
-      return {ear: true, hair: [[...sarc(1.12, -0.9, -Math.PI - 0.6), [-0.76, 0.62], [-0.5, 0.22], [-0.2, -0.02], [0.1, -0.12], [0.32, -0.36], [0.6, -0.42], [0.88, -0.44]]]};
+      return {ear: true, hair: [[...sarc(1.12, -0.9, -Math.PI - 0.6), [-0.76, 0.62], ...(det ? [[-0.5, 0.3], [-0.14, 0.22], [0.05, 0.16], [0.1, -0.04], [0.24, -0.3]] as Pt[] : [[-0.5, 0.22], [-0.2, -0.02], [0.1, -0.12], [0.32, -0.36]] as Pt[]), [0.6, -0.42], [0.88, -0.44]]]};
     case 'pixie':
-      return {ear: true, sheen: true, hair: [[...sarc(1.08, -0.85, -Math.PI - 0.55), [-0.7, 0.55], [-0.4, 0.14], [-0.12, -0.16], [0.18, -0.32], [0.5, -0.42], [0.86, -0.5], [0.98, -0.66]]]};
+      return {ear: true, sheen: true, hair: [[...sarc(1.08, -0.85, -Math.PI - 0.55), [-0.7, 0.55], ...(det ? [[-0.4, 0.28], [-0.14, 0.22], [0.05, 0.16], [0.1, -0.04], [0.22, -0.24]] as Pt[] : [[-0.4, 0.14], [-0.12, -0.16], [0.18, -0.32]] as Pt[]), [0.5, -0.42], [0.86, -0.5], [0.98, -0.66]]]};
     case 'ponytail':
       return {ear: true, sheen: true, back: [[[-0.7, -0.78], [-1.1, -0.5], [-1.34, 0.1], [-1.4, 0.9], [-1.26, 1.45], [-1.04, 1.1], [-1.04, 0.3], [-0.9, -0.2]]],
         accent: [band(-0.93, -0.62, 0.08, 0.2, 0.4)],
-        hair: [[...sarc(1.08, -0.9, -Math.PI - 0.5), ...nape, [0.2, -0.34], [0.55, -0.44], [0.8, -0.55]]]};
+        hair: [[...sarc(1.08, -0.9, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.34], [0.55, -0.44], [0.8, -0.55]])]]};
     case 'pigtails':
       return {ear: false, back: [[[-0.9, -0.4], [-1.28, 0.2], [-1.3, 1.0], [-1.1, 1.15], [-0.95, 0.5]]],
         accent: [band(-0.4, -0.32, 0.2, 0.08, -0.3)],
-        hair: [[...sarc(1.09, -0.9, -Math.PI - 0.5), ...nape, [0.2, -0.34], [0.5, -0.42], [0.88, -0.44]],
+        hair: [[...sarc(1.09, -0.9, -Math.PI - 0.5), ...nape, ...front([[0.2, -0.34], [0.5, -0.42], [0.88, -0.44]])],
           [[-0.2, -0.3], [-0.55, -0.3], [-0.78, 0.3], [-0.78, 1.1], [-0.56, 1.36], [-0.36, 1.0], [-0.26, 0.3]]]};
     case 'curly':
       return {ear: false, back: [[...cloud(-0.2, -0.25, 1.5, 1.5, 13, 0.1, Math.PI - 0.7, 2 * Math.PI + 0.1, 70), [0.2, 0.3], [-0.9, 0.9]]],

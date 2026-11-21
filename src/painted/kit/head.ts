@@ -75,9 +75,9 @@ const jawOf = (face: FaceState): number => {
   return 0;
 };
 export const jawOpenOf = (face: FaceState): number => (face.jaw === undefined ? jawOf(face) : Math.max(0, Math.min(1, face.jaw)) * jawOf(face));
-/** `sideDetail` talk jaw (user, 18 Nov 2026): plain speech moves the chin at 10% (about 1% of the head), as cartoon dialogue changes
- *  the mouth more than the jaw; shout, gasp, grin and an explicit `face.jaw` keep their full drop. */
-export const TALK_JAW_DETAIL = 0.1;
+/** `sideDetail` talk jaw (user, 18 Nov 2026; halved 21 Nov 2026): plain speech moves the chin at 5% (about 0.5% of the head), as cartoon
+ *  dialogue changes the mouth more than the jaw; shout, gasp, grin and an explicit `face.jaw` keep their full drop. */
+export const TALK_JAW_DETAIL = 0.05;
 const headJawOf = (face: FaceState, style: HeadStyle): number =>
   jawOpenOf(face) * (style.sideDetail === true && face.mouth === 'talk' && face.jaw === undefined ? TALK_JAW_DETAIL : 1);
 /** Chin drop in head units at full jaw opening. */
@@ -389,9 +389,11 @@ const browShape = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: nu
 };
 
 /** `sideDetail` brow hairs (18 Nov 2026): short strokes across the brow, leaning toward the tail, in a tone between brow and skin, so
- * the brow reads as hair with a soft edge. `dir` is the screen direction of the tail (+1 / -1). */
+ * the brow reads as hair with a soft edge. `dir` is the screen direction of the tail (+1 / -1). Root and tip stay inside the brow fill
+ * (top edge y - 0.55w, bottom y + 0.45w) and the last strokes stop short of the tail (user note 21 Nov 2026: strokes poking past the
+ * brow read as stray hairs). */
 const browHairs = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: number, outer: number, dir: number): Pt[][] =>
-  browLine(brow, xAt, inner, outer, 14).slice(0, 13).map(({x, y, w}, i): Pt[] => [[x - dir * 0.01, y + w * (0.55 + 0.15 * (i % 2))], [x + dir * (0.035 + 0.008 * (i % 3)), y - w * (0.8 + 0.2 * ((i + 1) % 2))]]);
+  browLine(brow, xAt, inner, outer, 14).slice(0, 12).map(({x, y, w}, i): Pt[] => [[x - dir * 0.01, y + w * (0.3 + 0.08 * (i % 2))], [x + dir * (0.03 + 0.006 * (i % 3)), y - w * (0.38 + 0.08 * ((i + 1) % 2))]]);
 
 /** Front nose marks; shadow side is screen-right. */
 const lookNose = (lk: FaceLook, fill: Fill, ink: Ink, skin: string, line: string) => {
@@ -691,8 +693,9 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
     if (lk) fill(browColor(style), lookBrow(lk, side, inner + lk.browDrop, outer + lk.browDrop), 6);
     if (lk && det) browHairs(lk.brow, (u) => side * (0.17 + 0.45 * u), inner + lk.browDrop, outer + lk.browDrop, side).forEach((h) => ink(h, 0.8, 0, false, mixColor(browColor(style), skin, 0.3)));
-    // Legacy bar brow only for faces without a look (a look face already has its brow above; 13101c7 drew both when sideDetail was off).
-    if (!lk) fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+    // The plain bar is the brow of a head without a `look` only (user note 2026-11-21, EDU-EP31: as an `else` of the hairs line it also drew
+    // under every `look` brow without `det`, a second brow stacked above the dropped one).
+    else if (!lk) fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
   }
   if (lk) {
     part = 56;
@@ -901,7 +904,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   };
   const hairC = toneOf(style.hair, L);
   const {cut} = style;
-  const nc = isNewCut(cut) ? hairSide(cut) : null;
+  const nc = isNewCut(cut) ? hairSide(cut, style.sideDetail === true) : null;
   const arc = (r: number, a0: number, a1: number, n = 20): Pt[] =>
     Array.from({length: n + 1}, (_, i): Pt => {
       const a = a0 + ((a1 - a0) * i) / n;
@@ -968,7 +971,9 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     ink(bob, 1.0, 0.15, true, lineOf(hairC, L));
   } else if (cut === 'long') {
     // Cap from a low front hairline over the skull, down behind the ear; strands frame the face and stay off the eye.
-    const cap: Pt[] = [[0.9, -0.36], [0.98, -0.55], ...arc(1.12, -0.7, -Math.PI - 0.5), [-0.95, 0.75], [-0.62, 0.62], [-0.3, 0.2], [0.05, -0.12], [0.4, -0.3], [0.7, -0.33]];
+    // `sideDetail` (21 Nov 2026): the lower edge falls over the ear and runs forward along the temple, so the side of the head is not bare.
+    const cap: Pt[] = [[0.9, -0.36], [0.98, -0.55], ...arc(1.12, -0.7, -Math.PI - 0.5), [-0.95, 0.75], [-0.62, 0.62],
+      ...(det ? [[-0.3, 0.36], [0.02, 0.3], [0.1, 0.0], [0.26, -0.22], [0.5, -0.32], [0.7, -0.34]] as Pt[] : [[-0.3, 0.2], [0.05, -0.12], [0.4, -0.3], [0.7, -0.33]] as Pt[])];
     fill(hairC, cap, 6);
     if (L) {
       modelPart(p, seed * 100 + part, hairC, Q(cap), L);
@@ -995,7 +1000,11 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     }
   } else {
     const fringe = Array.from({length: 9}, (_, i): Pt => [0.2 + (0.62 * i) / 8, -0.4 - (0.08 * i) / 8 + 0.05 * Math.abs(Math.sin((i / 8) * 2 * Math.PI))]);
-    const cap: Pt[] = [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
+    // `sideDetail` (21 Nov 2026): under the ear, up a sideburn and along the temple, and the fringe closes up the forehead edge to the
+    // crown, so the profile has no bare temple or forehead corner (the plain edge reads as a receding hairline).
+    const cap: Pt[] = det
+      ? [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.4, 0.28], [-0.14, 0.22], [0.05, 0.16], [0.1, -0.04], [0.2, -0.3], ...fringe, [0.9, -0.52], [0.84, -0.64], [0.72, -0.78]]
+      : [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
     fill(style.hair, cap, 6);
     strands(cap, style.hair);
     ink(cap);

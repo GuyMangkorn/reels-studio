@@ -5,7 +5,7 @@ This repository produces Thai Shorts and long-form videos. Remotion owns the tim
 ## Language and rule conventions
 
 - **Language:** author agent instructions, workflows, technical notes, briefs, handoffs, shot sheets and QA in **English** with stable English IDs. Keep audience-facing Thai (narration, dialogue, subtitles, on-screen text, language-specific examples) unchanged. Reply to the user in their language.
-- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Boss (บอส), Ton (ต้น), Editor. Configs live in `.codex/agents/` (Codex), `.claude/agents/` (Claude Code) and generated `.cursor/agents/` (Cursor; `python3 -I scripts/cursor-agents.py`); see [parity](docs/coordinator.md#coordinator-and-agent-parity).
+- **Roles:** Preaw (แพรว), Boat (โบ็ต), Film (ฟิล์ม), Boss (บอส), Ton (ต้น), Editor, Cover. Film and Boss each have a child agent pinned to Sonnet 5.5, `film-apply` and `boss-apply`, for passes that apply decisions already made ([model by pass](docs/coordinator.md#ai14)); a child follows its parent's config and core documents. Configs live in `.codex/agents/` (Codex), `.claude/agents/` (Claude Code) and generated `.cursor/agents/` (Cursor; `python3 -I scripts/cursor-agents.py`); see [parity](docs/coordinator.md#coordinator-and-agent-parity).
 - **Rule levels:** **Requirement** is mandatory within its stated scope. **Default** is a normal choice that a brief or scene handoff may override with a recorded reason. **Reference** is explanation or examples. **Design/proposed** needs implementation and verification before runtime use.
 - **Runtime status** is separate: `existing-integrated`, `exists-unintegrated`, `missing` or `unknown`, with checkout/revision and evidence. Inspect the active checkout before claiming a capability exists.
 - **One home per rule:** keep each rule in its authoritative document and link to it elsewhere. When moving or translating a section, update references and preserve old heading anchors. Keep historical evidence dated and scoped.
@@ -63,14 +63,14 @@ Adapted from [andrej-karpathy-skills](https://github.com/multica-ai/andrej-karpa
 <a id="task-routing-and-ownership"></a>
 ## Document index
 
-Every agent reads AGENTS.md plus its **core** documents, and any other document only when its trigger applies, *before* acting on it (a linked section is enough for a single rule). A skipped document never waives its requirements. Roles: P Preaw, B Boat, F Film, S Boss, T Ton, E Editor.
+Every agent reads AGENTS.md plus its **core** documents, and any other document only when its trigger applies, *before* acting on it (a linked section is enough for a single rule). A skipped document never waives its requirements. Roles: P Preaw, B Boat, F Film, S Boss, T Ton, E Editor, C Cover.
 
 | Document | Read when (owner) | Core for |
 | --- | --- | --- |
 | [context-map](docs/context-map.md), [episodes sub-map](docs/context-map-episodes.md) | Locating files for a topic or an episode; read one entry ([CB01](#context-budget)) | on trigger |
 | [shared memory](docs/memory/README.md) / [memory skill](.agents/skills/memory/SKILL.md) | A task may touch a past user preference, approval or decision; the user asks to remember or forget something ([rule](#shared-memory)) | on trigger |
 | [coordinator](docs/coordinator.md) | Coordinating a deliverable, invoking a role agent, editing a role config (coordinator) | on trigger |
-| [channels](channels/README.md) and the deliverable's `channels/<id>/channel.md` | Any deliverable: the channel's mark, voice, genre and its own script, look, edit and cover rules override shared Defaults ([CH02](channels/README.md#rules)); adding a channel (coordinator) | P B F S T E (`channel.md` + own stage file) |
+| [channels](channels/README.md) and the deliverable's `channels/<id>/channel.md` | Any deliverable: the channel's mark, voice, genre and its own script, look, edit and cover rules override shared Defaults ([CH02](channels/README.md#rules)); adding a channel (coordinator) | P B F S T E C (`channel.md` + own stage file) |
 | [delivery-workflow](docs/delivery-workflow.md) | Selection, versions, style profile, pipeline, delivery record, task file, agent invocation; non-illustrated videos | P B F E |
 | [editorial skill](.agents/skills/editorial/SKILL.md) | Research, script, fact-check revisions | P B |
 | [scriptwriting-principles](docs/scriptwriting-principles.md) | Hooks, causal beats, payoffs, twists, loops | P (when it applies) |
@@ -78,10 +78,11 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [cinematography-principles](docs/cinematography-principles.md) | Illustrated/cinematic shot language | on trigger |
 | [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Scene sheets (Film); the review page: [review-page skill](.agents/skills/review-page/SKILL.md) (Film rows, coordinator publishing) | F |
 | [user-taste](docs/user-taste.md) | Painting thumbnails, look frames, plates; [viewer check](docs/sequence-workflow.md#viewer-check); a repeated user note | F S |
-| [cover-principles](docs/cover-principles.md) / [cover-design skill](.agents/skills/cover-design/SKILL.md) | Any cover or thumbnail (Film); the skill is the procedure | F |
+| [cover-principles](docs/cover-principles.md) / [cover-design skill](.agents/skills/cover-design/SKILL.md) | Any cover, thumbnail or video title (Cover, `.claude/agents/cover.md`); the skill is the procedure | C |
+| [publishing-copy skill](.agents/skills/publishing-copy/SKILL.md) | Per-episode publish package for ทำไมล่ะ: three titles drawn from the cover file, cover sub-lines, YouTube/IG/FB/TikTok captions and hashtags (coordinator; after the script exists). Does not design the cover | on trigger |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, renderer capabilities, contact bugs; its [QA](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) and [production rules](docs/boss-asset-workflow.md#latest-production-rules) | S |
-| [render skill](.agents/skills/render/SKILL.md) | Any video render, review clip or still | S E; F when rendering |
+| [render skill](.agents/skills/render/SKILL.md) | Any video render, review clip or still | S E; F and C when rendering |
 | [remotion-toolkit](docs/remotion-toolkit.md) | Scenes, overlays, effects, transitions, sound, captions; renderer features | S E |
 | [runtime-contract](docs/runtime-contract.md) | Claiming a runtime capability, new timeline fields, module ownership | on trigger |
 | [editor-workflow](docs/editor-workflow.md) / [editor-principles](docs/editor-principles.md) | Integration, editing, samples, [direct intake](docs/editor-workflow.md#direct-intake); rhythm, transitions, mix, loop seams | E |
@@ -92,6 +93,7 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Dimensions, projection, depth staging, apparent size | on trigger |
 | [character-proportion-principles](docs/character-proportion-principles.md) | Body/head/face work; **any pose or gesture: design from the beat, then match the [pose sheet P01–P45](docs/character-proportion-principles.md#cp-p-pose-sheet) and kit cast ([story first](#story-first))** | F S E (poses) |
 | [hand-drawing skill](.claude/skills/hand-drawing/SKILL.md) | Any hand, arm gesture or hand close-up: arm side per view, the thumb rule, the gesture kit, the POV and close-shot hand kits, the thumb check | on trigger (F, S, E) |
+| [anatomy-check skill](.claude/skills/anatomy-check/SKILL.md) | Any character posed or moved to do an action (hold, reach, lift, push, sit, walk): action line, blind read and fault list AN01–AN12 on rendered frames before the frame is reported | on trigger (F, S, E) |
 | [painted-2d skill](.claude/skills/painted-2d/SKILL.md) | Any painted 2D shot, asset or review. Default look: the [painted 3D camera](docs/film-visual-brief-workflow.md#painted-3d-camera) (user, 5 Nov 2026) | on trigger (F, S, E) |
 | [dev-findings](docs/dev-findings.md) | Choosing medium, camera, light or technique; recording a blocker (index first) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat, POV | on trigger |
@@ -103,6 +105,6 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 <a id="working-boundaries"></a>
 ## Handoff and working boundaries
 
-The production handoff is **[Ideation](docs/delivery-workflow.md#ideation) (Preaw pitches, Film annotates, user picks) → Boat research → Preaw script → Boat fact-check → Film visual/technical brief and written scene handoff (timed after the Editor [voice lock](docs/delivery-workflow.md#voice-lock)) → Boss shared assets/capabilities and Ton sounds (in parallel) → Editor scene integration/editing**, for every deliverable ([pipeline](docs/delivery-workflow.md#pipeline-tiers)), with progress in `scripts/<episode>/task.md`. Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
+The production handoff is **[Ideation](docs/delivery-workflow.md#ideation) (Preaw pitches, Film annotates, user picks) → Boat research → Preaw script → Boat fact-check → Film visual/technical brief and written scene handoff (timed after the Editor [voice lock](docs/delivery-workflow.md#voice-lock)) → Boss shared assets/capabilities and Ton sounds (in parallel) → Editor scene integration/editing → Cover cover and title candidates (after the draft cut passes; task step W6c)**, for every deliverable ([pipeline](docs/delivery-workflow.md#pipeline-tiers)), with progress in `scripts/<episode>/task.md`. Resolve the [selected deliverables](docs/delivery-workflow.md) before new scriptwriting or a scope change, and match the named revisions at each handoff.
 
 Preserve the requested scope, story timing, reveals and stable IDs, as well as unrelated checkout changes. Record material brief/handoff revisions with their owners before changing the visual plan. Fix reusable art, geometry, dimensions, contact and camera behavior in the owning library module; scenes select IDs and author staging/timing.

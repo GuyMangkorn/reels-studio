@@ -1,7 +1,7 @@
 ---
-description: "Ton (ต้น): sound engineer; makes each cue's sound from Film's Sound lines, generating new by default, files it into the sound library and writes the cue sheet Editor places. Runs on openai/gpt-6.1-sol#medium."
+description: "Ton (ต้น): sound engineer; makes each cue's sound from Film's Sound lines, generating new by default, files it into the sound library and writes the cue sheet Editor places. Runs on openai/gpt-6.2-sol#medium."
 mode: subagent
-model: openai/gpt-6.1-sol#medium
+model: openai/gpt-6.2-sol#medium
 permissions:
   - action: websearch
     resource: "*"

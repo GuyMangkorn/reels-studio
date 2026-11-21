@@ -82,6 +82,9 @@ export const CARD_POSES: Record<PersonId, readonly [AnyPoseId, AnyPoseId, AnyPos
   'woman-long': ['P10', 'P23', 'P27'],
   'woman-bob': ['P07', 'P29', 'P12'],
   'man-shaved': ['P03', 'P24', 'P14'],
+  'woman-blonde': ['P10', 'P07', 'P27'],
+  'man-ginger': ['P09', 'P20', 'P22'],
+  'woman-tied': ['P06', 'P08', 'P23'],
 };
 
 /** Expressions on each card's strip, in order. */

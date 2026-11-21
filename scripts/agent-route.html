@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Role routing</title>
+<!-- Served by `python3 -I scripts/agent-route.py serve`. Reads /api/state, writes /api/route; the routing file is the only state. -->
+<style>
+:root {
+  --bg: #f6f5f1; --card: #ffffff; --ink: #1d1f1e; --dim: #666b68; --line: #dedcd4;
+  --accent: #0b6e63; --accent-ink: #ffffff; --accent-soft: #e0f0ed; --warn: #a1420b; --field: #ffffff;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151716; --card: #1e2120; --ink: #ecebe6; --dim: #9aa09c; --line: #333836;
+    --accent: #4fc4b4; --accent-ink: #08211d; --accent-soft: #17332f; --warn: #f0a070; --field: #262a28;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+main { max-width: 980px; margin: 0 auto; padding: 28px 16px 56px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 6px; }
+h1 { font-size: 24px; margin: 0; letter-spacing: -0.01em; }
+#status { font-size: 13px; color: var(--dim); margin-left: auto; }
+#status.error { color: var(--warn); font-weight: 600; }
+.lede { color: var(--dim); margin: 0 0 22px; max-width: 68ch; }
+code { font: 13px ui-monospace, SFMono-Regular, Menlo, monospace; overflow-wrap: anywhere; }
+h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); margin: 30px 0 8px; }
+.role { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 10px;
+  padding: 14px 16px; margin-bottom: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 20px; align-items: center; }
+.role.routed { border-left-color: var(--accent); }
+.role.bounced { border-left-color: var(--warn); }
+.note { font-size: 13px; margin-top: 6px; color: var(--warn); font-weight: 600; }
+.name { font: 600 16px ui-monospace, SFMono-Regular, Menlo, monospace; }
+.about { color: var(--dim); font-size: 13px; margin-top: 2px; }
+.now { font-size: 13px; margin-top: 6px; }
+.now b { background: var(--accent-soft); color: var(--accent); padding: 1px 7px; border-radius: 99px; font-weight: 600; }
+.role:not(.routed) .now b { background: transparent; color: var(--dim); padding: 0; font-weight: 500; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; background: var(--field); }
+.seg button { font: inherit; font-size: 14px; border: 0; background: none; color: var(--ink); padding: 7px 12px; cursor: pointer; }
+.seg button + button { border-left: 1px solid var(--line); }
+.seg button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); font-weight: 600; }
+select { font: inherit; font-size: 14px; color: var(--ink); background: var(--field); border: 1px solid var(--line); border-radius: 8px; padding: 7px 8px; max-width: 100%; }
+select:disabled { color: var(--dim); opacity: 0.75; }
+button:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.runs { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 4px 16px; font-size: 13px; overflow-x: auto; }
+.runs div { display: grid; grid-template-columns: 9.5em 8em minmax(12em, 1fr) 5em 6em; gap: 12px; padding: 8px 0; border-top: 1px solid var(--line); min-width: 560px; }
+.runs div:first-child { border-top: 0; }
+.bad { color: var(--warn); font-weight: 600; }
+@media (max-width: 760px) { .role { grid-template-columns: minmax(0, 1fr); } }
+</style>
+</head>
+<body>
+<main>
+  <header><h1>Role routing</h1><span id="status" role="status">Loading…</span></header>
+  <p class="lede">Choose who runs each role. A change saves at once and applies to the next time the role is invoked; nothing is committed. File: <code id="file"></code></p>
+  <div id="roles"></div>
+  <h2 id="runs-title" hidden>Last provider runs</h2>
+  <div id="runs" class="runs" hidden></div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.createElement(tag), props); n.append(...kids); return n; };
+let shown = '';
+
+const status = (text, error = false) => { $('status').textContent = text; $('status').className = error ? 'error' : ''; };
+const when = ts => new Date(ts).toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
+const clock = () => new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+
+async function post(body) {
+  status('Saving…');
+  try {
+    const res = await fetch('/api/route', {method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
+    const data = await res.json();
+    if (!res.ok) { status('Not saved: ' + data.error, true); return refresh(true); }
+    render(data, true);
+    status('Saved ' + clock());
+  } catch (e) { status('Not saved: the server is not running', true); }
+}
+
+function picker(label, value, fallback, options, onPick, allowCustom) {
+  const s = el('select', {ariaLabel: label});
+  s.append(el('option', {value: ''}, fallback));
+  for (const o of options) s.append(el('option', {value: o}, o));
+  if (value && !options.includes(value)) s.append(el('option', {value}, value));
+  if (allowCustom) s.append(el('option', {value: '\u0000'}, 'Other model…'));
+  s.value = value || '';
+  s.onchange = () => {
+    if (s.value !== '\u0000') return onPick(s.value);
+    const typed = (prompt(label + ' id') || '').trim();
+    if (typed) onPick(typed); else s.value = value || '';
+  };
+  return s;
+}
+
+function row(r, providers, efforts) {
+  const route = r.route, provider = route ? route.provider || 'claude' : null;
+  const spec = provider ? providers[provider] || {} : {};
+  const pinModel = r.pinned.model || 'inherit', pinEffort = r.pinned.effort || 'inherit';
+  const model = route && route.model || (provider && provider !== 'claude' ? spec.model : pinModel);
+  const effort = route && route.effort || (provider && provider !== 'claude' ? spec.effort : pinEffort);
+  const send = change => {
+    const next = Object.assign({role: r.role, provider, model: route && route.model, effort: route && route.effort}, change);
+    if (next.provider === 'claude' && !next.model && !next.effort) next.provider = null;  // nothing overridden: the pin
+    post(next);
+  };
+  const seg = el('div', {className: 'seg', role: 'group', ariaLabel: 'Runs on'});
+  const choice = (name, text, body) => seg.append(el('button', {type: 'button', ariaPressed: String(provider === name), onclick: () => provider === name || post(body)}, text));
+  choice(null, 'Pinned', {role: r.role, provider: null});
+  for (const name of Object.keys(providers)) {
+    const other = /sonnet/.test(pinModel) ? 'opus' : 'sonnet';
+    choice(name, name[0].toUpperCase() + name.slice(1), name === 'claude' ? {role: r.role, provider: name, model: other} : {role: r.role, provider: name});
+  }
+  const fallback = kind => provider === 'claude' || !provider ? `Pinned (${kind === 'model' ? pinModel : pinEffort})` : `Default (${spec[kind]})`;
+  const models = picker('Model', route && route.model, fallback('model'), spec.models || [], v => send({model: v || undefined}), provider && provider !== 'claude');
+  const effs = picker('Effort', route && route.effort, fallback('effort'), efforts, v => send({effort: v || undefined}));
+  models.disabled = effs.disabled = !provider;
+  const b = r.bounced;
+  const note = b ? el('div', {className: 'note'}, `Back on the pinned agent: ${b.provider} hit its ${b.reason} at ${when(b.ts)}. Pick ${b.provider} again when it has usage.`) : '';
+  return el('section', {className: 'role' + (route ? ' routed' : '') + (b ? ' bounced' : '')},
+    el('div', {}, el('div', {className: 'name'}, r.role), el('div', {className: 'about'}, r.description),
+      el('div', {className: 'now'}, 'Next run: ', el('b', {}, `${provider || 'claude'} · ${model} · ${effort}`)), note),
+    el('div', {className: 'controls'}, seg, models, effs));
+}
+
+function render(data, force) {
+  const key = JSON.stringify(data);
+  if (key === shown) return;
+  if (!force && document.activeElement && document.activeElement.tagName === 'SELECT') return;  // do not close an open menu
+  shown = key;
+  $('file').textContent = data.file;
+  $('roles').replaceChildren(...data.roles.map(r => row(r, data.providers, data.efforts)));
+  $('runs').hidden = $('runs-title').hidden = !data.runs.length;
+  $('runs').replaceChildren(...data.runs.map(run => el('div', {},
+    el('span', {}, when(run.ts)),
+    el('code', {}, run.role), el('span', {}, `${run.provider} · ${run.model} · ${run.effort}`), el('span', {}, run.seconds + ' s'),
+    el('span', {className: run.status ? 'bad' : ''}, run.status === 0 ? 'done' : run.status === 75 ? 'usage limit' : 'exit ' + run.status))));
+}
+
+async function refresh(force) {
+  try {
+    render(await (await fetch('/api/state')).json(), force);
+    if (!$('status').className && !/^Saved/.test($('status').textContent)) status('Live');
+  } catch (e) { status('The server is not running', true); }
+}
+refresh(true);
+setInterval(refresh, 3000);
+</script>
+</body>
+</html>

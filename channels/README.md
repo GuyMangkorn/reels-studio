@@ -17,7 +17,7 @@ Each file is created when the channel has a rule to put in it. A missing file me
 | `script.md` | Script rules learned on this channel | Preaw, Boat |
 | `look.md` | Look, cast and camera choices that differ from the [project defaults](../docs/delivery-workflow.md#project-defaults) | Film, Boss |
 | `edit.md` | Rhythm, transitions, mix and caption choices that differ from the [editor principles](../docs/editor-principles.md) | Editor, Ton |
-| `cover.md` | Cover identity that differs from the [cover principles](../docs/cover-principles.md) | Film |
+| `cover.md` | Cover identity that differs from the [cover principles](../docs/cover-principles.md) | Cover |
 | `performance.md` | Posted videos' numbers; a production record, appended without a DP entry | coordinator, Preaw |
 
 ## Rules

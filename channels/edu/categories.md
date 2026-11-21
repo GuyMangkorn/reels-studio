@@ -7,7 +7,7 @@ Source: the tier-list image the user attached on 17 Nov 2026 (asset store `proje
 <a id="category-pick"></a>
 ## Category pick before pitching
 
-**Default (user, 17 Nov 2026).** Every edu [ideation round](../../docs/delivery-workflow.md#ideation) starts with a category pick, unless the user's prompt already names a category or a concept.
+**Default (user, 17 Nov 2026).** Every edu [ideation round](../../docs/delivery-workflow.md#ideation) starts with a category pick, unless the user's prompt already names a category or a concept. Under the [fast lane](../../docs/delivery-workflow.md#fast-lane) the last recorded pick stands for the next round without the question; the concept question offers "other categories".
 
 1. The coordinator shows the table below in the reply, with Preaw's ER11 note per row, then asks with the structured-question tool, each option's description giving its tier. The tool takes at most four options: offer the four categories with the best ER11 fit that the latest rounds have not used, the first marked recommended; "Other" takes any ID from the table or a new category.
 2. The pick (one or more IDs, the user's words, date) goes in the series `delivery.md` with the round ID.

@@ -31,7 +31,7 @@ Record the chosen values in `delivery.md` as a compact block.
 | Field | Default | Reference |
 | --- | --- | --- |
 | Visual engine | **Painted 3D camera** (user, 5 Nov 2026): sets built in world metres and seen through the kit yaw camera ([`kit/ycam.ts`](../src/painted/kit/ycam.ts)), painted with p5.brush, for sets, characters and wide-to-medium shots; mixed with crisp Remotion SVG for close-ups and first-person (FPOV) inserts such as a phone screen or an object in the narrator's hands ([Film: painted 3D camera](film-visual-brief-workflow.md#painted-3d-camera)) | WORLD FOG VD01, VD09 (PHONE-SVG) in [the brief](../storyboards/world-fog/short/visual-brief.md) |
-| Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands, flat-face decal heads with face controls, drawn as a flat card at the character's depth in one of four views (see Character views) | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
+| Character proportions | The WORLD FOG cast: adult 4 heads tall (1.70 m; 1.60 m for a shorter adult with the same head), mitten hands at figure scale and five-finger 3D hands in POV, close-ups and close shots ([UT14](user-taste.md#ut-simple-hands)), flat-face decal heads with face controls, drawn as a flat card at the character's depth in one of four views (see Character views) | `src/painted/worldfog/cast.ts`, `head.ts`; brief VD03 |
 | Arm poses | Bent arms go back into depth with perspective (elbow behind the torso, a shade darker), never splayed out to the side | [CP-P](character-proportion-principles.md#cp-p-arm-depth); `Arm.via` / `Arm.behind` in `cast.ts` |
 | Character views | Four body views (front, back, left, right), squared to the lens with `squareToCam` ([`kit/views.ts`](../src/painted/kit/views.ts)); the front three-quarter (`quarter`, 15–45°) is optional for close-ups; head acting with `headCock` (±6–12°) or the head turned aside on a front body. An orbit (world `facing`) turns through eight views, the three-quarters follow the camera and the back three-quarters show; high and low cameras get head and face cues. These [view cues](film-visual-brief-workflow.md#view-cues) are on by default (user, 13 Nov 2026), off in episodes made before then (`VIEW_CUES_OFF`) | Sheets `VIEWSHEET-*`, `HEADTRICKS-YOU`; spike `SET45-*` |
 | Character poses | Designed from the story first, then matched against the pose sheet P01–P45 and the template cast ([story first](../AGENTS.md#story-first)); a match is cited as a [casting line](character-proportion-principles.md#cp-casting-line), a new pose is proposed to Boss, not made one-off | [CP-P12](character-proportion-principles.md#cp-p-pose-sheet); `src/painted/kit/poses.ts` |
@@ -83,6 +83,34 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 
 **Default (user, 3 Nov 2026):** the coordinator proposes the open deliverable closest to W8 first; see [coordinator](coordinator.md#wip-limit).
 
+<a id="fast-lane"></a>
+### Fast lane: four user rounds
+
+**Default (user, 21 Nov 2026)** for every deliverable started after this rule; an open deliverable keeps the gates it started on ([DP04](contributing.md#tools-and-document-improvements)). The user decides in four **rounds**, and between rounds the agents run without waiting for the user. `delivery.md` records `Review: fast lane`. The user restores a gate for one deliverable by naming it (`Review: fast lane + hook pick`). Reason: the wait for the user between agent runs capped clips per day; one clip stopped for the user 13 times (category, concept, hook, script, look thumbnails, look lock, storyboard pass, voice sample, voice approval, draft, final, cover picture, cover text and title).
+
+| Round | The user decides, in one sitting | The agents then run through |
+| --- | --- | --- |
+| **R1 Pick** | the concept, or several (W0.3) | W1.1–W4.2: research, hook, script, fact-check, length check, brief, storyboard rows, look frames, the full read and its measure file |
+| **R2 Lock** | script, storyboard, look frames and voice together (W1.5, W3.2, W3.3, W4.3) | W5.1–W5.2s and the draft cut |
+| **R3 Draft** | the draft cut, shot by shot (W5.3), as in [W5](sequence-workflow.md#painted-shot-by-shot); kept as a user round (user, 21 Nov 2026: "ผมยังอยากดู draft อยู่") | W6 delivery render and the cover candidates (W6c, the Cover role) |
+| **R4 Ship** | the Final file, the cover and the title (W6, [cover picks](../.agents/skills/cover-design/SKILL.md)) | W7 pin and W8.2 publish; the user posts (W8.3) |
+
+- **R1 Pick.** The user may pick several concepts in one ideation round. Each pick opens its own deliverable; they run in parallel ([coordinator](coordinator.md#agent-invocation)), and the coordinator brings deliverables that reach the same round into one sitting.
+- **R2 Lock.** One sitting on the review page's storyboard tab: the full Thai VO per shot is the script, the beat headers carry the look frames, and the coordinator sends the full read as a file with the page link (the page has no audio player: `missing`, 21 Nov 2026). A pass ticks W1.5, W3.2, W3.3 and W4.3 with the same user words. A change goes to its owner (VO text: Preaw, Boat on the changed claims, then a re-read under the [voice lock](#voice-lock); a shot or a look frame: Film), and the next R2 shows only what changed. The W2.3 page is still published as soon as the rows exist; nobody waits on it. Boss builds after R2 passes.
+- **R4 Ship.** The coordinator publishes the Final tab and asks the cover and title question in the same turn. A `change` on the Final file leaves the cover pick standing.
+
+**Picks the agents take between rounds.** Each is recorded in `delivery.md` (what was taken, and that the fast lane took it) and shown at the next round, where the user may overturn it:
+
+- **Category:** the last recorded [category pick](../channels/edu/categories.md#category-pick) stands for the next ideation round.
+- **Hook:** Preaw writes `hook-options.md`, then the script on its recommended option, in one invocation ([hook pick](#hook-pick)).
+- **Look thumbnails:** the [viewer check](sequence-workflow.md#viewer-check) picks the thumbnail that best fits [user taste](user-taste.md) ([thumbnails](sequence-workflow.md#look-thumbnails)).
+- **Voice setting:** the voice, style and pace of the channel's latest locked read. That setting is already user-picked, so the full read needs no sample ([sample before every full read](#sample-before-full-read)); any other setting samples first.
+- **Cover picture:** the candidate with the highest pick-1 score ([cover-design](../.agents/skills/cover-design/SKILL.md)). R4 shows the five texts on it and the sheet of the other four pictures.
+
+**Decide and flag.** Between rounds, a question that has a recommended option is answered with that option, recorded in `delivery.md` under `Taken for the user`, and listed at the next round. The coordinator asks mid-run only when no option lets the work continue (a missing input, a destructive step, a scope change). A shot group that reaches the [fix-pass cap](boss-asset-workflow.md#latest-production-rules) is parked with its question while the other shots continue, and the question is asked at the next round.
+
+Task-file steps keep their IDs. A step an agent took is ticked with `(fast lane: <what was taken>)`.
+
 <a id="length-check"></a>
 <a id="hook-pick"></a>
 ### Hook pick
@@ -92,6 +120,8 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 1. **Preaw proposes** (one invocation, after Boat research) `scripts/<episode>/<short|long>/hook-options.md` and returns without writing the script. It holds 3–4 options for this story. Each option has a hook ID from the [hook catalogue](research/2026-11-16-shorts-hook-types.md#2-hook-catalogue) (or `new: <shape>`), the spoken Thai opening line(s), the beat shape in one line and the channel rules it bends (for example, HK04 pays the hook after ER02's ~30 %). One option is marked **recommended**, with one line on why it suits this story.
 2. **The coordinator asks the user** with the structured-question tool: one question whose options are the hook options, the recommended one first and labelled "(Recommended)", each showing its opening line. The user may pick one, merge two or write their own.
 3. `delivery.md` records the hook ID, the opening line and the user's words. Preaw writes the script with that hook. Where the picked hook bends a channel Default (ER01's hook shape), the pick is the recorded override, and Boat checks the script against the picked shape.
+
+Under the [fast lane](#fast-lane) the recommended option is taken without the question and the user sees the hook at R2.
 
 A Long picks one hook for its opening. Skip the question when the user names the hook in the prompt (record their words) and for re-edits of an existing script (`W1.1b N/A — <reason>`).
 
@@ -121,7 +151,8 @@ Concepts are pitches, not research: no claim in `concepts.md` or a concept file 
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected. Edit both with [`scripts/ep.py`](../scripts/ep.py) (`tick`, `now`, `cell`), not with one-off Python (usage review, 5 Nov 2026: about 600 inline scripts in five days edited these files and `review-rows.json`).
-- **Published (W8.2):** the step is ticked only when the delivery render and the picked cover are in the [publish folder](../README.md#publish-folder) (`store.py publish <ID> --cover <pick> --reason "<why>"`). The note is the folder path `publish/<channel>/<PROJECT>/<ID>/`. A later re-render or cover fix is published again in the same turn, and the reply gives the user that path.
+- <a id="cover-step"></a>**Cover and title (W6c; Requirement; user, 21 Nov 2026):** the Cover role's two picks ([cover pass](coordinator.md#cover-pass), [cover-design skill](../.agents/skills/cover-design/SKILL.md)), started when the draft cut passes. `ep.py tick` refuses W8, W8.2 and W8.3 while the deliverable's W6c line is open; a deliverable with no cover (a look-frame composition) ticks it `N/A — <reason>`. A task file written before this rule has no W6c line: `ep.py` then warns instead of refusing, and the coordinator adds the line. `store.py publish` reports `waiting: cover` instead of `ready` until a cover is in the publish folder.
+- **Published (W8.2):** the step is ticked only when W6c is ticked and the delivery render and the picked cover are in the [publish folder](../README.md#publish-folder) (`store.py publish <ID> --cover <pick> --reason "<why>"`). The note is the folder path `publish/<channel>/<PROJECT>/<ID>/`. A later re-render or cover fix is published again in the same turn, and the reply gives the user that path.
 - **Posted:** when the user says a video is on the channel, the coordinator runs `store.py publish <ID> --posted <date>` and ticks W8 and W8.3 in that turn, with the date. It marks any W8 step it cannot evidence `not recorded`.
 - <a id="performance-record"></a>**Performance (after posting; user, 8 Nov 2026):** at the first session at least 3 days after a video is posted, the coordinator asks the user once (structured question) for its views, average view duration, swiped-away % and where the retention curve drops, and adds a row to that video's channel record `channels/<id>/performance.md` ([edu](../channels/edu/performance.md); created with a channel's first posted video). Rough numbers are fine; a missing number is `-`. When an episode clearly beats or trails its series, the coordinator proposes a short retrospective in `scripts/<episode>/lessons-learned.md` (example: [EDU EP05](../scripts/edu-series/ep05/lessons-learned.md)).
 - **Kit intake (W8.4):** Boss files the episode's new looks and sets into the kit after W8.2, under [KIT-P01](../src/painted/kit/README.md#kit-intake); the deliverable is not done until W8.4 is ticked or `N/A` with a reason.
@@ -168,6 +199,9 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
+- [ ] W6c Cover and title (Cover role, `subagent_type: cover`)
+  - [ ] W6c.1 Pick 1: five pictures, picture chosen (`<ID>-PIC-COVERS`)
+  - [ ] W6c.2 Pick 2: five texts and five titles, user picks cover and title (`<ID>-COVERS`)
 - [ ] W7 Pinned (0/N shots)
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock

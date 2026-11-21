@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "role-routing",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-I", "scripts/agent-route.py", "serve", "--port", "8791"],
+      "port": 8791
+    }
+  ]
+}

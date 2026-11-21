@@ -99,7 +99,7 @@ const Profile = () => (
       const p = makePainter(brush, {t: 0, frame: 0});
       PERSON_IDS.forEach((id, i) => {
         const seed = 900 + i * 3, head = PEOPLE[id].head;
-        paintHeadSide(p, seed, pX(i) - 175, pY(i), PK, EXPRESSIONS.neutral, head, 1, openT(seed));
+        paintHeadSide(p, seed, pX(i) - 175, pY(i), PK, EXPRESSIONS.neutral, {...head, sideDetail: false}, 1, openT(seed));
         paintHeadSide(p, seed, pX(i), pY(i), PK, EXPRESSIONS.neutral, {...head, sideDetail: true}, 1, openT(seed));
         paintHeadSide(p, seed + 1, pX(i) + 175, pY(i), PK, EXPRESSIONS.neutral, {...head, sideDetail: true}, -1, openT(seed + 1));
       });
@@ -121,7 +121,7 @@ const ProfileMid = () => (
       const p = makePainter(brush, {t: 0, frame: 0});
       MID.forEach((id, i) => [false, true].forEach((on, k) => {
         const def = PEOPLE[id], x = (MW / 8) * (i * 2 + k + 0.5);
-        drawFigure(p, on ? {...def, head: {...def.head, sideDetail: true}} : def, [x, MH + 0.75 * MUNIT], MUNIT, {view: 'right', face: EXPRESSIONS.neutral}, openT(def.seed + 1), def.seed);
+        drawFigure(p, {...def, head: {...def.head, sideDetail: on}}, [x, MH + 0.75 * MUNIT], MUNIT, {view: 'right', face: EXPRESSIONS.neutral}, openT(def.seed + 1), def.seed);
       }));
     }} />
     {MID.map((id, i) => <div key={id} style={{...cap, width: MW / 4, left: (MW / 4) * i, top: 14, fontSize: 24, fontWeight: 700}}>{`${id}: plain · sideDetail`}</div>)}

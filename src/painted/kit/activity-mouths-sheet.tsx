@@ -1,5 +1,6 @@
 // KIT-ACTIVITY-MOUTHS check sheet (standalone entry, not a deliverable): kit mouths per activity, chest-up, in the front, three-quarter
-// (camera 45 deg off the front) and right profile views. Rows: run (P38), lift/strain (P26), talk (P05), surprise mid-action (P15).
+// (camera 45 deg off the front) and right profile views. Rows: run (P38), lift/strain (P26), talk (P05), surprise mid-action (P15),
+// a `talk` mouth set over another expression (`faceState: {mouth: 'talk'}` on `worried`, seated P31; 21 Nov 2026).
 // Frame 0 = the kit as it was before activity mouths (13 Nov 2026), frame 1 = the activity mouths on.
 // Render: printf 'KIT-ACTIVITY-MOUTHS 0 out/activity-mouths/before.png\nKIT-ACTIVITY-MOUTHS 1 out/activity-mouths/after.png\n' | node scripts/stills.mjs src/painted/kit/activity-mouths-sheet.tsx
 import {createElement, useCallback} from 'react';
@@ -7,6 +8,7 @@ import {AbsoluteFill, Composition, registerRoot, useCurrentFrame} from 'remotion
 import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {ACTIVITY_MOUTHS_OFF, type ActivityOpts} from './activity-mouths';
 import type {ExpressionId} from './expressions';
+import type {FaceState} from './head';
 import {paintFigureAt} from './figure-at';
 import {makePainter} from './painter';
 import {PEOPLE} from './people';
@@ -14,11 +16,12 @@ import type {AnyPoseId} from './poses';
 import type {YCam} from './ycam';
 
 const PAPER = '#efe8dc';
-const ROWS: {pose: AnyPoseId; face: ExpressionId; label: string; on?: ActivityOpts}[] = [
+const ROWS: {pose: AnyPoseId; face: ExpressionId; label: string; on?: ActivityOpts; fs?: Partial<FaceState>}[] = [
   {pose: 'P38', face: 'neutral', label: 'run · P38 + neutral'},
   {pose: 'P26', face: 'neutral', label: 'lift · P26 + neutral'},
   {pose: 'P05', face: 'talk', label: 'talk · P05 + talk'},
   {pose: 'P15', face: 'surprised', label: 'surprise · P15 + surprised', on: {activity: 'surprise', activityAt: 0.2}},
+  {pose: 'P31', face: 'worried', label: 'talk on worried', fs: {mouth: 'talk'}},
 ];
 const VIEWS = [{az: 0, label: 'front'}, {az: 45, label: '3/4'}, {az: 90, label: 'profile'}];
 const CW = 1080 / VIEWS.length, CH = 1920 / ROWS.length, R = 2.3, F = 900, AIM = 1.3, EYE = 1.45;
@@ -36,7 +39,7 @@ const Sheet = () => {
     const p = makePainter(brush, {t: 0, frame: f, fade: PAPER});
     // Rows top to bottom; after each row a paper underlayer covers what spilled below it (p5.brush has no clip).
     ROWS.forEach((r, row) => {
-      VIEWS.forEach((_, col) => paintFigureAt(p, cellCam(col, row), PEOPLE['man-parted'], {at: AT, facing: FACING, ...(f === 0 ? ACTIVITY_MOUTHS_OFF : r.on ?? {}), pose: r.pose, face: r.face, t: 0.5, seed: 500 + row * 3 + col, shadow: false}));
+      VIEWS.forEach((_, col) => paintFigureAt(p, cellCam(col, row), PEOPLE['man-parted'], {at: AT, facing: FACING, ...(f === 0 ? ACTIVITY_MOUTHS_OFF : r.on ?? {}), pose: r.pose, face: r.face, ...(r.fs ? {faceState: r.fs} : {}), t: 0.5, seed: 500 + row * 3 + col, shadow: false}));
       const y = (row + 1) * CH;
       p.flat(PAPER, [[0, y], [1080, y], [1080, 1920], [0, 1920]]);
     });

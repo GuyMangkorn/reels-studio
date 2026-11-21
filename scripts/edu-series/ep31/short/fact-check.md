@@ -137,3 +137,144 @@ No must-fix finding. No premise, reveal or learning impact: the hook (L01), the 
 
 1. Does Preaw take RC03's neutral sound line (clock stops, flat thud) in place of the knock or handcuff click? Optional.
 2. Should the TTS read of "แมคอาเธอร์" be checked at the voice sample? Yes, one spoken use.
+
+## Recheck R3 (picture level, ROWS-R3)
+
+Revision: picture plan `EDU-EP31-BRIEF-R3` (VD31-18, Space R, LF07), `EDU-EP31-BOARD-R3`, `EDU-EP31-ROWS-R3`, against `EDU-EP31-SCRIPT-R2` (unchanged; the R1 and R2 verdicts on narration stand). Boat, 2026-11-21. No new sources opened: F001, F006, F009, F010, F013 and SRC001/SRC008/SRC013 from research.md are reused, so the R1 access limits (one secondary reporting chain, no primary page, Wheeler's status unknown) still apply. This is a written-plan check; no frame exists yet, so it is not a picture validation. Severity: **must-fix** (wrong takeaway, false premise, misrepresented person), **should-fix** (true but invites a false inference; Film may decline with a reason), **note**.
+
+**Verdict: no must-fix. Nothing blocks the page.** Two should-fix constraints (RC3-01, RC3-02) and three notes. FC06 fallback is **not required**.
+
+### 1. B07-SH01 to SH03 (blank Polaroid, lemon half, tip on "จริงเลย")
+
+- **RC3-01 — lemon half resting on the Polaroid border (should-fix, constraint).** The plan never shows lemon causing the blank: no dissolve, no stain, no application (supported: F006 says cause unproven; SRC013 "wasn't anywhere to be found in the image"). The risk is adjacency: a lemon sitting on the blank print, with a glint and a tip, can read as "the juice did this" (cause by juxtaposition). The narration says nothing about cause and B03-SH04 labels the police guess about 40 s earlier, so the inference is not forced; the lemon is also documented as what he trusted (SRC013 "it seemed to work"). Keep Film's design if these hold: (a) the Polaroid image stays the identical pale grey-beige wash of B03-SH03, with no streak, wet ring, fade or juice mark on it or its border; (b) the glint (SH02) is on the lemon flesh only, never on the Polaroid; (c) the lemon rests on the border or beside it, never on the image area; (d) the lemon never touches the CCTV print (already in the brief). If Film cannot guarantee (a) to (c) in the painted look frame, move the lemon to sit beside the Polaroid, touching nothing.
+- **Photo as proof of invisibility: pass.** The blank Polaroid beside the print that kept his face reads as "his test photo said one thing, the bank camera said another", which is the documented irony (F006 against F001/F009). The tip on "จริงเลย" lands on "ไม่ได้รู้จริงเลย", his certainty being wrong, not on a mechanism. No frame says the photo shows invisibility.
+- **Bank camera lost the face: pass.** The 8x10 carries CCTV-STILL-01, face readable (F001, F009; VD31-08), grey-green and labelled reconstructed. It is the contrast, not a loss.
+- **RC3-03 — the two prints on one table (note).** Where the real Polaroid or surveillance print ended up is not documented (print never published as far as found; SRC013). A still life of both together in one place implies they were kept side by side (as evidence, a keepsake) which no source says. Covered by the label from frame 0 and Space R's "no place claimed"; no change needed, but no evidence tag, case file, label or "EVIDENCE" text on the table.
+
+### 2. FC06 — his face under "นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้" (note; fallback not required)
+
+- The face arrives at the end of the phrase as one of two photos, with no name, no paper, no person, no text, and "เรื่องนี้" points at the whole story, which Dunning read (F013, SRC013). A reader of the two-up sees "the story" (his test photo and his bank photo), not "Wheeler was a study subject". That stays inside FC06 and F015: inspiration only, no diagnosis, no claim the paper names him.
+- Why it holds: the print is gone from frame by SH02 (left edge past x 1080) and SH03 has no print, so no image of his face sits under "ไม่ได้รู้จริงเลย", the last words that carry the generalisation. SH02's "ทำไมคนถึงมั่นใจได้ขนาดนี้" runs over the Polaroid and lemon, which matches the documented direction (his certainty about a wrong test, L14), and not a finding about him.
+- **Condition (restate):** no text on the table or the print (no name, no "case study", no paper title) and no later reuse of the face as the research's subject. If the look frame LF07 makes the face dominant (print larger than the Polaroid at the end of SH01, as planned at 469 vs 203 px) and the viewer test says it reads as "this man is the research", swap to the fallback (B04-SH02 start frame, lobby wide, face unreadable). Not required now.
+
+### 3. B01-SH01 calendar and TELLERS (note, consistent)
+
+- Month and year agree with the sources: both robberies were on **6 Jan 1995** (F001; SRC001, SRC013). The CCTV stamp `JAN 06 1995` is the cleared date (FC07). `JANUARY 1995` on the lobby wall is therefore consistent for both banks, including the K2 palette swap; the robbery month does not differ. The kitchen calendar (B04-SH03) shows January to April, matching 6 Jan and the 19 to 20 Apr arrest (F009).
+- Constraints: month and year only, no day circled or marked (the day appears only as `JAN 06` on the CCTV); no time on any CCTV stamp (the 2:47 pm time belongs to the Swissvale bank only, research); no bank name, no real logo (the brief says so); TELLERS is generic English signage and asserts no place. The calendar is a year tag by another route, which the user's Q2 declined as text; that is a Film and user matter, not a fact issue.
+
+### 4. Q6 option B (face dissolving as lemon is applied, labelled as his belief)
+
+- **Severity: should-fix if labelled as below; must-fix if shown without the label** (it would state a cause as fact, F006, and the bank camera did record his face).
+- Two problems the label does not fix, to decide on before choosing it: (a) **continuity with B03-SH03**: that shot develops the print to a blank wash and no face ever shows; a face that dissolves means a face was in the image first, which contradicts "ไม่มีเขาเลย" and the sourced "wasn't anywhere to be found in the image" (the face was absent, not removed); (b) **cause**: a dissolve shows juice acting on a photo, but his belief per the sources is that juice makes the face invisible to the *camera*, so the honest belief-picture is the planned B02 bubble (an empty outline under a bank camera), already in the plan.
+- **Label wording constraints, if the user still chooses B:** attribute to him with a belief verb ("เชื่อ"); on screen the whole dissolve from first to last frame, as the B03-SH04 guess label does; no "เกิดขึ้น", "ผล", "พิสูจน์", "จริง" or "ความจริง" in the label; do not run it in the 2.0 s hold or in the same shot as the CCTV print, and never dissolve the CCTV print. Examples: **"ที่เขาเชื่อ: ทาน้ำมะนาวแล้วหน้าหาย"** (matches SRC013 "rendered it invisible"); safer still **"สิ่งที่เขาเชื่อ ไม่ใช่สิ่งที่เกิดขึ้นจริง"** (true: the cameras recorded him). Do not use "น้ำมะนาวทำให้หน้าหาย" unattributed. The label adds text to a shot the brief keeps text-free and crowds the caption band; Film must keep it clear of the caption zone.
+- **Recommended answer for Q6: Film's recommendation (the missing face in that one photo beside the bank photo; no cause shown).** It satisfies the user's idea of the face vanishing in the camera image, stays inside F006 and F001, and needs no extra label; adopt RC3-01's constraints with it.
+
+### Findings summary
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC3-01 | Lemon on the Polaroid border: no mark on the print, glint on the lemon only, no lemon on the image area | should-fix (constraint) | no |
+| RC3-02 | Q6 option B: label and continuity limits above; must-fix if unlabelled | should-fix / must-fix | no (only if option B is chosen) |
+| RC3-03 | Both prints on one table imply they were kept together; no evidence text | note | no |
+| RC3-04 | FC06: face under "อ่านเรื่องนี้" passes; fallback only if LF07 reads as "this man is the study" | note | no |
+| RC3-05 | `JANUARY 1995` and TELLERS consistent with 6 Jan 1995 and the CCTV date; month and year only, no time | note | no |
+
+### Status
+
+`ready-for-storyboard` stays for ROWS-R3 with RC3-01 applied to the look frame (W3, LF07). No SCRIPT-R2 change; Q7 needs no Boat change (L15 names no title and the picture adds no claim). Recheck needed only if Film adds text to B07, picks Q6 option B, or changes the table pair. Not user approval, not picture, audio or runtime validation.
+
+## Recheck R5 (picture level, ROWS-R5)
+
+Revision: `EDU-EP31-BRIEF-R5` (VD31-10, VD31-15, "R5 page verdicts"), `EDU-EP31-ROWS-R5` shots B01-SH01, B01-SH02, B02-SH01, against `EDU-EP31-SCRIPT-R2` (unchanged; R1, R2 and R3 narration verdicts stand). Boat, 2026-11-21. No new sources opened: F001, F002, F003, F004 and SRC001/SRC008 are reused, so the R1 access limits still apply (one secondary reporting chain, no primary page, medium confidence on the weapon). Written-plan check against the row text and brief; no frame was viewed here, so this is not a picture validation. Severity: **must-fix**, **should-fix** (constraint, page can ship with it applied), **note**.
+
+**Verdict: no must-fix. Nothing blocks the page.** B01-SH01 as designed is acceptable under the stated framing. The user-requested toy pistol and bag stay; two should-fix constraints below.
+
+### What the shot and the narration actually say
+
+- L01 under B01-SH01 is only "ปี 1995 ผู้ชายคนนี้กับเพื่อน" (row VO); the verb "ปล้น" comes in SH02. The narration never mentions a gun, a toy, a bag or money, so no spoken claim changes (FC07 sound limit holds: no gunshot, click or holster cue).
+- The label "แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ภาพจริง" runs from frame 0 (VD31-17). It states reconstruction, not "his fantasy". The "heist movie in his head" idea lives only in the staging (low angle, bass heist music), with no on-screen marker that it is imagined. So the shot is covered as a labelled reconstruction, not as a labelled fantasy; the brief should not call it "fantasy" in the audience-facing wording.
+- Oversize orange and blue cork-muzzle cartoon pistol, hanging, barrel down, never pointed, no teller in frame, friend unarmed: it cannot be read as the real weapon or as a claim about it.
+
+### Findings
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC5-01 | Gun in Wheeler's hand | should-fix (constraint) | no |
+| RC5-02 | Bag with notes on the walk in | should-fix (constraint, cheap) | no |
+| RC5-03 | B02-SH01 whispering friend | note | no |
+| RC5-04 | B01-SH02 sacks vs the SH01 bag | note | no |
+
+**RC5-01 (should-fix, constraint).** Sources: a real semi-automatic handgun held the Swissvale teller by "one robber", unnamed, while the other waited in line (F002, F003, medium, SRC001 chain only); no weapon is described at the second bank. Putting a gun in Wheeler's hand asserts an armed role for a named real person that no source assigns to him, and the toy look could read as "he used a toy gun" (the real gun was real). Not must-fix: both men were charged over the same armed robbery, the object is a cartoon prop in a labelled reconstruction, the narration says nothing about it, and the takeaway (the lemon belief) is untouched. Constraints (already in VD31-10; keep them as binding): only in B01-SH01; never pointed, raised or fired; no gun sound; no gun in B01-SH02 or later; friend never armed; no text or narration saying "ปืนของเล่น" or "ปล้นด้วยปืน" about Wheeler. If a later pass wants a verbal line about the weapon, use "ปืนจริง" only for Swissvale and name no holder (F003).
+- Smallest fix if the user prefers zero attribution: move the gun to the friend's hand is not better (also unsourced); keep it as is.
+
+**RC5-02 (should-fix, constraint).** US$5,200 is sourced (F002); no source describes a bag, so the bag is a generic prop. Notes visible on the walk in show loot before any robbery, which can read as "he already robbed bank 1" or as a heist-movie icon, and it contradicts SH02 where he is still entering bank 1 (one sack) and then bank 2 (two sacks). Not a wrong takeaway; two banks in one day (F001) stays true. Smallest fix (pick one, Film's choice): (a) keep the bag on his shoulder with the flap closed or a single note corner showing, no stack; or (b) keep the notes as drawn and let SH02 carry the same shoulder bag in place of the first "ถุงผ้า" so the loot reads as one continuous prop. Constraints either way: no dollar figure, no bank logo or name on the bag or notes, no clearly legible denomination, no counting of money on screen.
+
+**RC5-03 (note, B02-SH01).** The pose change (back three-quarter, friend leans in, right hand lifts a half lemon between the two faces, friend's head on the neck) adds no claim. It stays inside the sourced beat: Wheeler said Johnson told him lemon juice works like invisible ink on camera (F004). The whisper is staged as unheard ("เสียงกระซิบฟังไม่ออก") so no words are invented; keep "no name on screen" and do not show the friend's face (the shot already hides it). The half lemon is a prop of the dramatization, not a claim that Johnson used one.
+
+**RC5-04 (note, B01-SH02).** The unrelated sack(s) in SH02 are generic loot props with no teller threatened (as the row says); they are not sourced either, so the existing label covers them. No change beyond RC5-02 option (b) if chosen.
+
+### Status
+
+`ready-for-storyboard` stays for ROWS-R5 with RC5-01 and RC5-02 applied as constraints (Film applies; I did not edit the rows or the brief). No SCRIPT-R2 change. Recheck needed only if the gun or bag appears in another shot, if a pointed or raised pose, a gun sound, or any text about the weapon is added, or if narration mentions the weapon. Not user approval, not picture, audio or runtime validation.
+
+## Recheck R6 (picture level, ROWS-R6)
+
+Revision: `EDU-EP31-BRIEF-R6` (VD31-19), `EDU-EP31-ROWS-R6` / `EDU-EP31-BOARD-R6`, shots B03-SH01, B03-SH02, B03-SH04, B07-SH01, B07-SH02, B07-SH03, against `EDU-EP31-SCRIPT-R2` (unchanged; R1 to R5 narration verdicts stand). Boat, 2026-11-21. No new sources: F006 and SRC001/SRC003/SRC008/SRC009 reused (R1 access limits apply: one secondary chain, medium confidence, cause of the blank print unproven). Frames viewed: `out/edu31/looks/v8/LF07.png` and `PR01.png` (full size). Written plan checked for B03-SH01/SH02/SH04 and B07-SH02/SH03; no frame of those shots exists yet, so their staging is a plan check only.
+
+**Verdict: no must-fix. The page is not blocked.** One should-fix (RC6-02, label on the first breakage), the rest notes.
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC6-01 | Label wording "มุกของเรา: กล้องดันพังพอดี" | note (fallback line not needed) | no |
+| RC6-02 | Camera breaks unlabelled in B03-SH01/SH02, label first appears in B03-SH04 | should-fix (cheap) | no |
+| RC6-03 | SH04 lens at his face; police-guess label retired | note | no |
+| RC6-04 | B07-SH01 label under the psychologist line | note (timing option) | no |
+| RC6-05 | RC3-01 lemon in B03-SH04 and B07 | note (holds; verify at W5.1) | no |
+| RC6-06 | Label size in LF07 and sound | note | no |
+
+**RC6-01 (note).** Read in the frames: "มุกของเรา" owns the line as the makers' joke and "พอดี" signals coincidence, not a finding. It asserts no cause as documented: F006 says the three police guesses (bad film, maladjusted camera, camera pointed away) are all unproven, and "camera broken" lies close to the second guess, so even a viewer who takes it literally is not told anything the sources contradict. The narration (L06) says only that the print has no him, with no cause. The extra line "(สาเหตุจริงไม่มีใครรู้)" is not required: it explains the joke (ER13), adds a third text block in a 9:16 frame and the same fact is already carried by the standing "ไม่ใช่ภาพจริง" label. Hold it as the fallback only if the user wants the hedge; if so put it in the post caption, not the frame. Not must-fix.
+
+**RC6-02 (should-fix, cheap).** Timing from the script table: L05 runs 20.08 to 24.84 s (B03-SH01 and SH02), L06 / B03-SH03 25.04 to 27.08 s, so the label arrives about 2.2 s after SH02 ends and about 5 s after the slam on "ทดสอบ" (estimate; voice-lock timing governs). In that window the viewer sees the camera break, then a blank print, with only the generic "แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง" label. That reads as a reconstructed fact ("the camera broke when he slammed it") and is the one beat where the cause could be taken as documented. It is also the gag's setup, so a label there costs little. Acceptable as is only if the user accepts the gag being read as fact for about 5 s. Smallest fix, Film's choice: (a) a small label "มุกของเรา" (short form, same plate) popping in at the slam in B03-SH01 and staying through SH02, with "กล้องดันพังพอดี" kept for SH04 and B07; or (b) the full label on SH01 and SH02 too. Option (a) keeps the surprise of the crack and the sound under the narration. Not must-fix: a dramatized fictional detail inside a frame-0 reconstruction label, no source claims otherwise, and SH04 and B07 label it explicitly within the same beat.
+
+**RC6-03 (note).** No source problem. The lens-at-the-face staging contradicts none of F006 (the "camera pointed away" guess is a police guess, not a finding; the picture now shows the opposite guess inside a labelled joke). The retired "หนึ่งในที่ตำรวจเดา" label (FC04) was selective; its removal removes that issue and the two-cause clash. Fairness: the joke makes the camera, not Wheeler's belief, the culprit, mild and harmless; "he does not notice" is invented but is a labelled gag on a man who died in 2002 per common reporting (not re-verified here), dramatization allowed under ER11 because no event, number or result is presented as real. Caveat: the brief says the camera direction in the selfie is never shown as fact (B03-SH02 keeps it off frame); SH04 shows the lens at his face, which is acceptable only because the shot carries the joke label from frame 0 and is a replay gag. Keep the label on the whole of SH04 as planned, and do not move the aimed-at-face camera into B03-SH02.
+
+**RC6-04 (note, timing option).** Viewed in LF07: the label sits top right, the psychologist line is the bottom caption, and the table shows no research picture, name or text about the study, so the link to the research is not asserted. Residual risk: the label pops in during "นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้", so a fast viewer might read the broken camera as what the psychologist studied. Mitigations that keep the ending: pop the label in at the moment the camera finishes entering and keep it small (as planned), and keep it off during SH02 and SH03 (planned). Optional: pop it a beat earlier, at the camera's entry, before the "นักจิตวิทยา" words land. Learning impact: the picture's lesson (a test that proves nothing, sureness without knowing) agrees with L15; not a change to the premise or reveal.
+
+**RC6-05 (note).** RC3-01 holds in LF07 v8: the lemon half sits clear of the Polaroid (visible gap, about 1 cm per the brief) and far from the CCTV print; the camera sits above the Polaroid touching neither; no mark on either print. PR01 has no lemon and no print. B03-SH04 plan: lemon on the table, not in the print hand and never on the print (row text; frame not seen). Verify at W5.1 that B07-SH03's tip-over stays off the Polaroid and CCTV print; the plan keeps the 8×10 out of frame there. The three possible "causes" (lemon, camera, film) are never joined by a mark, dissolve, stain or arrow other than the joke arrow to the camera. Unchanged: B07-SH02/SH03 keep the camera out of frame and add no claim.
+
+**RC6-06 (note).** LF07 label is 32 px, legible at full size but small in a 270 px thumbnail; the SH04/PR01 label (44 px) reads well. Optional: raise LF07's label toward 36 to 40 px if the caption band and chrome allow. Sound: slam, glass tick, flash wobble, spark fizz and pop are labelled fiction by the "เสียงจำลอง" label from frame 0, no gunshot-like bang, no casualty or place asserted: pass.
+
+### Status
+
+`ready-for-page` for ROWS-R6 with RC6-02 recommended before the timed pass (not blocking). No SCRIPT-R2 change; the rows were not edited. Recheck needed only if the label text changes, the joke moves into another shot, any narration or text names a cause, or the lemon is shown touching a print. Not user approval, not audio or runtime validation. Confidence: label wording and reveal frame high (viewed); B03 staging medium (plan only).
+
+## Recheck R7 (label wording, open item O1)
+
+Revision: label text only, as "เหตุการณ์สมมุติ: กล้องดันพังพอดี" (user, Draft verdict, 2026-11-21), on B03-SH04 (whole shot) and B07-SH01 (from f1542, arrow to the camera), against `EDU-EP31-SCRIPT-R2` and the voice lock (unchanged; narration names no cause). Boat, 2026-11-21. No new sources: F006 (print lacked his face, cause unknown, police guessed bad film, maladjusted camera or camera pointed away; one secondary chain, medium confidence) and RC3-01, RC6-01..06 reused. Text-level check of the wording in the rows, scene sheets (b03.md, b07.md, index.md) and build-notes; the repo files still carry the previous text "สมมุติ: …", so no frame with the new wording was viewed. Not a picture validation. Severity: must-fix, should-fix, note.
+
+**Verdict: no must-fix. Nothing blocks the page.** The wording is acceptable. One optional-leaning should-fix (a clearer word for "invented"), the rest notes.
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC7-01 | "สมมุติ" can read as "suppose / a hypothesis" instead of "made up" | should-fix (cheap; Film or user may decline with a reason) | no |
+| RC7-02 | Ownership ("ของเรา") is gone; nobody is named as the inventor | note | no |
+| RC7-03 | Next to "ภาพและเสียงจำลอง": two near-synonyms on screen | note | no |
+| RC7-04 | Consistency with SCRIPT-R2, voice lock, RC3-01, RC6-01..06 | note (pass) | no |
+| RC7-05 | RC6-02 still open: no label on B03-SH01/SH02 | should-fix carried (cheap, not new) | no |
+| RC7-06 | Spelling "สมมุติ" vs "สมมติ" | note | no |
+
+**RC7-01 (should-fix).** "เหตุการณ์สมมุติ" is a fixed TV and news phrase for a staged re-enactment of an incident, so most viewers will read it as "an event we staged". But "สมมุติ" also means "suppose" (as in "สมมุติว่า…", "สมมุติฐาน" = hypothesis). The two readings: (a) "a made-up incident" (intended); (b) "a hypothetical scenario: suppose the camera was broken", i.e. a candidate real cause. Reading (b) is not false (it is one of the police's unproven guesses, F006, and it is flagged as not known), so it is not a wrong takeaway and not must-fix. It is weaker than the intended message, though: it leaves open that the camera may really be the answer, and the gag wants "we invented this". The gag shot itself (spark, puff, lens turned at his face, "he does not notice") pushes toward (a), which is why this is not must-fix. If the user wants it unambiguous, true and equally punchy options, strongest first: **"เรื่องแต่งของเรา: กล้องดันพังพอดี"** (restores ownership, says "invented"), **"แต่งขึ้นเอง: กล้องดันพังพอดี"**, **"เหตุการณ์แต่งขึ้น: กล้องดันพังพอดี"** (one word change from the current line, keeps the "เหตุการณ์" form). The current wording may stay: the standing series label and the unchanged narration carry the rest.
+
+**RC7-02 (note).** "มุกของเรา" in R6 named the makers as the source of the joke; "เหตุการณ์สมมุติ" drops the owner and calls the camera an "event", a little more fact-like than "มุก" (a joke) or "สมมุติ" alone. Still marked hypothetical, so no false claim. "พอดี" keeps the coincidence tone that signals a joke.
+
+**RC7-03 (note).** The series label says "ภาพและเสียงจำลอง ไม่ใช่ภาพจริง" (reconstruction of the real case). "สมมุติ" means something different (invented for the joke). A viewer may not separate "จำลอง" from "สมมุติ" and may take the broken camera as one more reconstructed fact, which is what RC6-01 worried about. The joke plate must stay visually distinct (its own plate and position, as in VD31-12/VD31-19), and the arrow in B07-SH01 helps because it points at the camera as the joked item. No change needed; "แต่งขึ้น" (RC7-01) would separate the two terms more clearly.
+
+**RC7-04 (pass).** SCRIPT-R2 L06 says only that the print has no him, and L15 names no cause: no conflict. The label states no cause as documented and no source, person or paper (F006, F015/F016 hold). RC3-01 holds: the label text mentions only the camera, never the lemon, and adds no mark or arrow on a print; the only arrow points at the camera (RC6-05). RC6-01's reasoning (a label that owns the line as ours and states no cause) still stands, with the ownership weaker (RC7-02). RC6-04 timing note unchanged for B07-SH01 (label from f1542, during "นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้"): the word "เหตุการณ์" makes it slightly more possible to read the camera as part of "เรื่องนี้", the story the psychologist read; the arrow and the empty-of-text table still hold the line. No sound change: the pop is UI sound for the label, no event asserted.
+
+**RC7-05 (carried, should-fix, cheap).** build-notes.md (lines about the label) record the label on B03-SH04 only, "none on B03-SH01/SH02". The camera breaks on "ทดสอบ" in SH01, about 5 s before the label appears (RC6-02). Unchanged by the wording; the user's change is only the text. Smallest fix as in RC6-02: a short plate ("สมมุติ" or the new text) from the slam. If the user has already accepted the 5 s, record that decision.
+
+**RC7-06 (note).** The Royal Institute form is "สมมติ"; "สมมุติ" is a very common accepted variant. Either reads the same; keep the one the rest of the delivery uses (the rows use "สมมุติ"), and keep the plate text identical in `JOKE_LABEL` and the rows.
+
+### Status
+
+`ready-for-page` for the wording, with RC7-01 as the one recommended wording choice (the user decides; current text acceptable) and RC7-05 carried. No SCRIPT-R2 change; no rows, scripts or code edited by Boat. Recheck needed only if the text changes again, or if the label moves to a shot where the camera is not the joked item. Not user approval, not audio, picture or runtime validation; the frames with the new text (B03-SH04, B07-SH01 at f1542) should be viewed at W5.1 for text exactness and the arrow.

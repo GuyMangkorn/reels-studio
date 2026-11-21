@@ -17,8 +17,9 @@ import {POSE_INFO, poseFor} from './poses';
 //   printf 'KIT-CAST-CARDS 0 out/kit-pass3/cast-cards/KIT-CAST-CARDS.png\n' | node scripts/stills.mjs src/painted/kit/cast-cards-sheet.tsx
 // Added 1 Nov 2026 (pass 3).
 
-const W = 2380, H = 3000;
 const X0 = 40, Y0 = 160, CARD_W = 560, CARD_H = 690, GAP = 20, COLS = 4;
+/** Sheet height grows with the library: one row per four cards, the legend in the cell after the last card. */
+const W = 2380, H = Y0 + Math.ceil((PERSON_IDS.length + 1) / COLS) * (CARD_H + GAP) + 20;
 /** Head size for the expression strip, px per head unit, and the figure size for the pose thumbnails, px per metre. */
 const STRIP_K = 20, THUMB_UNIT = 165;
 /** Pose thumbnails: centres (card-relative x), ground line (card-relative y). */

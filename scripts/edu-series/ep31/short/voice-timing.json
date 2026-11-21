@@ -1,0 +1,114 @@
+{
+ "revision": "VOICE-R1.3",
+ "note": "L01 = Kore candidate c1 (user pick 2026-11-21), padded to the old L01 length; every line start and the total are unchanged from R1.1",
+ "tempo": 1.05,
+ "skip": [],
+ "lines": [
+  {
+   "line": "L01",
+   "who": "NARR",
+   "start": 0.0,
+   "end": 7.67,
+   "dur": 7.67
+  },
+  {
+   "line": "L02",
+   "who": "NARR",
+   "start": 7.87,
+   "end": 10.88,
+   "dur": 3.02
+  },
+  {
+   "line": "L03",
+   "who": "NARR",
+   "start": 11.08,
+   "end": 16.55,
+   "dur": 5.47
+  },
+  {
+   "line": "L04",
+   "who": "NARR",
+   "start": 16.75,
+   "end": 19.85,
+   "dur": 3.1
+  },
+  {
+   "line": "L05",
+   "who": "NARR",
+   "start": 20.05,
+   "end": 24.5,
+   "dur": 4.45
+  },
+  {
+   "line": "L06",
+   "who": "NARR",
+   "start": 24.7,
+   "end": 26.75,
+   "dur": 2.05
+  },
+  {
+   "line": "L07",
+   "who": "NARR",
+   "start": 26.95,
+   "end": 29.9,
+   "dur": 2.95
+  },
+  {
+   "line": "L08",
+   "who": "NARR",
+   "start": 30.1,
+   "end": 34.1,
+   "dur": 4.0
+  },
+  {
+   "line": "L09",
+   "who": "NARR",
+   "start": 34.3,
+   "end": 38.25,
+   "dur": 3.95
+  },
+  {
+   "line": "L10",
+   "who": "NARR",
+   "start": 38.45,
+   "end": 41.22,
+   "dur": 2.77
+  },
+  {
+   "line": "L11",
+   "who": "ANCHOR",
+   "start": 41.42,
+   "end": 43.38,
+   "dur": 1.96
+  },
+  {
+   "line": "L12",
+   "who": "NARR",
+   "start": 43.58,
+   "end": 45.71,
+   "dur": 2.12
+  },
+  {
+   "line": "L13",
+   "who": "POLICE",
+   "start": 45.91,
+   "end": 47.09,
+   "dur": 1.18
+  },
+  {
+   "line": "L14",
+   "who": "WHEELER",
+   "start": 47.29,
+   "end": 50.53,
+   "dur": 3.24
+  },
+  {
+   "line": "L15",
+   "who": "NARR",
+   "start": 50.73,
+   "end": 57.82,
+   "dur": 7.09
+  }
+ ],
+ "total": 59.82
+}
