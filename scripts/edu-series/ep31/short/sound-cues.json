@@ -9,7 +9,7 @@
  "fps": 30,
  "durationFrames": 1795,
  "mixNotes": [
-  "gainDb is the mix gain in dB on the filed library master (music and ambience masters are -14 LUFS, SFX masters peak at -1 dBFS); it is calibrated so the EP08b distances hold against the VOICE-R1 preview (speech level about -15.9 LUFS). Editor may move every gain together or per layer, then the measured dV decides.",
+  "gainDb is the mix gain in dB on the filed library master (music and ambience masters are -14 LUFS, SFX masters peak at -1 dBFS); it is calibrated so the EP08b distances hold against the VOICE-R1 preview (speech level about -15.9 LUFS in the first calibration; recalibrated 21 Nov 2026 on the draft cut against the meter's own reading of the locked narration, speech -12.9 LUFS: music cues raised 1.5 to 6.5 dB, B03-SH04-pop +0.9 dB; see build-notes W5.3 Ton recalibration). Editor may move every gain together or per layer, then the measured dV decides.",
   "layer: bed = music (and music stingers inside a bed), texture = ambience beds and foley, accent = hits, stingers, rings. Stems: voice, bed, texture, accent.",
   "durationFrames is the placed length: a longer file is trimmed to it with fadeOutFrames; a missing field means the whole file. offsetFrames is where the file starts playing (continues an ambience across split cues).",
   "Silences the sheets mark: all sound stops at 1329 (rings, clock and every bed ended; nothing plays 1329-1349 except nothing); 1301-1305 hiss only; 1413-1419 total silence; B02-SH03 music out 518-547; B03-SH03 music out 740-803; B01 music out 158-178; B06-SH02 nothing but AMB-P.",
@@ -26,7 +26,7 @@
    "path": "public/audio/bed/bed_heist-funk-groove-98-intro_01.wav",
    "durationFrames": 158,
    "layer": "bed",
-   "gainDb": -20.0,
+   "gainDb": -14.5,
    "fadeOutFrames": 2,
    "note": "Dead cut at 158; 20 f of room tone only before \"เพราะ\" 178."
   },
@@ -40,7 +40,7 @@
    "path": "public/audio/bed/bed_heist-funk-sly-98-a_01.wav",
    "durationFrames": 186,
    "layer": "bed",
-   "gainDb": -19.5,
+   "gainDb": -18.0,
    "fadeOutFrames": 2,
    "note": "Runs to 518, then dead air under L04 \"บนกระดาษ\"."
   },
@@ -54,7 +54,7 @@
    "path": "public/audio/bed/bed_heist-funk-sly-98-b_01.wav",
    "durationFrames": 55,
    "layer": "bed",
-   "gainDb": -20.0,
+   "gainDb": -18.5,
    "fadeInFrames": 2,
    "fadeOutFrames": 2
   },
@@ -68,7 +68,7 @@
    "path": "public/audio/bed/bed_experiment-tick-pizz-98_01.wav",
    "durationFrames": 138,
    "layer": "bed",
-   "gainDb": -18.5,
+   "gainDb": -12.0,
    "fadeOutFrames": 4,
    "note": "File is 144 f; cut at 138 with a 4 f fade."
   },
@@ -82,7 +82,7 @@
    "path": "public/audio/bed/bed_heist-funk-groove-98-swagger_01.wav",
    "durationFrames": 243,
    "layer": "bed",
-   "gainDb": -22.5,
+   "gainDb": -16.0,
    "fadeInFrames": 3,
    "fadeOutFrames": 2,
    "note": "Continuous 843-1086 across B03-SH04..B04-SH03 start; Editor filter window 959-1026."
@@ -97,7 +97,7 @@
    "path": "public/audio/bed/bed_heist-funk-groove-98-return_01.wav",
    "durationFrames": 52,
    "layer": "bed",
-   "gainDb": -19.5,
+   "gainDb": -16.0,
    "fadeInFrames": 2,
    "fadeOutFrames": 2
   },
@@ -111,7 +111,7 @@
    "path": "public/audio/bed/bed_wistful-heist-groove-80_01.wav",
    "durationFrames": 186,
    "layer": "bed",
-   "gainDb": -19.5,
+   "gainDb": -18.0,
    "fadeInFrames": 3,
    "fadeOutFrames": 8
   },
@@ -625,7 +625,7 @@
    "path": "public/audio/ui/ui_pop_01.wav",
    "durationFrames": 2,
    "layer": "accent",
-   "gainDb": 0.0
+   "gainDb": 0.9
   },
   {
    "cue": "B03-SH04-mus03",
