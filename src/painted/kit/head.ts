@@ -75,9 +75,9 @@ const jawOf = (face: FaceState): number => {
   return 0;
 };
 export const jawOpenOf = (face: FaceState): number => (face.jaw === undefined ? jawOf(face) : Math.max(0, Math.min(1, face.jaw)) * jawOf(face));
-/** `sideDetail` talk jaw (user, 18 Nov 2026): plain speech moves the chin at 10% (about 1% of the head), as cartoon dialogue changes
- *  the mouth more than the jaw; shout, gasp, grin and an explicit `face.jaw` keep their full drop. */
-export const TALK_JAW_DETAIL = 0.1;
+/** `sideDetail` talk jaw (user, 18 Nov 2026; halved 21 Nov 2026): plain speech moves the chin at 5% (about 0.5% of the head), as cartoon
+ *  dialogue changes the mouth more than the jaw; shout, gasp, grin and an explicit `face.jaw` keep their full drop. */
+export const TALK_JAW_DETAIL = 0.05;
 const headJawOf = (face: FaceState, style: HeadStyle): number =>
   jawOpenOf(face) * (style.sideDetail === true && face.mouth === 'talk' && face.jaw === undefined ? TALK_JAW_DETAIL : 1);
 /** Chin drop in head units at full jaw opening. */
@@ -389,9 +389,11 @@ const browShape = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: nu
 };
 
 /** `sideDetail` brow hairs (18 Nov 2026): short strokes across the brow, leaning toward the tail, in a tone between brow and skin, so
- * the brow reads as hair with a soft edge. `dir` is the screen direction of the tail (+1 / -1). */
+ * the brow reads as hair with a soft edge. `dir` is the screen direction of the tail (+1 / -1). Root and tip stay inside the brow fill
+ * (top edge y - 0.55w, bottom y + 0.45w) and the last strokes stop short of the tail (user note 21 Nov 2026: strokes poking past the
+ * brow read as stray hairs). */
 const browHairs = (brow: FaceLook['brow'], xAt: (u: number) => number, inner: number, outer: number, dir: number): Pt[][] =>
-  browLine(brow, xAt, inner, outer, 14).slice(0, 13).map(({x, y, w}, i): Pt[] => [[x - dir * 0.01, y + w * (0.55 + 0.15 * (i % 2))], [x + dir * (0.035 + 0.008 * (i % 3)), y - w * (0.8 + 0.2 * ((i + 1) % 2))]]);
+  browLine(brow, xAt, inner, outer, 14).slice(0, 12).map(({x, y, w}, i): Pt[] => [[x - dir * 0.01, y + w * (0.3 + 0.08 * (i % 2))], [x + dir * (0.03 + 0.006 * (i % 3)), y - w * (0.38 + 0.08 * ((i + 1) % 2))]]);
 
 /** Front nose marks; shadow side is screen-right. */
 const lookNose = (lk: FaceLook, fill: Fill, ink: Ink, skin: string, line: string) => {
