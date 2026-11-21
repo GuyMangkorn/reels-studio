@@ -19,7 +19,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W1.5 User approval — SCRIPT-R2 confirmed, 2026-11-21 (structured question)
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — EDU-EP31-BRIEF-R2 (Q1–Q5 answers applied), 2026-11-21, ready-for-mark ([film-brief.md](short/film-brief.md))
-  - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R2 / BOARD-R2, 24 shots, untimed, Q1–Q5 closed (changed: B01-SH01, B01-SH02, B03-SH04, B04-SH02, B06-SH01, B07-SH03) ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes; review page: pending (page still shows R1)
+  - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R3 / BOARD-R3 (R3: ending reveal B07-SH01–03, Q6–Q7 open), 24 shots, untimed, Q1–Q5 closed (changed: B01-SH01, B01-SH02, B03-SH04, B04-SH02, B06-SH01, B07-SH03) ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes; review page: pending (page still shows R1)
   - [x] W2.3 Storyboard page published — 2026-11-21, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY (rows R1, artifact v2)
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page (0/L locations)
