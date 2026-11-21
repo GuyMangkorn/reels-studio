@@ -1,0 +1,192 @@
+{
+ "B01-SH01@draft": {
+  "clip": "dba451e54bdf7209",
+  "hash": "dba451e54bdf7209",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B01-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B01-SH02@draft": {
+  "clip": "9114c0000c83a3b2",
+  "hash": "9114c0000c83a3b2",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B01-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B01-SH03@draft": {
+  "clip": "ebc61363aed7f422",
+  "hash": "ebc61363aed7f422",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B01-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B02-SH01@draft": {
+  "clip": "e37e1fe11ccdfb86",
+  "hash": "e37e1fe11ccdfb86",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B02-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B02-SH02@draft": {
+  "clip": "6edc55d8fd30533d",
+  "hash": "6edc55d8fd30533d",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B02-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B02-SH03@draft": {
+  "clip": "0b8c7b6c2969350b",
+  "hash": "0b8c7b6c2969350b",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B02-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B03-SH01@draft": {
+  "clip": "a73f1b54503a15d0",
+  "hash": "a73f1b54503a15d0",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B03-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B03-SH02@draft": {
+  "clip": "fa58fcff9f71fcff",
+  "hash": "fa58fcff9f71fcff",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B03-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B03-SH03@draft": {
+  "clip": "f6214b25e52a789a",
+  "hash": "f6214b25e52a789a",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B03-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B03-SH04@draft": {
+  "clip": "61da693159cca294",
+  "hash": "61da693159cca294",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B03-SH04",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B04-SH01@draft": {
+  "clip": "3b44ad00b7f3c2d3",
+  "hash": "3b44ad00b7f3c2d3",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B04-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B04-SH02@draft": {
+  "clip": "3c848fdf63c05106",
+  "hash": "3c848fdf63c05106",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B04-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B04-SH03@draft": {
+  "clip": "3a180ed830d7836a",
+  "hash": "3a180ed830d7836a",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B04-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B05-SH01@draft": {
+  "clip": "200fab9fe6cfde6e",
+  "hash": "200fab9fe6cfde6e",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B05-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B05-SH02@draft": {
+  "clip": "2b2d7622ec6be18e",
+  "hash": "2b2d7622ec6be18e",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B05-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B05-SH03@draft": {
+  "clip": "dd48a71a649ad24c",
+  "hash": "dd48a71a649ad24c",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B05-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B06-SH01@draft": {
+  "clip": "f0604903fa33b1f4",
+  "hash": "f0604903fa33b1f4",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B06-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B06-SH02@draft": {
+  "clip": "c5107a82c416a08b",
+  "hash": "c5107a82c416a08b",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B06-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ },
+ "B06-SH03@draft": {
+  "clip": "e0e7a570fb5b026b",
+  "hash": "e0e7a570fb5b026b",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP32-ROWS-R4",
+  "shot": "B06-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T13:05:52Z"
+ }
+}

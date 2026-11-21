@@ -5,7 +5,8 @@
 import {createElement, Fragment, type CSSProperties} from 'react';
 import {AbsoluteFill, Composition, registerRoot} from 'remotion';
 import {BrushCanvas} from '../BrushCanvas';
-import {ANIMALS, ANIMAL_IDS, ANIMAL_INFO, animalWalkSpeed, drawAnimal, type AnimalPose} from './animals';
+import {animalWalkSpeed, drawAnimal, type AnimalPose} from './animals';
+import {ANIMALS, ANIMAL_IDS, ANIMAL_INFO} from './animals-catalog';
 import {drawFigure} from './cast';
 import {EXPRESSIONS} from './expressions';
 import {makePainter, type Pt} from './painter';
@@ -42,7 +43,7 @@ const Sheet = () => (
         });
       });
     }} />
-    <div style={{...cap, left: 24, top: 18, width: W, fontSize: 34, fontWeight: 700, textAlign: 'left'}}>src/painted/kit/animals.ts: ANIMALS ({ANIMAL_IDS.length}) · each row scaled to one shoulder height</div>
+    <div style={{...cap, left: 24, top: 18, width: W, fontSize: 34, fontWeight: 700, textAlign: 'left'}}>ANIMALS ({ANIMAL_IDS.length}) · each row scaled to one shoulder height</div>
     {COLS.map(({name}, c) => <div key={name} style={{...cap, left: LABEL_W + CELL_W * c, top: 66, width: CELL_W, fontSize: 24, fontWeight: 700}}>{name}</div>)}
     {ANIMAL_IDS.map((id, r) => (
       <Fragment key={id}>
@@ -53,7 +54,8 @@ const Sheet = () => (
   </AbsoluteFill>
 );
 
-const LW = 2400, LH = 1300, L_UNIT = 300, L_GROUND = 760;
+const LH = 1300, L_UNIT = 300, L_GROUND = 760;
+const LW = Math.ceil(520 + ANIMAL_IDS.reduce((width, id) => width + ANIMALS[id].height * L_UNIT * 2.3 + 30, 0));
 const DOGS = ANIMAL_IDS.filter((id) => id.startsWith('dog-')), CATS = ANIMAL_IDS.filter((id) => id.startsWith('cat-'));
 const WALK_ID = 'dog-golden', WALK_T = [0, 0.15, 0.3, 0.45];
 

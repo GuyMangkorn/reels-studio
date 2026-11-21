@@ -141,6 +141,7 @@ test('crossfade: only a dissolve into an opted-in plate is composited as a pictu
   assert.equal(crossfadeOf(state(timeline, 80)!.plates, yes), null, 'after the dissolve');
   assert.equal(crossfadeOf([{...mid[0]}, {...mid[1], incoming: true}], yes), null, 'C_seamless loop blend keeps its own path');
   assert.equal(paintedShots['EDU20-B04-SH01-SETTLED'].crossfade, true);
-  // opted-in plates: EDU20 B04-SH01 settled and EDU26 B04-SH01 (the time-passing dissolve, SHEET-R1; Boss W5.2, 2026-11-18)
-  assert.equal(Object.values(paintedShots).filter((s) => s.crossfade).map((s) => s.id).sort().join(), 'EDU20-B04-SH01-SETTLED,EDU26-B04-SH01');
+  // opted-in plates: EDU20 B04-SH01 settled, EDU26 B04-SH01 (the time-passing dissolve, SHEET-R1; Boss W5.2, 2026-11-18) and EDU32 B03-SH01 PB
+  // (the paper-to-real bridge, VD32-18; Boss W3 LF-BR, 2026-11-21)
+  assert.equal(Object.values(paintedShots).filter((s) => s.crossfade).map((s) => s.id).sort().join(), 'EDU20-B04-SH01-SETTLED,EDU26-B04-SH01,EDU32-B03-SH01-PB,EDU32-B03-SH03-S');
 });

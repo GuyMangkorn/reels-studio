@@ -1,7 +1,8 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import type {Brush} from '../src/painted/BrushCanvas';
-import {ANIMALS, ANIMAL_IDS, ANIMAL_INFO, animalWalkSpeed, drawAnimal, type AnimalPose} from '../src/painted/kit/animals';
+import {ANIMALS, ANIMAL_IDS, ANIMAL_INFO, animalWalkSpeed, drawAnimal, type AnimalAnchors, type AnimalPose} from '../src/painted/kit/animals';
+import {inkLine} from '../src/painted/kit/draw';
 import {makePainter} from '../src/painted/kit/painter';
 
 // Every animal draws in every view and state without throwing, every id has info, and walks move at a finite speed.
@@ -78,5 +79,48 @@ test('dog three-quarter view is opt-in and finite', () => {
       assert.notEqual(out, calls(base));
       assert.ok(!out.includes('NaN'));
     }
+  }
+});
+
+// EDU-EP32 cat polish: `soft` on a cat and the `loaf` lie are opt-in; absent, false or 0 leave the drawing byte-identical; set, they paint a
+// different, finite drawing in every view and state, and the profile anchors include the withers and croup points the episode dressing uses.
+test('soft cat and loaf pose are opt-in and finite', () => {
+  const calls = (def: (typeof ANIMALS)[keyof typeof ANIMALS], pose: AnimalPose) => {
+    const log: string[] = [];
+    const rec = new Proxy({}, {get: (_t, name) => (...a: unknown[]) => { log.push(String(name) + JSON.stringify(a)); }}) as Brush;
+    drawAnimal(makePainter(rec, {t: 0.5, frame: 15}), def.seed, def, [540, 1500], 300, pose, 0.5);
+    return log.join('|');
+  };
+  const cat = ANIMALS['cat-gray-tabby'], fluffy = {...cat, fluffy: true};
+  for (const view of ['left', 'front'] as const) for (const state of ['stand', 'sit', 'lie'] as const) {
+    const pose: AnimalPose = {view, state};
+    assert.equal(calls(fluffy, pose), calls({...fluffy, soft: false}, pose));
+    assert.equal(calls(fluffy, pose), calls(fluffy, {...pose, loaf: 0}));
+    const soft = calls({...fluffy, soft: true}, pose);
+    assert.notEqual(soft, calls(fluffy, pose));
+    assert.ok(!soft.includes('NaN') && !soft.includes('null'), `${view} ${state}`);
+  }
+  const lie: AnimalPose = {view: 'left', state: 'lie'};
+  assert.notEqual(calls(fluffy, lie), calls(fluffy, {...lie, loaf: 1}));
+  assert.ok(!calls({...fluffy, soft: true}, {...lie, loaf: 1, lid: 0.45}).includes('NaN'));
+  const an: AnimalAnchors = {};
+  drawAnimal(makePainter(brush, {t: 0.5, frame: 15}), cat.seed, {...fluffy, soft: true}, [540, 1500], 300, {...lie, loaf: 1}, 0.5, an);
+  assert.ok(an.withers && an.croup);
+});
+
+test('whiskerOut: the same strokes, whiskers moved to anchors for the caller (EDU-EP32 paper card)', () => {
+  const rec = (out: string[]) => new Proxy({}, {get: (_t, k) => (...a: unknown[]) => { out.push(String(k) + JSON.stringify(a)); }}) as unknown as Brush;
+  const cat = {...ANIMALS['cat-gray-tabby'], fluffy: true, soft: true};
+  for (const pose of [{view: 'front', state: 'sit'}, {view: 'left', state: 'sit'}, {view: 'right', state: 'lie', loaf: 1}] as AnimalPose[]) {
+    const a: string[] = [], b: string[] = [];
+    const anA: AnimalAnchors = {}, anB: AnimalAnchors = {};
+    drawAnimal(makePainter(rec(a), {t: 0.5, frame: 15}), cat.seed, cat, [540, 1500], 300, pose, 0.5, anA);
+    drawAnimal(makePainter(rec(b), {t: 0.5, frame: 15}), cat.seed, cat, [540, 1500], 300, {...pose, whiskerOut: true}, 0.5, anB);
+    assert.equal(anB.whiskers?.length, pose.view === 'front' ? 4 : 2, `${pose.view} whiskers recorded`);
+    assert.deepEqual(anA.whiskers, anB.whiskers);
+    assert.ok(b.length < a.length, `${pose.view}: whiskers left out of the drawing`);
+    const pw = makePainter(rec(b), {t: 0.5, frame: 15});
+    for (const w of anB.whiskers ?? []) inkLine(pw, w.seed, w.pts, {color: w.color, weight: w.weight, closed: false, curve: w.curve});
+    assert.deepEqual([...b].sort(), [...a].sort(), `${pose.view}: drawing + caller whiskers = the plain drawing`);
   }
 });
