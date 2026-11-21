@@ -42,7 +42,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 - [x] W6 Final passed — user ok on the whole video in chat, 2026-11-21 (file `out/EDU-EP31-SHORT/EDU-EP31-SHORT.mp4`, 1080x1920, 59.83 s, -14.0 LUFS; re-rendered pixel-identical, PSNR 51.9 dB, after `screen31.tsx`/`shot.tsx` literal staticFile fix so the scene cache works)
 - [x] W7 Pinned (24/24 scenes, 2026-11-21)
 - [ ] W8 Deliver
-  - [ ] W8.1 Assembled from the cache, picture lock
-  - [ ] W8.2 Delivery render and cover published (`publish/edu/EDU/EDU-EP31-SHORT/`)
+  - [x] W8.1 Assembled from the cache, picture lock (Final render = delivery file, 24/24 pinned)
+  - [x] W8.2 Delivery render and cover published, 2026-11-21: `~/ReelsStore/publish/edu/EDU/EDU-EP31-SHORT/` (cover C5 ทามะนาว ล่องหน?!, title T2 ปล้นธนาคารไม่ใส่หน้ากาก รอดมั้ย?; user picks, COVER-R2)
   - [ ] W8.3 Posted to the channel (user, date; `publish --posted`)
   - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
