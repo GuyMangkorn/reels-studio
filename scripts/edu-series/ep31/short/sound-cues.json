@@ -3,7 +3,8 @@
  "sceneSheets": "EDU-EP31-SCENE-R1",
  "video": "src/videos/edu-ep31",
  "sources": [
-  "src/videos/edu-ep31"
+  "src/videos/edu-ep31",
+  "scripts/edu-series/ep31/short/sound-mix.py"
  ],
  "fps": 30,
  "durationFrames": 1795,
@@ -1005,7 +1006,12 @@
   }
  ],
  "swaps": [],
- "exempt": [],
+ "exempt": [
+  {
+   "src": "audio/edu/EDU-EP31-SHORT-draft-stem-v1.wav",
+   "reason": "stem baked by short/sound-mix.py from this sheet"
+  }
+ ],
  "levels": {
   "stems": {
    "voice": "out/stems/voice.wav",

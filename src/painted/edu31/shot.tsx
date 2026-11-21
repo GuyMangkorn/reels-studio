@@ -4,13 +4,14 @@ import {BrushCanvas, type PaintContext} from '../BrushCanvas';
 import {STILL_CAMERA} from '../kit/camera';
 import {Hands3D, type Hand3DArm, type Occluder3D, type Prop3D} from '../kit/hand3d';
 import {makePainter, type Painter, type Pt} from '../kit/painter';
-import {Grain} from '../kit/screen';
+import {CaptionShade, Grain} from '../kit/screen';
 import type {V3} from '../kit/space';
 import type {YCam} from '../kit/ycam';
 import type {PaintedShot} from '../shot';
 import {FlashWash, onQuad, PoolLayer, TagPlate, VignetteLayer, WorldTexts, type Pool31, type Tag31} from './overlay31';
 import {CctvOverlay} from './screen31';
 import type {WorldText} from './set31';
+import {CAPTION_SCALE, shadeCuesFor, shadeStrengthFor} from './captions31';
 import {FPS, lenOf, plateId} from './shots/index';
 
 // EDU-EP31-SHORT plate adapter (Boss W5.2 batch 1, 2026-11-21): one registered painted plate per shot from its `Shot31` (shot file
@@ -71,13 +72,16 @@ export type Shot31 = {
 /** Every built shot def by shot ID (read by the headless measure and the QA entries). */
 export const SHOT_DEFS: Record<string, Shot31> = {};
 
+/** Measurement stills only: input prop `shade: false` draws no caption shade (the raw band for scripts/caption-zone.py), `shade: <n>` sets one peak strength for every plate. */
+const shadeOverride = (id: string): number => { const v = (getInputProps() as {shade?: boolean | number}).shade; return v === false ? 0 : typeof v === 'number' ? v : shadeStrengthFor(id); };
+
 /** The registered-plate frame index of a shot clock. */
 export const frameOf = (tl: number, N: number) => Math.max(0, Math.min(N - 1, Math.round(tl * FPS)));
 
 const GUIDE_BAND = {top: 1100, bottom: 1344};
 
 /** DOM layers over the canvas for frame L (camera `c`). */
-export const PlateLayers = ({def, L, c}: {def: Shot31; L: number; c: YCam}) => {
+export const PlateLayers = ({def, L, c, shade}: {def: Shot31; L: number; c: YCam; shade?: ReactNode}) => {
   const pool = def.pool?.(L, c), fl = def.flash?.(L) ?? 0, tg = def.tag?.(L), frz = def.freeze?.(L) ?? null, cc = def.cctv?.(L) ?? null;
   const texts = typeof def.texts === 'function' ? def.texts(L) : def.texts;
   const df = def.domFilter?.(L);
@@ -98,6 +102,7 @@ export const PlateLayers = ({def, L, c}: {def: Shot31; L: number; c: YCam}) => {
       {cc && <CctvOverlay t={cc.t} />}
       {frz && <Img src={staticFile(frz)} style={{position: 'absolute', inset: 0, width: 1080, height: 1920}} />}
       {!frz && <Grain opacity={def.grain?.(L) ?? 0.05} />}
+      {shade}
       {tg && <TagPlate tag={tg.tag} pop={tg.pop} />}
     </>
   );
@@ -153,7 +158,8 @@ export const makeShot = (def: Shot31): PaintedShot => {
     ...(def.filter ? {canvasStyle: ({tl}: {tl: number}) => canvasStyle(def, frameOf(tl, N))} : {}),
     Overlay: ({opacity, tl}): ReactNode => {
       const L = frameOf(tl, N);
-      return <div style={{position: 'absolute', inset: 0, opacity}}><PlateLayers def={def} L={L} c={def.cam(L)} /></div>;
+      // Editor W5.3: the cue-gated caption shade sits over the picture and its grain, under the joke label and the chrome (captions, mark, label)
+      return <div style={{position: 'absolute', inset: 0, opacity}}><PlateLayers def={def} L={L} c={def.cam(L)} shade={<CaptionShade tl={tl} cues={shadeCuesFor(def.id)} strength={shadeOverride(def.id)} bottomEdgeY={1344} scale={CAPTION_SCALE} />} /></div>;
     },
   };
 };
