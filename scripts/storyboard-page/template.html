@@ -36,6 +36,7 @@ h2 { font-family: var(--font-display); font-size: 21px; margin: 0; text-wrap: ba
 .facts b { color: var(--fg); font-weight: 600; font-variant-numeric: tabular-nums; }
 .btn { font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 4px; border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
 .btn:focus-visible, textarea:focus-visible, .seg button:focus-visible, .tab:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn.armed { background: var(--ok-bg); border-color: var(--ok); color: var(--ok); font-weight: 600; }
 .store { font-size: 12px; color: var(--muted); }
 
 /* Accept status: one meter per stage, then the store state and copy button. */
@@ -170,7 +171,7 @@ dialog button { margin-top: 8px; }
       <span class="store" id="store">กำลังเชื่อมที่เก็บคำตอบ…</span>
       <span class="todo" id="todo"></span>
       <span class="sp"></span>
-      <button class="btn" id="acceptAll" type="button">ยอมรับทั้งหมด</button>
+      <button class="btn" id="acceptAll" type="button">ผ่านทั้งหมด</button>
       <button class="btn" id="only" type="button" aria-pressed="false">ดูเฉพาะที่ต้องตอบ</button>
       <button class="btn" id="copy" type="button">คัดลอกคำตอบทั้งหมด</button>
     </div>
@@ -210,7 +211,7 @@ const NAME = { board: "สตอรีบอร์ด", draft: "Draft", final: "
 const NOTE = {
   board: "อ่านแผนของแต่ละช็อต: เสียงพากย์ สิ่งที่เห็น กล้อง ถ้าผ่าน เอเจนต์ จะทำ draft ของช็อตนั้นต่อ",
   draft: "ดูจังหวะ ท่าทาง มุมกล้อง จาก draft (ภาพครึ่งขนาด ทำได้เร็ว) ถ้าผ่าน เอเจนต์ จะวาดภาพจริงต่อ",
-  draftCut: "ดูคลิป draft เต็มรอบเดียว (ภาพครึ่งขนาด) แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่เหลือกด \"ยอมรับทั้งหมด\" ได้ แล้ว เอเจนต์ จะ render ไฟล์ส่งให้ดูในแท็บ Final",
+  draftCut: "ดูคลิป draft เต็มรอบเดียว (ภาพครึ่งขนาด) แล้วกด \"แก้\" เฉพาะช็อตที่ต้องแก้ พร้อมโน้ต (บอกเวลาได้) ช็อตที่เหลือกด \"ผ่านทั้งหมด\" ได้ แล้ว เอเจนต์ จะ render ไฟล์ส่งให้ดูในแท็บ Final",
   final: "ดูคลิปเต็มที่จะ publish (ไฟล์เดียวกับที่จะส่ง) ถ้าผ่าน ทุกช็อตจะถูกปักและไฟล์นี้ไปที่โฟลเดอร์ publish ถ้าต้องแก้ กด \"แก้\" แล้วเขียนเวลาและสิ่งที่ต้องแก้",
 };
 
@@ -417,7 +418,9 @@ function count() {
   const chg = D.shots.filter(s => needs(s, tab) && stale[verdictKey(s.id, tab)]).length;
   document.getElementById("todo").textContent = `${NAME[tab]}: รอคำตอบ ${need} ช็อต` + (chg ? ` · เปลี่ยนหลังคุณตอบ ${chg}` : "");
   const all = document.getElementById("acceptAll");
-  all.textContent = need ? `ยอมรับทั้งหมด (${need})` : "ยอมรับทั้งหมด";
+  if (armed && armed.tab === tab && armed.need === need) return;
+  disarm();
+  all.textContent = need ? `ผ่านทั้งหมด (${need})` : "ผ่านทั้งหมด";
   all.disabled = !need;
 }
 
@@ -440,10 +443,28 @@ async function save(key) {
   pending.delete(key);
 }
 
-// "ยอมรับทั้งหมด": every shot on this tab with no answer yet passes; shots marked "แก้" keep their answer.
+// "ผ่านทั้งหมด": every shot on this tab with no answer yet passes; shots marked "แก้" keep their answer.
+// The first click arms the button and the second, within 5 s, applies it: the artifact's
+// sandboxed frame may block confirm(), which would make the button do nothing.
+var armed = null;  // var: count() may run before this line on load
+function disarm() {
+  if (!armed) return;
+  clearTimeout(armed.timer);
+  armed = null;
+  document.getElementById("acceptAll").classList.remove("armed");
+}
 function acceptAll() {
   const open = D.shots.filter(s => needs(s, tab));
-  if (!open.length || !confirm(`ยอมรับ ${open.length} ช็อตที่ยังไม่ตอบในแท็บ ${NAME[tab]} ว่าผ่าน?\nช็อตที่กด "แก้" ไว้จะไม่เปลี่ยน`)) return;
+  if (!open.length) return;
+  const all = document.getElementById("acceptAll");
+  if (!armed || armed.tab !== tab) {
+    disarm();
+    armed = { tab, need: open.length, timer: setTimeout(() => { disarm(); count(); }, 5000) };
+    all.classList.add("armed");
+    all.textContent = `กดอีกครั้ง: ผ่าน ${open.length} ช็อตที่ยังไม่ตอบ (ช็อตที่กด "แก้" ไม่เปลี่ยน)`;
+    return;
+  }
+  disarm();
   open.forEach(s => {
     const key = verdictKey(s.id, tab);
     state[key] = { ...(current(s, tab) || {}), status: "ok" };
