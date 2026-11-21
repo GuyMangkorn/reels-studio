@@ -16,6 +16,7 @@ import {inkLine} from './draw';
 import {OUTFIT_IDS, WARDROBE_INFO, dress, tintHoodie, type OutfitId} from './wardrobe';
 import {PERIOD_OUTFIT_IDS, WARDROBE_1850S_INFO, dressPeriod, type PeriodOutfitId} from './wardrobe-1850s';
 import {TRAVEL_OUTFIT_IDS, WARDROBE_TRAVEL_INFO, dressTravel, paintBackpack, paintTravelGear, type TravelOutfitId} from './wardrobe-travel';
+import {OUTFIT_1995_IDS, WARDROBE_1995_INFO, dress1995, type Outfit1995Id} from './wardrobe-1995';
 
 const h = createElement;
 const LINEUP_W = 2400, LINEUP_H = 1120;
@@ -157,10 +158,10 @@ const Expressions = () => (
 );
 
 // ------------------------------------------------------------------------------------------------ KIT-WARDROBE
-const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil((OUTFIT_IDS.length + PERIOD_OUTFIT_IDS.length + TRAVEL_OUTFIT_IDS.length) / WARD_COLS) * WARD_CELL_H;
+const WARD_COLS = 5, WARD_CELL_W = 620, WARD_CELL_H = 760, WARD_W = WARD_COLS * WARD_CELL_W, WARD_H = 130 + Math.ceil((OUTFIT_IDS.length + PERIOD_OUTFIT_IDS.length + TRAVEL_OUTFIT_IDS.length + OUTFIT_1995_IDS.length) / WARD_COLS) * WARD_CELL_H;
 const WARD_UNIT = 290, WARD_GROUND = 645;
 /** Who wears each outfit on the sheet (any PEOPLE adult fits) and, for the school uniforms, the child who wears it too. */
-type WardId = OutfitId | PeriodOutfitId | TravelOutfitId;
+type WardId = OutfitId | PeriodOutfitId | TravelOutfitId | Outfit1995Id;
 const WARD_WHO: Record<WardId, {adult: PersonId; child?: PersonId}> = {
   'student-th-trousers': {adult: 'man-spiky', child: 'boy-school'},
   'student-th-skirt': {adult: 'woman-ponytail', child: 'girl-school'},
@@ -173,11 +174,13 @@ const WARD_WHO: Record<WardId, {adult: PersonId; child?: PersonId}> = {
   commuter: {adult: 'woman-ponytail'},
   'frock-1850s': {adult: 'man-parted'}, 'bonnet-1850s': {adult: 'woman-curly'},
   'travel-safari': {adult: 'woman-long'}, 'life-vest': {adult: 'woman-long'}, 'travel-backpack': {adult: 'woman-long'}, 'home-lounge-night': {adult: 'woman-long'},
+  'windbreaker-1995': {adult: 'man-buzz'}, 'us-police-1995': {adult: 'man-crop'},
 };
-const WARD_ALL: WardId[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS, ...TRAVEL_OUTFIT_IDS];
+const WARD_ALL: WardId[] = [...OUTFIT_IDS, ...PERIOD_OUTFIT_IDS, ...TRAVEL_OUTFIT_IDS, ...OUTFIT_1995_IDS];
+const is1995 = (oid: WardId): oid is Outfit1995Id => (OUTFIT_1995_IDS as readonly string[]).includes(oid);
 const isTravel = (oid: WardId): oid is TravelOutfitId => (TRAVEL_OUTFIT_IDS as readonly string[]).includes(oid);
-const wardInfo = (oid: WardId) => (WARDROBE_INFO as Record<string, typeof WARDROBE_INFO[OutfitId]>)[oid] ?? (isTravel(oid) ? WARDROBE_TRAVEL_INFO[oid] : WARDROBE_1850S_INFO[oid as PeriodOutfitId]);
-const wardDress = (def: CastDef, oid: WardId) => (isTravel(oid) ? dressTravel(def, oid) : (PERIOD_OUTFIT_IDS as readonly string[]).includes(oid) ? dressPeriod(def, oid as PeriodOutfitId) : dress(def, oid as OutfitId));
+const wardInfo = (oid: WardId) => (WARDROBE_INFO as Record<string, typeof WARDROBE_INFO[OutfitId]>)[oid] ?? (isTravel(oid) ? WARDROBE_TRAVEL_INFO[oid] : is1995(oid) ? WARDROBE_1995_INFO[oid] : WARDROBE_1850S_INFO[oid as PeriodOutfitId]);
+const wardDress = (def: CastDef, oid: WardId) => (isTravel(oid) ? dressTravel(def, oid) : is1995(oid) ? dress1995(def, oid) : (PERIOD_OUTFIT_IDS as readonly string[]).includes(oid) ? dressPeriod(def, oid as PeriodOutfitId) : dress(def, oid as OutfitId));
 const wardCell = (i: number) => ({x: (i % WARD_COLS) * WARD_CELL_W, y: 130 + Math.floor(i / WARD_COLS) * WARD_CELL_H});
 
 const Wardrobe = () => (
