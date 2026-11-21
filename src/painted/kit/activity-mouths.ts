@@ -10,7 +10,7 @@ import type {FaceState, Mouth} from './head';
 // Defaults (`paintFigureAt`, `layerMotion`): a pose or motion picks its activity (`POSE_ACTIVITY`, `MOTION_ACTIVITY`) and an expression id
 // whose mouth is `talk` cycles, but only over a preset expression id, and pant / clench replace only a resting mouth (`RESTING_MOUTHS`),
 // so a smile, a frown or an `o` the scene chose stays. A scene that sets `faceState.mouth` or `faceState.open`, or passes a whole
-// `FaceState`, keeps its own mouth. `activity: <id>` forces one over any expression mouth; `activity: false` (`ACTIVITY_MOUTHS_OFF`) turns it off.
+// `FaceState`, keeps its own mouth; a bare `faceState.mouth: 'talk'` with no `open` cycles like the `talk` preset (`sceneSetsMouth`). `activity: <id>` forces one over any expression mouth; `activity: false` (`ACTIVITY_MOUTHS_OFF`) turns it off.
 // Sheet: KIT-ACTIVITY-MOUTHS (`activity-mouths-sheet.tsx`).
 
 export const ACTIVITY_IDS = ['pant', 'clench', 'talk', 'surprise'] as const;
@@ -64,6 +64,12 @@ export type ActivityCtx = ActivityOpts & {pose?: string; motion?: string; t: num
   /** The scene set `mouth` or `open` itself (paintFigureAt `faceState`). */
   sceneMouth?: boolean;
 };
+
+/**
+ * Whether a scene's `faceState` drives the mouth itself. A bare `mouth: 'talk'` with no `open` does not: it asks for a talking mouth
+ * over another expression's brows and eyes, so the syllable cycle still runs (it painted a closed line before, EDU-EP31 B06-SH02).
+ */
+export const sceneSetsMouth = (fs: Partial<FaceState>): boolean => fs.open !== undefined || (fs.mouth !== undefined && fs.mouth !== 'talk');
 
 /** The activity in force for a placement, or null. */
 export const activityOf = (face: FaceState, c: ActivityCtx): Activity | null => {
