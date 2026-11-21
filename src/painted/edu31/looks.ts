@@ -1,18 +1,19 @@
-import {drawChair} from '../kit/props';
-import {ell, hardFill, inkLine, washAt} from '../kit/draw';
+import {drawChair, paintShoulderBag, paintToyPistol} from '../kit/props';
+import {mittenThumbSide} from '../kit/hand-gestures';
+import {hardFill, inkLine, openHandParts, washAt} from '../kit/draw';
 import {paintFigureAt, type FigureAtOpts} from '../kit/figure-at';
-import type {CastDef} from '../kit/cast';
+import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {paintSorted, wp, type Item} from '../kit/world';
 import {
-  ANCHOR, BANK_TEXT, TELLER, FRIEND, POLICE, REVEAL, TV_SCREEN, WHEELER, YOU, bankFurniture, cam, glow, kitchenTable, lemonPx, paintBankShell,
+  ANCHOR, BANK_TEXT, TELLER, FRIEND, POLICE, REVEAL, TV_SCREEN, WHEELER, YOU, bankFurniture, cam, glow, kitchenTable, lemonPx, paintLemonHalf, paintBankShell,
   paintKitchenShell, paintPendant, paintPoliceShell, paintRevealTable, paintStall, paintStudio, paintTvCorner, policeTable, printCorners,
   stallItems, studioDesk, type WorldText,
 } from './set31';
 
-// EDU-EP31-SHORT W3 look frames LF01-LF07 (+ LF05B studio, TT01 Wheeler turntable); EDU-EP31-BRIEF-R4, Film, 2026-11-21. One still per
+// EDU-EP31-SHORT W3 look frames LF01-LF07 (+ LF05B studio, TT01 Wheeler turntable); EDU-EP31-BRIEF-R5 (R5: LF01 gun and bag, LF03 friend pose), Film, 2026-11-21. One still per
 // location, painted from that location's first storyboard shot (sequence-workflow W3). React-free; the look layer (look.tsx) adds the
 // screen layers (CCTV, CRT), the camera-mapped CCTV-STILL-01 image, the English signage and the chrome. Casting lines in each `cast`.
 
@@ -46,9 +47,12 @@ const gu = (c: YCam, at: V3) => ({g: camPoint(c, at)!, u: camUnit(c, at)});
 
 // ------------------------------------------------------------------ LF01 bank heist (B01-SH01, mid dolly)
 const C01 = cam(-0.2, 0.6, 2.8, 180, 7, 1080, 650);
+/** R5 repaint gun arm: hanging (CP-P05) from the left shoulder, elbow at the waist (m outward / down from the shoulder: elbow, then hand),
+ * and the barrel direction (radians on screen: down, 0.2 rad outward), the gun mirrored so the slide sits on the thumb side (toward the midline). */
+const GUN_ELBOW: [number, number] = [0.035, 0.255], GUN_HAND: [number, number] = [0.075, 0.495], GUN_ANG = Math.PI / 2 - 0.2;
 const lf01 = (): LookDef => ({
   shot: 'B01-SH01', cam: C01, paper: '#e9dfc8', vignette: 0.42, caption: 'ปี 1995 ผู้ชายคนนี้กับเพื่อน', texts: BANK_TEXT,
-  cast: 'WHEELER man-buzz + new: windbreaker-1995, walk (slow), smug, front, whole lemon in the right mitten; FRIEND man-spiky, walk, neutral, front, shadowed',
+  cast: 'WHEELER man-buzz + new: windbreaker-1995, walk (slow), smug, front, whole lemon in the right mitten (CP-P02), new: toy-pistol-cartoon in the left mitten hanging, new: canvas-money-bag on a left-shoulder strap (R5); FRIEND man-spiky, walk, neutral, front, shadowed',
   paint: (p) => {
     const c = C01;
     paintBankShell(p, c);
@@ -63,13 +67,27 @@ const lf01 = (): LookDef => ({
     }
     // entrance haze behind them (rim), painted before the cast so it stays off faces and bodies
     const d = camPoint(c, [0, 1.3, 12]); if (d) { glow(p, 31950, d[0], d[1], 430, 330, '#ffd98f', 80, 8); glow(p, 31960, d[0], d[1] + 40, 200, 150, '#fff6dc', 90, 5); }
-    const w = gu(c, W);
+    const w = gu(c, W), sh = shoulderPoint(WHEELER, w.g, w.u, {view: 'front'}, 'l');
+    let fistRedraw: ((q: Painter) => void) | undefined;
     paintSorted(p, c, [
       ...bankFurniture(),
       fig(FRIEND, {at: F, view: 'front', face: 'neutral', faceState: {look: [0.15, 0.5]}, tint: {to: '#3d3346', u: 0.38}, seed: 3102, fig: {walk: 0.62, stride: 0.45}}),
+      // R5 (user, 2026-11-21: "add a gun, a cartoon one is fine, and a shoulder bag carrying the money"): `new: toy-pistol-cartoon` in his
+      // LEFT mitten, arm hanging at his side (CP-P05), muzzle down at the floor, never pointed at anyone (VD31-10); `new: canvas-money-bag`
+      // on a strap over his left shoulder, the bag swung to the front at belt height, banknotes peeking (no symbol, VD31-15). The lemon arm takes
+      // CP-P02 (elbow back behind the torso, hand at the chest), was a splayed horizontal upper arm.
       fig(WHEELER, {at: W, view: 'front', face: 'smug', seed: 3101,
-        fig: {walk: 0.12, stride: 0.45, rArm: {to: [w.g[0] - 0.13 * w.u, w.g[1] - 1.1 * w.u]}},
-        held: (q, a, u) => lemonPx(q, 31900, a.rHand[0] + 0.01 * u, a.rHand[1] - 0.045 * u, 0.04 * u, {glint: 1.4})}),
+        fig: {walk: 0.12, stride: 0.45,
+          rArm: {to: [w.g[0] - 0.12 * w.u, w.g[1] - 1.1 * w.u], via: [w.g[0] - 0.17 * w.u, w.g[1] - 0.9 * w.u], behind: 'upper'},
+          lArm: {to: [sh[0] + GUN_HAND[0] * w.u, sh[1] + GUN_HAND[1] * w.u], via: [sh[0] + GUN_ELBOW[0] * w.u, sh[1] + GUN_ELBOW[1] * w.u], flatFist: true, fist: mittenThumbSide('left', 'back'), onFlatFist: (r) => { fistRedraw = r; }}},
+        held: (q, a, u) => {
+          paintShoulderBag(q, 31930, [a.lShoulder[0] - 0.05 * u, a.lShoulder[1] + 0.01 * u], [w.g[0] + 0.07 * u, w.g[1] - 0.93 * u], 0.3 * u, 0.24 * u, {corner: true});
+          // the anchor `lHand` sits 0.05 m past the flat fist's centre along the forearm: step back to the held point
+          const dx = a.lHand[0] - a.lUpper[0], dy = a.lHand[1] - a.lUpper[1], dl = Math.hypot(dx, dy) || 1;
+          paintToyPistol(q, 31940, [a.lHand[0] - (dx / dl) * 0.05 * u, a.lHand[1] - (dy / dl) * 0.05 * u], u, GUN_ANG, {scale: 1.25, flip: true});
+          fistRedraw?.(q);
+          lemonPx(q, 31900, a.rHand[0] + 0.01 * u, a.rHand[1] - 0.045 * u, 0.04 * u, {glint: 1.4});
+        }}),
     ]);
   },
 });
@@ -93,23 +111,42 @@ const lf02 = (): LookDef => ({
 
 // ------------------------------------------------------------------ LF03 kitchen night (B02-SH01)
 const C03 = cam(0.35, 1.25, 1.7, -4, -4, 1000, 660);
+/** R5 repaint FRIEND: seated right profile at the table's left end, facing Wheeler (ground point, m). */
+const FA: V3 = [-0.62, 0, -0.5], LEAN03 = 0.2;
+/** Whisper hand from the profile shoulder (m forward / up; P19 profile near arm, hand beside the mouth, elbow forward and low). */
+const WHISPER_ELBOW: [number, number] = [0.15, -0.1], WHISPER_HAND: [number, number] = [0.18, 0.1];
+const POOL03 = camPoint(C03, [0, 0.95, -0.25])!;
 const lf03 = (): LookDef => ({
   shot: 'B02-SH01', cam: C03, paper: '#3a2e24', caption: 'แมคอาเธอร์ วีลเลอร์ ได้สูตรจากเพื่อน…', vignette: 0.55,
-  cast: 'WHEELER man-buzz + new: windbreaker-1995, P31, surprised, front; FRIEND man-spiky, P31 + new: whisper-lean, back, lemon half raised',
+  pool: {x: POOL03[0], y: POOL03[1], r: 560, color: '255,205,130', op: 0.3},
+  cast: 'WHEELER man-buzz + new: windbreaker-1995, P31, surprised, front, eyes to the friend; FRIEND man-spiky, P31 + P19 near arm = new: whisper-cup (right profile, lean in, RIGHT hand open mitten cupped beside the mouth toward Wheeler, back of the hand to camera); new: lemon half on the table in front of him (R5 repaint)',
   paint: (p) => {
     const c = C03;
     paintKitchenShell(p, c);
-    const Fa: V3 = [-0.85, 0, -0.2];
-    const t = camPoint(c, [-0.32, 1.12, -0.45])!;
+    // R5 repaint (user, 2026-11-21: "check the anatomy of the friend who whispers"; viewer check R5: the back three-quarter arm started
+    // mid-back with no shoulder): the friend is now a seated RIGHT profile (facing Wheeler), leaning in. A profile shows the whole near arm
+    // from its shoulder: his RIGHT arm (near arm, hand-drawing 1) bends at a low forward elbow and the open mitten stands beside his mouth,
+    // fingers up, back of the hand to camera (thumb toward his face, mittenThumbSide('right', 'back')): the cupped-hand whisper. The lemon half
+    // lies cut side up on the oilcloth in front of him; his far arm rests on his thigh behind the table. The lamp is the smooth `pool`
+    // (the stacked glow ellipses read as rings over both figures, UT12a).
+    const f = gu(c, FA), sh = shoulderPoint(FRIEND, f.g, f.u, {view: 'right', sit: 1, lean: LEAN03}, 'r');
+    const hand: [number, number] = [sh[0] + WHISPER_HAND[0] * f.u, sh[1] - WHISPER_HAND[1] * f.u];
     paintSorted(p, c, [
-      fig(WHEELER, {at: [0, 0, -0.7], view: 'front', pose: 'P31', face: 'surprised', seed: 3101}, true),
+      fig(WHEELER, {at: [0, 0, -0.7], view: 'front', pose: 'P31', face: 'surprised', faceState: {look: [-0.7, 0.05]}, fig: {lean: -0.06}, seed: 3101}, true),
       ...kitchenTable(),
-      fig(FRIEND, {at: Fa, view: 'back', pose: 'P31', face: 'whisper', seed: 3102, fig: {headYaw: 0.55, lean: 0.25, lArm: {to: t}, rArm: {to: t}},
-        held: (q, a, u) => { const x = a.head[0] + 0.3 * u, y = a.head[1] + 0.08 * u; lemonPx(q, 32500, x, y, 0.034 * u, {tilt: 70, shadow: false}); hardFill(q, 32510, '#f8eca0', ell(x + 0.03 * u, y, 0.012 * u, 0.03 * u, 14, 1.2)); }}, true),
+      fig(FRIEND, {at: FA, view: 'right', pose: 'P31', face: 'whisper', seed: 3102,
+        fig: {lean: LEAN03, rArm: {to: hand, via: [sh[0] + WHISPER_ELBOW[0] * f.u, sh[1] - WHISPER_ELBOW[1] * f.u], noHand: true}},
+        held: (q, a, u) => {
+          const [wx, wy] = a.rHand, k = u * 1.1, ang = -Math.PI / 2 + 0.35;
+          const h = openHandParts([wx, wy], ang, k, mittenThumbSide('right', 'back'));
+          hardFill(q, 32520, FRIEND.head.skin, h.palm);
+          inkLine(q, 32521, h.palm, {closed: true, weight: 0.9, color: '#3a2216'});
+          inkLine(q, 32522, h.thumbCrease, {weight: 0.7, color: '#3a2216'});
+          h.creases.forEach((cr, i) => inkLine(q, 32523 + i, cr, {weight: 0.6, color: '#3a2216'}));
+        }}, true),
     ]);
+    paintLemonHalf(p, c, 32500, [-0.47, 0.69, 0.16], 0.055);
     paintPendant(p, c);
-    const lp = camPoint(c, [0, 0.69, 0]), u = camUnit(c, [0, 0.69, 0]);
-    if (lp) glow(p, 32600, lp[0], lp[1] - 0.25 * u, 0.9 * u, 0.6 * u, '#ffcf7a', 70);
   },
 });
 

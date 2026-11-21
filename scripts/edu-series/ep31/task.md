@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** ROWS-R4 and 9 look frames published (artifact v5); waiting for the user's look and storyboard verdicts. **Next:** W3.2 look lock, W3.3 storyboard pass, then W4 voice lock
+**Now:** ROWS-R5 published (artifact v6); waiting for the user's verdicts on B01-SH01, B02-SH01 and the remaining shots, and the look lock. **Next:** W3.2 look lock, W3.3 storyboard pass, then W4 voice lock
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -15,6 +15,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W1.1b Hook pick — H1 (HK01) ไม่ใส่หน้ากาก, user, 2026-11-21 ([hook-options.md](short/hook-options.md))
   - [x] W1.2 Preaw script — EDU-EP31-SCRIPT-R1, 2026-11-21 ([script.md](short/script.md), [script-notes.md](short/script-notes.md)); projected ~59.7 s, estimated
   - [x] W1.3 Boat fact-check — EDU-EP31-FACT-R1 plus Recheck R2 on SCRIPT-R2, ready-for-storyboard, no must-fix (medium confidence, one reporting chain) ([fact-check.md](short/fact-check.md))
+    - 2026-11-21 Boat Recheck R5 (picture level, ROWS-R5): toy pistol and money bag in B01-SH01 acceptable under the reconstruction label, no must-fix, two should-fix constraints (RC5-01 gun, RC5-02 bag), B02-SH01 whisper adds no claim; does not block the page ([fact-check.md](short/fact-check.md))
     - Recheck R3 (picture level, ROWS-R3), 2026-11-21: no must-fix, page not blocked; should-fix RC3-01 (lemon on the Polaroid: no mark on the print) and Q6 option B label limits; `JANUARY 1995` consistent with 6 Jan 1995; FC06 fallback not required; Q6 recommendation: Film's version ([fact-check.md](short/fact-check.md#recheck-r3-picture-level-rows-r3))
   - [x] W1.4 Length check — SCRIPT-R2 projected about 62.6 s (limit 63 s), estimated, no read-aloud; trims ready: L07, then L14 second sentence
   - [x] W1.5 User approval — SCRIPT-R2 confirmed, 2026-11-21 (structured question)

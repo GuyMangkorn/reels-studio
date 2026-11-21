@@ -182,3 +182,37 @@ Revision: picture plan `EDU-EP31-BRIEF-R3` (VD31-18, Space R, LF07), `EDU-EP31-B
 ### Status
 
 `ready-for-storyboard` stays for ROWS-R3 with RC3-01 applied to the look frame (W3, LF07). No SCRIPT-R2 change; Q7 needs no Boat change (L15 names no title and the picture adds no claim). Recheck needed only if Film adds text to B07, picks Q6 option B, or changes the table pair. Not user approval, not picture, audio or runtime validation.
+
+## Recheck R5 (picture level, ROWS-R5)
+
+Revision: `EDU-EP31-BRIEF-R5` (VD31-10, VD31-15, "R5 page verdicts"), `EDU-EP31-ROWS-R5` shots B01-SH01, B01-SH02, B02-SH01, against `EDU-EP31-SCRIPT-R2` (unchanged; R1, R2 and R3 narration verdicts stand). Boat, 2026-11-21. No new sources opened: F001, F002, F003, F004 and SRC001/SRC008 are reused, so the R1 access limits still apply (one secondary reporting chain, no primary page, medium confidence on the weapon). Written-plan check against the row text and brief; no frame was viewed here, so this is not a picture validation. Severity: **must-fix**, **should-fix** (constraint, page can ship with it applied), **note**.
+
+**Verdict: no must-fix. Nothing blocks the page.** B01-SH01 as designed is acceptable under the stated framing. The user-requested toy pistol and bag stay; two should-fix constraints below.
+
+### What the shot and the narration actually say
+
+- L01 under B01-SH01 is only "ปี 1995 ผู้ชายคนนี้กับเพื่อน" (row VO); the verb "ปล้น" comes in SH02. The narration never mentions a gun, a toy, a bag or money, so no spoken claim changes (FC07 sound limit holds: no gunshot, click or holster cue).
+- The label "แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ภาพจริง" runs from frame 0 (VD31-17). It states reconstruction, not "his fantasy". The "heist movie in his head" idea lives only in the staging (low angle, bass heist music), with no on-screen marker that it is imagined. So the shot is covered as a labelled reconstruction, not as a labelled fantasy; the brief should not call it "fantasy" in the audience-facing wording.
+- Oversize orange and blue cork-muzzle cartoon pistol, hanging, barrel down, never pointed, no teller in frame, friend unarmed: it cannot be read as the real weapon or as a claim about it.
+
+### Findings
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC5-01 | Gun in Wheeler's hand | should-fix (constraint) | no |
+| RC5-02 | Bag with notes on the walk in | should-fix (constraint, cheap) | no |
+| RC5-03 | B02-SH01 whispering friend | note | no |
+| RC5-04 | B01-SH02 sacks vs the SH01 bag | note | no |
+
+**RC5-01 (should-fix, constraint).** Sources: a real semi-automatic handgun held the Swissvale teller by "one robber", unnamed, while the other waited in line (F002, F003, medium, SRC001 chain only); no weapon is described at the second bank. Putting a gun in Wheeler's hand asserts an armed role for a named real person that no source assigns to him, and the toy look could read as "he used a toy gun" (the real gun was real). Not must-fix: both men were charged over the same armed robbery, the object is a cartoon prop in a labelled reconstruction, the narration says nothing about it, and the takeaway (the lemon belief) is untouched. Constraints (already in VD31-10; keep them as binding): only in B01-SH01; never pointed, raised or fired; no gun sound; no gun in B01-SH02 or later; friend never armed; no text or narration saying "ปืนของเล่น" or "ปล้นด้วยปืน" about Wheeler. If a later pass wants a verbal line about the weapon, use "ปืนจริง" only for Swissvale and name no holder (F003).
+- Smallest fix if the user prefers zero attribution: move the gun to the friend's hand is not better (also unsourced); keep it as is.
+
+**RC5-02 (should-fix, constraint).** US$5,200 is sourced (F002); no source describes a bag, so the bag is a generic prop. Notes visible on the walk in show loot before any robbery, which can read as "he already robbed bank 1" or as a heist-movie icon, and it contradicts SH02 where he is still entering bank 1 (one sack) and then bank 2 (two sacks). Not a wrong takeaway; two banks in one day (F001) stays true. Smallest fix (pick one, Film's choice): (a) keep the bag on his shoulder with the flap closed or a single note corner showing, no stack; or (b) keep the notes as drawn and let SH02 carry the same shoulder bag in place of the first "ถุงผ้า" so the loot reads as one continuous prop. Constraints either way: no dollar figure, no bank logo or name on the bag or notes, no clearly legible denomination, no counting of money on screen.
+
+**RC5-03 (note, B02-SH01).** The pose change (back three-quarter, friend leans in, right hand lifts a half lemon between the two faces, friend's head on the neck) adds no claim. It stays inside the sourced beat: Wheeler said Johnson told him lemon juice works like invisible ink on camera (F004). The whisper is staged as unheard ("เสียงกระซิบฟังไม่ออก") so no words are invented; keep "no name on screen" and do not show the friend's face (the shot already hides it). The half lemon is a prop of the dramatization, not a claim that Johnson used one.
+
+**RC5-04 (note, B01-SH02).** The unrelated sack(s) in SH02 are generic loot props with no teller threatened (as the row says); they are not sourced either, so the existing label covers them. No change beyond RC5-02 option (b) if chosen.
+
+### Status
+
+`ready-for-storyboard` stays for ROWS-R5 with RC5-01 and RC5-02 applied as constraints (Film applies; I did not edit the rows or the brief). No SCRIPT-R2 change. Recheck needed only if the gun or bag appears in another shot, if a pointed or raised pose, a gun sound, or any text about the weapon is added, or if narration mentions the weapon. Not user approval, not picture, audio or runtime validation.
