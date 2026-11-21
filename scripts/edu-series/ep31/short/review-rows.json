@@ -363,7 +363,8 @@
           "src": "out/EDU-EP31-SHORT/clips/_draft_cut.mp4",
           "in": 26.767,
           "out": 28.567,
-          "cut": true
+          "cut": true,
+          "key": "69684e1e26f1"
         }
       }
     },
@@ -417,7 +418,8 @@
           "src": "out/EDU-EP31-SHORT/clips/_draft_cut.mp4",
           "in": 30,
           "out": 31.967,
-          "cut": true
+          "cut": true,
+          "key": "69684e1e26f1"
         }
       }
     },
@@ -524,7 +526,8 @@
           "src": "out/EDU-EP31-SHORT/clips/_draft_cut.mp4",
           "in": 41.333,
           "out": 43.5,
-          "cut": true
+          "cut": true,
+          "key": "69684e1e26f1"
         }
       }
     },
@@ -631,7 +634,8 @@
           "src": "out/EDU-EP31-SHORT/clips/_draft_cut.mp4",
           "in": 47.2,
           "out": 50.667,
-          "cut": true
+          "cut": true,
+          "key": "69684e1e26f1"
         }
       }
     },
@@ -659,7 +663,8 @@
           "src": "out/EDU-EP31-SHORT/clips/_draft_cut.mp4",
           "in": 50.667,
           "out": 52.533,
-          "cut": true
+          "cut": true,
+          "key": "69684e1e26f1"
         }
       }
     },
