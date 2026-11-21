@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** ROWS-R5 published (artifact v6); waiting for the user's verdicts on B01-SH01, B02-SH01 and the remaining shots, and the look lock. **Next:** W3.2 look lock, W3.3 storyboard pass, then W4 voice lock
+**Now:** storyboard passed 24/24 and look frames locked (ROWS-R5, 2026-11-21). **Next:** W4 voice lock (Editor: voice choice, narration, measure; user approves the voice)
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -25,8 +25,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W2.3 Storyboard page published — 2026-11-21, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY (rows R1, artifact v2)
 - [ ] W3 Look frames and storyboard pass
   - [x] W3.1 Look frames on the page (9 frames, viewer check 9 pass, artifact v5, 2026-11-21)
-  - [ ] W3.2 Look frames approved (look lock)
-  - [ ] W3.3 Storyboard passed (0/N shots)
+  - [x] W3.2 Look frames approved (look lock), user 2026-11-21
+  - [x] W3.3 Storyboard passed (24/24 shots), user 2026-11-21
 - [ ] W4 Voice lock
   - [ ] W4.1 Voice chosen
   - [ ] W4.2 Narration generated and measured
