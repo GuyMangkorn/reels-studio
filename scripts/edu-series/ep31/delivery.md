@@ -9,7 +9,7 @@
 
 | Deliverable ID | Stage / Next owner | Editorial and timing | Production |
 | --- | --- | --- | --- |
-| `EDU-EP31-SHORT` | W2.3 page published; waiting for verdicts, Q1–Q5, W1.5 confirm | Target 50–60 s | - |
+| `EDU-EP31-SHORT` | W5.1 timed scene sheets `EDU-EP31-SCENE-R1` ready-for-dev (checked-with-audio); next Boss W5.2 and Ton W5.2s | Target 50–60 s; voice-locked 59.82 s (1795 f), timing audio-measured | - |
 
 ## Change log
 
@@ -32,3 +32,5 @@
 - 2026-11-21, coordinator: page republished with ROWS-R6 / BOARD-R6 / BRIEF-R6, artifact v7 (https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY, live 1795242465-ee31). User asked for the broken-camera joke (picture only, label "มุกของเรา: กล้องดันพังพอดี"); changed B03-SH01, B03-SH02, B03-SH04, B07-SH01, B07-SH02, B07-SH03; LF07 v8 and PR01 viewer check 2 pass; Boat Recheck R6: no must-fix, should-fix RC6-02 (label also on B03-SH01/SH02, user decision pending). Verdicts in db reviews/<shot>@board with rev, unchanged shots keep their answers.
 - 2026-11-21, user (structured question): Boat RC6-02 declined; no "มุกของเรา" label on B03-SH01/SH02, label only at B03-SH04 and B07-SH01 as in ROWS-R6.
 - 2026-11-21, user (chat): storyboard ROWS-R6 passed 24/24 ("ผ่านหมด"); asked to replace the joke label "มุกของเรา" with "สมมุติ" (label now "สมมุติ: กล้องดันพังพอดี"; rows, brief, board, LF07/PR01 repainted as v9). Coordinator: page republished, artifact v8 (live 1795243073-7806), verdicts written to db. Earlier history lines above keep the old wording. Boat recheck on the new wording not run (R6 said recheck only if the label text changes; "สมมุติ" is a weaker claim than the joke label; flagged for Boat at W5). Viewer check not re-run for the text-only repaint.
+- 2026-11-21, Film (W5.1): timed scene sheets `EDU-EP31-SCENE-R1` ([short/scene-sheets/index.md](short/scene-sheets/index.md), b01–b07), status ready-for-dev, timing checked-with-audio from VOICE-R1; projection checked with `shot-projection.py` ([projection-run.py](short/projection-run.py)); captions planned at 71.4 px with short cards (user, 2026-11-21); rows `EDU-EP31-ROWS-R7` = ROWS-R6 + `start`/`end` (storyboard hashes unchanged; page not republished). Open: Boat recheck of the label wording "สมมุติ: กล้องดันพังพอดี" (O1); B07-SH02 camera left out of the plate as a continuity cheat (O2). No user approval recorded.
+- 2026-11-21, coordinator: page republished with ROWS-R7 (timing only, all shot hashes unchanged, 24/24 still passed), artifact v9 (live 1795244796-83a8). Film W5.1 SCENE-R1 in short/scene-sheets/.

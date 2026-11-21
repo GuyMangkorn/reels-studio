@@ -33,7 +33,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W4.2 Narration generated and measured — speech ends 57.77 s, short 59.82 s (limit 63 s), no trim, 5 requests; store `projects/edu/EDU/narration/ep31-voice-r1-1/`, 2026-11-21
   - [x] W4.3 User approves the voice, 2026-11-21
 - [ ] W5 Draft
-  - [ ] W5.1 Film timed scene sheets
+  - [x] W5.1 Film timed scene sheets — `EDU-EP31-SCENE-R1` ready-for-dev, checked-with-audio, 24 shots / 1795 f ([index](short/scene-sheets/index.md), b01–b07); rows `EDU-EP31-ROWS-R7` (R6 + start/end, page not republished); open: O1 Boat recheck of the "สมมุติ" label wording, O2 B07-SH02 camera cheat to review at the Draft; 2026-11-21, Film
   - [ ] W5.2 Boss assets and plates (shot groups 0/G)
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
