@@ -16,7 +16,8 @@ the pinned model or effort for the Agent call. Any other provider runs the role 
   python3 -I scripts/agent-route.py serve [--port 8791]   (the switch page, http://127.0.0.1:8791)
 
 `run` sends the role's instructions plus the brief to the provider, prints only the final message, keeps the full
-log under out/logs/ and exits 75 on the provider's usage limit. The hook denies an Agent call that does not match
+log under out/logs/ and exits 75 on the provider's usage limit. On a usage limit it also takes every role off that
+provider in the routing file (back to the pinned agent) and notes why under `bounced`, so the page shows it. The hook denies an Agent call that does not match
 the role's route and says what to run instead; an Agent prompt containing `routing-fallback: <reason>` passes
 (the provider hit its limit or failed). The hook never blocks on its own errors.
 
@@ -50,18 +51,23 @@ PROVIDERS = {
 }
 
 
-def load():
+def load_all():
+    """(routes, bounced): bounced notes each role a usage limit sent back to its pin, until its route is set again."""
     try: data = json.load(open(ROUTING, encoding='utf-8'))
-    except FileNotFoundError: return {}
-    routes = data.get('routes') if isinstance(data, dict) else None
-    return routes if isinstance(routes, dict) else {}
+    except FileNotFoundError: return {}, {}
+    part = lambda key: data[key] if isinstance(data, dict) and isinstance(data.get(key), dict) else {}
+    return part('routes'), part('bounced')
 
 
-def save(routes):
+def load():
+    return load_all()[0]
+
+
+def save(routes, bounced):
     os.makedirs(os.path.dirname(ROUTING), exist_ok=True)
     tmp = ROUTING + '.tmp'
     with open(tmp, 'w', encoding='utf-8') as f:
-        json.dump(dict(version=1, routes=routes), f, ensure_ascii=False, indent=2)
+        json.dump(dict(version=1, routes=routes, **(dict(bounced=bounced) if bounced else {})), f, ensure_ascii=False, indent=2)
         f.write('\n')
     os.replace(tmp, ROUTING)
 
@@ -87,7 +93,7 @@ def resolved(route):
 
 
 def cmd_show(args):
-    routes = load()
+    routes, bounced = load_all()
     print(f'routing file: {ROUTING}')
     names = sorted(f[:-3] for f in os.listdir(os.path.join(args.project, '.claude', 'agents')) if f.endswith('.md'))
     for role in names:
@@ -96,7 +102,8 @@ def cmd_show(args):
             provider, model, effort = resolved(routes[role])
             print(f'{role:12} {provider:7} {model or fm.get("model", "inherit"):18} {effort or fm.get("effort", "inherit"):7} (routed)')
         else:
-            print(f'{role:12} {"claude":7} {fm.get("model", "inherit"):18} {fm.get("effort", "inherit"):7}')
+            note = f' (back from {bounced[role].get("provider")}: {bounced[role].get("reason")})' if role in bounced else ''
+            print(f'{role:12} {"claude":7} {fm.get("model", "inherit"):18} {fm.get("effort", "inherit"):7}{note}')
     for role in sorted(set(routes) - set(names)): print(f'{role:12} unknown role in the routing file')
 
 
@@ -110,9 +117,10 @@ def set_route(project, role, provider, model=None, effort=None):
         return f'claude model is one of: {", ".join(CLAUDE_MODELS)}'
     if provider == 'claude' and not (model or effort):
         return 'a claude route needs a model or an effort; clear the route to return to the pinned agent'
-    routes = load()
+    routes, bounced = load_all()
     routes[role] = {k: v for k, v in dict(provider=provider, model=model, effort=effort).items() if v}
-    save(routes)
+    bounced.pop(role, None)
+    save(routes, bounced)
 
 
 def cmd_set(args):
@@ -122,8 +130,16 @@ def cmd_set(args):
 
 
 def clear_route(role):
-    routes = load()
-    if routes.pop(role, None) is not None: save(routes)
+    routes, bounced = load_all()
+    if (routes.pop(role, None), bounced.pop(role, None)) != (None, None): save(routes, bounced)
+
+
+def bounce(provider, ts):
+    """The provider is out of usage: every role routed to it returns to its pinned agent, with a note for the page."""
+    routes, bounced = load_all()
+    for role in [r for r, route in routes.items() if resolved(route)[0] == provider]:
+        bounced[role] = dict(routes.pop(role), provider=provider, reason='usage limit', ts=ts)
+    save(routes, bounced)
 
 
 def cmd_clear(args):
@@ -164,7 +180,8 @@ def cmd_run(args):
                                 seconds=round((datetime.datetime.now(datetime.timezone.utc) - started).total_seconds())),
                            ensure_ascii=False) + '\n')
     if limited:
-        print(f'{provider}: usage limit reached ({log})', file=sys.stderr)
+        bounce(provider, started.isoformat(timespec='seconds'))
+        print(f'{provider}: usage limit reached ({log}); roles on {provider} are back on their pinned agents', file=sys.stderr)
         sys.exit(75)
     if status != 0 or not done:
         print(f'{provider}: exit {status}, {"no final message" if not done else "final message kept"} ({log})', file=sys.stderr)
@@ -191,8 +208,9 @@ def cmd_hook(args):
     if provider != 'claude':
         deny(f'{role} is routed to {provider} / {model} / {effort} {where}. Do not use the Agent tool for it: write '
              f'the same brief to a file and run `python3 -I scripts/agent-route.py run {role} <brief.md>` in the '
-             f'background (docs/coordinator.md#runtime-routing). Only if that run exits 75 (usage limit) or fails, '
-             f'call the Agent tool again with a first prompt line `{FALLBACK} <reason>`.')
+             f'background (docs/coordinator.md#runtime-routing). Exit 75 (usage limit) returns the role to its pinned '
+             f'agent in the routing file: call the Agent tool again and tell the user. Only if the run fails another '
+             f'way, call the Agent tool again with a first prompt line `{FALLBACK} <reason>`.')
         return
     fm = (read_role(project, role) or ({}, ''))[0]
     wrong = []
@@ -204,13 +222,13 @@ def cmd_hook(args):
 
 def state(project):
     """What the switch page shows: every role with its pin and route, the providers, the last provider runs."""
-    routes, roles = load(), []
+    (routes, bounced), roles = load_all(), []
     folder = os.path.join(project, '.claude', 'agents')
     for name in sorted(f[:-3] for f in os.listdir(folder) if f.endswith('.md')):
         text = open(os.path.join(folder, name + '.md'), encoding='utf-8').read()
         about = re.search(r'^description:\s*"?(.*?)"?$', text, re.M)
         roles.append(dict(role=name, description=about.group(1) if about else '', pinned=read_role(project, name)[0],
-                          route=routes.get(name)))
+                          route=routes.get(name), bounced=bounced.get(name)))
     runs = []
     try: runs = [json.loads(line) for line in open(os.path.join(project, 'out', 'logs', 'route-runs.jsonl'), encoding='utf-8')][-5:]
     except (OSError, ValueError): pass

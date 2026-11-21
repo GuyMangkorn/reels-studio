@@ -29,6 +29,8 @@ h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; color: 
 .role { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--line); border-radius: 10px;
   padding: 14px 16px; margin-bottom: 10px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px 20px; align-items: center; }
 .role.routed { border-left-color: var(--accent); }
+.role.bounced { border-left-color: var(--warn); }
+.note { font-size: 13px; margin-top: 6px; color: var(--warn); font-weight: 600; }
 .name { font: 600 16px ui-monospace, SFMono-Regular, Menlo, monospace; }
 .about { color: var(--dim); font-size: 13px; margin-top: 2px; }
 .now { font-size: 13px; margin-top: 6px; }
@@ -63,6 +65,7 @@ const el = (tag, props = {}, ...kids) => { const n = Object.assign(document.crea
 let shown = '';
 
 const status = (text, error = false) => { $('status').textContent = text; $('status').className = error ? 'error' : ''; };
+const when = ts => new Date(ts).toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'});
 const clock = () => new Date().toLocaleTimeString([], {hour: '2-digit', minute: '2-digit', second: '2-digit'});
 
 async function post(body) {
@@ -113,9 +116,11 @@ function row(r, providers, efforts) {
   const models = picker('Model', route && route.model, fallback('model'), spec.models || [], v => send({model: v || undefined}), provider && provider !== 'claude');
   const effs = picker('Effort', route && route.effort, fallback('effort'), efforts, v => send({effort: v || undefined}));
   models.disabled = effs.disabled = !provider;
-  return el('section', {className: 'role' + (route ? ' routed' : '')},
+  const b = r.bounced;
+  const note = b ? el('div', {className: 'note'}, `Back on the pinned agent: ${b.provider} hit its ${b.reason} at ${when(b.ts)}. Pick ${b.provider} again when it has usage.`) : '';
+  return el('section', {className: 'role' + (route ? ' routed' : '') + (b ? ' bounced' : '')},
     el('div', {}, el('div', {className: 'name'}, r.role), el('div', {className: 'about'}, r.description),
-      el('div', {className: 'now'}, 'Next run: ', el('b', {}, `${provider || 'claude'} · ${model} · ${effort}`))),
+      el('div', {className: 'now'}, 'Next run: ', el('b', {}, `${provider || 'claude'} · ${model} · ${effort}`)), note),
     el('div', {className: 'controls'}, seg, models, effs));
 }
 
@@ -128,7 +133,7 @@ function render(data, force) {
   $('roles').replaceChildren(...data.roles.map(r => row(r, data.providers, data.efforts)));
   $('runs').hidden = $('runs-title').hidden = !data.runs.length;
   $('runs').replaceChildren(...data.runs.map(run => el('div', {},
-    el('span', {}, new Date(run.ts).toLocaleString([], {month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit'})),
+    el('span', {}, when(run.ts)),
     el('code', {}, run.role), el('span', {}, `${run.provider} · ${run.model} · ${run.effort}`), el('span', {}, run.seconds + ' s'),
     el('span', {className: run.status ? 'bad' : ''}, run.status === 0 ? 'done' : run.status === 75 ? 'usage limit' : 'exit ' + run.status))));
 }
