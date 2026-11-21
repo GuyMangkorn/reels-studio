@@ -1,4 +1,4 @@
-import {activityFace, type ActivityOpts} from './activity-mouths';
+import {activityFace, sceneSetsMouth, type ActivityOpts} from './activity-mouths';
 import {bodyFrame, drawFigure, type CastDef, type FigAnchors, type FigPose} from './cast';
 import {ell, washAt} from './draw';
 import {EXPRESSIONS, type ExpressionId} from './expressions';
@@ -165,7 +165,7 @@ export const paintFigureAt = (p: Painter, c: YCam, def: CastDef, o: FigureAtOpts
   // pitchCue (VA03): the head takes its own perspective size (`headPerspective`), the body keeps the height; the rig shares it out.
   const pose = poseFor(o.pose ?? 'P01', def, g as Pt, u, vf.view === 'back' ? 'front' : vf.view);
   const preset = o.face ?? 'neutral', fs = o.faceState ?? {};
-  const face = activityFace({...EXPRESSIONS[preset], ...fs} as FaceState, {activity: o.activity, activityAt: o.activityAt, pose: o.pose ?? 'P01', t: o.t, seed: o.seed ?? def.seed, preset, sceneMouth: fs.mouth !== undefined || fs.open !== undefined});
+  const face = activityFace({...EXPRESSIONS[preset], ...fs} as FaceState, {activity: o.activity, activityAt: o.activityAt, pose: o.pose ?? 'P01', t: o.t, seed: o.seed ?? def.seed, preset, sceneMouth: sceneSetsMouth(fs)});
   const q = o.tint ? tintPainter(p, o.tint.to, o.tint.u, {mul: o.tint.mul, brush: true}) : p;
   const cue = o.pitchCue ?? true;
   const pitch = cue ? headPitchOf(headElevation(c, o.at, def.height * (o.scale ?? 1))) : 0;
