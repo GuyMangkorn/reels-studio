@@ -229,6 +229,7 @@ Episode-specific files are in the [episodes map](context-map-episodes.md); this 
 - EP21 pick 1: [cover data](../src/videos/covers/edu-ep21.ts) (`EDU-EP21-SHORT-PIC-COVERS`), cover-only [plates](../src/painted/edu21/cover-shots.tsx) listed in the [cover inventory](../src/painted/shots/edu21-covers.tsx) and registered in [painted registry](../src/painted/registry.ts); [notes and score](../scripts/edu-series/ep21/short/cover-notes.md).
 - EP22 pick 1: [cover data](../src/videos/covers/edu-ep22.ts) (`EDU-EP22-SHORT-PIC-COVERS`), cover-only [plates](../src/painted/edu22/cover-shots.tsx) listed in the [cover inventory](../src/painted/shots/edu22-covers.tsx) and registered in [painted registry](../src/painted/registry.ts); [notes and score](../scripts/edu-series/ep22/short/cover-notes.md).
 - EP26 pick 1: [cover data](../src/videos/covers/edu-ep26.ts) (`EDU-EP26-SHORT-PIC-COVERS`, hook sheet and scores in its header), cover-only [plates](../src/painted/edu26/cover-shots.tsx) listed in the [cover inventory](../src/painted/shots/edu26-covers.tsx) and registered in [painted registry](../src/painted/registry.ts).
+- EP31 pick 1 and pick 2: [cover data](../src/videos/covers/edu-ep31.ts) (`EDU-EP31-SHORT-PIC-COVERS`, five episode plate frames, no cover-only plates; `EDU-EP31-SHORT-COVERS`, five texts on P1-wink-lemon); [hook sheet, bands, titles and scores](../scripts/edu-series/ep31/short/cover.md).
 
 **Read when:** selecting deliverables, style profile, tier, delivery record, agent invocation, or finishing a PR.
 

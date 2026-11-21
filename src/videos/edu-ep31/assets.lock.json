@@ -1,0 +1,230 @@
+{
+  "public/audio/bed/bed_experiment-tick-pizz-98_01.wav": {
+    "sha256": "a5404a649dc3823ebdc89c12f715312b3c4737c99a8d2ad32ecba0e7bebe3cb9",
+    "store": "library/sound/music/bed/bed_experiment-tick-pizz-98_01.wav"
+  },
+  "public/audio/bed/bed_heist-funk-groove-98-intro_01.wav": {
+    "sha256": "4278fe3a5453680cded567d73d4c87fbad9b3ad124fb0e0deaf55f325de51fb6",
+    "store": "library/sound/music/bed/bed_heist-funk-groove-98-intro_01.wav"
+  },
+  "public/audio/bed/bed_heist-funk-groove-98-return_01.wav": {
+    "sha256": "a2043657e9f1ab2c923fb3a7aee504b275592185035990ce6bc89dd03af68696",
+    "store": "library/sound/music/bed/bed_heist-funk-groove-98-return_01.wav"
+  },
+  "public/audio/bed/bed_heist-funk-groove-98-swagger_01.wav": {
+    "sha256": "ebd985c52b8a049e7ee92a8cf7b7750076d16e8c34f586bf514b7b019c798bd4",
+    "store": "library/sound/music/bed/bed_heist-funk-groove-98-swagger_01.wav"
+  },
+  "public/audio/bed/bed_heist-funk-sly-98-a_01.wav": {
+    "sha256": "ecde640ec6aeca35847cbd062b39becd7e21e7f09df0d375316e07edc014ba71",
+    "store": "library/sound/music/bed/bed_heist-funk-sly-98-a_01.wav"
+  },
+  "public/audio/bed/bed_heist-funk-sly-98-b_01.wav": {
+    "sha256": "67a283aa80e7d6727c4a58b86d6e88b251064b43591b3dfb82979d2202cea02e",
+    "store": "library/sound/music/bed/bed_heist-funk-sly-98-b_01.wav"
+  },
+  "public/audio/bed/bed_video-tape-hiss-hum_01.wav": {
+    "sha256": "eb12525e4ac28e9265c500dfde632abe70432319db55bec8600501a5d234cc8f",
+    "store": "library/sound/ambience/bed/bed_video-tape-hiss-hum_01.wav"
+  },
+  "public/audio/bed/bed_wistful-heist-groove-80_01.wav": {
+    "sha256": "17cbe077aff10e1452313146e1c2c8e11e63f77c3060987fcedcaf33552c4dad",
+    "store": "library/sound/music/bed/bed_wistful-heist-groove-80_01.wav"
+  },
+  "public/audio/city/city_thai-street-midday_01.wav": {
+    "sha256": "e05170a320b299cfe76e52f59cfafeeabb7f8edabf537a21af42d4afc916d809",
+    "store": "library/sound/ambience/city/city_thai-street-midday_01.wav"
+  },
+  "public/audio/comedy/comedy_bonk-wood-flat_01.wav": {
+    "sha256": "eaf11a5fd0edf2dc3f798d1f0bef8cfd42191abbc086639b5ac3b46a68f4ab28",
+    "store": "library/sound/sfx/comedy/comedy_bonk-wood-flat_01.wav"
+  },
+  "public/audio/comedy/comedy_boop-two-note-rising_01.wav": {
+    "sha256": "281c193572a2b32eb1fa2ed0198068d52371a2499a3b8f2d0e376174fb42fdcc",
+    "store": "library/sound/sfx/comedy/comedy_boop-two-note-rising_01.wav"
+  },
+  "public/audio/comedy/comedy_heist-glint-ting_01.wav": {
+    "sha256": "90a1d1d82ef75d90c99419a5303d32f1ae9b976ffce64f7a86ad1491ed516493",
+    "store": "library/sound/sfx/comedy/comedy_heist-glint-ting_01.wav"
+  },
+  "public/audio/comedy/comedy_horn-wah-falling_01.wav": {
+    "sha256": "a199a142157a453707bbcf497778a987771894f627e067880906abef0b3f788e",
+    "store": "library/sound/sfx/comedy/comedy_horn-wah-falling_01.wav"
+  },
+  "public/audio/comedy/comedy_kazoo-dip-sheepish_01.wav": {
+    "sha256": "cbc912fe1c24375a900dfa4f611b3beccacbfd392c10e64ae303d230e745530f",
+    "store": "library/sound/sfx/comedy/comedy_kazoo-dip-sheepish_01.wav"
+  },
+  "public/audio/comedy/comedy_plastic-boing-wobble_01.wav": {
+    "sha256": "2268b771f35e44b0c59d4ef68d2c55c7000c2140b2d4509d556ce222179ecdbc",
+    "store": "library/sound/sfx/comedy/comedy_plastic-boing-wobble_01.wav"
+  },
+  "public/audio/electric/electric_camera-broken-shutter-sputter_01.wav": {
+    "sha256": "ca5dc9926b559eee1eb6f4f70c27a495efb50edd0edd80b3ac51d96a667ef56b",
+    "store": "library/sound/sfx/electric/electric_camera-broken-shutter-sputter_01.wav"
+  },
+  "public/audio/electric/electric_crt-power-on-degauss_01.wav": {
+    "sha256": "58122d411ef2b41c819bf67075b08d7bfefe13d8889554abbc5de85226a66f7a",
+    "store": "library/sound/sfx/electric/electric_crt-power-on-degauss_01.wav"
+  },
+  "public/audio/electric/electric_crt-static-blip_01.wav": {
+    "sha256": "34c980fba60f3a041dfd8d49ce0a8d22d961d2c289a81433e9b226a8da73985d",
+    "store": "library/sound/sfx/electric/electric_crt-static-blip_01.wav"
+  },
+  "public/audio/electric/electric_desk-phone-trill_01.wav": {
+    "sha256": "dc331961b9928b1f68888288a47dd106cf56f0eaa8aa82250140cb8b81cc108e",
+    "store": "library/sound/sfx/electric/electric_desk-phone-trill_01.wav"
+  },
+  "public/audio/electric/electric_phone-shutter-flash_01.wav": {
+    "sha256": "bd238ae237929f4f9b7a6fc59e87cc62cf094809dd6e2838d736f37a0f8f1e75",
+    "store": "library/sound/sfx/electric/electric_phone-shutter-flash_01.wav"
+  },
+  "public/audio/electric/electric_rec-beep-flat_01.wav": {
+    "sha256": "c77b5988775b3da3e47f64592f4231e9e13025160d5a72d233602a66dd12a5be",
+    "store": "library/sound/sfx/electric/electric_rec-beep-flat_01.wav"
+  },
+  "public/audio/electric/electric_spark-fizz-pok_01.wav": {
+    "sha256": "22ceea3e812265ba5b19447f44a367f9c58e6241a13389a6c2eb8da016459c9c",
+    "store": "library/sound/sfx/electric/electric_spark-fizz-pok_01.wav"
+  },
+  "public/audio/electric/electric_tube-flicker-steady_01.wav": {
+    "sha256": "17a6a6882f0ed4a74e3104a25e2da451e49a90cf916a4316995ea1a6661986f4",
+    "store": "library/sound/sfx/electric/electric_tube-flicker-steady_01.wav"
+  },
+  "public/audio/foley/foley_calendar-page-tear_01.wav": {
+    "sha256": "735dc8b6b192576e3361e1312f25fd305e045831792faed9e72c889d78e5083a",
+    "store": "library/sound/sfx/foley/foley_calendar-page-tear_01.wav"
+  },
+  "public/audio/foley/foley_canvas-bag-zip_01.wav": {
+    "sha256": "60f950065213083b04a94ed00a7be13fc9a1563641c78154f489fc631a3d4251",
+    "store": "library/sound/sfx/foley/foley_canvas-bag-zip_01.wav"
+  },
+  "public/audio/foley/foley_finger-snap-dry_01.wav": {
+    "sha256": "720c5907b5ec94f00a691db570728679a3ea98675859a55c73c035e0cc9b6686",
+    "store": "library/sound/sfx/foley/foley_finger-snap-dry_01.wav"
+  },
+  "public/audio/foley/foley_finger-snap-room-tail_01.wav": {
+    "sha256": "1828f31d4e3bd707d278e8c82a5bf3358ed1ae8cba7a35f7a1a8cc6378907482",
+    "store": "library/sound/sfx/foley/foley_finger-snap-room-tail_01.wav"
+  },
+  "public/audio/foley/foley_glass-door-close-bank_01.wav": {
+    "sha256": "e83d8a1f848be0433f9a149acbc87c3c5c87df08bd6d8b36400ba1495c074cb7",
+    "store": "library/sound/sfx/foley/foley_glass-door-close-bank_01.wav"
+  },
+  "public/audio/foley/foley_lemon-pat-cheek_01.wav": {
+    "sha256": "767fe116ad749350cf69149e55e72976677197cd9b0ea1b02bfe356333fcf77e",
+    "store": "library/sound/sfx/foley/foley_lemon-pat-cheek_01.wav"
+  },
+  "public/audio/foley/foley_lemon-rub-cheeks_01.wav": {
+    "sha256": "cc5c53dc381ec85ff56fc493437d283693ee6bf8d6854f6026ce4a883c805efb",
+    "store": "library/sound/sfx/foley/foley_lemon-rub-cheeks_01.wav"
+  },
+  "public/audio/foley/foley_lemon-tip-thud_01.wav": {
+    "sha256": "558a02c8129a94dd844e790e7bfbcb3a8071927c2673b7664848f70ab95d4523",
+    "store": "library/sound/sfx/foley/foley_lemon-tip-thud_01.wav"
+  },
+  "public/audio/foley/foley_lime-squeeze-papaya_01.wav": {
+    "sha256": "38e32fdc8f1ff19fb8f7366fd864d68c92d3e53c0beded24154492ec33134847",
+    "store": "library/sound/sfx/foley/foley_lime-squeeze-papaya_01.wav"
+  },
+  "public/audio/foley/foley_paper-flex-thin_01.wav": {
+    "sha256": "92d1da3bb902bf684b9330376d6015daa98655c11f2dcd31246e71596d439010",
+    "store": "library/sound/sfx/foley/foley_paper-flex-thin_01.wav"
+  },
+  "public/audio/foley/foley_photo-card-flap_01.wav": {
+    "sha256": "e1267edac1b88e3c4dd26d5f752cae6f822a4188ad8046bf9d37d47eda573a01",
+    "store": "library/sound/sfx/foley/foley_photo-card-flap_01.wav"
+  },
+  "public/audio/foley/foley_photo-paper-slide_01.wav": {
+    "sha256": "6cb54c8e6db66ad6b00aaeac7e6a998ddd24af6580d8997affdc0a7316ae3fe9",
+    "store": "library/sound/sfx/foley/foley_photo-paper-slide_01.wav"
+  },
+  "public/audio/foley/foley_whisper-cup-male_01.wav": {
+    "sha256": "5d3faee935fd8d9754b51376fa9823484ddf03a4705a0e5e8144266326713722",
+    "store": "library/sound/sfx/foley/foley_whisper-cup-male_01.wav"
+  },
+  "public/audio/impact/impact_camera-slam-table_01.wav": {
+    "sha256": "f58f85f2b5deed3cf0c128c5a61f9a49347deaa46a13023ba6de644b55e99094",
+    "store": "library/sound/sfx/impact/impact_camera-slam-table_01.wav"
+  },
+  "public/audio/impact/impact_lens-crack-tik_01.wav": {
+    "sha256": "666ebd5bb7216bd0c7588b232eb3f49b688ebef03e2025d02596974624a1c4ef",
+    "store": "library/sound/sfx/impact/impact_lens-crack-tik_01.wav"
+  },
+  "public/audio/impact/impact_steel-door-thud_01.wav": {
+    "sha256": "9fca0bddbcda615297c8446658ab5e15ebdcb2518aa49aac8acf9b45b41b97dc",
+    "store": "library/sound/sfx/impact/impact_steel-door-thud_01.wav"
+  },
+  "public/audio/mechanical/mechanical_cctv-motor-click_01.wav": {
+    "sha256": "997e6c19180157f4bcbd8bea29365515b00370c72b5639668415fd63ef17e4ef",
+    "store": "library/sound/sfx/mechanical/mechanical_cctv-motor-click_01.wav"
+  },
+  "public/audio/mechanical/mechanical_print-eject-stutter_01.wav": {
+    "sha256": "c3e0f7a149bc5bd3a67049cde9b9390e69a16bd8441b382bfedfc30ba6d16f57",
+    "store": "library/sound/sfx/mechanical/mechanical_print-eject-stutter_01.wav"
+  },
+  "public/audio/mechanical/mechanical_servo-whirr-toy_01.wav": {
+    "sha256": "835f4606a0d35d3855f8a94f5f11f5810a3d08c915245997ec0e4d5f1efdf7be",
+    "store": "library/sound/sfx/mechanical/mechanical_servo-whirr-toy_01.wav"
+  },
+  "public/audio/reveal/reveal_dream-harp-shimmer_01.wav": {
+    "sha256": "5789b9f44ade0c888e088c651e70a1650f844b43aca1085eefca2d8c148bff85",
+    "store": "library/sound/sfx/reveal/reveal_dream-harp-shimmer_01.wav"
+  },
+  "public/audio/reveal/reveal_glass-shimmer-soft_01.wav": {
+    "sha256": "89ff0fa14a783ff3b312762d7a00d391edf5df4f49cd01389238cbc9367901c7",
+    "store": "library/sound/sfx/reveal/reveal_glass-shimmer-soft_01.wav"
+  },
+  "public/audio/room/room_bank-lobby-1995_01.wav": {
+    "sha256": "96fd51a7d61e4d78f7ced6003ca8b3ab393f27fc931bb65f340245b41f3a774e",
+    "store": "library/sound/ambience/room/room_bank-lobby-1995_01.wav"
+  },
+  "public/audio/room/room_crt-whine-dark-room_01.wav": {
+    "sha256": "778692cbb1c05b7bf8e086057eef00bc6b4ed59eceae2ebfcbb85fdfac0a6889",
+    "store": "library/sound/ambience/room/room_crt-whine-dark-room_01.wav"
+  },
+  "public/audio/room/room_desk-lamp-night-quiet_01.wav": {
+    "sha256": "af779e9fc011b9c712ec92cb61ea8d34d935fa33ea3179f613f3707e25632f55",
+    "store": "library/sound/ambience/room/room_desk-lamp-night-quiet_01.wav"
+  },
+  "public/audio/room/room_kitchen-night-winter_01.wav": {
+    "sha256": "c97f6518b9e94fc03512efb58912dd133758a0f4a86f443d1c485e2e9539c138",
+    "store": "library/sound/ambience/room/room_kitchen-night-winter_01.wav"
+  },
+  "public/audio/room/room_police-room-fluorescent-buzz_01.wav": {
+    "sha256": "63b97b2e98589e1565ee836d71b2d59bd161a1b401d9b7f943af50ce8e5ca307",
+    "store": "library/sound/ambience/room/room_police-room-fluorescent-buzz_01.wav"
+  },
+  "public/audio/stinger/stinger_bass-two-note-tag_01.wav": {
+    "sha256": "6869f3ca8f75b10b8c04bd4382fd8fd272a4b3cbdb97e142dd61789347910bb1",
+    "store": "library/sound/sfx/stinger/stinger_bass-two-note-tag_01.wav"
+  },
+  "public/audio/stinger/stinger_brass-stab-three-note_01.wav": {
+    "sha256": "7b6c7cfa5dc84de8cf3ad98fd72d1d32bc072df48870e87c385a5578d78b64c2",
+    "store": "library/sound/music/stinger/stinger_brass-stab-three-note_01.wav"
+  },
+  "public/audio/stinger/stinger_local-news-sting-1990s_01.wav": {
+    "sha256": "8a2299886114d842515e5e18f190d433216baaeca3ffbf47c190f500ffe884a9",
+    "store": "library/sound/music/stinger/stinger_local-news-sting-1990s_01.wav"
+  },
+  "public/audio/tension/tension_clock-tick-accel_01.wav": {
+    "sha256": "d40b45a4091a6940199c372f072ba0726c07db8c3902e8363e3614447a5d05ca",
+    "store": "library/sound/sfx/tension/tension_clock-tick-accel_01.wav"
+  },
+  "public/audio/ui/ui_pop_01.wav": {
+    "sha256": "d598317eb71eb636cab3e6d45f234ecb060b23ecb9c4d8dd826a9c3c7bd43b57",
+    "store": "library/sound/sfx/ui/ui_pop_01.wav"
+  },
+  "public/audio/water/water_ice-settle-tick_01.wav": {
+    "sha256": "b5b95b9fc45dc5c62c2134852e8d5f175403f99dbe8455db1d6b0a8c2cbc297a",
+    "store": "library/sound/sfx/water/water_ice-settle-tick_01.wav"
+  },
+  "public/audio/whoosh/whoosh_air-swish-rising_01.wav": {
+    "sha256": "68745877099d0962c4f7f23eb76cee0b5901760969d5ef1ec54d4ec6e6ea813a",
+    "store": "library/sound/sfx/whoosh/whoosh_air-swish-rising_01.wav"
+  },
+  "public/narration/EDU-EP31-SHORT-narration-v1.wav": {
+    "store": "projects/edu/EDU/narration/ep31-voice-r1-3/preview.wav",
+    "sha256": "ceac28a6cd24e38b001ea0c573715f2f36fbcffda4def19870b927581e4b2ac3"
+  }
+}

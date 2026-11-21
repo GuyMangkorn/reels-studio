@@ -1,0 +1,482 @@
+{
+ "B01-SH01@board": {
+  "clip": "",
+  "hash": "e0ff53e206a6",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B01-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B01-SH02@board": {
+  "clip": "",
+  "hash": "5cff5dde943c",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B01-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B01-SH03@board": {
+  "clip": "",
+  "hash": "fd8dee91abe2",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B01-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B01-SH04@board": {
+  "clip": "",
+  "hash": "7b94b08f6e54",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B01-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B02-SH01@board": {
+  "clip": "",
+  "hash": "359c3cf80a8c",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B02-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B02-SH02@board": {
+  "clip": "",
+  "hash": "caa1ec83d7b3",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B02-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B02-SH03@board": {
+  "clip": "",
+  "hash": "2823b8dfc115",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B02-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B03-SH01@board": {
+  "clip": "",
+  "hash": "3bcafe25a33c",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B03-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:36:25Z"
+ },
+ "B03-SH02@board": {
+  "clip": "",
+  "hash": "ee09bce1fa05",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B03-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:36:25Z"
+ },
+ "B03-SH03@board": {
+  "clip": "",
+  "hash": "ac2fa7a3bdc4",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B03-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B03-SH04@board": {
+  "clip": "",
+  "hash": "c4319a7b1e26",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B03-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:37:54Z"
+ },
+ "B03-SH05@board": {
+  "clip": "",
+  "hash": "17a7732447dd",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B03-SH05",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B04-SH01@board": {
+  "clip": "",
+  "hash": "21aa7f700641",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B04-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B04-SH02@board": {
+  "clip": "",
+  "hash": "823a0bf6b96f",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B04-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B04-SH03@board": {
+  "clip": "",
+  "hash": "700b3da736a8",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B04-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B05-SH01@board": {
+  "clip": "",
+  "hash": "35e2ec6c9f9b",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B05-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B05-SH02@board": {
+  "clip": "",
+  "hash": "dea6f6775e83",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B05-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B05-SH03@board": {
+  "clip": "",
+  "hash": "192496dc1db2",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B05-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B05-SH04@board": {
+  "clip": "",
+  "hash": "c02946bfab35",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B05-SH04",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B06-SH01@board": {
+  "clip": "",
+  "hash": "8e680f1ee851",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B06-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B06-SH02@board": {
+  "clip": "",
+  "hash": "f23cea92fdc1",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R5",
+  "shot": "B06-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T05:22:04Z"
+ },
+ "B07-SH01@board": {
+  "clip": "",
+  "hash": "ffd71475e9f6",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B07-SH01",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:37:54Z"
+ },
+ "B07-SH02@board": {
+  "clip": "",
+  "hash": "22a589d19db8",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B07-SH02",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:36:25Z"
+ },
+ "B07-SH03@board": {
+  "clip": "",
+  "hash": "3301590159f7",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
+  "shot": "B07-SH03",
+  "stage": "board",
+  "status": "ok",
+  "updatedAt": "2026-11-21T06:36:25Z"
+ },
+ "B01-SH01@draft": {
+  "clip": "a2c850ef7cff",
+  "hash": "a2c850ef7cff",
+  "note": "user: ผ่านทั้งหมด (chat 2026-11-21, after L01 c1 retime)",
+  "rev": "EDU-EP31-ROWS-R8",
+  "shot": "B01-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:40:00Z"
+ },
+ "B01-SH02@draft": {
+  "clip": "a2c850ef7cff",
+  "hash": "a2c850ef7cff",
+  "note": "user: ผ่านทั้งหมด (chat 2026-11-21, after L01 c1 retime)",
+  "rev": "EDU-EP31-ROWS-R8",
+  "shot": "B01-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:40:00Z"
+ },
+ "B01-SH03@draft": {
+  "clip": "a2c850ef7cff",
+  "hash": "a2c850ef7cff",
+  "note": "user: ผ่านทั้งหมด (chat 2026-11-21, after L01 c1 retime)",
+  "rev": "EDU-EP31-ROWS-R8",
+  "shot": "B01-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:40:00Z"
+ },
+ "B01-SH04@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B01-SH04",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B02-SH01@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B02-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B02-SH02@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B02-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B02-SH03@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B02-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B03-SH01@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B03-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B03-SH02@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B03-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B03-SH03@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B03-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B03-SH04@draft": {
+  "clip": "69684e1e26f1",
+  "hash": "69684e1e26f1",
+  "note": "user: ผ่านหมด (chat 2026-11-21, after label fix)",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B03-SH04",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:00:00Z"
+ },
+ "B03-SH05@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B03-SH05",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B04-SH01@draft": {
+  "clip": "69684e1e26f1",
+  "hash": "69684e1e26f1",
+  "note": "user: ผ่านหมด (chat 2026-11-21, after caption fix)",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B04-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:00:00Z"
+ },
+ "B04-SH02@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B04-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B04-SH03@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B04-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B05-SH01@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B05-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B05-SH02@draft": {
+  "clip": "69684e1e26f1",
+  "hash": "69684e1e26f1",
+  "note": "user: ผ่านหมด (chat 2026-11-21, after lip-sync)",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B05-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:00:00Z"
+ },
+ "B05-SH03@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B05-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B05-SH04@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B05-SH04",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B06-SH01@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B06-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B06-SH02@draft": {
+  "clip": "69684e1e26f1",
+  "hash": "69684e1e26f1",
+  "note": "user: ผ่านหมด (chat 2026-11-21, after lip-sync)",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B06-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:00:00Z"
+ },
+ "B07-SH01@draft": {
+  "clip": "69684e1e26f1",
+  "hash": "69684e1e26f1",
+  "note": "user: ผ่านหมด (chat 2026-11-21, after label fix)",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B07-SH01",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T10:00:00Z"
+ },
+ "B07-SH02@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B07-SH02",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ },
+ "B07-SH03@draft": {
+  "clip": "649de0790f83",
+  "hash": "649de0790f83",
+  "note": "",
+  "rev": "EDU-EP31-ROWS-R7",
+  "shot": "B07-SH03",
+  "stage": "draft",
+  "status": "ok",
+  "updatedAt": "2026-11-21T09:30:00Z"
+ }
+}

@@ -13,6 +13,7 @@
 - [Narrator +5%](narrator-pace-plus5.md) — non-character narrator sped up +5% (atempo=1.05); user, 31 Oct 2026
 - [Trim narration pauses](narration-trim-pauses.md) — shorter silence between sentences; EG-EP01 Achernar awake x1.08 (user, 3 Nov 2026)
 - [Gemini style pace word](gemini-style-pace-word.md) — one pace word in the style; Kore sounds angry when flat and fast (11 Nov 2026)
+- [Caption size EP26](caption-size-ep26-default.md) — new edu Shorts: 71.4 px (scale 1.4), shorter cards; user, 21 Nov 2026
 
 ## Project decisions and approvals
 

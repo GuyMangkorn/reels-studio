@@ -691,7 +691,9 @@ export const paintHeadFront = (p: Painter, seed: number, cx: number, cy: number,
     if (face.brow === 'quirk' && side === 1) [inner, outer] = [-0.34, -0.36];
     if (lk) fill(browColor(style), lookBrow(lk, side, inner + lk.browDrop, outer + lk.browDrop), 6);
     if (lk && det) browHairs(lk.brow, (u) => side * (0.17 + 0.45 * u), inner + lk.browDrop, outer + lk.browDrop, side).forEach((h) => ink(h, 0.8, 0, false, mixColor(browColor(style), skin, 0.3)));
-    else fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
+    // The plain bar is the brow of a head without a `look` only (user note 2026-11-21, EDU-EP31: as an `else` of the hairs line it also drew
+    // under every `look` brow without `det`, a second brow stacked above the dropped one).
+    else if (!lk) fill(browColor(style), [[side * 0.22, inner - 0.03], [side * 0.6, outer - 0.03], [side * 0.6, outer + 0.03], [side * 0.22, inner + 0.03]], 6);
   }
   if (lk) {
     part = 56;
