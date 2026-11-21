@@ -18,7 +18,7 @@ export const EDU31_PICS: Cover[] = [
   {...P('P1-wink-lemon', 'EDU31-B01-SH03', 41), layout: L(0.4)},
   {...P('P2-cctv-face', 'EDU31-B04-SH02', 66), layout: L(0.4)},
   {...P('P3-blank-polaroid', 'EDU31-B03-SH03', 50), layout: L(0.4)},
-  {...P('P4-barefaced-loot', 'EDU31-B01-SH02', 80), layout: L(0.4)},
+  {...P('P4-face-on-tv', 'EDU31-B05-SH01', 86), layout: L(0.4)},
   {...P('P5-lemon-cheeks', 'EDU31-B03-SH02', 19), layout: L(0.4)},
 ];
 export const EDU31_COVER_STYLE: CoverStyle = {accent: '#ffd21f'};
