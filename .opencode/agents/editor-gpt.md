@@ -1,7 +1,7 @@
 ---
-description: "Editor: assembles scenes and edits selected Reels/Long timelines in Remotion; integrates audio/captions/effects and presents one actual frame per story scene. Runs on openai/gpt-6.1-sol#medium."
+description: "Editor: assembles scenes and edits selected Reels/Long timelines in Remotion; integrates audio/captions/effects and presents one actual frame per story scene. Runs on openai/gpt-6.2-sol#medium."
 mode: subagent
-model: openai/gpt-6.1-sol#medium
+model: openai/gpt-6.2-sol#medium
 permissions:
   - action: websearch
     resource: "*"

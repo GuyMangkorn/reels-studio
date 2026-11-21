@@ -1,7 +1,7 @@
 ---
-description: "Boat (โบ็ต): researcher before Preaw writes and fact-checker of the resulting script; evidence quality, uncertainty and fact-versus-fiction boundaries. Runs on openai/gpt-6.1-sol#medium."
+description: "Boat (โบ็ต): researcher before Preaw writes and fact-checker of the resulting script; evidence quality, uncertainty and fact-versus-fiction boundaries. Runs on openai/gpt-6.2-sol#medium."
 mode: subagent
-model: openai/gpt-6.1-sol#medium
+model: openai/gpt-6.2-sol#medium
 permissions:
   - action: skill
     resource: "*"

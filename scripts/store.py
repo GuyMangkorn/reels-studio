@@ -403,7 +403,8 @@ def publish(a):
             h.write('\t'.join([today, 'posted', '', '', '', '', a.posted]) + '\n')
     if a.title is not None: meta['title'] = a.title
     if changed:
-        meta['status'] = 'ready' if not meta.get('posted') else f"re-cut after posting {meta['posted']}: post again or keep"
+        waiting = [k for k in ('video', 'cover') if not meta.get(k)]
+        meta['status'] = ('waiting: ' + ', '.join(waiting) if waiting else 'ready') if not meta.get('posted') else f"re-cut after posting {meta['posted']}: post again or keep"
     if a.posted: meta['status'] = f'posted {a.posted}'
     meta['updated'] = today
     with open(meta_path, 'w', encoding='utf-8') as f: json.dump(meta, f, ensure_ascii=False, indent=2); f.write('\n')

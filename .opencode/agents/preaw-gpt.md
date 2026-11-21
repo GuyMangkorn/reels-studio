@@ -1,7 +1,7 @@
 ---
-description: "Preaw (แพรว): Thai scriptwriter across genres; pitches the ideation concepts, then writes full narration with hooks, causal beats and payoffs before Boat review. Runs on openai/gpt-6.1-sol#medium."
+description: "Preaw (แพรว): Thai scriptwriter across genres; pitches the ideation concepts, then writes full narration with hooks, causal beats and payoffs before Boat review. Runs on openai/gpt-6.2-sol#medium."
 mode: subagent
-model: openai/gpt-6.1-sol#medium
+model: openai/gpt-6.2-sol#medium
 permissions:
   - action: websearch
     resource: "*"
