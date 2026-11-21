@@ -45,4 +45,4 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W8.1 Assembled from the cache, picture lock (Final render = delivery file, 24/24 pinned)
   - [x] W8.2 Delivery render and cover published, 2026-11-21: `~/ReelsStore/publish/edu/EDU/EDU-EP31-SHORT/` (cover C5 ทามะนาว ล่องหน?!, title T2 ปล้นธนาคารไม่ใส่หน้ากาก รอดมั้ย?; user picks, COVER-R2)
   - [ ] W8.3 Posted to the channel (user, date; `publish --posted`)
-  - [ ] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01)
+  - [x] W8.4 Kit intake: new people, outfits, animals, poses, sets filed (KIT-P01), Boss 2026-11-21. Filed: outfits `windbreaker-1995` and `us-police-1995` (`kit/wardrobe-1995.ts`), props (`kit/props-edu31.ts`), lip-sync (`kit/lip-sync.ts`), `whisper-cup` (`kit/motions-edu31.ts`), 11 `PL-EDU-*31` plates. People: N/A, every character is an unchanged `PEOPLE` entry. Animals: N/A, none in the episode. The other poses, the sets and the screen presets stay in the episode ([build notes](short/build-notes.md#w84-kit-intake-2026-11-21-boss-kit-p01-base-e03e236)). The EP31 source hash is unchanged, so the 24 pins stand.
