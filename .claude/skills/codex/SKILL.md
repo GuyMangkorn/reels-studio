@@ -19,7 +19,7 @@ Codex builds and measures; Claude decides what looks right. Quality of painted a
 1. Write the brief to a file (read the repo rules, name the files and sections to read, scope, what must stay green, the evidence to produce, where to write the report). Briefs, not prose in the command line.
 2. Run it from Bash with `run_in_background`, **no trailing `&`**, so Claude Code notifies when Codex really ends:
    `codex exec -m gpt-6.2-sol -c model_reasoning_effort='"medium"' -s workspace-write -C <dir> - < <brief>.md > out/logs/<name>.log 2>&1`
-3. Show the log live: one Terminal-panel tab with `tail -n 60 -f out/logs/<name>.log`. **Stop the previous tail first** (Ctrl-C via `stop_terminal_tab`), then reuse or close that tab. A tab the user has typed in cannot be reused; open a new one.
+3. Show the log live: one Terminal-panel tab with `tail -n 60 -f out/logs/<name>.log`. **Stop the previous tail first** (Ctrl-C via `stop_terminal_tab`), then reuse or close that tab. A tab the user has typed in cannot be reused; open a new one. A role run through `scripts/agent-route.py run <role>` gets the same tab: `tail -n 60 -F out/logs/route-<role>.log` (a fixed name that follows the role's newest run).
 4. On the completion notice, confirm the process ended (`pgrep -f "codex exec"`), then check the log for a usage limit. Only a run with no final message counts as limited; the log also echoes prompts and docs that mention "usage limit". On a limit, Claude does the task itself without asking.
 5. View the sheets yourself before reporting; Codex's own "done" is not visual evidence.
 
