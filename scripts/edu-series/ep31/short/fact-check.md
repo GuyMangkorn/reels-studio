@@ -137,3 +137,48 @@ No must-fix finding. No premise, reveal or learning impact: the hook (L01), the 
 
 1. Does Preaw take RC03's neutral sound line (clock stops, flat thud) in place of the knock or handcuff click? Optional.
 2. Should the TTS read of "แมคอาเธอร์" be checked at the voice sample? Yes, one spoken use.
+
+## Recheck R3 (picture level, ROWS-R3)
+
+Revision: picture plan `EDU-EP31-BRIEF-R3` (VD31-18, Space R, LF07), `EDU-EP31-BOARD-R3`, `EDU-EP31-ROWS-R3`, against `EDU-EP31-SCRIPT-R2` (unchanged; the R1 and R2 verdicts on narration stand). Boat, 2026-11-21. No new sources opened: F001, F006, F009, F010, F013 and SRC001/SRC008/SRC013 from research.md are reused, so the R1 access limits (one secondary reporting chain, no primary page, Wheeler's status unknown) still apply. This is a written-plan check; no frame exists yet, so it is not a picture validation. Severity: **must-fix** (wrong takeaway, false premise, misrepresented person), **should-fix** (true but invites a false inference; Film may decline with a reason), **note**.
+
+**Verdict: no must-fix. Nothing blocks the page.** Two should-fix constraints (RC3-01, RC3-02) and three notes. FC06 fallback is **not required**.
+
+### 1. B07-SH01 to SH03 (blank Polaroid, lemon half, tip on "จริงเลย")
+
+- **RC3-01 — lemon half resting on the Polaroid border (should-fix, constraint).** The plan never shows lemon causing the blank: no dissolve, no stain, no application (supported: F006 says cause unproven; SRC013 "wasn't anywhere to be found in the image"). The risk is adjacency: a lemon sitting on the blank print, with a glint and a tip, can read as "the juice did this" (cause by juxtaposition). The narration says nothing about cause and B03-SH04 labels the police guess about 40 s earlier, so the inference is not forced; the lemon is also documented as what he trusted (SRC013 "it seemed to work"). Keep Film's design if these hold: (a) the Polaroid image stays the identical pale grey-beige wash of B03-SH03, with no streak, wet ring, fade or juice mark on it or its border; (b) the glint (SH02) is on the lemon flesh only, never on the Polaroid; (c) the lemon rests on the border or beside it, never on the image area; (d) the lemon never touches the CCTV print (already in the brief). If Film cannot guarantee (a) to (c) in the painted look frame, move the lemon to sit beside the Polaroid, touching nothing.
+- **Photo as proof of invisibility: pass.** The blank Polaroid beside the print that kept his face reads as "his test photo said one thing, the bank camera said another", which is the documented irony (F006 against F001/F009). The tip on "จริงเลย" lands on "ไม่ได้รู้จริงเลย", his certainty being wrong, not on a mechanism. No frame says the photo shows invisibility.
+- **Bank camera lost the face: pass.** The 8x10 carries CCTV-STILL-01, face readable (F001, F009; VD31-08), grey-green and labelled reconstructed. It is the contrast, not a loss.
+- **RC3-03 — the two prints on one table (note).** Where the real Polaroid or surveillance print ended up is not documented (print never published as far as found; SRC013). A still life of both together in one place implies they were kept side by side (as evidence, a keepsake) which no source says. Covered by the label from frame 0 and Space R's "no place claimed"; no change needed, but no evidence tag, case file, label or "EVIDENCE" text on the table.
+
+### 2. FC06 — his face under "นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้" (note; fallback not required)
+
+- The face arrives at the end of the phrase as one of two photos, with no name, no paper, no person, no text, and "เรื่องนี้" points at the whole story, which Dunning read (F013, SRC013). A reader of the two-up sees "the story" (his test photo and his bank photo), not "Wheeler was a study subject". That stays inside FC06 and F015: inspiration only, no diagnosis, no claim the paper names him.
+- Why it holds: the print is gone from frame by SH02 (left edge past x 1080) and SH03 has no print, so no image of his face sits under "ไม่ได้รู้จริงเลย", the last words that carry the generalisation. SH02's "ทำไมคนถึงมั่นใจได้ขนาดนี้" runs over the Polaroid and lemon, which matches the documented direction (his certainty about a wrong test, L14), and not a finding about him.
+- **Condition (restate):** no text on the table or the print (no name, no "case study", no paper title) and no later reuse of the face as the research's subject. If the look frame LF07 makes the face dominant (print larger than the Polaroid at the end of SH01, as planned at 469 vs 203 px) and the viewer test says it reads as "this man is the research", swap to the fallback (B04-SH02 start frame, lobby wide, face unreadable). Not required now.
+
+### 3. B01-SH01 calendar and TELLERS (note, consistent)
+
+- Month and year agree with the sources: both robberies were on **6 Jan 1995** (F001; SRC001, SRC013). The CCTV stamp `JAN 06 1995` is the cleared date (FC07). `JANUARY 1995` on the lobby wall is therefore consistent for both banks, including the K2 palette swap; the robbery month does not differ. The kitchen calendar (B04-SH03) shows January to April, matching 6 Jan and the 19 to 20 Apr arrest (F009).
+- Constraints: month and year only, no day circled or marked (the day appears only as `JAN 06` on the CCTV); no time on any CCTV stamp (the 2:47 pm time belongs to the Swissvale bank only, research); no bank name, no real logo (the brief says so); TELLERS is generic English signage and asserts no place. The calendar is a year tag by another route, which the user's Q2 declined as text; that is a Film and user matter, not a fact issue.
+
+### 4. Q6 option B (face dissolving as lemon is applied, labelled as his belief)
+
+- **Severity: should-fix if labelled as below; must-fix if shown without the label** (it would state a cause as fact, F006, and the bank camera did record his face).
+- Two problems the label does not fix, to decide on before choosing it: (a) **continuity with B03-SH03**: that shot develops the print to a blank wash and no face ever shows; a face that dissolves means a face was in the image first, which contradicts "ไม่มีเขาเลย" and the sourced "wasn't anywhere to be found in the image" (the face was absent, not removed); (b) **cause**: a dissolve shows juice acting on a photo, but his belief per the sources is that juice makes the face invisible to the *camera*, so the honest belief-picture is the planned B02 bubble (an empty outline under a bank camera), already in the plan.
+- **Label wording constraints, if the user still chooses B:** attribute to him with a belief verb ("เชื่อ"); on screen the whole dissolve from first to last frame, as the B03-SH04 guess label does; no "เกิดขึ้น", "ผล", "พิสูจน์", "จริง" or "ความจริง" in the label; do not run it in the 2.0 s hold or in the same shot as the CCTV print, and never dissolve the CCTV print. Examples: **"ที่เขาเชื่อ: ทาน้ำมะนาวแล้วหน้าหาย"** (matches SRC013 "rendered it invisible"); safer still **"สิ่งที่เขาเชื่อ ไม่ใช่สิ่งที่เกิดขึ้นจริง"** (true: the cameras recorded him). Do not use "น้ำมะนาวทำให้หน้าหาย" unattributed. The label adds text to a shot the brief keeps text-free and crowds the caption band; Film must keep it clear of the caption zone.
+- **Recommended answer for Q6: Film's recommendation (the missing face in that one photo beside the bank photo; no cause shown).** It satisfies the user's idea of the face vanishing in the camera image, stays inside F006 and F001, and needs no extra label; adopt RC3-01's constraints with it.
+
+### Findings summary
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC3-01 | Lemon on the Polaroid border: no mark on the print, glint on the lemon only, no lemon on the image area | should-fix (constraint) | no |
+| RC3-02 | Q6 option B: label and continuity limits above; must-fix if unlabelled | should-fix / must-fix | no (only if option B is chosen) |
+| RC3-03 | Both prints on one table imply they were kept together; no evidence text | note | no |
+| RC3-04 | FC06: face under "อ่านเรื่องนี้" passes; fallback only if LF07 reads as "this man is the study" | note | no |
+| RC3-05 | `JANUARY 1995` and TELLERS consistent with 6 Jan 1995 and the CCTV date; month and year only, no time | note | no |
+
+### Status
+
+`ready-for-storyboard` stays for ROWS-R3 with RC3-01 applied to the look frame (W3, LF07). No SCRIPT-R2 change; Q7 needs no Boat change (L15 names no title and the picture adds no claim). Recheck needed only if Film adds text to B07, picks Q6 option B, or changes the table pair. Not user approval, not picture, audio or runtime validation.
