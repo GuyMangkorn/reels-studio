@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""EDU-EP31-SHORT sound mix (Editor, W5.3 Draft, 2026-11-21; scene sheets EDU-EP31-SCENE-R1, cue sheet scripts/edu-series/ep31/short/sound-cues.json, 76 placements, 1795 f at 30 fps).
+"""EDU-EP31-SHORT sound mix (Editor, W5.3 Draft, 2026-11-21; scene sheets EDU-EP31-SCENE-R2 (B01 retimed 21 Nov 2026), cue sheet scripts/edu-series/ep31/short/sound-cues.json, 76 placements, 1795 f at 30 fps).
 Adapted from scripts/edu-series/ep30/short/sound-mix.py. Places every cue at its integer G frame (the file starts on the cue frame, as the sheet says) with ffmpeg and writes
   out/stems/{voice,bed,texture,accent}.wav  (stereo s16 per-layer stems = the cue sheet's `levels.stems`, for `python3 -I scripts/mix-levels.py scripts/edu-series/ep31/short/sound-cues.json`; Ton measures)
   public/audio/edu/EDU-EP31-SHORT-draft-stem-v1.wav  (bed + texture + accent baked, stereo s16; the narration is its own track, public/narration/EDU-EP31-SHORT-narration-v1.wav, untouched)
@@ -16,7 +16,7 @@ SUM = 'out/stems/sum.tmp' + EXT
 STEM = 'public/audio/edu/EDU-EP31-SHORT-draft-stem-v1' + EXT   # played by src/videos/edu-ep31/index.ts as audio/edu/EDU-EP31-SHORT-draft-stem-v1.wav (exempt in the cue sheet)
 SHEET = json.load(open('scripts/edu-series/ep31/short/sound-cues.json'))
 CUES = SHEET['cues']
-NARR = 'public/narration/EDU-EP31-SHORT-narration-v1.wav'      # VOICE-R1, store projects/edu/EDU/narration/ep31-voice-r1-1/preview.wav, 59.82 s mono
+NARR = 'public/narration/EDU-EP31-SHORT-narration-v1.wav'      # VOICE-R1.3 (L01 c1), store projects/edu/EDU/narration/ep31-voice-r1-3/preview.wav, 1795 f mono
 # every file this mix plays (scripts/sound-cues.py reads these quoted paths; the mix asserts the cue sheet names the same files)
 PLACED = [
     'public/audio/bed/bed_experiment-tick-pizz-98_01.wav',
