@@ -16,7 +16,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W1.2 Preaw script — EDU-EP31-SCRIPT-R1, 2026-11-21 ([script.md](short/script.md), [script-notes.md](short/script-notes.md)); projected ~59.7 s, estimated
   - [x] W1.3 Boat fact-check — EDU-EP31-FACT-R1 plus Recheck R2 on SCRIPT-R2, ready-for-storyboard, no must-fix (medium confidence, one reporting chain) ([fact-check.md](short/fact-check.md))
   - [x] W1.4 Length check — SCRIPT-R2 projected about 62.6 s (limit 63 s), estimated, no read-aloud; trims ready: L07, then L14 second sentence
-  - [x] W1.5 User approval — not formally asked; user ordered 2026-11-21 'ให้ทำต่อไปจนถึงฟีมทำ storyboard' (proceeding on SCRIPT-R2; user to confirm on the review page)
+  - [x] W1.5 User approval — SCRIPT-R2 confirmed, 2026-11-21 (structured question)
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — EDU-EP31-BRIEF-R1, 2026-11-21, ready-for-mark ([film-brief.md](short/film-brief.md))
   - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R1, 24 shots, untimed ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes
