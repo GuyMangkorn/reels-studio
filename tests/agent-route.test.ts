@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {spawnSync} from 'node:child_process';
-import {mkdtempSync, readFileSync, writeFileSync} from 'node:fs';
+import {chmodSync, cpSync, mkdirSync, mkdtempSync, readFileSync, writeFileSync} from 'node:fs';
 import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 
@@ -55,6 +55,31 @@ test('a claude route asks for the model on the Agent call and accepts a matching
   assert.equal(hook({subagent_type: 'boss-apply', prompt: 'build', model: 'opus'}), null);
   run(['set', 'boss-apply', 'claude', '--model', 'sonnet']);
   assert.equal(hook({subagent_type: 'boss-apply', prompt: 'build'}), null, 'already the pinned model');
+});
+
+test('a usage limit returns every role on that provider to its pin and notes it in the routing file', () => {
+  const project = join(dir, 'project'), bin = join(dir, 'bin');
+  cpSync('.claude/agents', join(project, '.claude/agents'), {recursive: true});
+  mkdirSync(bin);
+  writeFileSync(join(bin, 'codex'), '#!/bin/sh\necho "ERROR: You have hit your usage limit."\nexit 1\n');
+  chmodSync(join(bin, 'codex'), 0o755);
+  run(['set', 'boss-apply', 'codex', '--effort', 'high']);
+  run(['set', 'boss', 'codex']);
+  run(['set', 'film', 'claude', '--model', 'opus']);
+  const limited = spawnSync('python3', ['-I', 'scripts/agent-route.py', '--project', project, 'run', 'boss-apply', '-'], {
+    input: 'build', encoding: 'utf8', env: {...process.env, REELS_ROUTING: routing, PATH: `${bin}:${process.env.PATH}`},
+  });
+  assert.equal(limited.status, 75, limited.stderr);
+  const file = JSON.parse(readFileSync(routing, 'utf8'));
+  assert.deepEqual(file.routes, {film: {provider: 'claude', model: 'opus'}}, 'other providers keep their routes');
+  assert.deepEqual(Object.keys(file.bounced).sort(), ['boss', 'boss-apply']);
+  assert.deepEqual({...file.bounced['boss-apply'], ts: ''}, {provider: 'codex', effort: 'high', reason: 'usage limit', ts: ''});
+  assert.equal(hook({subagent_type: 'boss-apply', prompt: 'build'}), null, 'the pinned agent runs without a fallback line');
+  assert.match(run(['show']).stdout, /boss-apply\s+claude\s+claude-sonnet-5-5\s+medium\s+\(back from codex: usage limit\)/);
+  run(['set', 'boss-apply', 'codex']);
+  run(['clear', 'boss']);
+  run(['clear', 'film']);
+  assert.equal(JSON.parse(readFileSync(routing, 'utf8')).bounced, undefined, 'a new choice drops the note');
 });
 
 test('clear returns the role to its pinned agent; bad input is refused and a broken file never blocks', () => {
