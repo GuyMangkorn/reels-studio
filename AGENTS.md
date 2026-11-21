@@ -92,6 +92,7 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [scale-and-perspective-principles](docs/scale-and-perspective-principles.md) | Dimensions, projection, depth staging, apparent size | on trigger |
 | [character-proportion-principles](docs/character-proportion-principles.md) | Body/head/face work; **any pose or gesture: design from the beat, then match the [pose sheet P01–P45](docs/character-proportion-principles.md#cp-p-pose-sheet) and kit cast ([story first](#story-first))** | F S E (poses) |
 | [hand-drawing skill](.claude/skills/hand-drawing/SKILL.md) | Any hand, arm gesture or hand close-up: arm side per view, the thumb rule, the gesture kit, the POV and close-shot hand kits, the thumb check | on trigger (F, S, E) |
+| [anatomy-check skill](.claude/skills/anatomy-check/SKILL.md) | Any character posed or moved to do an action (hold, reach, lift, push, sit, walk): action line, blind read and fault list AN01–AN12 on rendered frames before the frame is reported | on trigger (F, S, E) |
 | [painted-2d skill](.claude/skills/painted-2d/SKILL.md) | Any painted 2D shot, asset or review. Default look: the [painted 3D camera](docs/film-visual-brief-workflow.md#painted-3d-camera) (user, 5 Nov 2026) | on trigger (F, S, E) |
 | [dev-findings](docs/dev-findings.md) | Choosing medium, camera, light or technique; recording a blocker (index first) | on trigger |
 | [planned-visual-components](docs/planned-visual-components.md) | RuleCard, PhoneChat, POV | on trigger |

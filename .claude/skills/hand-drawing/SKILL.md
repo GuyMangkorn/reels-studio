@@ -57,8 +57,8 @@ A fist shows its back (the knuckles) unless the shot turns the curled fingers to
 
 ## 4. Scale: mitten or five fingers
 
-- **Figure scale and close shot** (full figure, or close/medium-close at 1–1.5 m: fingers are too small to read, about 11 px at 2 m): the mitten of [UT14](../../../docs/user-taste.md) (no drawn fingers). Set its thumb with `mittenThumbSide`.
-- **Close shot, 1–1.5 m** (thigh-up, so hands at rest stay in the frame; fingers about 20–30 px): the mitten by default. Film may choose the five-finger 3D hand (`Hands3D` via `midHands3D`, close-shot kit, section 6) for a shot that truly needs to read fingers (counting, pinching, gripping), and records the reason per row. Not POV. User, 18 Nov 2026.
+- **Figure scale** (full figure, or any camera farther than 1.5 m: fingers are too small to read, about 11 px at 2 m): the mitten of [UT14](../../../docs/user-taste.md#ut-simple-hands) (no drawn fingers). Set its thumb with `mittenThumbSide`.
+- **Close shot, 1–1.5 m** (thigh-up, so hands at rest stay in the frame; fingers about 20–30 px): the five-finger 3D hand (`Hands3D` via `midHands3D`, close-shot kit, section 6). User, 21 Nov 2026; until then the mitten was the default here and the 3D hand was Film's recorded choice.
 - **First person (POV):** always the five-finger 3D hand (`Hands3D`, section 6). User, 18 Nov 2026.
 - **Close-up** (the hand or its action is the subject: pressing, pinching, counting, holding): the five-finger 3D hand from the gesture kit. Use it whenever the shot names the fingers.
 
