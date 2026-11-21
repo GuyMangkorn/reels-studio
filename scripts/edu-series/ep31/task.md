@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** ROWS-R3 published (artifact v4); waiting for the user's verdicts and Q6–Q7. **Next:** Boat picture recheck (B07, FC06, calendar); W3 look frames
+**Now:** ROWS-R4 and 9 look frames published (artifact v5); waiting for the user's look and storyboard verdicts. **Next:** W3.2 look lock, W3.3 storyboard pass, then W4 voice lock
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -23,7 +23,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R3 / BOARD-R3 (R3: ending reveal B07-SH01–03, Q6–Q7 open), 24 shots, untimed, Q1–Q5 closed (changed: B01-SH01, B01-SH02, B03-SH04, B04-SH02, B06-SH01, B07-SH03) ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes; review page: pending (page still shows R1)
   - [x] W2.3 Storyboard page published — 2026-11-21, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY (rows R1, artifact v2)
 - [ ] W3 Look frames and storyboard pass
-  - [ ] W3.1 Look frames on the page (0/L locations)
+  - [x] W3.1 Look frames on the page (9 frames, viewer check 9 pass, artifact v5, 2026-11-21)
   - [ ] W3.2 Look frames approved (look lock)
   - [ ] W3.3 Storyboard passed (0/N shots)
 - [ ] W4 Voice lock

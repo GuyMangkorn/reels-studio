@@ -278,5 +278,6 @@ Painted plate and sheet IDs (`S02-SH01`, `KSO-LF01`, `ZCPAINT-R26-A`, …) are l
 
 ## EDU EP31 lemon juice robber
 
-- About: edu Short C113 (CAT08), W2 storyboard written 21 Nov 2026; no code yet
+- About: edu Short C113 (CAT08), W2 storyboard written 21 Nov 2026; W3 look frames painted 21 Nov 2026
+- Code: [src/painted/edu31/](../src/painted/edu31/look-index.ts) W3 look frames ([set31.ts](../src/painted/edu31/set31.ts) sets and cast, [looks.ts](../src/painted/edu31/looks.ts) cameras and staging, [look.tsx](../src/painted/edu31/look.tsx) screen layers and CCTV-STILL-01 mapping, [look-index.ts](../src/painted/edu31/look-index.ts) standalone entry); render [render-looks.sh](../scripts/edu-series/ep31/short/render-looks.sh)
 - Scripts: [ep31/](../scripts/edu-series/ep31/delivery.md), [task](../scripts/edu-series/ep31/task.md), [research](../scripts/edu-series/ep31/research.md), [hook options](../scripts/edu-series/ep31/short/hook-options.md), [script](../scripts/edu-series/ep31/short/script.md), [script notes](../scripts/edu-series/ep31/short/script-notes.md), [fact-check](../scripts/edu-series/ep31/short/fact-check.md), [film brief](../scripts/edu-series/ep31/short/film-brief.md), [storyboard](../scripts/edu-series/ep31/short/storyboard.md), [review rows](../scripts/edu-series/ep31/short/review-rows.json), [concept C113](../scripts/edu-series/concepts/C113.md)

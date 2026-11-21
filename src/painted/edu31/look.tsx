@@ -1,0 +1,117 @@
+import type {CSSProperties, ReactNode} from 'react';
+import {useCallback} from 'react';
+import {AbsoluteFill, getInputProps, Img, staticFile} from 'remotion';
+import {CAPTION_OUTLINE, channelLabelLook, defaultChrome} from '../../scenes/media';
+import {Subtitles} from '../../scenes/Subtitles';
+import {BrushCanvas, type PaintContext} from '../BrushCanvas';
+import {makePainter, type Pt} from '../kit/painter';
+import {Grain} from '../kit/screen';
+import type {V3} from '../kit/space';
+import {camPoint, type YCam} from '../kit/ycam';
+import {LOOK_DEFS, type LookDef} from './looks';
+
+// EDU-EP31-SHORT W3 look layer (Film, 2026-11-21): one BrushCanvas per still; above it the camera-mapped CCTV-STILL-01 image (screen and
+// prints, DF-20261031-painted-raster-card), English signage as DOM text mapped through the same camera, the screen layers (VD31-08: CCTV
+// preset and CRT bezel, CSS approximations of the missing kit presets), the caption (edu outline, bottomEdgeY 1344) and the chrome with the
+// reconstruction label (VD31-17, outside every screen layer). Props: {"caption": false} drops caption and chrome (also used to write
+// CCTV-STILL-01 from LF02); {"guides": true} adds the caption band. Render: sh scripts/edu-series/ep31/short/render-looks.sh <version> [IDs]
+
+const LABEL = 'แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ภาพจริง';
+
+/** CSS matrix3d mapping a w x h element onto the picture quad p0..p3 (top-left, top-right, bottom-right, bottom-left). */
+const quadMatrix = (w: number, h: number, [p0, p1, p2, p3]: Pt[]): string => {
+  const dx1 = p1[0] - p2[0], dx2 = p3[0] - p2[0], dx3 = p0[0] - p1[0] + p2[0] - p3[0];
+  const dy1 = p1[1] - p2[1], dy2 = p3[1] - p2[1], dy3 = p0[1] - p1[1] + p2[1] - p3[1];
+  const den = dx1 * dy2 - dx2 * dy1;
+  const g = (dx3 * dy2 - dx2 * dy3) / den, hh = (dx1 * dy3 - dx3 * dy1) / den;
+  const a = p1[0] - p0[0] + g * p1[0], b = p3[0] - p0[0] + hh * p3[0], c = p0[0];
+  const d = p1[1] - p0[1] + g * p1[1], e = p3[1] - p0[1] + hh * p3[1], f = p0[1];
+  return `matrix3d(${a / w},${d / w},0,${g / w},${b / h},${e / h},0,${hh / h},0,0,1,0,${c},${f},0,1)`;
+};
+const project = (c: YCam, q: V3[]): Pt[] | null => {
+  const pts = q.map((v) => camPoint(c, v));
+  return pts.every(Boolean) ? (pts as Pt[]) : null;
+};
+const onQuad = (c: YCam, corners: V3[], w: number, h: number, child: ReactNode, style: CSSProperties = {}, key?: string) => {
+  const pts = project(c, corners);
+  if (!pts) return null;
+  return <div key={key} style={{position: 'absolute', left: 0, top: 0, width: w, height: h, transformOrigin: '0 0', transform: quadMatrix(w, h, pts), ...style}}>{child}</div>;
+};
+const scan = (op: number, step = 4): CSSProperties => ({position: 'absolute', inset: 0, pointerEvents: 'none',
+  background: `repeating-linear-gradient(0deg, rgba(0,0,0,${op}) 0px, rgba(0,0,0,${op}) ${step / 2}px, transparent ${step / 2}px, transparent ${step}px)`});
+
+/** VD31-08 CCTV preset (look-frame approximation of the missing kit preset): grey-green mono with lifted blacks (the beard sits in the middle
+ *  value), softness for the low resolution, scanlines, a rolling noise band, vignette, timestamp and CAM/REC. */
+const CCTV_FILTER = 'grayscale(1) sepia(0.45) hue-rotate(48deg) saturate(1.25) contrast(0.72) brightness(1.22) blur(1.4px)';
+const CctvOverlay = () => (
+  <>
+    <div style={scan(0.22, 6)} />
+    <div style={{position: 'absolute', left: 0, right: 0, top: 1010, height: 70, background: 'linear-gradient(180deg, transparent, rgba(220,240,210,0.13), transparent)'}} />
+    <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(10,20,12,0.55) 100%)'}} />
+    <div style={{position: 'absolute', left: 120, top: 1440, fontFamily: "'Courier New', monospace", fontWeight: 700, fontSize: 52, color: '#e6f2dc', letterSpacing: 4, textShadow: '0 0 6px rgba(200,255,200,0.5), 3px 3px 0 #0b140c'}}>JAN 06 1995</div>
+    <div style={{position: 'absolute', right: 110, top: 250, display: 'flex', alignItems: 'center', gap: 16, fontFamily: "'Courier New', monospace", fontWeight: 700, fontSize: 46, color: '#e6f2dc', letterSpacing: 3, textShadow: '3px 3px 0 #0b140c'}}>
+      <span style={{width: 26, height: 26, borderRadius: 13, background: '#ff2a1e', boxShadow: '0 0 10px #ff2a1e'}} />REC  CAM 2
+    </div>
+  </>
+);
+const crtLook: CSSProperties = {filter: 'contrast(1.05) brightness(1.08) saturate(0.9)'};
+
+const Still = ({id}: {id: string}) => {
+  const look: LookDef = LOOK_DEFS[id]();
+  const fn = useCallback(({brush, frame}: PaintContext) => look.paint(makePainter(brush, {t: 0, frame, fade: look.paper})), [look]);
+  const props = getInputProps() as {caption?: boolean; guides?: boolean};
+  const c = look.cam;
+  const picture = (
+    <>
+      <BrushCanvas paint={fn} paper={look.paper} />
+      {(look.texts ?? []).map((t, i) => {
+        const [a, b, , d] = t.corners, wm = Math.hypot(b[0] - a[0], b[1] - a[1], b[2] - a[2]), hm = Math.hypot(d[0] - a[0], d[1] - a[1], d[2] - a[2]);
+        const W = 1000, H = (W * hm) / wm, fs = Math.min(H * 0.92, W / (t.text.length * 0.68));
+        return onQuad(c, t.corners, W, H, <div style={{width: W, height: H, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: "'Arial Black', 'Helvetica Neue', Arial, sans-serif", fontWeight: t.weight ?? 800, fontSize: fs, lineHeight: 1, color: t.color, letterSpacing: fs * 0.04, whiteSpace: 'nowrap'}}>{t.text}</div>, {opacity: 0.94}, `t${i}`);
+      })}
+      {(look.quads ?? []).map((q, i) => {
+        const W = 800, H = 1000, pad = (q.border ?? 0) * W;
+        return onQuad(c, q.corners, W, H, (
+          <div style={{width: W, height: H, background: q.border ? '#f4f1ea' : '#000', padding: pad, boxSizing: 'border-box', boxShadow: q.border ? 'inset 0 0 0 2px rgba(0,0,0,0.12)' : undefined}}>
+            <div style={{position: 'relative', width: '100%', height: '100%', overflow: 'hidden', borderRadius: q.crt ? 40 : 0}}>
+              <Img src={staticFile(q.src)} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: q.pos ?? '50% 50%', ...(q.crt ? crtLook : {})}} />
+              {q.crt && <><div style={scan(0.28, 10)} /><div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(170,200,255,0.10) 30%, rgba(0,0,0,0.55) 100%)'}} /><div style={{position: 'absolute', left: '8%', top: '6%', width: '40%', height: '22%', background: 'radial-gradient(ellipse, rgba(255,255,255,0.10), transparent 70%)'}} /></>}
+              {q.border ? <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.10), transparent 40%)'}} /> : null}
+            </div>
+          </div>
+        ), {}, `q${i}`);
+      })}
+    </>
+  );
+  return (
+    <AbsoluteFill style={{background: look.paper}}>
+      {look.layer === 'cctv' ? <AbsoluteFill style={{filter: CCTV_FILTER}}>{picture}</AbsoluteFill> : picture}
+      {look.layer === 'cctv' && <CctvOverlay />}
+      {(look.boxes ?? []).map((b, i) => (
+        <div key={`b${i}`} style={{position: 'absolute', left: b.x, top: b.y, width: b.w, height: b.h, border: '6px solid #d9e2f0', boxShadow: '0 6px 18px rgba(0,0,0,0.5)', overflow: 'hidden', background: '#000'}}>
+          <Img src={staticFile(b.src)} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 30%'}} />
+        </div>
+      ))}
+      {look.layer === 'studio' && <>
+        {/* the 4:3 studio picture seen full frame through the CRT: scanlines, phosphor glow, curved bezel around x 22-1058, y 170-948 */}
+        <div style={{position: 'absolute', left: 22, top: 170, width: 1036, height: 778, borderRadius: 60, overflow: 'hidden', pointerEvents: 'none'}}>
+          <div style={scan(0.26, 8)} />
+          <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 50%, rgba(180,210,255,0.08) 40%, rgba(0,0,0,0.6) 100%)'}} />
+        </div>
+        <div style={{position: 'absolute', left: 22, top: 170, width: 1036, height: 778, borderRadius: 60, boxShadow: '0 0 0 1400px #2a2725, inset 0 0 40px rgba(0,0,0,0.8)'}} />
+        <div style={{position: 'absolute', left: 120, right: 120, top: 1460, height: 120, background: 'repeating-linear-gradient(90deg, #1c1a19 0 10px, #34302d 10px 20px)', borderRadius: 10, opacity: 0.8}} />
+      </>}
+      {look.pool && <div style={{position: 'absolute', left: look.pool.x - look.pool.r, top: look.pool.y - look.pool.r, width: look.pool.r * 2, height: look.pool.r * 2, borderRadius: '50%', mixBlendMode: 'screen', background: `radial-gradient(circle, rgba(${look.pool.color},${look.pool.op}) 0%, rgba(${look.pool.color},${look.pool.op * 0.45}) 35%, transparent 70%)`}} />}
+      {look.vignette ? <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 38%, transparent 42%, rgba(8,6,4,${look.vignette}) 100%)`}} /> : null}
+      <Grain opacity={look.layer === 'cctv' ? 0.12 : 0.05} />
+      {props.caption !== false && <>
+        {look.caption && <Subtitles text={look.caption} style={{preset: 'outline', bottomEdgeY: 1344, ...CAPTION_OUTLINE}} />}
+        <span lang="th" style={{position: 'absolute', top: 128, left: 120, fontSize: 22, fontFamily: 'Noto Sans Thai', ...channelLabelLook('outline', '#49445c')}}>{defaultChrome.channelLabel}</span>
+        <span lang="th" style={{position: 'absolute', top: 160, left: 120, fontSize: 17, fontFamily: 'Noto Sans Thai', ...channelLabelLook('outline', '#49445c'), WebkitTextStroke: '4px #2b1a12'}}>{LABEL}</span>
+      </>}
+      {props.guides && <div style={{position: 'absolute', left: 0, right: 0, top: 860, height: 388, borderTop: '2px dashed rgba(255,255,255,0.75)', borderBottom: '2px dashed rgba(255,255,255,0.75)'}} />}
+    </AbsoluteFill>
+  );
+};
+
+export const LOOKS = Object.fromEntries(Object.keys(LOOK_DEFS).map((id) => [id, () => <Still id={id} />])) as Record<string, () => ReactNode>;
