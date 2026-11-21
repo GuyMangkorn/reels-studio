@@ -39,8 +39,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
     - [x] Batch 2 B04–B07 (12 shots, Boss 2026-11-21): plates built and frame-checked, VD31-08 CCTV/CRT presets, VD31-09 bumper, B07-SH01 label + tracking arrow; not committed — [build notes](short/build-notes.md#w52-batch-2-plates-b04b07-2026-11-21-boss-edu-ep31-scene-r1-rows-r7); open for Film: departures listed there
   - [x] W5.2s Ton sounds and cue sheet (76/76 cues; 70 generated, 6 library) — [sound-cues.json](short/sound-cues.json), levels measured, no FAIL; Editor to place and fill `levels.stems`
   - [x] W5.3 Draft passed 24/24 (user, 2026-11-21, ROWS-R8, cut key a2c850ef7cff for B01-SH01..03; earlier notes follow: 0/24 shots; draft cut refreshed again 2026-11-21 after the user's Draft notes (4 shots + B04-SH01 caption), no pass; draft cut `EDU-EP31-SHORT` 24 shots rendered 2026-11-21 by Editor and re-rendered the same day with Ton's recalibrated stem (59.83 s, mix-levels 2 FAIL accepted by the user), rows ROWS-R7 carry `draftCut` + `clips.draft`, page not published, no verdicts; mix-levels 3 FAIL (Ton), caption band not met by shade on 17 of 24 shots, see [build-notes](short/build-notes.md#w53-draft-cut-2026-11-21-editor-edu-ep31-scene-r1-rows-r7); draft cut re-rendered again after SCENE-R2 / VOICE-R1.3, see [build-notes](short/build-notes.md#w53-draft-cut-after-scene-r2--voice-r13-editor-2026-11-21-rows-r8-base-1319b4e))
-- [ ] W6 Final passed (0/N shots)
-- [ ] W7 Pinned (0/N shots)
+- [x] W6 Final passed — user ok on the whole video in chat, 2026-11-21 (file `out/EDU-EP31-SHORT/EDU-EP31-SHORT.mp4`, 1080x1920, 59.83 s, -14.0 LUFS; re-rendered pixel-identical, PSNR 51.9 dB, after `screen31.tsx`/`shot.tsx` literal staticFile fix so the scene cache works)
+- [x] W7 Pinned (24/24 scenes, 2026-11-21)
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock
   - [ ] W8.2 Delivery render and cover published (`publish/edu/EDU/EDU-EP31-SHORT/`)

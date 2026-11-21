@@ -100,7 +100,7 @@ export const PlateLayers = ({def, L, c, shade}: {def: Shot31; L: number; c: YCam
       {fl > 0 && <FlashWash op={fl} />}
       {def.vignette ? <VignetteLayer amount={def.vignette} /> : null}
       {cc && <CctvOverlay t={cc.t} />}
-      {frz && <Img src={staticFile(frz)} style={{position: 'absolute', inset: 0, width: 1080, height: 1920}} />}
+      {frz && <Img src={staticFile('edu31/cctv-still-01.png')} style={{position: 'absolute', inset: 0, width: 1080, height: 1920}} />}
       {!frz && <Grain opacity={def.grain?.(L) ?? 0.05} />}
       {shade}
       {tg && <TagPlate tag={tg.tag} pop={tg.pop} />}
@@ -115,7 +115,7 @@ const quadNode = (c: YCam, q: Quad31) => {
   return onQuad(c, q.corners, w, h, (
     <div style={{position: 'relative', width: w, height: h, background: q.border ? '#f4f1ea' : '#000', padding: pad, boxSizing: 'border-box', boxShadow: q.border ? 'inset 0 0 0 2px rgba(0,0,0,0.12)' : undefined, filter: q.blur ? `blur(${q.blur}px)` : undefined}}>
       <div style={{position: 'relative', width: '100%', height: '100%', overflow: 'hidden'}}>
-        <Img src={staticFile(q.src)} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: q.pos ?? '50% 50%'}} />
+        <Img src={staticFile('edu31/cctv-still-01.png')} style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: q.pos ?? '50% 50%'}} />
         {q.border ? <div style={{position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(255,255,255,0.10), transparent 40%)'}} /> : null}
       </div>
       {q.shade ? <div style={{position: 'absolute', inset: 0, background: `rgba(10,8,6,${q.shade})`}} /> : null}

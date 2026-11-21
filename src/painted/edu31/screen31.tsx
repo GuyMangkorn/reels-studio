@@ -54,7 +54,7 @@ export const CrtGlass = ({lines = 0.28, step = 10}: {lines?: number; step?: numb
  *  glass (the picture is painted under it in the canvas). `roll` 0..1 adds a vertical roll with a black frame bar (a picture switch). */
 export type CrtState =
   | {mode: 'off'} | {mode: 'line'; k: number} | {mode: 'bumper'; f: number}
-  | {mode: 'image'; src: string; pos?: string; roll?: number} | {mode: 'glass'; roll?: number};
+  | {mode: 'image'; src: string /* only edu31/cctv-still-01.png: render-inputs needs a literal staticFile path */; pos?: string; roll?: number} | {mode: 'glass'; roll?: number};
 
 const W = 800, H = 600;
 const RollBar = ({roll}: {roll: number}) => roll <= 0 ? null : (
@@ -110,8 +110,8 @@ export const CrtContent = ({s}: {s: CrtState}) => {
   if (s.mode === 'bumper') return <><NewsBumper f={s.f} /><CrtGlass /></>;
   if (s.mode === 'image') return <>
     <div style={{position: 'absolute', inset: 0, background: '#000'}} />
-    <Img src={staticFile(s.src)} style={{position: 'absolute', left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: s.pos ?? '50% 50%', top: `${((s.roll ?? 0) * 100) % 100}%`, ...crtLook}} />
-    {s.roll ? <Img src={staticFile(s.src)} style={{position: 'absolute', left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: s.pos ?? '50% 50%', top: `${((s.roll * 100) % 100) - 100}%`, ...crtLook}} /> : null}
+    <Img src={staticFile('edu31/cctv-still-01.png')} style={{position: 'absolute', left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: s.pos ?? '50% 50%', top: `${((s.roll ?? 0) * 100) % 100}%`, ...crtLook}} />
+    {s.roll ? <Img src={staticFile('edu31/cctv-still-01.png')} style={{position: 'absolute', left: 0, width: '100%', height: '100%', objectFit: 'cover', objectPosition: s.pos ?? '50% 50%', top: `${((s.roll * 100) % 100) - 100}%`, ...crtLook}} /> : null}
     <RollBar roll={s.roll ?? 0} /><CrtGlass />
   </>;
   return <><RollBar roll={s.roll ?? 0} /><CrtGlass lines={0.26} step={8} /></>;
