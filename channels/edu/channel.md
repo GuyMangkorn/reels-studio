@@ -16,7 +16,7 @@
 
 ## Rules of this channel
 
-- **Script:** [script.md](script.md) (the fun bar and ER01–ER13: one story with a victim, bits, gossiping narrator, escalation, punchline ending, hook, wow facts, bold true lines, pitch check).
+- **Script:** [script.md](script.md) (the fun bar and ER01–ER14: one story with a victim, bits, gossiping narrator, escalation, punchline ending, hook, wow facts, bold true lines, pitch check).
 - **Categories:** [categories.md](categories.md) (CAT01–CAT10, the category index); the user picks categories before Preaw pitches ([category pick](categories.md#category-pick); user, 17 Nov 2026).
 - **Numbers:** [performance.md](performance.md); the coordinator adds a row per posted video ([performance record](../../docs/delivery-workflow.md#performance-record)).
 - **Look:** the [project defaults](../../docs/delivery-workflow.md#project-defaults) (painted 3D camera, the four-head cast) with the [retention camera](../../docs/cinematography-principles.md#retention-camera). No `look.md` yet.
