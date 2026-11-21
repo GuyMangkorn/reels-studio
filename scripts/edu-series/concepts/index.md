@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C113**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C119**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -73,5 +73,11 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C110 | ออสเตรเลียส่งปืนกลไปรบกับนกอีมู แล้วแพ้ (CAT02) | picked | EDU-EP30-SHORT | R19 | [C110.md](C110.md) |
 | C111 | เสื้อที่คุณคิดว่าทั้งห้องเห็น (CAT04) | pitched | - | R19 | [C111.md](C111.md) |
 | C112 | คนที่ขายหอไอเฟลได้สองครั้ง (CAT08) | pitched | - | R19 | [C112.md](C112.md) |
+| C113 | โจรปล้นธนาคารที่ทาน้ำมะนาวแทนหน้ากาก (CAT08) | picked | EDU-EP31-SHORT | R20 | [C113.md](C113.md) |
+| C114 | ซื้อเครื่องดูดฝุ่น แถมตั๋วเครื่องบินไปอเมริกา (CAT05) | pitched | - | R20 | [C114.md](C114.md) |
+| C115 | อยากให้คนเกลียดเลิกเกลียด ให้ไปขอยืมของเขา (CAT04) | pitched | - | R20 | [C115.md](C115.md) |
+| C116 | ไรเดอร์ที่ต้องส่งดาวนิวตรอนหนึ่งช้อนชา (CAT01) | pitched | - | R20 | [C116.md](C116.md) |
+| C117 | แมตช์ที่ทีมหนึ่งตั้งใจยิงเข้าประตูตัวเองเพื่อชนะ (CAT07) | pitched | - | R20 | [C117.md](C117.md) |
+| C118 | พระราชาที่แตะอะไรก็เป็นทอง แล้วเกือบอดตาย (wild card) (CAT06) | pitched | - | R20 | [C118.md](C118.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

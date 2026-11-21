@@ -1,0 +1,20 @@
+# EP31 — The Lemon Juice Robber
+
+- Record `EDU-EP31-DELIVERY-R1`, 2026-11-21.
+- Channel `edu`, project `EDU`. Short only, Full pipeline. Target 50–60 s, estimated from the selected pitch.
+- Selection [C113, round R20](../concepts/C113.md), CAT08 True Crime. User pick (structured question, then corrected in chat), 2026-11-21: "เราแค่เรื่อง โจรน้ำมะนาวก่อน ปืนมีได้ก็วาดให้เหมือนปืนของเล่นแทน". A weapon may appear drawn as an obvious toy gun, never realistic. Real person who may be alive: generic painted face, no likeness claim, no invented quotes (only the documented line).
+- Style profile. Edu defaults: Thai story-led with factual knowledge (ER11), Kore narration, painted 2D with a painted 3D camera, default four-head cast. Film's annotation (size M; CCTV screen layer and 1995 news bumper are new) is in the concept file.
+- W1.1 Boat research next, on the fact leads in C113 (McArthur Wheeler, Pittsburgh, 1995; the two banks; the lemon-juice belief; the Polaroid test; the news airing and arrest; whether he is alive; whether a weapon was involved; the Dunning–Kruger link).
+- Task file [task.md](task.md).
+
+| Deliverable ID | Stage / Next owner | Editorial and timing | Production |
+| --- | --- | --- | --- |
+| `EDU-EP31-SHORT` | W2.2 done / coordinator W2.3 publish page, Q1–Q5, W1.5 confirm | Target 50–60 s | - |
+
+## Change log
+
+- 2026-11-21, coordinator: created the record from the R20 pick.
+- 2026-11-21, user (structured question): hook pick "H1 ไม่ใส่หน้ากาก (Recommended)" from [EDU-EP31-HOOKS-R1](short/hook-options.md) (HK01 broken certainty, no channel rule bent). Opening: "ปี 1995 ผู้ชายคนนี้กับเพื่อน ปล้นธนาคารสองแห่งในวันเดียว ไม่ใส่หน้ากากเลย… เพราะเขาทาน้ำมะนาวที่หน้าไว้แล้ว". Next Preaw W1.2 script.
+- 2026-11-21, Preaw: W1.2 script `EDU-EP31-SCRIPT-R1` ([short/script.md](short/script.md), [script-notes.md](short/script-notes.md)). Hook H1 locked; 206 narration syllables at 4.41 syll/s (EP30 VOICE-R2) + 29 character syllables + gaps and 2.0 s hold = about 59.7 s, estimated, no read-aloud. Limit 63 s. First trims if long: L14 second sentence, then L07. Next Boat W1.3.
+- 2026-11-21, user: L15 felt confusing, asked for spoken friend-gossip Thai, "ทำไมคนถึงมั่นใจ ทั้งที่ไม่รู้อะไรจริง ๆ เลย" in a funny tone. Preaw SCRIPT-R2 (L15 rewritten, L06 "ไม่มีเขาเลยจริง ๆ", name "แมคอาเธอร์", clock rule, projected about 62.6 s). Boat FACT-R1 and Recheck R2: ready-for-storyboard, no must-fix. Coordinator: B05 sound line made neutral (RC03). User, 2026-11-21: "ให้ทำต่อไปจนถึงฟีมทำ storyboard เลยนะ" — proceeding to Film on SCRIPT-R2; formal script approval (W1.5) to be confirmed on the review page. Length trims if voice lock runs over: L07, then L14 second sentence.
+- 2026-11-21, Film: W2.1 brief `EDU-EP31-BRIEF-R1` ([short/film-brief.md](short/film-brief.md), VD31-01–17, LF01–LF07, Q1–Q5) and W2.2 storyboard `EDU-EP31-BOARD-R1` / rows `EDU-EP31-ROWS-R1` (24 shots, untimed; [storyboard.md](short/storyboard.md), [review-rows.json](short/review-rows.json)). Size M+. New: seven small sets, WHEELER windbreaker, police outfit, props, CCTV and CRT screen layers, 1995 news bumper. Page built locally, not published. Open: Q1 lemon colour, Q2 place tag, Q3 Wheeler head man-crop, Q4 ending picture, Q5 if L07 is cut. docs/context-map-episodes.md needs an EP31 heading at commit.
