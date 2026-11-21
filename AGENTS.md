@@ -79,6 +79,7 @@ Every agent reads AGENTS.md plus its **core** documents, and any other document 
 | [mark-storyboard-workflow](docs/mark-storyboard-workflow.md) | Scene sheets (Film); the review page: [review-page skill](.agents/skills/review-page/SKILL.md) (Film rows, coordinator publishing) | F |
 | [user-taste](docs/user-taste.md) | Painting thumbnails, look frames, plates; [viewer check](docs/sequence-workflow.md#viewer-check); a repeated user note | F S |
 | [cover-principles](docs/cover-principles.md) / [cover-design skill](.agents/skills/cover-design/SKILL.md) | Any cover, thumbnail or video title (Cover, `.claude/agents/cover.md`); the skill is the procedure | C |
+| [publishing-copy skill](.agents/skills/publishing-copy/SKILL.md) | Per-episode publish package for ทำไมล่ะ: three titles drawn from the cover file, cover sub-lines, YouTube/IG/FB/TikTok captions and hashtags (coordinator; after the script exists). Does not design the cover | on trigger |
 | [storyboard-principles](docs/storyboard-principles.md) | Shot direction beyond routine staging | on trigger |
 | [boss-asset-workflow](docs/boss-asset-workflow.md) | Shared assets, renderer capabilities, contact bugs; its [QA](docs/boss-asset-workflow.md#visual-and-runtime-qa-before-push) and [production rules](docs/boss-asset-workflow.md#latest-production-rules) | S |
 | [render skill](.agents/skills/render/SKILL.md) | Any video render, review clip or still | S E; F and C when rendering |
