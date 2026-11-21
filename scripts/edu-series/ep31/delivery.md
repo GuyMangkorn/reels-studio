@@ -44,3 +44,6 @@
 - 2026-11-21, coordinator: review page republished with the Draft cut (ROWS-R7, artifact v10 `1795252936-f69d`, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); Draft tab has the full cut, 0/24 Draft verdicts; storyboard verdicts 24/24 kept in db `reviews/<shot>@board`.
 
 - 2026-11-21, user (Draft round): 23/24 Draft ok; B03-SH04 change: label 'สมมุติ' -> 'เหตุการณ์สมมุติ' (applied to B03-SH04 and B07-SH01, one constant). Boat Recheck R7 (text level): no must-fix; user keeps 'เหตุการณ์สมมุติ' over Boat's optional RC7-01 'แต่งขึ้น' wording; user accepts the RC7-05 gap (no label on B03-SH01/02, camera breaks ~5 s before label). Draft mix FAILs B05 blip and B07 snap accepted by user.
+- 2026-11-21, Editor: W5.3 draft cut refreshed after the user's Draft notes (B03-SH04/B07-SH01 joke label, B05-SH02/B06-SH02 lip-sync, B04-SH01 caption 'เราเปิดกล้องหน้ายัง' kept in one card); 59.83 s, same stem, rows unchanged; page not republished, no verdicts. Details: short/build-notes.md.
+
+- 2026-11-21, coordinator: page republished v11 `1795254674-2ece` with the refreshed Draft cut (label 'เหตุการณ์สมมุติ', lip-sync B05-SH02/B06-SH02, B04-SH01 caption 'เราเปิดกล้องหน้ายัง' kept in one card). Per-shot draft `key` 649de0790f83 set on the 19 unchanged shots so their Draft ok stays valid; changed 5 shots (B03-SH04, B04-SH01, B05-SH02, B06-SH02, B07-SH01) ask again.
