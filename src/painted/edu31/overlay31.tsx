@@ -41,14 +41,19 @@ export const WorldTexts = ({cam, texts}: {cam: YCam; texts: WorldText[]}) => (
 
 /** VD31-19 joke label: text, left x or centred (`center`: on the frame; `cx`: on that picture x, batch 2), top y, font px, optional hand-drawn
  *  arrow (picture px, three points: start, control, tip). */
-export type Tag31 = {text: string; x?: number; cx?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]};
+export type Tag31 = {text: string; x?: number; cx?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]; wrap?: boolean};
+/** `wrap`: two centred lines, broken after the first ': ' (the text itself is unchanged; fix round 2026-11-21, the longer label). */
+const tagLines = (t: Tag31) => {
+  const i = t.text.indexOf(': ');
+  return t.wrap && i > 0 ? <>{t.text.slice(0, i + 1)}<br />{t.text.slice(i + 2)}</> : t.text;
+};
 /** VD31-19 joke label (R6): cream Thai on a dark translucent rounded plate, outside every screen layer; the arrow is a soft hand-drawn stroke.
  *  `pop` 0..1 is the soft pop-in (scale 0.8 -> 1, a small overshoot, readable from its first frame), 1 = settled. */
 export const TagPlate = ({tag, pop = 1}: {tag: Tag31; pop?: number}) => {
   const k = Math.max(0, Math.min(1, pop)), s = 0.8 + 0.2 * (1 - (1 - k) * (1 - k)) + 0.04 * Math.sin(Math.PI * k);
-  const plate = <span lang="th" style={{display: 'inline-block', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: tag.size, lineHeight: 1.25, color: '#f6ecd2',
+  const plate = <span lang="th" style={{display: 'inline-block', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: tag.size, lineHeight: 1.25, color: '#f6ecd2', textAlign: 'center',
     background: 'rgba(22,15,10,0.78)', padding: `${tag.size * 0.22}px ${tag.size * 0.55}px`, borderRadius: tag.size * 0.42, boxShadow: '0 3px 10px rgba(0,0,0,0.35)',
-    transform: k < 1 ? `scale(${s})` : undefined}}>{tag.text}</span>;
+    transform: k < 1 ? `scale(${s})` : undefined}}>{tagLines(tag)}</span>;
   const a = tag.arrow;
   return (
     <>

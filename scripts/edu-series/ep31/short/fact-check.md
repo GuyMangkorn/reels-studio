@@ -247,3 +247,34 @@ Revision: `EDU-EP31-BRIEF-R6` (VD31-19), `EDU-EP31-ROWS-R6` / `EDU-EP31-BOARD-R6
 ### Status
 
 `ready-for-page` for ROWS-R6 with RC6-02 recommended before the timed pass (not blocking). No SCRIPT-R2 change; the rows were not edited. Recheck needed only if the label text changes, the joke moves into another shot, any narration or text names a cause, or the lemon is shown touching a print. Not user approval, not audio or runtime validation. Confidence: label wording and reveal frame high (viewed); B03 staging medium (plan only).
+
+## Recheck R7 (label wording, open item O1)
+
+Revision: label text only, as "เหตุการณ์สมมุติ: กล้องดันพังพอดี" (user, Draft verdict, 2026-11-21), on B03-SH04 (whole shot) and B07-SH01 (from f1542, arrow to the camera), against `EDU-EP31-SCRIPT-R2` and the voice lock (unchanged; narration names no cause). Boat, 2026-11-21. No new sources: F006 (print lacked his face, cause unknown, police guessed bad film, maladjusted camera or camera pointed away; one secondary chain, medium confidence) and RC3-01, RC6-01..06 reused. Text-level check of the wording in the rows, scene sheets (b03.md, b07.md, index.md) and build-notes; the repo files still carry the previous text "สมมุติ: …", so no frame with the new wording was viewed. Not a picture validation. Severity: must-fix, should-fix, note.
+
+**Verdict: no must-fix. Nothing blocks the page.** The wording is acceptable. One optional-leaning should-fix (a clearer word for "invented"), the rest notes.
+
+| ID | Item | Sev. | Blocks page |
+| --- | --- | --- | --- |
+| RC7-01 | "สมมุติ" can read as "suppose / a hypothesis" instead of "made up" | should-fix (cheap; Film or user may decline with a reason) | no |
+| RC7-02 | Ownership ("ของเรา") is gone; nobody is named as the inventor | note | no |
+| RC7-03 | Next to "ภาพและเสียงจำลอง": two near-synonyms on screen | note | no |
+| RC7-04 | Consistency with SCRIPT-R2, voice lock, RC3-01, RC6-01..06 | note (pass) | no |
+| RC7-05 | RC6-02 still open: no label on B03-SH01/SH02 | should-fix carried (cheap, not new) | no |
+| RC7-06 | Spelling "สมมุติ" vs "สมมติ" | note | no |
+
+**RC7-01 (should-fix).** "เหตุการณ์สมมุติ" is a fixed TV and news phrase for a staged re-enactment of an incident, so most viewers will read it as "an event we staged". But "สมมุติ" also means "suppose" (as in "สมมุติว่า…", "สมมุติฐาน" = hypothesis). The two readings: (a) "a made-up incident" (intended); (b) "a hypothetical scenario: suppose the camera was broken", i.e. a candidate real cause. Reading (b) is not false (it is one of the police's unproven guesses, F006, and it is flagged as not known), so it is not a wrong takeaway and not must-fix. It is weaker than the intended message, though: it leaves open that the camera may really be the answer, and the gag wants "we invented this". The gag shot itself (spark, puff, lens turned at his face, "he does not notice") pushes toward (a), which is why this is not must-fix. If the user wants it unambiguous, true and equally punchy options, strongest first: **"เรื่องแต่งของเรา: กล้องดันพังพอดี"** (restores ownership, says "invented"), **"แต่งขึ้นเอง: กล้องดันพังพอดี"**, **"เหตุการณ์แต่งขึ้น: กล้องดันพังพอดี"** (one word change from the current line, keeps the "เหตุการณ์" form). The current wording may stay: the standing series label and the unchanged narration carry the rest.
+
+**RC7-02 (note).** "มุกของเรา" in R6 named the makers as the source of the joke; "เหตุการณ์สมมุติ" drops the owner and calls the camera an "event", a little more fact-like than "มุก" (a joke) or "สมมุติ" alone. Still marked hypothetical, so no false claim. "พอดี" keeps the coincidence tone that signals a joke.
+
+**RC7-03 (note).** The series label says "ภาพและเสียงจำลอง ไม่ใช่ภาพจริง" (reconstruction of the real case). "สมมุติ" means something different (invented for the joke). A viewer may not separate "จำลอง" from "สมมุติ" and may take the broken camera as one more reconstructed fact, which is what RC6-01 worried about. The joke plate must stay visually distinct (its own plate and position, as in VD31-12/VD31-19), and the arrow in B07-SH01 helps because it points at the camera as the joked item. No change needed; "แต่งขึ้น" (RC7-01) would separate the two terms more clearly.
+
+**RC7-04 (pass).** SCRIPT-R2 L06 says only that the print has no him, and L15 names no cause: no conflict. The label states no cause as documented and no source, person or paper (F006, F015/F016 hold). RC3-01 holds: the label text mentions only the camera, never the lemon, and adds no mark or arrow on a print; the only arrow points at the camera (RC6-05). RC6-01's reasoning (a label that owns the line as ours and states no cause) still stands, with the ownership weaker (RC7-02). RC6-04 timing note unchanged for B07-SH01 (label from f1542, during "นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้"): the word "เหตุการณ์" makes it slightly more possible to read the camera as part of "เรื่องนี้", the story the psychologist read; the arrow and the empty-of-text table still hold the line. No sound change: the pop is UI sound for the label, no event asserted.
+
+**RC7-05 (carried, should-fix, cheap).** build-notes.md (lines about the label) record the label on B03-SH04 only, "none on B03-SH01/SH02". The camera breaks on "ทดสอบ" in SH01, about 5 s before the label appears (RC6-02). Unchanged by the wording; the user's change is only the text. Smallest fix as in RC6-02: a short plate ("สมมุติ" or the new text) from the slam. If the user has already accepted the 5 s, record that decision.
+
+**RC7-06 (note).** The Royal Institute form is "สมมติ"; "สมมุติ" is a very common accepted variant. Either reads the same; keep the one the rest of the delivery uses (the rows use "สมมุติ"), and keep the plate text identical in `JOKE_LABEL` and the rows.
+
+### Status
+
+`ready-for-page` for the wording, with RC7-01 as the one recommended wording choice (the user decides; current text acceptable) and RC7-05 carried. No SCRIPT-R2 change; no rows, scripts or code edited by Boat. Recheck needed only if the text changes again, or if the label moves to a shot where the camera is not the joked item. Not user approval, not audio, picture or runtime validation; the frames with the new text (B03-SH04, B07-SH01 at f1542) should be viewed at W5.1 for text exactness and the arrow.

@@ -8,10 +8,11 @@ import {CCTV_STILL} from '../looks';
 import {printQuad} from '../police31';
 import {glow, paintPoliceShell, policeTable, WHEELER} from '../set31';
 import {makeShot, type Shot31} from '../shot';
+import {speechOpen, WHEELER_ENV} from '../speech31';
 import {camMove, dryAnchors, ez, fig, gu, keysAt, mix2, poseShoulder, reachArm} from '../stage31';
 
 // B06-SH02 · F [1416, 1520) · close: his documented line (SCENE-R1 b06). Wheeler seated P31 at (0, 0, -0.75) (as B05-SH04/B06-SH01), `talk`
-// mouth on his speech frames (L3-100) over `neutral` -> `worried` (L80); eyes down to the print L0-8 (head tilt 5 deg), up to the officer just
+// mouth on his speech frames (L3-100), `open` from the L14 envelope (speech31.ts, fix round 2026-11-21: it was a static shape) over `neutral` -> `worried` (L80); eyes down to the print L0-8 (head tilt 5 deg), up to the officer just
 // right of the lens L8-14 (look +0.25), held. `new: cheek-touch` L66-74: his RIGHT mitten (screen left) rises from the table and touches the
 // upper cheek above the beard at L74 (F1490), holds to the end (one two-bone chain per frame, back of the mitten to the lens). The print
 // (CCTV-STILL-01, B06-SH01's exit (0, 0.684, -0.02), rotated 4 deg) lies in the soft lower foreground (DOM, blur 6 px), its CCTV face below the
@@ -32,7 +33,7 @@ export const def: Shot31 = {
     paintPoliceShell(p, c);
     const talking = L >= 3 && L <= 100;
     const base = {at: WH, view: 'front' as const, pose: 'P31' as const, face: (L >= 80 ? 'worried' : 'neutral') as 'worried' | 'neutral', seed: 3101, t,
-      faceState: {look: lookAt(L), ...(talking ? {mouth: 'talk' as const} : {})}, fig: {headCock: 5 * (1 - ez(L, 8, 14))}};
+      faceState: {look: lookAt(L), ...(talking ? {mouth: 'talk' as const, open: speechOpen(WHEELER_ENV, L)} : {})}, fig: {headCock: 5 * (1 - ez(L, 8, 14))}};
     const a0 = dryAnchors(WHEELER, c, base)!;
     const hr = (a0.chin - a0.headTop) / 2, {u} = gu(c, WH);
     const cheek: Pt = [a0.head[0] - 0.6 * hr, a0.head[1] + 0.12 * hr];

@@ -42,3 +42,5 @@
 - 2026-11-21, Editor: draft cut re-rendered with the recalibrated sound stem (ROWS-R7, 59.83 s); page not republished, no verdicts.
 
 - 2026-11-21, coordinator: review page republished with the Draft cut (ROWS-R7, artifact v10 `1795252936-f69d`, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); Draft tab has the full cut, 0/24 Draft verdicts; storyboard verdicts 24/24 kept in db `reviews/<shot>@board`.
+
+- 2026-11-21, user (Draft round): 23/24 Draft ok; B03-SH04 change: label 'สมมุติ' -> 'เหตุการณ์สมมุติ' (applied to B03-SH04 and B07-SH01, one constant). Boat Recheck R7 (text level): no must-fix; user keeps 'เหตุการณ์สมมุติ' over Boat's optional RC7-01 'แต่งขึ้น' wording; user accepts the RC7-05 gap (no label on B03-SH01/02, camera breaks ~5 s before label). Draft mix FAILs B05 blip and B07 snap accepted by user.

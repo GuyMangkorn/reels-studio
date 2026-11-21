@@ -15,7 +15,7 @@ import {camMove, ez, hump, lin, mix, mix3, reachArm, shoulderAt} from '../stage3
 // (left profile, faces +z) holding `new: instant-camera-1995-broken` at arm's length in his RIGHT (far) mitten, lens turned back to his face; the
 // dangling flash pops on the floor (L2-4), spark and grey puff at the hinge (L3-13), the print slides out (L12-24); his LEFT (near) mitten takes
 // the print (L24-30) and punches up (P08 one arm, L29-35) while the right arm lowers the camera to his side (L30-40). The joke label
-// "สมมุติ: กล้องดันพังพอดี" is on from f0 to f53 (pop-in f0-4). Values changed from the sheet (reach, hand-drawing 8.4; collision): camera
+// "เหตุการณ์สมมุติ: กล้องดันพังพอดี" is on from f0 to f53 (pop-in f0-4). Values changed from the sheet (reach, hand-drawing 8.4; collision): camera
 // centre z -0.38 -> -0.50 and the raised fist y 2.15 -> 1.93 (both at full arm reach of the 1.78 m rig), lemon half x +0.25 -> +0.08 (the
 // sheet point sat in the candle saucer).
 const N = 54, SHOT = 'B03-SH04';

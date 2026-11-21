@@ -5,6 +5,7 @@ import {camPoint, camUnit, mixYCam, type YCam} from '../../kit/ycam';
 import {CCTV_STILL} from '../looks';
 import {crtOnQuad} from '../screen31';
 import {ANCHOR, paintStudio, paintTvCorner, studioDesk, TV_SCREEN} from '../set31';
+import {ANCHOR_ENV, speechOpen} from '../speech31';
 import {makeShot, type Shot31} from '../shot';
 import {camOf, clipPolyPainter, dryAnchors, eout, ez, fig, lin, mix2, poseShoulder, reachArm} from '../stage31';
 
@@ -12,7 +13,8 @@ import {camOf, clipPolyPainter, dryAnchors, eout, ez, fig, lin, mix2, poseShould
 // L20, ease-out, then hold) with the screen nearly filling the frame, bezel edges at both sides. The 4:3 studio picture (Space N) is painted into
 // the screen quad through its own camera (LF05B's C05B, scaled and centred on the projected screen; 3 % zoom over the shot inside the picture) and
 // clipped to it; the CRT glass (scanlines, falloff) lies over it. L0-1 a CRT roll as the picture switches from the full still to the studio.
-// ANCHOR `man-parted + office`, seated P31, `talk` on his speech frames (L3-61), front; points at the OTS box (CCTV-STILL-01, upper right of the
+// ANCHOR `man-parted + office`, seated P31, `talk` on his speech frames (L3-61), `open` from the L11 envelope (speech31.ts; fix round 2026-11-21, was the seeded syllable
+// envelope, not in sync), front; points at the OTS box (CCTV-STILL-01, upper right of the
 // picture) L13-19 (F1253-1259, "ชายคนนี้" F1255), holds to L40, back to the desk L40-46. The box is upper right, so he points with his LEFT arm
 // (screen right; LF05B; the sheet's "right arm" would cross his body). No lower third, logo, station name or text in the picture.
 const N = 65, SHOT = 'B05-SH02';
@@ -57,7 +59,8 @@ export const def: Shot31 = {
     paintStudio(s, ic);
     // the left arm: from the P31 rest hand to a straight point at the box (finger), one two-bone chain per frame
     const u = camUnit(ic, AN), k = pointAt(L);
-    const base = {at: AN, view: 'front' as const, pose: 'P31' as const, face: (talking ? 'talk' : 'neutral') as 'talk' | 'neutral', seed: 3105, t};
+    const base = {at: AN, view: 'front' as const, pose: 'P31' as const, face: (talking ? 'talk' : 'neutral') as 'talk' | 'neutral', seed: 3105, t,
+      ...(talking ? {faceState: {mouth: 'talk' as const, open: speechOpen(ANCHOR_ENV, L)}} : {})};
     const rest = dryAnchors(ANCHOR, ic, base)!.lHand;
     const sh = poseShoulder(ANCHOR, ic, AN, 'P31', 'front', 'l');
     const bc = camPoint(c, onScreen((BOX.u0 + BOX.u1) / 2, (BOX.v0 + BOX.v1) / 2, zoomAt(L)))!;

@@ -7,6 +7,7 @@ import type {Painter} from '../kit/painter';
 import type {V3} from '../kit/space';
 import {camPoint, camUnit, type YCam} from '../kit/ycam';
 import {paintSorted, wp, type Item} from '../kit/world';
+import {CAM_CENTRE} from './reveal31';
 import {
   ANCHOR, BANK_TEXT, TELLER, FRIEND, POLICE, REVEAL, TV_SCREEN, WHEELER, YOU, bankFurniture, cam, glow, kitchenTable, lemonPx, paintLemonHalf, paintBankShell,
   paintKitchenShell, paintPendant, paintPoliceShell, paintRevealTable, paintStall, paintStudio, paintTvCorner, policeTable, printCorners,
@@ -31,11 +32,11 @@ export type LookDef = {
   /** warm lamp pool as a smooth screen-space light (picture px centre, radius, rgb, peak opacity) */
   pool?: {x: number; y: number; r: number; color: string; op: number};
   /** VD31-19 joke label (R6): a small cream Thai plate in screen space (left x or centred, top y, font px) with an optional hand-drawn arrow (picture px) */
-  tag?: {text: string; x?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]};
+  tag?: {text: string; x?: number; cx?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]; wrap?: boolean};
   paint: (p: Painter) => void;
 };
 /** VD31-19 (R6, user 2026-11-21): the broken camera is our joke, not the documented cause (F006: cause unknown). Exact text for Boat's recheck. */
-export const JOKE_LABEL = 'สมมุติ: กล้องดันพังพอดี';
+export const JOKE_LABEL = 'เหตุการณ์สมมุติ: กล้องดันพังพอดี';
 export const CCTV_STILL = 'edu31/cctv-still-01.png';
 
 type FigOpts = Omit<FigureAtOpts, 't'>;
@@ -221,10 +222,15 @@ const lf06 = (): LookDef => ({
 // R6 (user, 2026-11-21: the blank Polaroid is our gag, the camera happened to be broken; picture only, a small joke label): the camera rises
 // 0.45 -> 0.60 m and the horizon row 540 -> 620 so the broken camera above the Polaroid fits below the chrome, all above the caption band.
 const C07 = cam(0.06, 0.6, 0, 0, -90, 1000, 620);
+/** LF07's label arrow = B07-SH01's at L55 (same camera, plate cx 730 top 215, 36 px, two lines; fix round 2026-11-21, the longer label). */
+const lf07Arrow = (): [number, number][] => {
+  const t = camPoint(C07, CAM_CENTRE) ?? [300, 380], ty = Math.max(t[1] - 6, 224);
+  return [[582, 268], [(582 + t[0]) / 2 + 10, Math.max(268, ty) + 18], [t[0] + 14, ty]];
+};
 const lf07 = (): LookDef => ({
   shot: 'B07-SH01', cam: C07, paper: '#1a100a', caption: 'นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้', vignette: 0.7, pool: {x: 330, y: 560, r: 720, color: '255,190,110', op: 0.42},
   quads: [{src: CCTV_STILL, corners: printCorners(), border: 0.05, pos: '50% 30%'}],
-  tag: {text: JOKE_LABEL, x: 560, y: 286, size: 32, arrow: [[590, 352], [540, 390], [452, 402]]},
+  tag: {text: JOKE_LABEL, cx: 730, y: 215, size: 36, wrap: true, arrow: lf07Arrow()},
   cast: 'no cast; new: instant-print (blank, VD31-13), new: photo-print-8x10 (CCTV-STILL-01), new: lemon half beside the Polaroid touching nothing (RC3-01), new: instant-camera-1995-broken lying lens up above the Polaroid, flash bar fallen to its right (R6), joke label VD31-19',
   paint: (p) => paintRevealTable(p, C07),
 });
