@@ -13,7 +13,7 @@ const timeline: Timeline = [{
   painted: {shots: [{shot: 'kit-people-talk', atSec: 0}]},
 }];
 
-/** KIT-PEOPLE-TALK-ALL (user 21 Nov 2026): all 14 PEOPLE talking through right profile, front and left profile (10 s, silent).
+/** KIT-PEOPLE-TALK-ALL (user 21 Nov 2026): all PEOPLE talking through right profile, front and left profile (10 s, silent).
  * Render with `node scripts/render.mjs KIT-PEOPLE-TALK-ALL --draft`. */
 const allTimeline: Timeline = [{durationSec: PEOPLE_TALK_ALL_SEC, bg: 'none', actors: [], subtitle: '', painted: {shots: [{shot: 'kit-people-talk-all', atSec: 0}]}}];
 

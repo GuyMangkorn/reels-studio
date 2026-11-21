@@ -17,7 +17,7 @@ import type {CastDef} from './cast';
 //   8-9 year old of CP-A03 (6 heads at 7.5-head realism) on the 4-head scale (x4/7.5 = 3.2 heads). Children carry `headScale` 0.9
 //   (a child's head is about 90% of an adult's) and `armScale` 0.72-0.75 (arm span about 0.30 of height, so the hands hang at the
 //   crotch as on the adults); adults run 3.6-4.2 heads.
-// - Seeds 710-810 are reserved for this library; give two figures of one plate different `seed` args if you draw one id twice.
+// - Seeds 710-870 are reserved for this library; give two figures of one plate different `seed` args if you draw one id twice.
 
 export type PersonGroup = 'working-age' | 'child' | 'older';
 export type PersonInfo = {
@@ -88,6 +88,19 @@ export const PEOPLE = {
     height: 1.74, seed: 840, head: {sideDetail: true, skin: '#c08c62', hair: '#2a2420', cut: 'shaved', glasses: true, brows: '#2a2420', look: {lash: false, eye: 'lidded', nose: 'nostrils', brow: 'thick', browDrop: 0.08, mouth: 'lip', iris: '#3a2a20'}},
     outfit: {shoulder: 0.43, shirt: '#3f5a5a', sleeve: '#3f5a5a', longSleeves: false, pants: '#c9bba0', shoes: '#4a3a2e'},
   }),
+  // 21 Nov 2026 (user): three more working-age templates for range: blonde hair, red hair, a tied bun.
+  'woman-blonde': person({
+    height: 1.68, seed: 850, head: {sideDetail: true, skin: '#f5dcc4', hair: '#d8b265', cut: 'long', brows: '#a07c45', look: {eye: 'almond', nose: 'button', brow: 'arch', browDrop: 0.06, mouth: 'lip', iris: '#4d7194'}},
+    outfit: {shoulder: 0.36, shirt: '#f3efe6', sleeve: '#5b7fa6', longSleeves: true, jacket: '#5b7fa6', pants: '#2a2a30', shoes: '#9a6a44', boots: true},
+  }),
+  'man-ginger': person({
+    height: 1.83, seed: 860, head: {sideDetail: true, skin: '#f3d0b4', hair: '#b3532a', cut: 'crop', brows: '#94431f', look: {lash: false, eye: 'lidded', nose: 'hook', brow: 'tapered', browDrop: 0.07, mouth: 'thin', iris: '#5d7a48'}},
+    outfit: {shoulder: 0.43, shirt: '#3f6b4a', sleeve: '#3f6b4a', longSleeves: true, pants: '#4a5f7a', shoes: '#e8e4da'},
+  }),
+  'woman-tied': person({
+    height: 1.55, seed: 870, head: {sideDetail: true, skin: '#a8724a', hair: '#1b1512', cut: 'tied', look: {eye: 'almond', nose: 'broad', brow: 'tapered', browDrop: 0.06, mouth: 'full', iris: '#2e2019'}},
+    outfit: {shoulder: 0.35, shirt: '#8a2e3b', sleeve: '#8a2e3b', longSleeves: true, skirt: '#2b2a33', pants: '#a8724a', shoes: '#2a2220'},
+  }),
 } satisfies Record<string, CastDef>;
 
 export type PersonId = keyof typeof PEOPLE;
@@ -108,4 +121,7 @@ export const PEOPLE_INFO: Record<PersonId, PersonInfo> = {
   'woman-long': {group: 'working-age', gender: 'female', age: 28, description: 'Young woman, 1.64 m: long straight black hair past the shoulders, light tan skin; blush long-sleeve blouse, navy skirt.'},
   'woman-bob': {group: 'working-age', gender: 'female', age: 21, description: 'Young woman (student age), 1.58 m: black chin-length bob, fair skin; coral cardigan over white top, slate trousers, white sneakers.'},
   'man-shaved': {group: 'working-age', gender: 'male', age: 52, description: 'Middle-aged man, 1.74 m, broad: clean-shaved head, round glasses, medium skin; teal polo, khaki trousers.'},
+  'woman-blonde': {group: 'working-age', gender: 'female', age: 30, description: 'Working-age woman, 1.68 m: long straight blonde hair, fair skin, blue eyes; denim jacket over white top, black trousers, tan boots.'},
+  'man-ginger': {group: 'working-age', gender: 'male', age: 29, description: 'Young man, 1.83 m, tall: short red crop, clean-shaven, pale skin, green eyes; forest-green long-sleeve top, blue jeans, white sneakers.'},
+  'woman-tied': {group: 'working-age', gender: 'female', age: 33, description: 'Working-age woman, 1.55 m: black hair tied back in a bun, warm brown skin; maroon long-sleeve blouse, charcoal skirt.'},
 };

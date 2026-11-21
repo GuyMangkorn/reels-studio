@@ -5,12 +5,12 @@ import type {Painter} from '../kit/painter';
 import type {PaintedShot, ShotContext} from '../shot';
 
 // KIT-PEOPLE-TALK-ALL plate (kit check, not an episode; user 21 Nov 2026): every PEOPLE head exactly as the library lists it (sideDetail
-// on since 21 Nov 2026) talks in a 2 x 7 grid, heads only so no body crosses into the next cell: right profile, front, then left
+// on since 21 Nov 2026) talks in a 3 x 6 grid, heads only so no body crosses into the next cell: right profile, front, then left
 // profile, so the profile nose, eye, brow and the 5% talk jaw can be seen on the whole cast. Video: src/videos/kit-people/index.ts.
 // Render: `node scripts/render.mjs KIT-PEOPLE-TALK-ALL --draft`.
 
 export const PEOPLE_TALK_ALL_SEC = 10;
-const COLS = 2, ROWS = Math.ceil(PERSON_IDS.length / COLS);
+const COLS = 3, ROWS = Math.ceil(PERSON_IDS.length / COLS);
 const CW = 1080 / COLS, CH = 1920 / ROWS, K = 86;
 /** View by time: right profile, front, left profile (held, no turn). */
 const viewAt = (tl: number): 'right' | 'front' | 'left' => (tl < 10 / 3 ? 'right' : tl < 20 / 3 ? 'front' : 'left');
