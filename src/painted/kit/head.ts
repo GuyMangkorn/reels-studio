@@ -904,7 +904,7 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
   };
   const hairC = toneOf(style.hair, L);
   const {cut} = style;
-  const nc = isNewCut(cut) ? hairSide(cut) : null;
+  const nc = isNewCut(cut) ? hairSide(cut, style.sideDetail === true) : null;
   const arc = (r: number, a0: number, a1: number, n = 20): Pt[] =>
     Array.from({length: n + 1}, (_, i): Pt => {
       const a = a0 + ((a1 - a0) * i) / n;
@@ -971,7 +971,9 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     ink(bob, 1.0, 0.15, true, lineOf(hairC, L));
   } else if (cut === 'long') {
     // Cap from a low front hairline over the skull, down behind the ear; strands frame the face and stay off the eye.
-    const cap: Pt[] = [[0.9, -0.36], [0.98, -0.55], ...arc(1.12, -0.7, -Math.PI - 0.5), [-0.95, 0.75], [-0.62, 0.62], [-0.3, 0.2], [0.05, -0.12], [0.4, -0.3], [0.7, -0.33]];
+    // `sideDetail` (21 Nov 2026): the lower edge falls over the ear and runs forward along the temple, so the side of the head is not bare.
+    const cap: Pt[] = [[0.9, -0.36], [0.98, -0.55], ...arc(1.12, -0.7, -Math.PI - 0.5), [-0.95, 0.75], [-0.62, 0.62],
+      ...(det ? [[-0.3, 0.36], [0.02, 0.3], [0.1, 0.0], [0.26, -0.22], [0.5, -0.32], [0.7, -0.34]] as Pt[] : [[-0.3, 0.2], [0.05, -0.12], [0.4, -0.3], [0.7, -0.33]] as Pt[])];
     fill(hairC, cap, 6);
     if (L) {
       modelPart(p, seed * 100 + part, hairC, Q(cap), L);
@@ -998,7 +1000,11 @@ export const paintHeadSide = (p: Painter, seed: number, cx: number, cy: number, 
     }
   } else {
     const fringe = Array.from({length: 9}, (_, i): Pt => [0.2 + (0.62 * i) / 8, -0.4 - (0.08 * i) / 8 + 0.05 * Math.abs(Math.sin((i / 8) * 2 * Math.PI))]);
-    const cap: Pt[] = [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
+    // `sideDetail` (21 Nov 2026): under the ear, up a sideburn and along the temple, and the fringe closes up the forehead edge to the
+    // crown, so the profile has no bare temple or forehead corner (the plain edge reads as a receding hairline).
+    const cap: Pt[] = det
+      ? [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.4, 0.28], [-0.14, 0.22], [0.05, 0.16], [0.1, -0.04], [0.2, -0.3], ...fringe, [0.9, -0.52], [0.84, -0.64], [0.72, -0.78]]
+      : [...arc(1.08, -1.0, -Math.PI - 0.55), [-0.62, 0.5], [-0.36, 0.06], [-0.12, -0.14], [0.18, -0.34], ...fringe];
     fill(style.hair, cap, 6);
     strands(cap, style.hair);
     ink(cap);
