@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** W2.3 done — storyboard page published (https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); waiting for the user's verdicts. **Next:** read verdicts, ask Q1–Q5, confirm the script (W1.5)
+**Now:** ROWS-R2 published (artifact v3, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); waiting for the user's storyboard verdicts. **Next:** read verdicts; Boat checks the JANUARY 1995 calendar; W3 look frames
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -18,8 +18,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W1.4 Length check — SCRIPT-R2 projected about 62.6 s (limit 63 s), estimated, no read-aloud; trims ready: L07, then L14 second sentence
   - [x] W1.5 User approval — SCRIPT-R2 confirmed, 2026-11-21 (structured question)
 - [ ] W2 Brief and storyboard
-  - [x] W2.1 Film brief — EDU-EP31-BRIEF-R1, 2026-11-21, ready-for-mark ([film-brief.md](short/film-brief.md))
-  - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R1, 24 shots, untimed ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes
+  - [x] W2.1 Film brief — EDU-EP31-BRIEF-R2 (Q1–Q5 answers applied), 2026-11-21, ready-for-mark ([film-brief.md](short/film-brief.md))
+  - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R2 / BOARD-R2, 24 shots, untimed, Q1–Q5 closed (changed: B01-SH01, B01-SH02, B03-SH04, B04-SH02, B06-SH01, B07-SH03) ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes; review page: pending (page still shows R1)
   - [x] W2.3 Storyboard page published — 2026-11-21, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY (rows R1, artifact v2)
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page (0/L locations)
