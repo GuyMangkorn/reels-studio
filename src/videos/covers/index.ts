@@ -21,7 +21,7 @@ import {EDU20_COVER_STYLE, EDU20_COVERS, EDU20_PICS} from './edu-ep20';
 import {EDU21_COVER_STYLE, EDU21_COVERS, EDU21_PICS} from './edu-ep21';
 import {EDU22_COVER_STYLE, EDU22_COVERS, EDU22_PICS} from './edu-ep22';
 import {EDU26_COVER_STYLE, EDU26_COVERS, EDU26_PICS} from './edu-ep26';
-import {EDU31_COVER_STYLE, EDU31_PICS} from './edu-ep31';
+import {EDU31_COVER_STYLE, EDU31_COVERS, EDU31_PICS} from './edu-ep31';
 import {EG_COVER_STYLE, EG_COVERS} from './everyone-gone';
 import {EG2_A_LAYOUT, EG2_A_TYPE, EG2_COVER_STYLE, EG2_COVERS} from './everyone-gone-ep02';
 import {WDG_COVER_STYLE, WDG_COVERS} from './wendigo';
@@ -83,6 +83,7 @@ const covers: EpisodeVideos = {
     coversVideo('EDU-EP26-SHORT-PIC', EDU26_PICS, EDU26_COVER_STYLE),
     coversVideo('EDU-EP26-SHORT', EDU26_COVERS, EDU26_COVER_STYLE),
     coversVideo('EDU-EP31-SHORT-PIC', EDU31_PICS, EDU31_COVER_STYLE),
+    coversVideo('EDU-EP31-SHORT', EDU31_COVERS, EDU31_COVER_STYLE),
     coversVideo('EDU-EP20-SHORT-PIC', EDU20_PICS, EDU20_COVER_STYLE),
     coversVideo('EDU-EP20-SHORT', EDU20_COVERS, EDU20_COVER_STYLE),
     coversVideo('EDU-EP19-SHORT', EDU19_COVERS, EDU19_COVER_STYLE),
