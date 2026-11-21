@@ -35,7 +35,7 @@ Example requests:
 
 > Ask Boat (`boat`) to research [topic] for a mystery clip with educational content, supplying evidence and usable story angles.
 
-> Ask Preaw (`preaw`) to use research.md for a 40–60-second Reel (60–90 seconds when the story needs it) with a twist that changes the interpretation of earlier clues, including full narration.
+> Ask Preaw (`preaw`) to use research.md for a 40–60-second Reel (60–120 seconds when the extra length explains the subject better and adds fun) with a twist that changes the interpretation of earlier clues, including full narration.
 
 > Ask Boat to check ch01-script.md revision 2 claim by claim, propose corrections and identify what remains unverified.
 
