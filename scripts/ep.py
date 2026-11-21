@@ -45,12 +45,28 @@ def section(L, deliverable):
     return lo, next((k for k in range(lo + 1, len(L)) if L[k].startswith('## ')), len(L))
 
 
+# A deliverable is not published or posted while its cover step is open (docs/delivery-workflow.md#cover-step).
+COVER_GATED = ('W8', 'W8.2', 'W8.3')
+COVER_STEP = re.compile(r'^\s*- \[([ xX])\] W6c(?=\s|$)')
+
+
+def section_of(L, i):
+    lo = next((k for k in range(i, -1, -1) if L[k].startswith('## ')), 0)
+    return lo, next((k for k in range(i + 1, len(L)) if L[k].startswith('## ')), len(L))
+
+
 def tick(path, step, text=None, undo=False, deliverable=None):
     L = read(path).split('\n')
     rx = re.compile(r'^(\s*- \[)([ xX])(\] )' + re.escape(step) + r'(?=\s|$)(.*)$')
     lo, hi = section(L, deliverable)
     i = one([k for k in range(lo, hi) if rx.match(L[k])], f'step {step}')
     m = rx.match(L[i])
+    if not undo and step in COVER_GATED:
+        slo, shi = section_of(L, i)
+        cover = [l for l in L[slo:shi] if COVER_STEP.match(l)]
+        if not cover: print('ep.py: warning: this deliverable has no W6c cover step; add "- [ ] W6c Cover and title" (docs/delivery-workflow.md#cover-step)', file=sys.stderr)
+        elif any(COVER_STEP.match(l).group(1) == ' ' for l in cover):
+            die(f'{step} needs W6c (cover and title) ticked first: invoke the cover agent, or tick W6c with --text "Cover and title N/A — <reason>"')
     rest = (' ' + text) if text is not None else m.group(4)
     L[i] = m.group(1) + (' ' if undo else 'x') + m.group(3) + step + rest
     write(path, '\n'.join(L)); print(L[i][:160])

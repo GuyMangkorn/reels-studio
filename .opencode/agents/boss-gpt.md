@@ -1,7 +1,7 @@
 ---
-description: "Boss (บอส): reusable asset and shared renderer programmer; supplies verified assets/capabilities to Editor and fixes contact/projection in their owners. Runs on openai/gpt-6.1-sol#medium."
+description: "Boss (บอส): reusable asset and shared renderer programmer; supplies verified assets/capabilities to Editor and fixes contact/projection in their owners. Runs on openai/gpt-6.2-sol#medium."
 mode: subagent
-model: openai/gpt-6.1-sol#medium
+model: openai/gpt-6.2-sol#medium
 permissions:
   - action: websearch
     resource: "*"

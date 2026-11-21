@@ -235,10 +235,16 @@ test('publish keeps one MP4 and one cover per video, refuses review renders and 
   assert.equal(clip.code, 1, clip.out);
   assert.match(clip.out, /never published/);
 
+  // A video without a cover is not ready to post.
+  const videoOnly = run('publish', 'X-EP01-SHORT', '--reason', 'delivery');
+  assert.equal(videoOnly.code, 0, videoOnly.out);
+  assert.match(videoOnly.out, /X-EP01-SHORT: waiting: cover/);
+
   // Without --video the newest delivery render is used; a local cover file is stored first.
   const cover = write('in/pick-C.png', 'cover-C');
   const r = run('publish', 'X-EP01-SHORT', '--cover', cover, '--reason', 'delivery');
   assert.equal(r.code, 0, r.out);
+  assert.match(r.out, /X-EP01-SHORT: ready/);
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT.mp4'), 'utf8'), 'cut-2');
   assert.equal(readFileSync(path.join(folder, 'X-EP01-SHORT_cover.png'), 'utf8'), 'cover-C');
   assert.match(readFileSync(path.join(store, 'manifest.tsv'), 'utf8'), /projects\/legacy\/X\/renders\/X-EP01-SHORT\/covers\/pick-C\.png/);

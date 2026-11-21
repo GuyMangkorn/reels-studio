@@ -52,6 +52,21 @@ test('tick --deliverable edits a step ID repeated per deliverable; --undo --text
   assert.equal(readFileSync(p, 'utf8'), '# Tasks\n\n## A\n\n- [x] W5.2 plates A\n\n## B\n\n- [ ] W5.2 plates B (G-B)\n');
 });
 
+test('tick refuses publish and posted steps while the cover step W6c is open', () => {
+  const p = file(dir(), 'task.md', '# Tasks\n\n## A\n\n- [ ] W6c Cover and title\n  - [ ] W6c.1 Pick 1\n- [ ] W8 Deliver\n  - [ ] W8.2 Published\n\n## B\n\n- [ ] W8 Deliver\n  - [ ] W8.2 Published\n');
+  const blocked = run('tick', p, 'W8.2', '--deliverable', 'A');
+  assert.equal(blocked.code, 1);
+  assert.match(blocked.out, /needs W6c/);
+  assert.equal(run('tick', p, 'W6c.1', '--deliverable', 'A').code, 0); // a sub-step does not open the gate
+  assert.equal(run('tick', p, 'W8', '--deliverable', 'A').code, 1);
+  assert.equal(run('tick', p, 'W6c', '--deliverable', 'A', '--text', 'Cover and title N/A — look-frame composition').code, 0);
+  assert.equal(run('tick', p, 'W8.2', '--deliverable', 'A').code, 0);
+  // A task file written before the rule has no W6c line: warn, do not refuse.
+  const old = run('tick', p, 'W8.2', '--deliverable', 'B');
+  assert.equal(old.code, 0);
+  assert.match(old.out, /no W6c cover step/);
+});
+
 test('now replaces the Now/Next line, scoped to a deliverable when the file has several', () => {
   const p = file(dir(), 'task.md', TASK);
   assert.equal(run('now', p, 'W1.1 done.', 'Preaw script').code, 1); // two Now lines, no scope

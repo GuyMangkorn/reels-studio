@@ -92,7 +92,7 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 | --- | --- | --- |
 | **R1 Pick** | the concept, or several (W0.3) | W1.1–W4.2: research, hook, script, fact-check, length check, brief, storyboard rows, look frames, the full read and its measure file |
 | **R2 Lock** | script, storyboard, look frames and voice together (W1.5, W3.2, W3.3, W4.3) | W5.1–W5.2s and the draft cut |
-| **R3 Draft** | the draft cut, shot by shot (W5.3), as in [W5](sequence-workflow.md#painted-shot-by-shot); kept as a user round (user, 21 Nov 2026: "ผมยังอยากดู draft อยู่") | W6 delivery render and the cover candidates |
+| **R3 Draft** | the draft cut, shot by shot (W5.3), as in [W5](sequence-workflow.md#painted-shot-by-shot); kept as a user round (user, 21 Nov 2026: "ผมยังอยากดู draft อยู่") | W6 delivery render and the cover candidates (W6c, the Cover role) |
 | **R4 Ship** | the Final file, the cover and the title (W6, [cover picks](../.agents/skills/cover-design/SKILL.md)) | W7 pin and W8.2 publish; the user posts (W8.3) |
 
 - **R1 Pick.** The user may pick several concepts in one ideation round. Each pick opens its own deliverable; they run in parallel ([coordinator](coordinator.md#agent-invocation)), and the coordinator brings deliverables that reach the same round into one sitting.
@@ -151,7 +151,8 @@ Concepts are pitches, not research: no claim in `concepts.md` or a concept file 
 
 - **Created** by the coordinator in the turn it first writes `delivery.md`, from the template below, one section per deliverable.
 - **Updated** by whoever finishes a step (role agent or coordinator), in the same change that updates the deliverable's `Stage / Next owner` cell. The two must agree; when they differ, `delivery.md` wins and `task.md` is corrected. Edit both with [`scripts/ep.py`](../scripts/ep.py) (`tick`, `now`, `cell`), not with one-off Python (usage review, 5 Nov 2026: about 600 inline scripts in five days edited these files and `review-rows.json`).
-- **Published (W8.2):** the step is ticked only when the delivery render and the picked cover are in the [publish folder](../README.md#publish-folder) (`store.py publish <ID> --cover <pick> --reason "<why>"`). The note is the folder path `publish/<channel>/<PROJECT>/<ID>/`. A later re-render or cover fix is published again in the same turn, and the reply gives the user that path.
+- <a id="cover-step"></a>**Cover and title (W6c; Requirement; user, 21 Nov 2026):** the Cover role's two picks ([cover pass](coordinator.md#cover-pass), [cover-design skill](../.agents/skills/cover-design/SKILL.md)), started when the draft cut passes. `ep.py tick` refuses W8, W8.2 and W8.3 while the deliverable's W6c line is open; a deliverable with no cover (a look-frame composition) ticks it `N/A — <reason>`. A task file written before this rule has no W6c line: `ep.py` then warns instead of refusing, and the coordinator adds the line. `store.py publish` reports `waiting: cover` instead of `ready` until a cover is in the publish folder.
+- **Published (W8.2):** the step is ticked only when W6c is ticked and the delivery render and the picked cover are in the [publish folder](../README.md#publish-folder) (`store.py publish <ID> --cover <pick> --reason "<why>"`). The note is the folder path `publish/<channel>/<PROJECT>/<ID>/`. A later re-render or cover fix is published again in the same turn, and the reply gives the user that path.
 - **Posted:** when the user says a video is on the channel, the coordinator runs `store.py publish <ID> --posted <date>` and ticks W8 and W8.3 in that turn, with the date. It marks any W8 step it cannot evidence `not recorded`.
 - <a id="performance-record"></a>**Performance (after posting; user, 8 Nov 2026):** at the first session at least 3 days after a video is posted, the coordinator asks the user once (structured question) for its views, average view duration, swiped-away % and where the retention curve drops, and adds a row to that video's channel record `channels/<id>/performance.md` ([edu](../channels/edu/performance.md); created with a channel's first posted video). Rough numbers are fine; a missing number is `-`. When an episode clearly beats or trails its series, the coordinator proposes a short retrospective in `scripts/<episode>/lessons-learned.md` (example: [EDU EP05](../scripts/edu-series/ep05/lessons-learned.md)).
 - **Kit intake (W8.4):** Boss files the episode's new looks and sets into the kit after W8.2, under [KIT-P01](../src/painted/kit/README.md#kit-intake); the deliverable is not done until W8.4 is ticked or `N/A` with a reason.
@@ -198,6 +199,9 @@ Record: [delivery.md](delivery.md) · Updated: <YYYY-MM-DD>, <role>
   - [ ] W5.2s Ton sounds and cue sheet (0/C cues; generated/library)
   - [ ] W5.3 Draft passed (0/N shots)
 - [ ] W6 Final passed (0/N shots)
+- [ ] W6c Cover and title (Cover role, `subagent_type: cover`)
+  - [ ] W6c.1 Pick 1: five pictures, picture chosen (`<ID>-PIC-COVERS`)
+  - [ ] W6c.2 Pick 2: five texts and five titles, user picks cover and title (`<ID>-COVERS`)
 - [ ] W7 Pinned (0/N shots)
 - [ ] W8 Deliver
   - [ ] W8.1 Assembled from the cache, picture lock
