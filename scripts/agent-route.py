@@ -168,6 +168,12 @@ def cmd_run(args):
     if args.dry_run:
         print(json.dumps(dict(argv=argv, prompt=stem + '.prompt.md'), ensure_ascii=False))
         return
+    # A fixed name per role, so the coordinator can show the log live before it knows the timestamp.
+    live = os.path.join(logs, f'route-{args.role}.log')
+    open(log, 'w', encoding='utf-8').close()
+    if os.path.lexists(live): os.remove(live)
+    os.symlink(os.path.basename(log), live)
+    print(f'live log: tail -n 60 -F {live}', file=sys.stderr, flush=True)
     started = datetime.datetime.now(datetime.timezone.utc)
     with open(log, 'w', encoding='utf-8') as out:
         status = subprocess.run(argv, input=prompt, text=True, stdout=out, stderr=subprocess.STDOUT).returncode
@@ -208,7 +214,8 @@ def cmd_hook(args):
     if provider != 'claude':
         deny(f'{role} is routed to {provider} / {model} / {effort} {where}. Do not use the Agent tool for it: write '
              f'the same brief to a file and run `python3 -I scripts/agent-route.py run {role} <brief.md>` in the '
-             f'background (docs/coordinator.md#runtime-routing). Exit 75 (usage limit) returns the role to its pinned '
+             f'background (docs/coordinator.md#runtime-routing), then show the user its log live in one Terminal-panel tab: '
+             f'`tail -n 60 -F out/logs/route-{role}.log`. Exit 75 (usage limit) returns the role to its pinned '
              f'agent in the routing file: call the Agent tool again and tell the user. Only if the run fails another '
              f'way, call the Agent tool again with a first prompt line `{FALLBACK} <reason>`.')
         return

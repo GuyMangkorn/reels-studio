@@ -29,6 +29,7 @@ test('set writes the route with the provider defaults; the hook then sends the r
   const denied = hook({subagent_type: 'boss-apply', prompt: 'build'});
   assert.equal(denied.permissionDecision, 'deny');
   assert.match(denied.permissionDecisionReason, /agent-route\.py run boss-apply/);
+  assert.match(denied.permissionDecisionReason, /tail -n 60 -F out\/logs\/route-boss-apply\.log/);
   assert.equal(hook({subagent_type: 'boss', prompt: 'build'}), null, 'other roles are untouched');
   assert.equal(hook({subagent_type: 'boss-apply', prompt: 'routing-fallback: usage limit\nbuild'}), null);
 });
@@ -70,6 +71,8 @@ test('a usage limit returns every role on that provider to its pin and notes it 
     input: 'build', encoding: 'utf8', env: {...process.env, REELS_ROUTING: routing, PATH: `${bin}:${process.env.PATH}`},
   });
   assert.equal(limited.status, 75, limited.stderr);
+  assert.match(limited.stderr, /^live log: tail -n 60 -F .*route-boss-apply\.log\n/, 'the live log is named before the run');
+  assert.match(readFileSync(join(project, 'out/logs/route-boss-apply.log'), 'utf8'), /usage limit/, 'the fixed name follows the run log');
   const file = JSON.parse(readFileSync(routing, 'utf8'));
   assert.deepEqual(file.routes, {film: {provider: 'claude', model: 'opus'}}, 'other providers keep their routes');
   assert.deepEqual(Object.keys(file.bounced).sort(), ['boss', 'boss-apply']);
