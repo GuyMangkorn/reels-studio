@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** ROWS-R2 published (artifact v3, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); waiting for the user's storyboard verdicts. **Next:** read verdicts; Boat checks the JANUARY 1995 calendar; W3 look frames
+**Now:** ROWS-R3 published (artifact v4); waiting for the user's verdicts and Q6–Q7. **Next:** Boat picture recheck (B07, FC06, calendar); W3 look frames
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
