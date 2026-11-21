@@ -56,6 +56,28 @@ const CctvOverlay = () => (
 );
 const crtLook: CSSProperties = {filter: 'contrast(1.05) brightness(1.08) saturate(0.9)'};
 
+/** VD31-19 joke label (R6): cream Thai on a dark translucent rounded plate, outside every screen layer; the arrow is a soft hand-drawn stroke. */
+const TagPlate = ({tag}: {tag: NonNullable<LookDef['tag']>}) => {
+  const plate = <span lang="th" style={{display: 'inline-block', fontFamily: 'Noto Sans Thai', fontWeight: 700, fontSize: tag.size, lineHeight: 1.25, color: '#f6ecd2',
+    background: 'rgba(22,15,10,0.78)', padding: `${tag.size * 0.22}px ${tag.size * 0.55}px`, borderRadius: tag.size * 0.42, boxShadow: '0 3px 10px rgba(0,0,0,0.35)'}}>{tag.text}</span>;
+  const a = tag.arrow;
+  return (
+    <>
+      <div style={tag.center ? {position: 'absolute', left: 0, right: 0, top: tag.y, display: 'flex', justifyContent: 'center'} : {position: 'absolute', left: tag.x ?? 120, top: tag.y}}>{plate}</div>
+      {a && a.length > 2 && (() => {
+        const [p0, p1, p2] = a, ang = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]), L = 16;
+        const h1 = [p2[0] - L * Math.cos(ang - 0.5), p2[1] - L * Math.sin(ang - 0.5)], h2 = [p2[0] - L * Math.cos(ang + 0.5), p2[1] - L * Math.sin(ang + 0.5)];
+        return <svg width={1080} height={1920} style={{position: 'absolute', left: 0, top: 0}}>
+          <g fill="none" stroke="#f6ecd2" strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" style={{filter: 'drop-shadow(0 2px 3px rgba(0,0,0,0.5))'}}>
+            <path d={`M${p0[0]},${p0[1]} Q${p1[0]},${p1[1]} ${p2[0]},${p2[1]}`} />
+            <path d={`M${h1[0]},${h1[1]} L${p2[0]},${p2[1]} L${h2[0]},${h2[1]}`} />
+          </g>
+        </svg>;
+      })()}
+    </>
+  );
+};
+
 const Still = ({id}: {id: string}) => {
   const look: LookDef = LOOK_DEFS[id]();
   const fn = useCallback(({brush, frame}: PaintContext) => look.paint(makePainter(brush, {t: 0, frame, fade: look.paper})), [look]);
@@ -102,6 +124,7 @@ const Still = ({id}: {id: string}) => {
         <div style={{position: 'absolute', left: 120, right: 120, top: 1460, height: 120, background: 'repeating-linear-gradient(90deg, #1c1a19 0 10px, #34302d 10px 20px)', borderRadius: 10, opacity: 0.8}} />
       </>}
       {look.pool && <div style={{position: 'absolute', left: look.pool.x - look.pool.r, top: look.pool.y - look.pool.r, width: look.pool.r * 2, height: look.pool.r * 2, borderRadius: '50%', mixBlendMode: 'screen', background: `radial-gradient(circle, rgba(${look.pool.color},${look.pool.op}) 0%, rgba(${look.pool.color},${look.pool.op * 0.45}) 35%, transparent 70%)`}} />}
+      {look.tag && <TagPlate tag={look.tag} />}
       {look.vignette ? <AbsoluteFill style={{background: `radial-gradient(ellipse at 50% 38%, transparent 42%, rgba(8,6,4,${look.vignette}) 100%)`}} /> : null}
       <Grain opacity={look.layer === 'cctv' ? 0.12 : 0.05} />
       {props.caption !== false && <>

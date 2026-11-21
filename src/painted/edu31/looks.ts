@@ -1,6 +1,6 @@
 import {drawChair, paintShoulderBag, paintToyPistol} from '../kit/props';
 import {mittenThumbSide} from '../kit/hand-gestures';
-import {hardFill, inkLine, openHandParts, washAt} from '../kit/draw';
+import {ell, hardFill, inkLine, openHandParts, washAt} from '../kit/draw';
 import {paintFigureAt, type FigureAtOpts} from '../kit/figure-at';
 import {shoulderPoint, type CastDef} from '../kit/cast';
 import type {Painter} from '../kit/painter';
@@ -30,8 +30,12 @@ export type LookDef = {
   boxes?: {src: string; x: number; y: number; w: number; h: number}[];
   /** warm lamp pool as a smooth screen-space light (picture px centre, radius, rgb, peak opacity) */
   pool?: {x: number; y: number; r: number; color: string; op: number};
+  /** VD31-19 joke label (R6): a small cream Thai plate in screen space (left x or centred, top y, font px) with an optional hand-drawn arrow (picture px) */
+  tag?: {text: string; x?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]};
   paint: (p: Painter) => void;
 };
+/** VD31-19 (R6, user 2026-11-21): the broken camera is our joke, not the documented cause (F006: cause unknown). Exact text for Boat's recheck. */
+export const JOKE_LABEL = 'มุกของเรา: กล้องดันพังพอดี';
 export const CCTV_STILL = 'edu31/cctv-still-01.png';
 
 type FigOpts = Omit<FigureAtOpts, 't'>;
@@ -213,13 +217,29 @@ const lf06 = (): LookDef => ({
   },
 });
 
-// ------------------------------------------------------------------ LF07 reveal table (B07-SH01 end: the two-up)
-const C07 = cam(0.06, 0.45, 0, 0, -90, 1000, 540);
+// ------------------------------------------------------------------ LF07 reveal table (B07-SH01 end: the two-up plus the broken camera, R6)
+// R6 (user, 2026-11-21: the blank Polaroid is our gag, the camera happened to be broken; picture only, a small joke label): the camera rises
+// 0.45 -> 0.60 m and the horizon row 540 -> 620 so the broken camera above the Polaroid fits below the chrome, all above the caption band.
+const C07 = cam(0.06, 0.6, 0, 0, -90, 1000, 620);
 const lf07 = (): LookDef => ({
-  shot: 'B07-SH01', cam: C07, paper: '#1a100a', caption: 'นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้', vignette: 0.7, pool: {x: 300, y: 330, r: 700, color: '255,190,110', op: 0.42},
+  shot: 'B07-SH01', cam: C07, paper: '#1a100a', caption: 'นักจิตวิทยาคนหนึ่งอ่านเรื่องนี้', vignette: 0.7, pool: {x: 330, y: 560, r: 720, color: '255,190,110', op: 0.42},
   quads: [{src: CCTV_STILL, corners: printCorners(), border: 0.05, pos: '50% 30%'}],
-  cast: 'no cast; new: instant-print (blank, VD31-13), new: photo-print-8x10 (CCTV-STILL-01), new: lemon half beside the Polaroid touching nothing (RC3-01)',
+  tag: {text: JOKE_LABEL, x: 560, y: 286, size: 32, arrow: [[590, 352], [540, 390], [452, 402]]},
+  cast: 'no cast; new: instant-print (blank, VD31-13), new: photo-print-8x10 (CCTV-STILL-01), new: lemon half beside the Polaroid touching nothing (RC3-01), new: instant-camera-1995-broken lying lens up above the Polaroid, flash bar fallen to its right (R6), joke label VD31-19',
   paint: (p) => paintRevealTable(p, C07),
+});
+
+// ------------------------------------------------------------------ PR01 broken camera, B03-SH04 element (R6; not a beat look frame)
+// The kitchen table close, three-quarter from front right: the broken camera at the moment of the shutter (spark, grey puff), the joke label as
+// B03-SH04 shows it (VD31-19: top third, from the first to the last frame of the shot). Shows the prop design for review; B03-SH04's own
+// framing (side wide, Wheeler holding it at arm's length) is the timed pass's.
+const CPR = cam(0.62, 0.98, 0.3, -32, -26, 1500, 700);
+const pr01 = (): LookDef => ({
+  shot: 'B03-SH04 (prop)', cam: CPR, paper: '#3a2e24', caption: 'ผลทดสอบ… ผ่าน!', vignette: 0.5,
+  pool: {x: 560, y: 640, r: 600, color: '255,205,130', op: 0.3},
+  tag: {text: JOKE_LABEL, y: 330, size: 44, center: true},
+  cast: 'no cast; new: instant-camera-1995-broken (standing, spark), kitchen table props as LF03 (lemon bowl, candle, salt shaker)',
+  paint: (p) => { paintKitchenShell(p, CPR); paintSorted(p, CPR, kitchenTable({brokenCamera: true})); },
 });
 
 // ------------------------------------------------------------------ TT01 WHEELER turntable (new outfit on the kit head, four views)
@@ -247,5 +267,5 @@ const fx01 = (): LookDef => ({
 void REVEAL; void FRIEND; void inkLine;
 
 export const LOOK_DEFS: Record<string, () => LookDef> = {
-  LF01: lf01, LF02: lf02, LF03: lf03, LF04: lf04, LF05: lf05, LF05B: lf05b, LF06: lf06, LF07: lf07, TT01: tt01, FX01: fx01,
+  LF01: lf01, LF02: lf02, LF03: lf03, LF04: lf04, LF05: lf05, LF05B: lf05b, LF06: lf06, LF07: lf07, PR01: pr01, TT01: tt01, FX01: fx01,
 };

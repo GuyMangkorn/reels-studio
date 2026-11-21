@@ -5,7 +5,7 @@
 #   cp out/edu31/looks/still/LF02.png public/edu31/cctv-still-01.png  (LF05, LF05B, LF06 and LF07 map that image)
 # Caption band guides: GUIDES=1. Without caption and chrome (caption-zone background measure): CAPTION=0.
 V=${1:-v1}; shift
-IDS=${*:-LF01 LF02 LF03 LF04 LF05 LF05B LF06 LF07 TT01}
+IDS=${*:-LF01 LF02 LF03 LF04 LF05 LF05B LF06 LF07 PR01 TT01}
 PROPS='{}'
 [ "${CAPTION:-1}" = 0 ] && PROPS='{"caption":false}'
 [ "${GUIDES:-0}" = 1 ] && PROPS='{"guides":true}'

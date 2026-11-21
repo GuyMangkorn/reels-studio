@@ -27,6 +27,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W3.1 Look frames on the page (9 frames, viewer check 9 pass, artifact v5, 2026-11-21)
   - [x] W3.2 Look frames approved (look lock), user 2026-11-21
   - [x] W3.3 Storyboard passed (24/24 shots), user 2026-11-21
+  - [ ] W3.4 R6 broken-camera gag (user change, chat 2026-11-21: the blank Polaroid is our gag, the camera happened to be broken; picture only, small joke label "มุกของเรา: กล้องดันพังพอดี"; SCRIPT-R2 and voice unchanged) — Film: EDU-EP31-BRIEF-R6 (VD31-19), BOARD-R6, ROWS-R6, changed B03-SH01, B03-SH02, B03-SH04, B07-SH01, B07-SH02, B07-SH03; LF07 repainted + PR01 new (`out/edu31/looks/v8/`, store `projects/edu/EDU/look-frames/LF07.988d775c.png`, `PR01.png`); page built locally, not published. Open: viewer check (bundle `out/EDU-EP31-SHORT/viewer-check/look/`, 2 to check), Boat picture-level recheck, user sees LF07/PR01 ([brief R6](short/film-brief.md#r6-broken-camera-gag))
 - [x] W4 Voice lock
   - [x] W4.1 Voice chosen — Kore x1.05 (channel default); ANCHOR Charon, POLICE Alnilam, WHEELER Algenib; 2026-11-21, Editor ([voice-lock.md](short/voice-lock.md))
   - [x] W4.2 Narration generated and measured — speech ends 57.77 s, short 59.82 s (limit 63 s), no trim, 5 requests; store `projects/edu/EDU/narration/ep31-voice-r1-1/`, 2026-11-21

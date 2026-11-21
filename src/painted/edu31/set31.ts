@@ -235,7 +235,7 @@ export const paintKitchenShell = (p: Painter, c: YCam) => {
   for (let r = 0; r < 4; r++) wInk(p, c, 32243 + r, [[-0.88, 1.36 + r * 0.05, -1.966], [-0.62, 1.36 + r * 0.05, -1.966]], {closed: false, weight: 0.3, color: '#a39c8c'});
 };
 /** Table, chairs, lamp pool and table props. */
-export const kitchenTable = (): {at: V3; draw: (p: Painter, c: YCam) => void}[] => [
+export const kitchenTable = (o: {brokenCamera?: boolean} = {}): {at: V3; draw: (p: Painter, c: YCam) => void}[] => [
   {at: [0, 0, 0.05], draw: (p, c) => {
     paintBox(p, c, 32300, {x0: -0.55, x1: 0.55, y0: 0.64, y1: 0.68, z0: -0.35, z1: 0.35}, '#a37a4c', {}, {ink: true});
     wFill(p, c, 32301, '#e9dfc6', qy(0.681, -0.5, 0.5, -0.3, 0.3)); // checked oilcloth
@@ -251,10 +251,11 @@ export const kitchenTable = (): {at: V3; draw: (p: Painter, c: YCam) => void}[] 
     // candle in a saucer (unlit in the whisper shot)
     const sa = flatCircle(c, [0.25, 0.685, 0.1], 0.06, 18); if (sa.length > 2) hardFill(p, 32360, '#e8e2d2', sa);
     paintBox(p, c, 32361, {x0: 0.235, x1: 0.265, y0: 0.685, y1: 0.8, z0: 0.085, z1: 0.115}, '#f3ead2', {}, {ink: true});
-    // instant camera (generic boxy integral-film camera, no brand)
-    paintBox(p, c, 32370, {x0: 0.28, x1: 0.43, y0: 0.68, y1: 0.8, z0: -0.2, z1: -0.1}, '#2e2c2a', {}, {ink: true});
-    paintBox(p, c, 32371, {x0: 0.28, x1: 0.43, y0: 0.74, y1: 0.76, z0: -0.1, z1: -0.099}, '#d84a3a', {}, {});
-    const ln = sphereAt(c, [0.33, 0.755, -0.099], 0.025); if (ln) { hardFill(p, 32372, '#151515', ell(ln.x, ln.y, ln.r, ln.r, 14)); hardFill(p, 32373, '#5a6a7a', ell(ln.x - ln.r * 0.3, ln.y - ln.r * 0.3, ln.r * 0.3, ln.r * 0.3, 8)); }
+    // instant camera (generic boxy integral-film camera, no brand); R6: after the slam in B03-SH01 it is the broken one (PR01, B03-SH04)
+    if (o.brokenCamera) paintBrokenCamera(p, c, 32370, [0.355, 0.68, -0.15], {spark: true});
+    else paintBox(p, c, 32370, {x0: 0.28, x1: 0.43, y0: 0.68, y1: 0.8, z0: -0.2, z1: -0.1}, '#2e2c2a', {}, {ink: true});
+    if (!o.brokenCamera) paintBox(p, c, 32371, {x0: 0.28, x1: 0.43, y0: 0.74, y1: 0.76, z0: -0.1, z1: -0.099}, '#d84a3a', {}, {});
+    const ln = o.brokenCamera ? null : sphereAt(c, [0.33, 0.755, -0.099], 0.025); if (ln) { hardFill(p, 32372, '#151515', ell(ln.x, ln.y, ln.r, ln.r, 14)); hardFill(p, 32373, '#5a6a7a', ell(ln.x - ln.r * 0.3, ln.y - ln.r * 0.3, ln.r * 0.3, ln.r * 0.3, 8)); }
     // salt shaker + a mug
     paintBox(p, c, 32380, {x0: 0.05, x1: 0.09, y0: 0.68, y1: 0.76, z0: -0.22, z1: -0.18}, '#f0efe8', {}, {ink: true});
   }},
@@ -265,6 +266,73 @@ export const paintPendant = (p: Painter, c: YCam) => {
   const sh = [[-0.18, 1.95, 0], [0.18, 1.95, 0], [0.07, 2.13, 0], [-0.07, 2.13, 0]] as V3[];
   wFill(p, c, 32401, '#c66b2e', sh);
   const bulb = sphereAt(c, [0, 1.93, 0], 0.05); if (bulb) hardFill(p, 32402, '#fff2c8', ell(bulb.x, bulb.y, bulb.r * 1.4, bulb.r * 0.7, 14));
+};
+
+// ------------------------------------------------------------------ new: instant-camera-1995-broken (R6)
+/** The kitchen's generic boxy instant camera (no brand) after the slam in B03-SH01: a star-cracked lens, the flash bar hanging off the
+ *  top-right corner on a red and a yellow wire, a strip of grey tape across the top. User, 2026-11-21: the blank Polaroid is OUR gag ("the
+ *  camera happened to be broken"), always shown with the joke label "มุกของเรา: กล้องดันพังพอดี", never as the documented cause (F006: cause unknown).
+ *  `at` = bottom centre on the surface. Standing: front (lens) toward +z. `lying`: on its back, lens up, camera top toward -z (B07 top view),
+ *  the flash bar fallen flat beside the top-right corner. `spark`: a spark and a grey puff at the flash hinge (B03-SH04's shutter beat). */
+export const BROKEN_CAM = {w: 0.13, h: 0.1, d: 0.07};
+const crack = (p: Painter, seed: number, x: number, y: number, r: number) => {
+  const rays = [[-2.5, 0.95], [-1.4, 0.8], [-0.3, 1.0], [0.7, 0.7], [1.6, 0.9], [2.6, 0.75]];
+  rays.forEach(([a, k], i) => inkLine(p, seed + i, [[x, y], [x + Math.cos(a) * r * k * 0.5 + r * 0.06, y + Math.sin(a) * r * k * 0.5], [x + Math.cos(a) * r * k, y + Math.sin(a) * r * k]], {weight: 0.55, color: '#e9eef3'}));
+  inkLine(p, seed + 8, [[x + r * 0.42, y - r * 0.18], [x + r * 0.2, y - r * 0.44], [x - r * 0.18, y - r * 0.42], [x - r * 0.44, y - r * 0.12]], {weight: 0.45, color: '#d6dde4'});
+};
+const spark = (p: Painter, seed: number, x: number, y: number, r: number) => {
+  washAt(p, seed, '#a39d92', 70, ell(x + r * 0.9, y - r * 1.5, r * 1.3, r * 0.9, 16), 0.35, 0.3);
+  washAt(p, seed + 1, '#bdb7ac', 60, ell(x + r * 1.7, y - r * 2.5, r * 0.9, r * 0.6, 14), 0.35, 0.3);
+  const star: Pt[] = [];
+  for (let i = 0; i < 16; i++) { const a = (i / 16) * Math.PI * 2 - 0.2, k = i % 2 ? 0.32 : (i % 4 ? 0.8 : 1.0); star.push([x + Math.cos(a) * r * k, y + Math.sin(a) * r * k]); }
+  hardFill(p, seed + 2, '#ffb22e', star);
+  hardFill(p, seed + 3, '#fff6b8', star.map(([sx, sy]) => [x + (sx - x) * 0.55, y + (sy - y) * 0.55] as Pt));
+  inkLine(p, seed + 4, star, {closed: true, weight: 0.5, color: '#c9661a'});
+};
+export const paintBrokenCamera = (p: Painter, c: YCam, seed: number, at: V3, o: {lying?: boolean; spark?: boolean} = {}) => {
+  const {w, h, d} = BROKEN_CAM, [x, y, z] = at;
+  const body = '#3b3835', tape = '#a9a59b';
+  if (!o.lying) {
+    const fz = z + d / 2, top = y + h;
+    paintBox(p, c, seed, {x0: x - w / 2, x1: x + w / 2, y0: y, y1: top, z0: z - d / 2, z1: fz}, body, {}, {ink: true});
+    wFill(p, c, seed + 3, '#d84a3a', qz(fz + 0.001, x - w / 2, x + w / 2, y + h * 0.5, y + h * 0.62)); // red stripe
+    wFill(p, c, seed + 4, '#141312', qz(fz + 0.0012, x - w * 0.34, x + w * 0.34, y + h * 0.12, y + h * 0.18)); // eject slot
+    wFill(p, c, seed + 5, tape, qy(top + 0.002, x + w * 0.06, x + w * 0.22, z - d / 2 - 0.002, fz + 0.002)); // tape over the top
+    wFill(p, c, seed + 6, tape, qz(fz + 0.0014, x + w * 0.06, x + w * 0.22, y + h * 0.72, top + 0.002));
+    const rim = sphereAt(c, [x - w * 0.16, y + h * 0.58, fz + 0.002], 0.031), ln = sphereAt(c, [x - w * 0.16, y + h * 0.58, fz + 0.004], 0.024);
+    if (rim) hardFill(p, seed + 7, '#8d8983', ell(rim.x, rim.y, rim.r, rim.r, 18));
+    if (ln) { hardFill(p, seed + 8, '#121314', ell(ln.x, ln.y, ln.r, ln.r, 18)); hardFill(p, seed + 9, '#56687a', ell(ln.x - ln.r * 0.35, ln.y - ln.r * 0.35, ln.r * 0.28, ln.r * 0.22, 10)); crack(p, seed + 10, ln.x + ln.r * 0.1, ln.y + ln.r * 0.05, ln.r * 0.95); }
+    // flash bar hanging off the top-right front corner, face out, on two wires
+    const fx0 = x + w / 2 + 0.008, fx1 = fx0 + 0.022, fy1 = top - 0.04, fy0 = fy1 - 0.058;
+    paintBox(p, c, seed + 20, {x0: fx0, x1: fx1, y0: fy0, y1: fy1, z0: fz - 0.028, z1: fz - 0.006}, '#2c2a28', {}, {ink: true});
+    wFill(p, c, seed + 24, '#f2efdf', qz(fz - 0.0055, fx0 + 0.004, fx1 - 0.004, fy0 + 0.008, fy1 - 0.014));
+    const hinge: V3 = [x + w / 2 - 0.004, top, fz - 0.012];
+    wInk(p, c, seed + 25, [hinge, [x + w / 2 + 0.03, top + 0.014, fz - 0.01], [fx1 + 0.004, top - 0.004, fz - 0.014], [fx0 + 0.012, fy1, fz - 0.016]], {closed: false, weight: 1.5, color: '#d8452f'});
+    wInk(p, c, seed + 26, [[hinge[0] - 0.006, top, fz - 0.02], [x + w / 2 + 0.018, top + 0.022, fz - 0.02], [fx1 + 0.008, top - 0.01, fz - 0.02], [fx0 + 0.008, fy1, fz - 0.02]], {closed: false, weight: 1.5, color: '#ecc63c'});
+    const hp = camPoint(c, hinge);
+    if (o.spark && hp) spark(p, seed + 30, hp[0] + 4, hp[1] - 6, 0.026 * camUnit(c, hinge));
+    return;
+  }
+  // lying on its back, lens up (top view); camera top edge toward -z
+  const ft = y + d;
+  const sh = [[x - w / 2 + 0.01, 0.0004, z - h / 2 + 0.012], [x + w / 2 + 0.012, 0.0004, z - h / 2 + 0.012], [x + w / 2 + 0.012, 0.0004, z + h / 2 + 0.014], [x - w / 2 + 0.01, 0.0004, z + h / 2 + 0.014]] as V3[];
+  wWash(p, c, seed, '#0c0704', 160, sh, 0.25, 0.1);
+  paintBox(p, c, seed + 1, {x0: x - w / 2, x1: x + w / 2, y0: y, y1: ft, z0: z - h / 2, z1: z + h / 2}, body, {top: -0.12}, {ink: true});
+  wFill(p, c, seed + 20, '#d84a3a', qy(ft + 0.001, x - w / 2, x + w / 2, z - h * 0.12, z)); // red stripe
+  wFill(p, c, seed + 21, '#141312', qy(ft + 0.0012, x - w * 0.34, x + w * 0.34, z + h * 0.3, z + h * 0.36)); // eject slot
+  wFill(p, c, seed + 22, tape, qy(ft + 0.0014, x + w * 0.06, x + w * 0.22, z - h / 2 - 0.002, z - h * 0.22)); // tape
+  const rim = flatCircle(c, [x - w * 0.16, ft + 0.002, z - h * 0.08], 0.031, 22), lc: V3 = [x - w * 0.16, ft + 0.004, z - h * 0.08];
+  if (rim.length > 2) hardFill(p, seed + 23, '#8d8983', rim);
+  const ln = sphereAt(c, lc, 0.024);
+  if (ln) { hardFill(p, seed + 24, '#121314', ell(ln.x, ln.y, ln.r, ln.r, 18)); hardFill(p, seed + 25, '#56687a', ell(ln.x - ln.r * 0.35, ln.y - ln.r * 0.35, ln.r * 0.28, ln.r * 0.22, 10)); crack(p, seed + 26, ln.x + ln.r * 0.1, ln.y + ln.r * 0.05, ln.r * 0.95); }
+  // the flash bar fallen flat to the camera's right (along x), on two wires from the top-right corner
+  const bx = x + w / 2 + 0.036, bz = z - h / 2 + 0.012;
+  wWash(p, c, seed + 40, '#0c0704', 150, qy(0.0004, bx - 0.026, bx + 0.038, bz - 0.006, bz + 0.02), 0.25, 0.1);
+  paintBox(p, c, seed + 41, {x0: bx - 0.031, x1: bx + 0.031, y0: 0, y1: 0.018, z0: bz - 0.011, z1: bz + 0.011}, '#2c2a28', {top: -0.1}, {ink: true});
+  wFill(p, c, seed + 45, '#f2efdf', qy(0.019, bx - 0.012, bx + 0.024, bz - 0.007, bz + 0.007));
+  const k0: V3 = [x + w / 2 - 0.006, ft, z - h / 2 + 0.008];
+  wInk(p, c, seed + 46, [k0, [x + w / 2 + 0.012, ft * 0.7, z - h / 2 - 0.012], [bx - 0.04, 0.014, bz - 0.016], [bx - 0.031, 0.009, bz - 0.003]], {closed: false, weight: 1.5, color: '#d8452f'});
+  wInk(p, c, seed + 47, [[k0[0], ft, k0[2] + 0.008], [x + w / 2 + 0.02, ft * 0.55, z - h / 2 + 0.03], [bx - 0.045, 0.012, bz + 0.02], [bx - 0.031, 0.009, bz + 0.004]], {closed: false, weight: 1.5, color: '#ecc63c'});
 };
 
 // ------------------------------------------------------------------ Space T: som tam stall, today (midday)
@@ -407,12 +475,16 @@ export const policeTable = (p: Painter, c: YCam) => {
 
 // ------------------------------------------------------------------ Space R: reveal table (no place claimed)
 /** RC3-01 (Boat Recheck R3), applied in R4: the lemon half sits BESIDE the Polaroid, touching nothing; never on the image area or the CCTV print. */
+/** R6 (user, 2026-11-21: the blank Polaroid is our gag, the camera happened to be broken): the broken camera lies on its back, lens up, ABOVE
+ *  the Polaroid (toward -z, 2.65 cm gap), its flash bar fallen flat to its right on two wires. Placed so B07-SH01's pull-up reveals it and
+ *  B07-SH02/SH03 keep it out of frame (SH03 needs every camera point at z < -0.074; the camera's near edge is z -0.08). */
 export const REVEAL = {
   polaroid: {c: [-0.07, 0, 0] as V3, w: 0.088, h: 0.107},
   print: {c: [0.16, 0, 0] as V3, w: 0.203, h: 0.254, rot: 4},
   lemon: {c: [-0.1, 0.015, 0.095] as V3, r: 0.03},
+  camera: {c: [-0.07, 0, -0.13] as V3},
 };
-export const paintRevealTable = (p: Painter, c: YCam) => {
+export const paintRevealTable = (p: Painter, c: YCam, o: {camera?: boolean} = {}) => {
   wFill(p, c, 37000, '#2a1a10', qy(0, -1, 1, -1, 1));
   for (let i = 0; i < 22; i++) { const z = -0.9 + i * 0.085 + Math.sin(i * 2.3) * 0.02; wWash(p, c, 37001 + i, i % 3 ? '#3a2416' : '#22150c', 120, qy(0.0005, -1, 1, z, z + 0.018 + (i % 4) * 0.006), 0.15, 0.6); }
   // warm desk-lamp pool from upper left
@@ -431,6 +503,7 @@ export const paintRevealTable = (p: Painter, c: YCam) => {
   const corner = (dx: number, dz: number, o = 0): V3 => [R.c[0] + o + dx * co + dz * si, 0.0003, R.c[2] + o - dx * si + dz * co];
   wWash(p, c, 37120, '#0c0704', 160, [corner(-R.w / 2, -R.h / 2, 0.008), corner(R.w / 2, -R.h / 2, 0.008), corner(R.w / 2, R.h / 2, 0.008), corner(-R.w / 2, R.h / 2, 0.008)], 0.2, 0.1);
   paintLemonHalf(p, c, 37200, REVEAL.lemon.c, REVEAL.lemon.r);
+  if (o.camera !== false) paintBrokenCamera(p, c, 37300, REVEAL.camera.c, {lying: true});
   // the falloff: dark vignette toward the frame edges (painted, keeps the pool clean)
 };
 /** The print's four world corners (top-left, top-right, bottom-right, bottom-left as seen from the master top view). */
