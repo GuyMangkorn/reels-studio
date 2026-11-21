@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** W2.2 done — 24-shot storyboard written; page not yet published (W2.3). **Next:** Coordinator — publish the storyboard page (W2.3) and ask Q1–Q5 plus confirm the script (W1.5)
+**Now:** W2.3 done — storyboard page published (https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY); waiting for the user's verdicts. **Next:** read verdicts, ask Q1–Q5, confirm the script (W1.5)
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -20,7 +20,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 - [ ] W2 Brief and storyboard
   - [x] W2.1 Film brief — EDU-EP31-BRIEF-R1, 2026-11-21, ready-for-mark ([film-brief.md](short/film-brief.md))
   - [x] W2.2 Film storyboard rows — EDU-EP31-ROWS-R1, 24 shots, untimed ([review-rows.json](short/review-rows.json), [storyboard.md](short/storyboard.md)); local build passes
-  - [ ] W2.3 Storyboard page published
+  - [x] W2.3 Storyboard page published — 2026-11-21, https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY (rows R1, artifact v2)
 - [ ] W3 Look frames and storyboard pass
   - [ ] W3.1 Look frames on the page (0/L locations)
   - [ ] W3.2 Look frames approved (look lock)

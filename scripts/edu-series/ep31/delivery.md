@@ -9,7 +9,7 @@
 
 | Deliverable ID | Stage / Next owner | Editorial and timing | Production |
 | --- | --- | --- | --- |
-| `EDU-EP31-SHORT` | W2.2 done / coordinator W2.3 publish page, Q1–Q5, W1.5 confirm | Target 50–60 s | - |
+| `EDU-EP31-SHORT` | W2.3 page published; waiting for verdicts, Q1–Q5, W1.5 confirm | Target 50–60 s | - |
 
 ## Change log
 
@@ -18,3 +18,4 @@
 - 2026-11-21, Preaw: W1.2 script `EDU-EP31-SCRIPT-R1` ([short/script.md](short/script.md), [script-notes.md](short/script-notes.md)). Hook H1 locked; 206 narration syllables at 4.41 syll/s (EP30 VOICE-R2) + 29 character syllables + gaps and 2.0 s hold = about 59.7 s, estimated, no read-aloud. Limit 63 s. First trims if long: L14 second sentence, then L07. Next Boat W1.3.
 - 2026-11-21, user: L15 felt confusing, asked for spoken friend-gossip Thai, "ทำไมคนถึงมั่นใจ ทั้งที่ไม่รู้อะไรจริง ๆ เลย" in a funny tone. Preaw SCRIPT-R2 (L15 rewritten, L06 "ไม่มีเขาเลยจริง ๆ", name "แมคอาเธอร์", clock rule, projected about 62.6 s). Boat FACT-R1 and Recheck R2: ready-for-storyboard, no must-fix. Coordinator: B05 sound line made neutral (RC03). User, 2026-11-21: "ให้ทำต่อไปจนถึงฟีมทำ storyboard เลยนะ" — proceeding to Film on SCRIPT-R2; formal script approval (W1.5) to be confirmed on the review page. Length trims if voice lock runs over: L07, then L14 second sentence.
 - 2026-11-21, Film: W2.1 brief `EDU-EP31-BRIEF-R1` ([short/film-brief.md](short/film-brief.md), VD31-01–17, LF01–LF07, Q1–Q5) and W2.2 storyboard `EDU-EP31-BOARD-R1` / rows `EDU-EP31-ROWS-R1` (24 shots, untimed; [storyboard.md](short/storyboard.md), [review-rows.json](short/review-rows.json)). Size M+. New: seven small sets, WHEELER windbreaker, police outfit, props, CCTV and CRT screen layers, 1995 news bumper. Page built locally, not published. Open: Q1 lemon colour, Q2 place tag, Q3 Wheeler head man-crop, Q4 ending picture, Q5 if L07 is cut. docs/context-map-episodes.md needs an EP31 heading at commit.
+- 2026-11-21, coordinator: W2.3 storyboard page published, rows EDU-EP31-ROWS-R1, artifact v2 (slug 633fc527-1a07-4c53-9bd8-28b54e6f716d), https://claude.ai/artifact/DFqBaRcavHRiTeBrZzY8SY. Verdicts live in its db under reviews/<shot ID>@<stage>; mirror with verdicts.py --pull. Open: Q1–Q5 and W1.5 script confirm.
