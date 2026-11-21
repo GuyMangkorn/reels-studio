@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** storyboard passed 24/24 and look frames locked (ROWS-R5, 2026-11-21). **Next:** W4 voice lock (Editor: voice choice, narration, measure; user approves the voice)
+**Now:** storyboard passed 24/24 and look frames locked (ROWS-R5, 2026-11-21). **Now (W4):** voice lock measured, user approval pending (W4.3): Kore x1.05, short 59.82 s, [voice-lock.md](short/voice-lock.md). **Next:** user listens and approves; then W5.1 Film timed sheets
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)
@@ -28,8 +28,8 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
   - [x] W3.2 Look frames approved (look lock), user 2026-11-21
   - [x] W3.3 Storyboard passed (24/24 shots), user 2026-11-21
 - [ ] W4 Voice lock
-  - [ ] W4.1 Voice chosen
-  - [ ] W4.2 Narration generated and measured
+  - [x] W4.1 Voice chosen — Kore x1.05 (channel default); ANCHOR Charon, POLICE Alnilam, WHEELER Algenib; 2026-11-21, Editor ([voice-lock.md](short/voice-lock.md))
+  - [x] W4.2 Narration generated and measured — speech ends 57.77 s, short 59.82 s (limit 63 s), no trim, 5 requests; store `projects/edu/EDU/narration/ep31-voice-r1-1/`, 2026-11-21
   - [ ] W4.3 User approves the voice
 - [ ] W5 Draft
   - [ ] W5.1 Film timed scene sheets
