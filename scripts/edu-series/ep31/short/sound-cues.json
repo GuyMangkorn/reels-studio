@@ -12,7 +12,7 @@
   "gainDb is the mix gain in dB on the filed library master (music and ambience masters are -14 LUFS, SFX masters peak at -1 dBFS); it is calibrated so the EP08b distances hold against the VOICE-R1 preview (speech level about -15.9 LUFS in the first calibration; recalibrated 21 Nov 2026 on the draft cut against the meter's own reading of the locked narration, speech -12.9 LUFS: music cues raised 1.5 to 6.5 dB, B03-SH04-pop +0.9 dB; see build-notes W5.3 Ton recalibration). Editor may move every gain together or per layer, then the measured dV decides.",
   "layer: bed = music (and music stingers inside a bed), texture = ambience beds and foley, accent = hits, stingers, rings. Stems: voice, bed, texture, accent.",
   "durationFrames is the placed length: a longer file is trimmed to it with fadeOutFrames; a missing field means the whole file. offsetFrames is where the file starts playing (continues an ambience across split cues).",
-  "Silences the sheets mark: all sound stops at 1329 (rings, clock and every bed ended; nothing plays 1329-1349 except nothing); 1301-1305 hiss only; 1413-1419 total silence; B02-SH03 music out 518-547; B03-SH03 music out 740-803; B01 music out 158-178; B06-SH02 nothing but AMB-P.",
+  "Silences the sheets mark: all sound stops at 1329 (rings, clock and every bed ended; nothing plays 1329-1349 except nothing); 1301-1305 hiss only; 1413-1419 total silence; B02-SH03 music out 518-547; B03-SH03 music out 740-803; B01 music out 157-174; B06-SH02 nothing but AMB-P.",
   "Never: gunshot or gun handling, siren, knock, handcuff click, real station audio (brief; FC07; RC03; RC5-01). All sound is simulated and carried by the video's label."
  ],
  "cues": [
@@ -20,15 +20,15 @@
    "cue": "B01-SH01-mus01",
    "shot": "B01-SH01",
    "frame": 0,
-   "brief": "MUS-01 heist groove from frame 0: slick 1970s crime-funk, electric bass riff, brushed kit, finger snaps, muted trumpet stabs, vibraphone, 98 bpm, warm hi-fi; \"this is a heist movie and he is the star\". Cuts dead at 158 (\"เลย\").",
+   "brief": "MUS-01 heist groove from frame 0: slick 1970s crime-funk, electric bass riff, brushed kit, finger snaps, muted trumpet stabs, vibraphone, 98 bpm, warm hi-fi; \"this is a heist movie and he is the star\". Cuts dead at 157 (\"เลย\").",
    "id": "bed_heist-funk-groove-98-intro_01",
    "origin": "generated",
    "path": "public/audio/bed/bed_heist-funk-groove-98-intro_01.wav",
-   "durationFrames": 158,
+   "durationFrames": 157,
    "layer": "bed",
    "gainDb": -14.5,
    "fadeOutFrames": 2,
-   "note": "Dead cut at 158; 20 f of room tone only before \"เพราะ\" 178."
+   "note": "Dead cut at 157; room tone only 157-172 (15 f), 17 f to \"เพราะ\" at 174 (SCENE-R2, L01 c1)."
   },
   {
    "cue": "B02-SH01-mus01s",
@@ -123,7 +123,7 @@
    "id": "room_bank-lobby-1995_01",
    "origin": "generated",
    "path": "public/audio/room/room_bank-lobby-1995_01.wav",
-   "durationFrames": 175,
+   "durationFrames": 169,
    "layer": "texture",
    "gainDb": -26.5,
    "fadeInFrames": 3,
@@ -133,18 +133,18 @@
   {
    "cue": "B01-SH03-ambK-low",
    "shot": "B01-SH03",
-   "frame": 175,
+   "frame": 169,
    "brief": "AMB-K low under B01-SH03 (music out), same room tone.",
    "id": "room_bank-lobby-1995_01",
    "origin": "generated",
    "path": "public/audio/room/room_bank-lobby-1995_01.wav",
-   "durationFrames": 58,
+   "durationFrames": 64,
    "layer": "texture",
    "gainDb": -31.0,
    "fadeInFrames": 6,
    "fadeOutFrames": 3,
-   "offsetFrames": 175,
-   "note": "Continues the file from offset 175."
+   "offsetFrames": 169,
+   "note": "Continues the file from offset 169."
   },
   {
    "cue": "B01-SH04-ambT",
@@ -349,11 +349,11 @@
   {
    "cue": "B01-SH02-whip",
    "shot": "B01-SH02",
-   "frame": 79,
-   "brief": "Short rising air swish left to right, fast whip-pan swish, airy, dry, cocky; the peak lands on \"สองแห่ง\" 94 on purpose.",
+   "frame": 88,
+   "brief": "Short rising air swish left to right, fast whip-pan swish, airy, dry, cocky; the peak lands on \"สองแห่ง\" 103 on purpose.",
    "id": "whoosh_air-swish-rising_01",
    "origin": "library",
-   "fit": "Measured 0.80 s: rises from file 0.30 s to a sharp peak at 0.50 s then decays by 0.76 s, dry and airy. That is the whip described, so the peak is placed on frame 94 (start 79); a new generation would be the same shape.",
+   "fit": "Measured 0.80 s: rises from file 0.30 s to a sharp peak at 0.50 s then decays by 0.76 s, dry and airy. That is the whip described, so the peak is placed on frame 103 (start 88); a new generation would be the same shape.",
    "path": "public/audio/whoosh/whoosh_air-swish-rising_01.wav",
    "durationFrames": 24,
    "layer": "accent",
@@ -362,7 +362,7 @@
   {
    "cue": "B01-SH03-pat",
    "shot": "B01-SH03",
-   "frame": 192,
+   "frame": 187,
    "brief": "Small juicy pat: a cut lemon half pressed on a bearded cheek, wet squelch, close, dry; a bit gross-funny.",
    "id": "foley_lemon-pat-cheek_01",
    "origin": "generated",
@@ -374,7 +374,7 @@
   {
    "cue": "B01-SH03-ting",
    "shot": "B01-SH03",
-   "frame": 208,
+   "frame": 205,
    "brief": "Heist glint ting: tiny bright bell with a shimmer tail; cocky. The same file returns at 1660.",
    "id": "comedy_heist-glint-ting_01",
    "origin": "generated",

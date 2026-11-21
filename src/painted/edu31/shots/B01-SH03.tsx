@@ -8,15 +8,15 @@ import {bankFurniture, paintBankShell, WHEELER} from '../set31';
 import {makeShot, type Shot31} from '../shot';
 import {camMove, dryAnchors, fig, hump, keysAt, mix, poseShoulder, reachArm} from '../stage31';
 
-// B01-SH03 · F [175, 233) · ECU: the reason (SCENE-R1 b01). Front in K2, head still, `smug`; `new: lemon-pat`: his RIGHT mitten (screen left)
-// brings a cut lemon half up from below frame (L8-16) and pats his right cheek above the beard: contact L17 (F192, "น้ำมะนาว") and L25, then holds;
-// a 4-point star glint on the wet cheek L33-39 (F208, "หน้า"). Push 0.08 m. The mitten stays a mitten (close shot, figure scale: fingers do not
-// carry this beat; hand-drawing 4).
-const N = 58, SHOT = 'B01-SH03';
+// B01-SH03 · F [169, 233) · ECU: the reason (SCENE-R2 b01; R1 [175, 233)). Front in K2, head still, `smug`; `new: lemon-pat`: his RIGHT mitten
+// (screen left) brings a cut lemon half up from below frame (L8-17.5, from "เขา") and pats his right cheek above the beard: contact L18 (F187,
+// 3 f before "น้ำมะนาว") and L28 (F197, "นาว"), then holds; a 4-point star glint on the wet cheek L36-42 (F205, "หน้า"). Push 0.08 m. The mitten
+// stays a mitten (close shot, figure scale: fingers do not carry this beat; hand-drawing 4).
+const N = 64, SHOT = 'B01-SH03';
 const CAM = camMove({eye: [1.05, 1.58, 2.15], yaw: 0, pitch: 0, f: 950, hy: 620}, {eye: [1.05, 1.58, 2.07], yaw: 0, pitch: 0, f: 950, hy: 620}, 0, N - 1);
 const W: V3 = [1.0, 0, 1.2];
-/** Hand travel 0..1 (below frame -> cheek), with the second pat's small pull back (L19-24). */
-const patAt = (L: number) => keysAt(L, [[8, 0], [16.5, 1], [19, 1], [21.5, 0.82], [24.5, 1]]);
+/** Hand travel 0..1 (below frame -> cheek), with the second pat's small pull back (L21-28); R1 in-between keys scaled to the L17.5-28 span. */
+const patAt = (L: number) => keysAt(L, [[8, 0], [17.5, 1], [20.8, 1], [24.1, 0.82], [28, 1]]);
 
 export const def: Shot31 = {
   id: SHOT, N, paper: '#e7d8bf', vignette: 0.35,
@@ -42,7 +42,7 @@ export const def: Shot31 = {
         cheekPt = [a.rHand[0] + 0.075 * u, a.rHand[1] - 0.09 * u];
       }}),
     ]);
-    starGlint(p, 37620, cheekPt[0] + 0.02 * u, cheekPt[1] - 0.035 * u, 90, hump(L, 32, 40));
+    starGlint(p, 37620, cheekPt[0] + 0.02 * u, cheekPt[1] - 0.035 * u, 90, hump(L, 35, 43));
     if (pr) { pr.lead('HEAD', {top: a0.headTop, bottom: a0.chin, x: a0.head[0]}); pr.lead('ARM-R', {top: rA.ratio, bottom: 0}); pr.lead('PAT', {top: cheekPt[1], bottom: cheekPt[1], x: cheekPt[0]}); }
   },
 };

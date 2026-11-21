@@ -10,12 +10,13 @@ import {BANK_TEXT, bankFurniture, FRIEND, glow, lemonPx, paintBankShell, WHEELER
 import {makeShot, type Shot31} from '../shot';
 import {camMove, fig, gu, mix3} from '../stage31';
 
-// B01-SH01 · F [0, 72) · heist slow-motion walk into the lobby (SCENE-R1 b01, LF01). Frame 0 already shows the bare face with the beard, the whole
+// B01-SH01 · F [0, 83) · heist slow-motion walk into the lobby (SCENE-R2 b01, LF01; R1 [0, 72)). Frame 0 already shows the bare face with the beard, the whole
 // lemon (RIGHT mitten, CP-P02 elbow back), `new: toy-pistol-cartoon` hanging in the LEFT mitten (CP-P05, barrel down 0.2 rad outward, never raised:
-// VD31-10, RC5-01), `new: canvas-money-bag` on the left-shoulder strap with one note corner (RC5-02). Both men walk toward the lens at 0.6 speed
-// (0.54 m/s) while the camera dollies back 0.3 m (yaw 180 -> 176). The LF01 art (look frame, Film) is reused as written; only the walk, the
+// VD31-10, RC5-01), `new: canvas-money-bag` on the left-shoulder strap with one note corner (RC5-02). Both men walk toward the lens in slow motion
+// (0.48 m/s; endpoints as R1, the walk phase follows distance so the cycle slows with the speed and feet do not slide) while the camera dollies
+// back 0.3 m (yaw 180 -> 176, ease L0-82). The LF01 art (look frame, Film) is reused as written; only the walk, the
 // positions and the camera move are the plate's.
-const N = 72, SHOT = 'B01-SH01';
+const N = 83, SHOT = 'B01-SH01';
 const CAM = camMove({eye: [-0.2, 0.6, 3.0], yaw: 180, pitch: 7, f: 1080, hy: 650}, {eye: [-0.2, 0.6, 2.7], yaw: 176, pitch: 7, f: 1080, hy: 650}, 0, N - 1);
 /** LF01 gun arm: elbow and hand from the left shoulder (m outward / down), barrel angle. */
 const GUN_ELBOW: [number, number] = [0.035, 0.255], GUN_HAND: [number, number] = [0.075, 0.495], GUN_ANG = Math.PI / 2 - 0.2;

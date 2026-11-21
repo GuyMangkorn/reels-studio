@@ -1,4 +1,4 @@
-// EDU-EP31-SHORT shot index (Boss W5.2 batch 1, 2026-11-21) from the timed scene sheets EDU-EP31-SCENE-R1 (index shot map; 24 shots, 1795 f =
+// EDU-EP31-SHORT shot index (Boss W5.2 batch 1, 2026-11-21) from the timed scene sheets EDU-EP31-SCENE-R1, B01-SH01..03 retimed to SCENE-R2 (index shot map; 24 shots, 1795 f =
 // 59.82 s at 30 fps, one story scene at offset 0, play order). For the Editor's timeline: one painted plate per shot, registry ID `EDU31-<shot id>`
 // (src/painted/shots/edu31.tsx lists the built shot files), placed at composition frame `start` for `N` frames; every cut is a hard cut and no
 // plate has pre-roll. Timing only: imports no shot file (per-shot render cache).
@@ -8,7 +8,7 @@ export const DURATION = 1795;
 export type ShotRow = {id: string; start: number; N: number};
 
 export const EDU31_SHOTS: readonly ShotRow[] = [
-  {id: 'B01-SH01', start: 0, N: 72}, {id: 'B01-SH02', start: 72, N: 103}, {id: 'B01-SH03', start: 175, N: 58}, {id: 'B01-SH04', start: 233, N: 99},
+  {id: 'B01-SH01', start: 0, N: 83}, {id: 'B01-SH02', start: 83, N: 86}, {id: 'B01-SH03', start: 169, N: 64}, {id: 'B01-SH04', start: 233, N: 99},
   {id: 'B02-SH01', start: 332, N: 69}, {id: 'B02-SH02', start: 401, N: 102}, {id: 'B02-SH03', start: 503, N: 99},
   {id: 'B03-SH01', start: 602, N: 69}, {id: 'B03-SH02', start: 671, N: 69}, {id: 'B03-SH03', start: 740, N: 63}, {id: 'B03-SH04', start: 803, N: 54}, {id: 'B03-SH05', start: 857, N: 43},
   {id: 'B04-SH01', start: 900, N: 59}, {id: 'B04-SH02', start: 959, N: 67}, {id: 'B04-SH03', start: 1026, N: 125},
