@@ -224,7 +224,7 @@
     "store": "library/sound/sfx/whoosh/whoosh_air-swish-rising_01.wav"
   },
   "public/narration/EDU-EP31-SHORT-narration-v1.wav": {
-    "store": "projects/edu/EDU/narration/ep31-voice-r1-1/preview.wav",
-    "sha256": "f669fda7782d07f076d32ef710737bb8096c155da66fa987d7aa5a3da625d868"
+    "store": "projects/edu/EDU/narration/ep31-voice-r1-3/preview.wav",
+    "sha256": "ceac28a6cd24e38b001ea0c573715f2f36fbcffda4def19870b927581e4b2ac3"
   }
 }

@@ -1,4 +1,6 @@
 {
+ "revision": "VOICE-R1.3",
+ "note": "L01 = Kore candidate c1 (user pick 2026-11-21), padded to the old L01 length; every line start and the total are unchanged from R1.1",
  "tempo": 1.05,
  "skip": [],
  "lines": [
