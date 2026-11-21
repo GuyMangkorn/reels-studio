@@ -1,4 +1,4 @@
-import type {CSSProperties, ReactNode} from 'react';
+import type {ReactNode} from 'react';
 import {useCallback} from 'react';
 import {AbsoluteFill, getInputProps, Img, staticFile} from 'remotion';
 import {CAPTION_OUTLINE, channelLabelLook, defaultChrome} from '../../scenes/media';
@@ -8,6 +8,7 @@ import {makePainter} from '../kit/painter';
 import {Grain} from '../kit/screen';
 import {LOOK_DEFS, type LookDef} from './looks';
 import {onQuad, TagPlate, WorldTexts} from './overlay31';
+import {CCTV_FILTER, CctvOverlay, crtLook, scan} from './screen31';
 
 // EDU-EP31-SHORT W3 look layer (Film, 2026-11-21): one BrushCanvas per still; above it the camera-mapped CCTV-STILL-01 image (screen and
 // prints, DF-20261031-painted-raster-card), English signage as DOM text mapped through the same camera, the screen layers (VD31-08: CCTV
@@ -17,24 +18,7 @@ import {onQuad, TagPlate, WorldTexts} from './overlay31';
 
 const LABEL = 'แต่งเติมจากเรื่องจริง · ภาพและเสียงจำลอง ไม่ใช่ภาพจริง';
 
-const scan = (op: number, step = 4): CSSProperties => ({position: 'absolute', inset: 0, pointerEvents: 'none',
-  background: `repeating-linear-gradient(0deg, rgba(0,0,0,${op}) 0px, rgba(0,0,0,${op}) ${step / 2}px, transparent ${step / 2}px, transparent ${step}px)`});
-
-/** VD31-08 CCTV preset (look-frame approximation of the missing kit preset): grey-green mono with lifted blacks (the beard sits in the middle
- *  value), softness for the low resolution, scanlines, a rolling noise band, vignette, timestamp and CAM/REC. */
-const CCTV_FILTER = 'grayscale(1) sepia(0.45) hue-rotate(48deg) saturate(1.25) contrast(0.72) brightness(1.22) blur(1.4px)';
-const CctvOverlay = () => (
-  <>
-    <div style={scan(0.22, 6)} />
-    <div style={{position: 'absolute', left: 0, right: 0, top: 1010, height: 70, background: 'linear-gradient(180deg, transparent, rgba(220,240,210,0.13), transparent)'}} />
-    <div style={{position: 'absolute', inset: 0, background: 'radial-gradient(ellipse at 50% 45%, transparent 55%, rgba(10,20,12,0.55) 100%)'}} />
-    <div style={{position: 'absolute', left: 120, top: 1440, fontFamily: "'Courier New', monospace", fontWeight: 700, fontSize: 52, color: '#e6f2dc', letterSpacing: 4, textShadow: '0 0 6px rgba(200,255,200,0.5), 3px 3px 0 #0b140c'}}>JAN 06 1995</div>
-    <div style={{position: 'absolute', right: 110, top: 250, display: 'flex', alignItems: 'center', gap: 16, fontFamily: "'Courier New', monospace", fontWeight: 700, fontSize: 46, color: '#e6f2dc', letterSpacing: 3, textShadow: '3px 3px 0 #0b140c'}}>
-      <span style={{width: 26, height: 26, borderRadius: 13, background: '#ff2a1e', boxShadow: '0 0 10px #ff2a1e'}} />REC  CAM 2
-    </div>
-  </>
-);
-const crtLook: CSSProperties = {filter: 'contrast(1.05) brightness(1.08) saturate(0.9)'};
+// VD31-08 screen presets (CCTV filter and overlay, CRT look, scanlines): one home in screen31.tsx since W5.2 batch 2 (moved unchanged).
 
 const Still = ({id}: {id: string}) => {
   const look: LookDef = LOOK_DEFS[id]();

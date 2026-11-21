@@ -4,7 +4,7 @@ import {frameOf, paintBox as paintOBox, paintFrustum, paintQuad, type Frame3} fr
 import {add3, scale3, type V3} from '../kit/space';
 import {mixColor, type Painter, type Pt} from '../kit/painter';
 import {camDepth, camPoint, camUnit, type YCam} from '../kit/ycam';
-import {flatCircle} from '../kit/world';
+import {flatCircle, paintBox as paintWBox, qy, wFill, wInk} from '../kit/world';
 
 // EDU-EP31-SHORT new props and effects (Boss W5.2 batch 1, 2026-11-21). Each piece is a pure function of its arguments (world metres, the yaw
 // camera, a seed), drawn through the Painter, so kit intake (W8.4) can lift it as is. Seeds 37000-38999 (set31 uses 31000-36999).
@@ -17,6 +17,8 @@ import {flatCircle} from '../kit/world';
 //   lemon half held (side view)                   lemonHalfSide
 //   effects                                       starGlint, sparkBurst, puff, floorFlash, droplets, whipSmear
 //   thought bubble mini lobby (VD31-16)           paintBubble
+//   new: desk-phone-1990s (batch 2)               paintDeskPhone     beige office phone, keypad, line lights, handset (lift offset, ring jiggle), coiled cord
+//   new: wall-calendar-1995 page (batch 2)        paintCalendarPage  blank page body for a month (the month and year are world text)
 
 const DEG = Math.PI / 180;
 const P = (f: Frame3, a: number, b: number, c: number): V3 => add3(add3(add3(f.o, scale3(f.x, a)), scale3(f.y, b)), scale3(f.z, c));
@@ -383,4 +385,56 @@ export const paintBubble = (p: Painter, seed: number, b: BubbleState) => {
   hardFill(q, seed + 103, '#2a2a2e', ell(lx, lens[1], 9 * s * (0.6 + 0.4 * Math.cos(pan)), 11 * s, 12));
   const led = R(L * 0.2, -H / 2 + 6 * s); hardFill(q, seed + 104, '#ff2a1e', ell(bx + (led[0] - bx) * dir, led[1], 3.5 * s, 3.5 * s, 8));
   inkLine(p, seed + 120, ell(cx, cy, r, r, 48), {closed: true, weight: 1.4, color: '#5a4a3a'});
+};
+
+// ------------------------------------------------------------------ new: desk-phone-1990s (Boss W5.2 batch 2, B05-SH03)
+/** Beige early-1990s office desk phone, no brand, no text: base 0.22 x 0.2 m (x, z) on the desk at `at` (base front-centre bottom), a sloped
+ *  keypad (4 x 3 blank keys), three line-light buttons at the front right (`light` 0..1 lights the first red), the handset lying across the
+ *  cradle along x, moved by `lift` (world offset, m; the jiggle of a ringing bell is a 1-2 mm `lift`), and a coiled cord from its left end.
+ *  Returns the handset's grip centre (for a hand placed on it). */
+export const DESK_PHONE = {w: 0.22, d: 0.2, h: 0.06, handset: 0.21};
+export const paintDeskPhone = (p: Painter, c: YCam, seed: number, at: V3, o: {light?: number; lift?: V3} = {}): V3 => {
+  const {w, d, h} = DESK_PHONE, [x, y, z] = at, beige = '#d8ccae', dark = '#b3a684';
+  const sh = flatCircle(c, [x + 0.01, y + 0.0005, z - d / 2 + 0.012], w * 0.62, 22);
+  if (sh.length > 2) washAt(p, seed, '#3a2c1e', 110, sh, 0.25, 0.1);
+  paintWBox(p, c, seed + 1, {x0: x - w / 2, x1: x + w / 2, y0: y, y1: y + h * 0.55, z0: z - d, z1: z}, beige, {front: -0.08}, {ink: true});
+  paintWBox(p, c, seed + 2, {x0: x - w / 2 + 0.01, x1: x + w / 2 - 0.01, y0: y + h * 0.55, y1: y + h, z0: z - d, z1: z - d * 0.48}, beige, {front: -0.05}, {ink: true}); // raised cradle back
+  wFill(p, c, seed + 3, dark, qy(y + h * 0.551, x - w * 0.42, x + w * 0.18, z - d * 0.44, z - 0.02)); // keypad well
+  for (let r = 0; r < 4; r++) for (let k = 0; k < 3; k++) {
+    const kx = x - w * 0.36 + k * 0.05, kz = z - d * 0.4 + r * 0.038;
+    paintWBox(p, c, seed + 10 + r * 3 + k, {x0: kx, x1: kx + 0.036, y0: y + h * 0.55, y1: y + h * 0.55 + 0.008, z0: kz, z1: kz + 0.026}, '#ece4cf', {}, {});
+  }
+  for (let i = 0; i < 3; i++) { // line-light buttons, the first lit red when `light`
+    const bx = x + w * 0.27, bz = z - d * 0.4 + i * 0.045, lit = i === 0 ? (o.light ?? 0) : 0;
+    paintWBox(p, c, seed + 30 + i, {x0: bx, x1: bx + 0.03, y0: y + h * 0.55, y1: y + h * 0.55 + 0.009, z0: bz, z1: bz + 0.028}, lit > 0.5 ? '#ff3a26' : '#8e3a2e', {}, {});
+    if (lit > 0.5) { const g = camPoint(c, [bx + 0.015, y + h * 0.6, bz + 0.014]); if (g) washAt(p, seed + 35, '#ff5a3a', 90 * lit, ell(g[0], g[1], 0.03 * camUnit(c, at), 0.022 * camUnit(c, at), 16), 0.3, 0.05); }
+  }
+  // handset across the cradle (along x), ear and mouth cups at its ends
+  const L = o.lift ?? [0, 0, 0], hy = y + h + 0.004, hz = z - d * 0.74, hl = DESK_PHONE.handset;
+  const H = (v: V3): V3 => [v[0] + L[0], v[1] + L[1], v[2] + L[2]];
+  const lifted = Math.hypot(L[0], L[1], L[2]) > 0.01;
+  if (lifted) for (const sx of [-1, 1]) paintWBox(p, c, seed + 40 + (sx > 0 ? 1 : 0), {x0: x + sx * hl * 0.36 - 0.02, x1: x + sx * hl * 0.36 + 0.02, y0: y + h - 0.004, y1: y + h + 0.002, z0: hz - 0.02, z1: hz + 0.02}, '#2a2420', {}, {}); // empty cradle cups
+  const b0 = H([x - hl / 2, hy, hz - 0.022]), b1 = H([x + hl / 2, hy + 0.04, hz + 0.022]);
+  for (const sx of [-1, 1]) { const cx = x + sx * (hl / 2 - 0.025); const a = H([cx - 0.028, hy - 0.004, hz - 0.03]), bb = H([cx + 0.028, hy + 0.03, hz + 0.03]);
+    paintWBox(p, c, seed + 42 + (sx > 0 ? 1 : 0), {x0: a[0], x1: bb[0], y0: a[1], y1: bb[1], z0: a[2], z1: bb[2]}, '#c9bb98', {front: -0.06}, {ink: true}); }
+  paintWBox(p, c, seed + 44, {x0: b0[0] + 0.03, x1: b1[0] - 0.03, y0: b0[1] + 0.02, y1: b1[1], z0: b0[2] + 0.006, z1: b1[2] - 0.006}, '#c9bb98', {front: -0.06}, {ink: true});
+  // coiled cord from the handset's left end down to the base's left side
+  const c0 = H([x - hl / 2, hy + 0.01, hz]), c1: V3 = [x - w / 2, y + 0.02, z - d * 0.3];
+  const coil: Pt[] = [];
+  for (let i = 0; i <= 28; i++) { const k = i / 28, v: V3 = [c0[0] + (c1[0] - c0[0]) * k - 0.02 * Math.sin(k * Math.PI), c0[1] + (c1[1] - c0[1]) * k - 0.03 * Math.sin(k * Math.PI), c0[2] + (c1[2] - c0[2]) * k + 0.03 * Math.sin(k * Math.PI)];
+    const q = camPoint(c, v, 0.02); if (q) { const r = 0.006 * camUnit(c, v); coil.push([q[0] + Math.cos(i * 2.4) * r, q[1] + Math.sin(i * 2.4) * r]); } }
+  if (coil.length > 2) inkLine(p, seed + 50, coil, {weight: 1.6, color: '#a89a78', curve: 0.4});
+  return H([x, hy + 0.02, hz]);
+};
+
+// ------------------------------------------------------------------ new: wall-calendar-1995 page (Boss W5.2 batch 2, B04-SH03)
+/** A calendar month page on a wall facing +z (or carried by a torn page's frame): the paper, a red header band and the day grid. `corners`
+ *  top-left, top-right, bottom-right, bottom-left (world); the month name and year are world text drawn by the plate over the header. */
+export const paintCalendarPage = (p: Painter, c: YCam, seed: number, corners: [V3, V3, V3, V3], tint = 0) => {
+  const [a, b, , dd] = corners, lerp = (u: number, v: number): V3 => [a[0] + (b[0] - a[0]) * u + (dd[0] - a[0]) * v, a[1] + (b[1] - a[1]) * u + (dd[1] - a[1]) * v, a[2] + (b[2] - a[2]) * u + (dd[2] - a[2]) * v];
+  const quad = (u0: number, v0: number, u1: number, v1: number): V3[] => [lerp(u0, v0), lerp(u1, v0), lerp(u1, v1), lerp(u0, v1)];
+  wFill(p, c, seed, mixColor('#f7f3e8', '#d9d2c2', tint), quad(0, 0, 1, 1));
+  wFill(p, c, seed + 1, '#c8423a', quad(0.04, 0.03, 0.96, 0.08));
+  for (let r = 0; r < 5; r++) for (let k = 0; k < 7; k++) wFill(p, c, seed + 10 + r * 7 + k, '#e2dccd', quad(0.06 + k * 0.128, 0.5 + r * 0.095, 0.17 + k * 0.128, 0.58 + r * 0.095));
+  wInk(p, c, seed + 60, quad(0, 0, 1, 1), {weight: 0.4, color: '#a39c8c'});
 };

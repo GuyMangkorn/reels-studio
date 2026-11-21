@@ -392,7 +392,10 @@ export const stallItems = (): {at: V3; draw: (p: Painter, c: YCam) => void}[] =>
 
 // ------------------------------------------------------------------ Space V: TV corner (night, April 1995)
 export const TV_SCREEN: [V3, V3, V3, V3] = [[-0.275, 1.095, -0.33], [0.275, 1.095, -0.33], [0.275, 0.685, -0.33], [-0.275, 0.685, -0.33]];
-export const paintTvCorner = (p: Painter, c: YCam) => {
+/** Plate option (W5.2 batch 2; default = the LF05 look frame): `spill` 0..1 scales the screen's blue-white glow on the wall and floor (0 = the
+ *  tube is off, B05-SH01 L0). */
+export const paintTvCorner = (p: Painter, c: YCam, o: {spill?: number} = {}) => {
+  const spill = o.spill ?? 1;
   wFill(p, c, 34000, '#1b1f2a', qz(-1.2, -3, 3, 0, 2.6));
   for (let i = 0; i < 10; i++) wWash(p, c, 34001 + i, '#232838', 120, qz(-1.19, -3 + i * 0.6, -2.8 + i * 0.6, 0, 2.6), 0.1, 0.4); // wallpaper stripes in the dark
   wFill(p, c, 34020, '#14161d', qy(0, -3, 3, -1.2, 3));
@@ -404,8 +407,8 @@ export const paintTvCorner = (p: Painter, c: YCam) => {
   wFill(p, c, 34033, '#1a1d26', qx(-1.58, 0.98, 2.02, -0.37, -0.33));
   // the screen's blue-white spill on the wall and floor
   const g = camPoint(c, [0, 0.9, -1.15]); const u = camUnit(c, [0, 0.9, -1.15]);
-  if (g) glow(p, 34040, g[0], g[1], 1.4 * u, 1.0 * u, '#7f9cc8', 70);
-  const fg = camPoint(c, [0, 0.01, 0.2]); if (fg) glow(p, 34050, fg[0], fg[1], 1.1 * u, 0.25 * u, '#6f8cc0', 45);
+  if (g && spill > 0) glow(p, 34040, g[0], g[1], 1.4 * u, 1.0 * u, '#7f9cc8', 70 * spill);
+  const fg = camPoint(c, [0, 0.01, 0.2]); if (fg && spill > 0) glow(p, 34050, fg[0], fg[1], 1.1 * u, 0.25 * u, '#6f8cc0', 45 * spill);
   // stand, VCR, CRT body, bezel, antenna
   paintBox(p, c, 34100, {x0: -0.6, x1: 0.6, y0: 0, y1: 0.6, z0: -0.6, z1: -0.1}, '#3a2c22', {}, {ink: true});
   paintBox(p, c, 34101, {x0: -0.58, x1: 0.58, y0: 0.08, y1: 0.1, z0: -0.58, z1: -0.12}, '#2a2018', {}, {});
@@ -493,7 +496,9 @@ export const REVEAL = {
   lemon: {c: [-0.1, 0.015, 0.095] as V3, r: 0.03},
   camera: {c: [-0.07, 0, -0.13] as V3},
 };
-export const paintRevealTable = (p: Painter, c: YCam, o: {camera?: boolean} = {}) => {
+/** Plate options (W5.2 batch 2; defaults = the LF07 look frame): `camera: false` leaves the broken camera out (B07-SH02/SH03), `lemon: false`
+ *  leaves the lemon half out (B07-SH03 paints its own rocking and tipping lemon). */
+export const paintRevealTable = (p: Painter, c: YCam, o: {camera?: boolean; lemon?: boolean} = {}) => {
   wFill(p, c, 37000, '#2a1a10', qy(0, -1, 1, -1, 1));
   for (let i = 0; i < 22; i++) { const z = -0.9 + i * 0.085 + Math.sin(i * 2.3) * 0.02; wWash(p, c, 37001 + i, i % 3 ? '#3a2416' : '#22150c', 120, qy(0.0005, -1, 1, z, z + 0.018 + (i % 4) * 0.006), 0.15, 0.6); }
   // warm desk-lamp pool from upper left
@@ -511,7 +516,7 @@ export const paintRevealTable = (p: Painter, c: YCam, o: {camera?: boolean} = {}
   const R = REVEAL.print, a = R.rot * DEG, co = Math.cos(a), si = Math.sin(a);
   const corner = (dx: number, dz: number, o = 0): V3 => [R.c[0] + o + dx * co + dz * si, 0.0003, R.c[2] + o - dx * si + dz * co];
   wWash(p, c, 37120, '#0c0704', 160, [corner(-R.w / 2, -R.h / 2, 0.008), corner(R.w / 2, -R.h / 2, 0.008), corner(R.w / 2, R.h / 2, 0.008), corner(-R.w / 2, R.h / 2, 0.008)], 0.2, 0.1);
-  paintLemonHalf(p, c, 37200, REVEAL.lemon.c, REVEAL.lemon.r);
+  if (o.lemon !== false) paintLemonHalf(p, c, 37200, REVEAL.lemon.c, REVEAL.lemon.r);
   if (o.camera !== false) paintBrokenCamera(p, c, 37300, REVEAL.camera.c, {lying: true});
   // the falloff: dark vignette toward the frame edges (painted, keeps the pool clean)
 };

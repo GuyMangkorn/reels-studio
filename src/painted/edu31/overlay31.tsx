@@ -39,8 +39,9 @@ export const WorldTexts = ({cam, texts}: {cam: YCam; texts: WorldText[]}) => (
   </>
 );
 
-/** VD31-19 joke label: text, left x or centred, top y, font px, optional hand-drawn arrow (picture px, three points). */
-export type Tag31 = {text: string; x?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]};
+/** VD31-19 joke label: text, left x or centred (`center`: on the frame; `cx`: on that picture x, batch 2), top y, font px, optional hand-drawn
+ *  arrow (picture px, three points: start, control, tip). */
+export type Tag31 = {text: string; x?: number; cx?: number; y: number; size: number; center?: boolean; arrow?: [number, number][]};
 /** VD31-19 joke label (R6): cream Thai on a dark translucent rounded plate, outside every screen layer; the arrow is a soft hand-drawn stroke.
  *  `pop` 0..1 is the soft pop-in (scale 0.8 -> 1, a small overshoot, readable from its first frame), 1 = settled. */
 export const TagPlate = ({tag, pop = 1}: {tag: Tag31; pop?: number}) => {
@@ -51,7 +52,9 @@ export const TagPlate = ({tag, pop = 1}: {tag: Tag31; pop?: number}) => {
   const a = tag.arrow;
   return (
     <>
-      <div style={tag.center ? {position: 'absolute', left: 0, right: 0, top: tag.y, display: 'flex', justifyContent: 'center'} : {position: 'absolute', left: tag.x ?? 120, top: tag.y}}>{plate}</div>
+      <div style={tag.center ? {position: 'absolute', left: 0, right: 0, top: tag.y, display: 'flex', justifyContent: 'center'}
+        : tag.cx !== undefined ? {position: 'absolute', left: tag.cx - 540, width: 1080, top: tag.y, display: 'flex', justifyContent: 'center'}
+        : {position: 'absolute', left: tag.x ?? 120, top: tag.y}}>{plate}</div>
       {a && a.length > 2 && (() => {
         const [p0, p1, p2] = a, ang = Math.atan2(p2[1] - p1[1], p2[0] - p1[0]), L = 16;
         const h1 = [p2[0] - L * Math.cos(ang - 0.5), p2[1] - L * Math.sin(ang - 0.5)], h2 = [p2[0] - L * Math.cos(ang + 0.5), p2[1] - L * Math.sin(ang + 0.5)];
