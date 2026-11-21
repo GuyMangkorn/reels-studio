@@ -83,6 +83,34 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 
 **Default (user, 3 Nov 2026):** the coordinator proposes the open deliverable closest to W8 first; see [coordinator](coordinator.md#wip-limit).
 
+<a id="fast-lane"></a>
+### Fast lane: four user rounds
+
+**Default (user, 21 Nov 2026)** for every deliverable started after this rule; an open deliverable keeps the gates it started on ([DP04](contributing.md#tools-and-document-improvements)). The user decides in four **rounds**, and between rounds the agents run without waiting for the user. `delivery.md` records `Review: fast lane`. The user restores a gate for one deliverable by naming it (`Review: fast lane + hook pick`). Reason: the wait for the user between agent runs capped clips per day; one clip stopped for the user 13 times (category, concept, hook, script, look thumbnails, look lock, storyboard pass, voice sample, voice approval, draft, final, cover picture, cover text and title).
+
+| Round | The user decides, in one sitting | The agents then run through |
+| --- | --- | --- |
+| **R1 Pick** | the concept, or several (W0.3) | W1.1–W4.2: research, hook, script, fact-check, length check, brief, storyboard rows, look frames, the full read and its measure file |
+| **R2 Lock** | script, storyboard, look frames and voice together (W1.5, W3.2, W3.3, W4.3) | W5.1–W5.2s and the draft cut |
+| **R3 Draft** | the draft cut, shot by shot (W5.3), as in [W5](sequence-workflow.md#painted-shot-by-shot); kept as a user round (user, 21 Nov 2026: "ผมยังอยากดู draft อยู่") | W6 delivery render and the cover candidates |
+| **R4 Ship** | the Final file, the cover and the title (W6, [cover picks](../.agents/skills/cover-design/SKILL.md)) | W7 pin and W8.2 publish; the user posts (W8.3) |
+
+- **R1 Pick.** The user may pick several concepts in one ideation round. Each pick opens its own deliverable; they run in parallel ([coordinator](coordinator.md#agent-invocation)), and the coordinator brings deliverables that reach the same round into one sitting.
+- **R2 Lock.** One sitting on the review page's storyboard tab: the full Thai VO per shot is the script, the beat headers carry the look frames, and the coordinator sends the full read as a file with the page link (the page has no audio player: `missing`, 21 Nov 2026). A pass ticks W1.5, W3.2, W3.3 and W4.3 with the same user words. A change goes to its owner (VO text: Preaw, Boat on the changed claims, then a re-read under the [voice lock](#voice-lock); a shot or a look frame: Film), and the next R2 shows only what changed. The W2.3 page is still published as soon as the rows exist; nobody waits on it. Boss builds after R2 passes.
+- **R4 Ship.** The coordinator publishes the Final tab and asks the cover and title question in the same turn. A `change` on the Final file leaves the cover pick standing.
+
+**Picks the agents take between rounds.** Each is recorded in `delivery.md` (what was taken, and that the fast lane took it) and shown at the next round, where the user may overturn it:
+
+- **Category:** the last recorded [category pick](../channels/edu/categories.md#category-pick) stands for the next ideation round.
+- **Hook:** Preaw writes `hook-options.md`, then the script on its recommended option, in one invocation ([hook pick](#hook-pick)).
+- **Look thumbnails:** the [viewer check](sequence-workflow.md#viewer-check) picks the thumbnail that best fits [user taste](user-taste.md) ([thumbnails](sequence-workflow.md#look-thumbnails)).
+- **Voice setting:** the voice, style and pace of the channel's latest locked read. That setting is already user-picked, so the full read needs no sample ([sample before every full read](#sample-before-full-read)); any other setting samples first.
+- **Cover picture:** the candidate with the highest pick-1 score ([cover-design](../.agents/skills/cover-design/SKILL.md)). R4 shows the five texts on it and the sheet of the other four pictures.
+
+**Decide and flag.** Between rounds, a question that has a recommended option is answered with that option, recorded in `delivery.md` under `Taken for the user`, and listed at the next round. The coordinator asks mid-run only when no option lets the work continue (a missing input, a destructive step, a scope change). A shot group that reaches the [fix-pass cap](boss-asset-workflow.md#latest-production-rules) is parked with its question while the other shots continue, and the question is asked at the next round.
+
+Task-file steps keep their IDs. A step an agent took is ticked with `(fast lane: <what was taken>)`.
+
 <a id="length-check"></a>
 <a id="hook-pick"></a>
 ### Hook pick
@@ -92,6 +120,8 @@ Handoff checks apply to every stage: matching revisions, deliverable ID, covered
 1. **Preaw proposes** (one invocation, after Boat research) `scripts/<episode>/<short|long>/hook-options.md` and returns without writing the script. It holds 3–4 options for this story. Each option has a hook ID from the [hook catalogue](research/2026-11-16-shorts-hook-types.md#2-hook-catalogue) (or `new: <shape>`), the spoken Thai opening line(s), the beat shape in one line and the channel rules it bends (for example, HK04 pays the hook after ER02's ~30 %). One option is marked **recommended**, with one line on why it suits this story.
 2. **The coordinator asks the user** with the structured-question tool: one question whose options are the hook options, the recommended one first and labelled "(Recommended)", each showing its opening line. The user may pick one, merge two or write their own.
 3. `delivery.md` records the hook ID, the opening line and the user's words. Preaw writes the script with that hook. Where the picked hook bends a channel Default (ER01's hook shape), the pick is the recorded override, and Boat checks the script against the picked shape.
+
+Under the [fast lane](#fast-lane) the recommended option is taken without the question and the user sees the hook at R2.
 
 A Long picks one hook for its opening. Skip the question when the user names the hook in the prompt (record their words) and for re-edits of an existing script (`W1.1b N/A — <reason>`).
 

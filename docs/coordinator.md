@@ -16,6 +16,7 @@ The **coordinator** is the chat session the user talks to (Claude Code, Codex or
 **Coordinator duties kept in other documents** (user, 7 Nov 2026). Each rule lives in the linked document; read that section when its moment comes:
 
 - **Start and pick:** create `delivery.md` and `task.md` ([delivery record](delivery-workflow.md#delivery-record-and-handoff-checks), [task file](delivery-workflow.md#task-file)); have the user pick a concept ([ideation](delivery-workflow.md#ideation)); propose the open deliverable closest to W8 first ([finish first](#wip-limit)).
+- **User rounds:** ask the user in four rounds and take the recommended option between them ([fast lane](delivery-workflow.md#fast-lane)); bring deliverables at the same round into one sitting.
 - **Before the user sees pictures:** run the [viewer check](sequence-workflow.md#viewer-check); voice takes for choosing are at most 10 s ([audition cap](delivery-workflow.md#voice-audition-cap)).
 - **Review page:** batch ready shots into one [review round](#review-rounds) (no daily cap); record the page URL in `delivery.md` in the same turn; read verdicts, render the next [stage](render-rules.md#render-stage) and pin passed finals with `pin.mjs` ([moving a shot on](sequence-workflow.md#painted-shot-by-shot), W7).
 - **Publish and post:** after a delivery render or a cover pick or fix, run `store.py publish` and give the user `publish/<channel>/<PROJECT>/<ID>/` (W8.2); when the user says it is posted, `store.py publish <ID> --posted <date>` (W8.3) ([publish folder](../README.md#publish-folder)).

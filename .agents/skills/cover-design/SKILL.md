@@ -63,7 +63,7 @@ A Diagram (set or chart with a drawn measure line, circle or arrow) may replace 
 
 Each picture: one subject, the highest-contrast region on a low-detail ground (CV03), the payoff never shown, a calm band (top or middle) left for a headline and named in the cover comment. Graphic cues (red circle, arrow, measure line, cross) may be drawn now; they belong to the picture.
 
-Check at 270 px and 120 px (section 6), score the picture rows, hand back (section 7). The coordinator asks the user to pick one picture. Done when the user has picked.
+Check at 270 px and 120 px (section 6), score the picture rows, hand back (section 7). The coordinator asks the user to pick one picture. Done when the user has picked. Under the [fast lane](../../../docs/delivery-workflow.md#fast-lane) the highest-scoring picture is taken without the question, and pick 2 is asked with the Final verdict (R4), showing the sheet of the other four pictures.
 
 ## 3. Pick 2: five texts on the picked picture
 
