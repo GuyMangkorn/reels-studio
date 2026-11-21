@@ -1,0 +1,244 @@
+{
+ "tempo": 1.0,
+ "speech_end_s": 54.54,
+ "speech_end_frame": 1636,
+ "total_s": 56.31,
+ "total_frames": 1689,
+ "lines": [
+  {
+   "line": "L01",
+   "who": "NARR",
+   "file_start": 0.0,
+   "file_end": 7.64,
+   "speech_on": 0.04,
+   "speech_off": 7.57,
+   "frame_on": 1,
+   "frame_off": 227,
+   "dur": 7.53,
+   "pauses": [
+    [
+     2.55,
+     0.28
+    ],
+    [
+     5.97,
+     0.27
+    ]
+   ],
+   "text": "CIA หน่วยสืบราชการลับที่เก่งที่สุดในโลก… เคยผ่าตัดใส่ไมค์ที่หูแมว ฝังเครื่องส่งในตัว ถักเสาอากาศไว้ในขน"
+  },
+  {
+   "line": "L02",
+   "who": "NARR",
+   "file_start": 7.84,
+   "file_end": 10.64,
+   "speech_on": 7.93,
+   "speech_off": 10.59,
+   "frame_on": 238,
+   "frame_off": 318,
+   "dur": 2.66,
+   "pauses": [
+    [
+     8.45,
+     0.52
+    ]
+   ],
+   "text": "แมว ใช่ ตัวที่เรียกแล้วไม่เคยมาน่ะแหละ"
+  },
+  {
+   "line": "L03",
+   "who": "NARR",
+   "file_start": 10.84,
+   "file_end": 14.44,
+   "speech_on": 10.95,
+   "speech_off": 14.38,
+   "frame_on": 328,
+   "frame_off": 431,
+   "dur": 3.43,
+   "pauses": [],
+   "text": "แผนคือ… ให้แมวไปแอบฟังสายลับคุยกับหัวหน้าฝั่งโซเวียตในสวน"
+  },
+  {
+   "line": "L04",
+   "who": "AGENT",
+   "file_start": 14.64,
+   "file_end": 16.34,
+   "speech_on": 14.65,
+   "speech_off": 16.14,
+   "frame_on": 440,
+   "frame_off": 484,
+   "dur": 1.49,
+   "pauses": [],
+   "text": "ไม่มีใครระแวงแมวหรอก"
+  },
+  {
+   "line": "L05",
+   "who": "NARR",
+   "file_start": 16.54,
+   "file_end": 18.94,
+   "speech_on": 16.89,
+   "speech_off": 18.88,
+   "frame_on": 507,
+   "frame_off": 566,
+   "dur": 1.99,
+   "pauses": [
+    [
+     17.27,
+     0.28
+    ]
+   ],
+   "text": "ก็จริง… เพราะแมวไม่ทำงานให้ใครอยู่แล้ว"
+  },
+  {
+   "line": "L06",
+   "who": "NARR",
+   "file_start": 19.14,
+   "file_end": 21.0,
+   "speech_on": 19.43,
+   "speech_off": 21.01,
+   "frame_on": 583,
+   "frame_off": 630,
+   "dur": 1.58,
+   "pauses": [],
+   "text": "แต่พอปล่อยลงสนามทดสอบ…"
+  },
+  {
+   "line": "L07",
+   "who": "AGENT",
+   "file_start": 21.6,
+   "file_end": 24.46,
+   "speech_on": 21.6,
+   "speech_off": 24.29,
+   "frame_on": 648,
+   "frame_off": 729,
+   "dur": 2.69,
+   "pauses": [
+    [
+     22.83,
+     0.53
+    ]
+   ],
+   "text": "เป้าหมายอยู่ซ้าย… ซ้าย… มันไปนอนตากแดดแล้วครับ"
+  },
+  {
+   "line": "L08",
+   "who": "NARR",
+   "file_start": 24.81,
+   "file_end": 29.02,
+   "speech_on": 24.83,
+   "speech_off": 28.93,
+   "frame_on": 745,
+   "frame_off": 868,
+   "dur": 4.1,
+   "pauses": [],
+   "text": "CIA ยอมรับเองว่า แมวไปไหนก็ได้ตามใจ… ยกเว้นที่ที่เขาอยากให้ไป"
+  },
+  {
+   "line": "L09",
+   "who": "NARR",
+   "file_start": 29.22,
+   "file_end": 35.42,
+   "speech_on": 29.5,
+   "speech_off": 35.37,
+   "frame_on": 885,
+   "frame_off": 1061,
+   "dur": 5.87,
+   "pauses": [
+    [
+     31.54,
+     0.27
+    ],
+    [
+     32.99,
+     0.31
+    ]
+   ],
+   "text": "แล้วก็… อดีตเจ้าหน้าที่คนหนึ่งเล่าว่า แมวหนีงานเวลาหิว ทีมเลยต่อสายเพิ่ม ไว้กดความหิว"
+  },
+  {
+   "line": "L10",
+   "who": "NARR",
+   "file_start": 35.62,
+   "file_end": 37.54,
+   "speech_on": 35.99,
+   "speech_off": 37.45,
+   "frame_on": 1080,
+   "frame_off": 1124,
+   "dur": 1.46,
+   "pauses": [],
+   "text": "ทั้งที่จริง ๆ… ให้ข้าวก็จบแล้ว"
+  },
+  {
+   "line": "L11",
+   "who": "NARR",
+   "file_start": 37.74,
+   "file_end": 44.1,
+   "speech_on": 37.78,
+   "speech_off": 44.02,
+   "frame_on": 1133,
+   "frame_off": 1321,
+   "dur": 6.24,
+   "pauses": [
+    [
+     39.12,
+     0.32
+    ]
+   ],
+   "text": "ปี 1967 เอกสารลับของ CIA เรียกการฝึกแมวว่า \"ความสำเร็จทางวิทยาศาสตร์ที่น่าทึ่ง\""
+  },
+  {
+   "line": "L12",
+   "who": "NARR",
+   "file_start": 44.3,
+   "file_end": 46.89,
+   "speech_on": 44.78,
+   "speech_off": 46.48,
+   "frame_on": 1343,
+   "frame_off": 1394,
+   "dur": 1.7,
+   "pauses": [
+    [
+     45.37,
+     0.28
+    ]
+   ],
+   "text": "แต่สรุปว่า… ใช้งานจริงไม่ได้"
+  },
+  {
+   "line": "L13",
+   "who": "NARR",
+   "file_start": 47.09,
+   "file_end": 52.62,
+   "speech_on": 47.1,
+   "speech_off": 52.55,
+   "frame_on": 1413,
+   "frame_off": 1576,
+   "dur": 5.45,
+   "pauses": [
+    [
+     48.71,
+     0.29
+    ]
+   ],
+   "text": "เว็บ CIA ยังเขียนเองเลยว่า แมว \"มีความคิดของมันเอง\"… เรื่องที่คนเลี้ยงแมวทุกคน \"คุ้นเคยดี\""
+  },
+  {
+   "line": "L14",
+   "who": "NARR",
+   "file_start": 52.82,
+   "file_end": 54.71,
+   "speech_on": 52.83,
+   "speech_off": 54.54,
+   "frame_on": 1585,
+   "frame_off": 1636,
+   "dur": 1.71,
+   "pauses": [
+    [
+     53.12,
+     0.34
+    ]
+   ],
+   "text": "ใช่… ตัวที่เรียกแล้วไม่เคยมาน่ะแหละ"
+  }
+ ]
+}

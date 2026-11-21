@@ -6,7 +6,7 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 
 ## How a new round is filed
 
-1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C119**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
+1. Preaw writes one file per concept, `C61.md` onward (next free ID: **C125**), with the pitch and the [ER08](../../../channels/edu/script.md) pitch check, inside the round's picked [category](../../../channels/edu/categories.md#category-pick), and adds a row here with status `pitched` and the round ID (`R11`, ...).
 2. Film adds a `## Film annotation (W0.2)` section to each concept file of the round.
 3. After the user picks, the coordinator sets each row: `picked` (with the episode ID), `dropped`, or leaves `pitched`. Write the round's pick note (user's words, date) in `../delivery.md`.
 4. When the episode is published, set the row to `made`.
@@ -79,5 +79,11 @@ One row per concept the channel has made. Each concept has its own file `C<nn>.m
 | C116 | ไรเดอร์ที่ต้องส่งดาวนิวตรอนหนึ่งช้อนชา (CAT01) | pitched | - | R20 | [C116.md](C116.md) |
 | C117 | แมตช์ที่ทีมหนึ่งตั้งใจยิงเข้าประตูตัวเองเพื่อชนะ (CAT07) | pitched | - | R20 | [C117.md](C117.md) |
 | C118 | พระราชาที่แตะอะไรก็เป็นทอง แล้วเกือบอดตาย (wild card) (CAT06) | pitched | - | R20 | [C118.md](C118.md) |
+| C119 | CIA ทุ่มเงินหลายล้าน ฝึกแมวเป็นสายลับ (CAT02) | picked | EDU-EP32-SHORT | R21 | [C119.md](C119.md) |
+| C120 | หมาทำหน้ารู้สึกผิด ทั้งที่แมวเป็นคนทำ (CAT04) | picked | EDU-EP33-SHORT | R21 | [C120.md](C120.md) |
+| C121 | หมาออกมาฉี่ แล้ววิ่งฮาล์ฟมาราธอนได้ที่เจ็ด (CAT07) | pitched | - | R21 | [C121.md](C121.md) |
+| C122 | สวนสัตว์ที่นกแก้วด่าคนทั้งฝูง (CAT01) | dropped | - | R21 | [C122.md](C122.md) |
+| C123 | ปลาทองความจำสามวินาที แต่ขับรถเป็น (CAT01) | dropped | - | R21 | [C123.md](C123.md) |
+| C124 | จัดงานศพให้ทารันทูล่า แต่มันยังไม่ตาย (wild card) (CAT01) | dropped | - | R21 | [C124.md](C124.md) |
 
 Pitch lessons from past rounds: [lessons.md](lessons.md).

@@ -1,0 +1,813 @@
+{
+  "deliverable": "EDU-EP32-SHORT",
+  "sceneSheets": "EDU-EP32-SHEET-R1",
+  "video": "src/videos/edu-ep32",
+  "sources": ["src/videos/edu-ep32", "scripts/edu-series/ep32/short/sound-mix.py"],
+  "fps": 30,
+  "durationFrames": 1689,
+  "cues": [
+    {
+      "cue": "M1",
+      "shot": "B01-SH01",
+      "frame": 0,
+      "brief": "Original 1960s spy-jazz theme, muted trumpet lead, bongos, walking bass, surf-guitar lick, vibraphone, 116 bpm D minor, full swagger from L0.",
+      "id": "bed_spy-jazz-theme-full_01",
+      "origin": "generated",
+      "durationFrames": 229,
+      "note": "Section 1 of 6. Plays 0-229 and is CUT DEAD at G229 (file ends there, no fade). Attack on the first frame. Ducks under narration. Not listened."
+    },
+    {
+      "cue": "M2a",
+      "shot": "B02-SH01",
+      "frame": 329,
+      "brief": "Sly section: walking bass and brushes, no lead.",
+      "id": "bed_spy-jazz-sly-bass-brushes_01",
+      "origin": "generated",
+      "durationFrames": 189,
+      "note": "Plays 329-518 (189 f exact). Stops for the G518-G527 dead air. Hold low under the line. Not listened."
+    },
+    {
+      "cue": "M2b",
+      "shot": "B02-SH03",
+      "frame": 527,
+      "brief": "Walking bass resumes on \"เพราะ\" after the half-beat of dead air.",
+      "id": "bed_spy-jazz-sly-bass-brushes_02",
+      "origin": "generated",
+      "durationFrames": 56,
+      "note": "Plays 527-583 (56 f exact), stops on \"แต่\" (B03-SH01 F9 = G583). Start on a bar line (cut at 4 bars of M2a source). Not listened."
+    },
+    {
+      "cue": "M3",
+      "shot": "B03-SH01",
+      "frame": 614,
+      "brief": "Mission ticks, bongos + muted guitar, steady clock-like pulse.",
+      "id": "bed_spy-jazz-mission-ticks_01",
+      "origin": "generated",
+      "durationFrames": 83,
+      "note": "Plays 614-697 (83 f exact), drops out dead at G697 on \"มันไป\". Source pulse is steady, not rising: Editor may ride the gain up over the 2.8 s. Not listened."
+    },
+    {
+      "cue": "M4",
+      "shot": "B04-SH01",
+      "frame": 880,
+      "brief": "One low suspicious bowed-bass note, held.",
+      "id": "tone_bowed-bass-drone-d_01",
+      "origin": "library",
+      "durationFrames": 192,
+      "fit": "Steady bowed bass drone on D, 14 s, flat level (measured 1 s RMS -11 to -15 dB for the whole file): the held single note Film asks for, 6.4 s needed. Three new bowed-bass candidates all decayed within 4 s (M4 v1-v3), so the library file fits better than a new generation. D matches the D-minor theme by prompt, not verified by ear.",
+      "note": "Use 6.4 s of the 14 s file from its start; out at G1072 (B04-SH03 L0). Fade-in/out by Editor (EP08). Not listened."
+    },
+    {
+      "cue": "M5",
+      "shot": "B05-SH01",
+      "frame": 1133,
+      "brief": "Pompous slow brass, theme restated, swelling to the quote.",
+      "id": "bed_spy-brass-pompous-swell_01",
+      "origin": "generated",
+      "durationFrames": 222,
+      "note": "Plays 1133-1355 (222 f exact); the swell is in the file (1 s RMS -20 dB at 0-3 s to -10 dB at 7 s), so the library chorale was not layered. Cut dead at G1355 on \"ว่า…\". Not listened."
+    },
+    {
+      "cue": "M6",
+      "shot": "B06-SH01",
+      "frame": 1415,
+      "brief": "Theme slowed to a lone muted trumpet, amused.",
+      "id": "bed_spy-trumpet-lone-amused_01",
+      "origin": "generated",
+      "durationFrames": 166,
+      "note": "Plays 1415-1581 (166 f = 5.53 s; file 5.6 s with a baked 1.2 s fade-out). Editor pulls back on the \"...\" L89-L101. Not listened."
+    },
+    {
+      "cue": "M7",
+      "shot": "B06-SH02",
+      "frame": 1647,
+      "brief": "UT15 ending tag: lazy three-note muted trumpet, last note bends down like a yawn, decayed by G1688.",
+      "id": "stinger_trumpet-lazy-tag-ending_01",
+      "origin": "generated",
+      "durationFrames": 40,
+      "note": "Start the file at G1647. Three notes at about 0.0 / 0.38 / 0.76 s of the processed file (measured on the raw take, lead trimmed), so about G1647 / G1658 / G1670 against Film 1647 / 1657 / 1667; the last bends down and the file is fully decayed at 0.96 s = G1676, 12 f before the end. Shorter than the 1.4 s Film planned. Draft round 1 (21 Nov 2026, user: the end sounds cut off): the file's last note carries a baked 70 ms fade (-6 to -52 dB in 80 ms, ends at 0.96 s = G1676), so the mix keeps it to 0.80 s and slows the last 0.16 s to 0.3x (bend-down and decay over about 0.53 s, 20 ms crossfade; derived file in out/), plays 40 f = G1647-G1687; file unchanged in the library. Not listened."
+    },
+    {
+      "cue": "A1-B01",
+      "shot": "B01-SH01",
+      "frame": 0,
+      "brief": "Evening office room tone with faint lamp hum, very quiet, loop.",
+      "id": "room_office-night-lamp-hum_01",
+      "origin": "generated",
+      "durationFrames": 328,
+      "note": "Plays 0-328 (B01 whole; alone for 9 f before \"แมว\"). 13 s loop, 1 s seam crossfade baked. Source was near the noise floor and was normalized to -14 LUFS: expect hiss, keep it far under the voice. Not listened."
+    },
+    {
+      "cue": "A1-B05",
+      "shot": "B05-SH01",
+      "frame": 1131,
+      "brief": "Same office bed on the cut to B05.",
+      "id": "room_office-night-lamp-hum_01",
+      "origin": "generated",
+      "durationFrames": 558,
+      "note": "Plays 1131-1689 (557 f = 18.6 s: loop the 13 s file once and a half; the seam is crossfaded). Stays under B06 (no other ambience). Not listened."
+    },
+    {
+      "cue": "A2",
+      "shot": "B02-SH01",
+      "frame": 329,
+      "brief": "Park birds and breeze played thin and high-passed as if from the page.",
+      "id": "outdoor_park-birds-breeze_01",
+      "origin": "library",
+      "durationFrames": 285,
+      "fit": "Library file is park songbirds with a leaf breeze, 13 s, 1 s RMS -16 to -23 dB, steady: the brief itself says \"played thin and high-passed\", which is a treatment of exactly this kind of source. A new generation would be the same sound. Not verified for traffic by ear; spectral level is steady and bird-like.",
+      "note": "Plays 329-614 (fades out F24-F40 = G598-G614; lower in B02-SH02/03). Editor high-passes (about 900 Hz) and keeps it thin. Not listened."
+    },
+    {
+      "cue": "A3",
+      "shot": "B03-SH01",
+      "frame": 614,
+      "brief": "Field bed opening to full width: breeze in short grass, two near birds, no traffic.",
+      "id": "nature_training-field-afternoon_01",
+      "origin": "library",
+      "durationFrames": 379,
+      "fit": "Quiet field, late afternoon, soft wind in short grass with small birds, 60 s steady (1 s RMS -12 to -17 dB). Spectrogram of the first 20 s (checked): isolated bird chirps above 2 kHz and a low wind strip below 100 Hz, no broadband 100-500 Hz band that a traffic wash would show; low-band (below 120 Hz) RMS is 8 dB under overall level. No hard-edged events. Fits as well as a new generation.",
+      "note": "Plays 614-993 (379 f = 12.6 s; opens by F40, low in B03-SH04 and B04-SH01). Out at the corridor cut G993. Not listened."
+    },
+    {
+      "cue": "A4",
+      "shot": "B04-SH02",
+      "frame": 993,
+      "brief": "Corridor bed: steady fluorescent hum, faint building air, hard walls, loop.",
+      "id": "room_corridor-fluorescent-hum_01",
+      "origin": "generated",
+      "durationFrames": 138,
+      "note": "Plays 993-1130 (B04-SH02 and SH03, 4.6 s; the 11 s file is not looped). Out on the cut to B05 (G1131); the office tone A1 opens there. Not listened."
+    },
+    {
+      "cue": "C01-a",
+      "shot": "B01-SH02",
+      "frame": 113,
+      "brief": "Ink pen scratches a short line on drafting paper, then a tiny glassy ping; clever and smug.",
+      "id": "foley_pen-scratch-ping_01",
+      "origin": "generated",
+      "durationFrames": 7,
+      "note": "Take a of 3 (CO1). Plays G113 (candidate v3 of 4). File is 0.22 s, shorter than Film 0.5 s. Not listened."
+    },
+    {
+      "cue": "C01-b",
+      "shot": "B01-SH02",
+      "frame": 146,
+      "brief": "Same, second take.",
+      "id": "foley_pen-scratch-ping_02",
+      "origin": "generated",
+      "durationFrames": 7,
+      "note": "Take b (CO2) at G146 (candidate v1 of 4). Not listened."
+    },
+    {
+      "cue": "C01-c",
+      "shot": "B01-SH02",
+      "frame": 185,
+      "brief": "Same, third take, ping a step higher.",
+      "id": "foley_pen-scratch-ping_03",
+      "origin": "generated",
+      "durationFrames": 12,
+      "note": "Take c (CO3) at G185 (candidate v2, brightest of 4: zero-crossing 7.6 kHz vs 5.6-6.5 kHz). Not listened."
+    },
+    {
+      "cue": "C02-a",
+      "shot": "B01-SH03",
+      "frame": 318,
+      "brief": "One bored \"mrrp\", short rising trill 0.35 s max, unbothered, not friendly.",
+      "id": "creature_cat-mrrp-bored_02",
+      "origin": "generated",
+      "durationFrames": 15,
+      "note": "G318-G333 (file 0.50 s = 15 f). Starts on L02's last frame (f318); body (peak -6 dB re file peak, 0.22-0.36 s) sits in the L02-L03 gap (ends ~G329); soft decay 0.36-0.50 s (-10 to -28 dB, 130 ms fade) runs <=0.17 s into L03 (f328), under -10 dB after 0.375 s. Loosened from 0.36 s by user decision (abrupt end at peak). New file from 4 candidates (ep32_c02c v3 by measured decay); library `creature_cat-mrrp_01` not used (0.64 s soft trill, tone too soft). Not listened."
+    },
+    {
+      "cue": "C02-b",
+      "shot": "B06-SH02",
+      "frame": 1637,
+      "brief": "Callback: the same bored mrrp.",
+      "id": "creature_cat-mrrp-bored_02",
+      "origin": "generated",
+      "durationFrames": 15,
+      "note": "Same file as C02-a at G1637 (CL01 callback), now the 0.5 s soft-decay take. Not listened."
+    },
+    {
+      "cue": "C04",
+      "shot": "B02-SH01",
+      "frame": 328,
+      "brief": "Stiff card folder slid across felt, dry, 0.5 s.",
+      "id": "foley_card-folder-slide-felt_01",
+      "origin": "generated",
+      "durationFrames": 8,
+      "note": "G328 (L0). File 0.25 s. Not listened."
+    },
+    {
+      "cue": "C05",
+      "shot": "B02-SH01",
+      "frame": 332,
+      "brief": "Stiff card flaps snapping upright in a quick ripple, playful.",
+      "id": "foley_card-flaps-popup-snap_01",
+      "origin": "generated",
+      "durationFrames": 16,
+      "note": "G332 (L4). Candidate v3 of 3 (two snap events). Not listened."
+    },
+    {
+      "cue": "C06",
+      "shot": "B02-SH01",
+      "frame": 360,
+      "brief": "Light card sliding in a paper slot.",
+      "id": "foley_card-slot-slide_01",
+      "origin": "generated",
+      "durationFrames": 9,
+      "note": "G360 (L32). Not listened."
+    },
+    {
+      "cue": "C07",
+      "shot": "B02-SH02",
+      "frame": 485,
+      "brief": "Smug two-note muted-trumpet \"ta-daa\", small, dry, 0.5 s max.",
+      "id": "comedy_trumpet-smug-tada_01",
+      "origin": "generated",
+      "durationFrames": 10,
+      "note": "G485 after \"หรอก\"; ends by G495. Hit in the gap, not on a word. Not listened."
+    },
+    {
+      "cue": "C08",
+      "shot": "B02-SH03",
+      "frame": 540,
+      "brief": "Tiny cat yawn, airy then a high squeak, bored.",
+      "id": "creature_cat-yawn-squeak_01",
+      "origin": "generated",
+      "durationFrames": 17,
+      "note": "G540 (L40); ends G557. Not listened."
+    },
+    {
+      "cue": "C09",
+      "shot": "B03-SH01",
+      "frame": 590,
+      "brief": "Large sheet of paper swept past the ear, soft whoosh, falling through.",
+      "id": "whoosh_paper-sheet-fall-through_01",
+      "origin": "generated",
+      "durationFrames": 12,
+      "note": "G590 (F16); file 0.39 s ends G602 (Film window F16-F32 = G606). Peak at 0.24 s. Not listened."
+    },
+    {
+      "cue": "C10",
+      "shot": "B03-SH02",
+      "frame": 640,
+      "brief": "Walkie-talkie key-up click and short squelch, narrow band, before the agent line.",
+      "id": "electric_radio-keyup-squelch_01",
+      "origin": "generated",
+      "durationFrames": 8,
+      "note": "G640 (was G646; Draft round 1, 21 Nov 2026: the new L07 take starts at G648, so the click peak at 0.22 s moves from G652.6 to G646.6 = on the cut and the squelch ends at G648, before the voice; at G646 it sat on the voice onset and the voice+sound sum peaked at +3.8 dBFS), in the gap before the AGENT line. Click is at about 0.06-0.2 s; peak at 0.22 s. Candidate v4 of 4. Not listened."
+    },
+    {
+      "cue": "C10b",
+      "shot": "B03-SH03",
+      "frame": 731,
+      "brief": "Squelch-out as the transmission ends.",
+      "id": "electric_radio-squelch-out_01",
+      "origin": "generated",
+      "durationFrames": 9,
+      "note": "G731 (2 f after the new L07 take ends at G729; was G739 on the old take, Draft round 1, 21 Nov 2026); ends G740. Not listened."
+    },
+    {
+      "cue": "C11",
+      "shot": "B03-SH02",
+      "frame": 654,
+      "brief": "Steady radio static bed under the AGENT line, low.",
+      "id": "electric_radio-static-bed_01",
+      "origin": "generated",
+      "durationFrames": 80,
+      "note": "G654-G733 (80 f; Film window G654-G739 = 85 f: 5 f short, the 300 ms fade-out covers it; C10b closes it at G739). Library `electric_radio-static-burst_01` does not fit (bursts decaying to silence after 1 s). Not listened."
+    },
+    {
+      "cue": "C12",
+      "shot": "B03-SH03",
+      "frame": 691,
+      "brief": "Sparrow flutter then one bright chirp as it lands.",
+      "id": "creature_sparrow-flutter-chirp_01",
+      "origin": "generated",
+      "durationFrames": 16,
+      "note": "G691 (L2); chirp peak at 0.38 s = G702 (Film chirp L12 = G701). Not listened."
+    },
+    {
+      "cue": "C13",
+      "shot": "B03-SH03",
+      "frame": 707,
+      "brief": "Warm rising shimmer as the sun comes out, airy bells and leaves, no switch click.",
+      "id": "reveal_sun-shimmer-soft_01",
+      "origin": "generated",
+      "durationFrames": 19,
+      "note": "G707 (L18); file 0.64 s (Film 0.8 s), peak at 0.36 s. 150 ms fade-out baked. Not listened."
+    },
+    {
+      "cue": "C14",
+      "shot": "B03-SH03",
+      "frame": 729,
+      "brief": "Soft paw thump of a light cat landing on turf.",
+      "id": "creature_cat-paw-thump-turf_01",
+      "origin": "generated",
+      "durationFrames": 13,
+      "note": "G729 (L40); thump at 0.04 s. Not listened."
+    },
+    {
+      "cue": "C15-a",
+      "shot": "B03-SH03",
+      "frame": 769,
+      "brief": "Purr in from L80 (G769) to the B04-SH01 end.",
+      "id": "creature_cat-purr_01",
+      "origin": "library",
+      "durationFrames": 163,
+      "fit": "Cat purr 9.45 s, pulses and dips (1 s RMS -9 to -16 dB), generated for EP06 with the same Stable Audio model: a cat purr is a cat purr, nothing in Film description (a contented purr under the line) asks for more. Only the 163 f / 105 f cuts from it are used.",
+      "note": "Use the first 5.43 s of the 9.45 s file, G769-G932 (163 f); fade in/out by Editor. Library purr pulses and dips; not steady. Not listened."
+    },
+    {
+      "cue": "C15-b",
+      "shot": "B06-SH02",
+      "frame": 1583,
+      "brief": "Purr under the hold, rising at the hold, closer and warmer.",
+      "id": "creature_cat-purr_01",
+      "origin": "library",
+      "durationFrames": 105,
+      "fit": "Same file as C15-a.",
+      "note": "Use 3.5 s of the same file (source offset 5.0 s onward, away from the first cut), G1583-G1688. Editor raises it toward G1651. Not listened."
+    },
+    {
+      "cue": "C16-a",
+      "shot": "B03-SH04",
+      "frame": 790,
+      "brief": "Soft red pencil drawing a dotted line, close, dry, steady.",
+      "id": "foley_pencil-dotted-line_01",
+      "origin": "generated",
+      "durationFrames": 28,
+      "note": "G790-G818 (L4-L32, 28 f = 0.93 s of the file from 0 s). Stops for L32-L34. Not listened."
+    },
+    {
+      "cue": "C16-b",
+      "shot": "B03-SH04",
+      "frame": 820,
+      "brief": "Pencil continues after the drop.",
+      "id": "foley_pencil-dotted-line_01",
+      "origin": "generated",
+      "durationFrames": 42,
+      "note": "G820-G862 (L34-L76, 42 f = 1.4 s of the file from 0.5 s). Not listened."
+    },
+    {
+      "cue": "C17",
+      "shot": "B03-SH04",
+      "frame": 865,
+      "brief": "Deflating brass wah droop, 0.5 s, ends by the cut (Draft round 1: played as a 0.33 s hit with a 0.2 s decay).",
+      "id": "comedy_brass-wah-droop-short_01",
+      "origin": "generated",
+      "durationFrames": 10,
+      "note": "Start G865 (Film L80 = G866; 1 f earlier so the 0.51 s file ends G880 on the cut). Library `comedy_brass-note-wah-droop_01` is 1.8 s (too long to end by the cut), new file generated. Draft round 1 (21 Nov 2026, user: sounds cut off, make it a hit): the file holds -3 dB to 0.36 s and then falls 20 dB in 40 ms (-4 to -27 dB), a dead cut, with a -27 to -54 dB residue to 0.51 s. The mix now plays only the first 10 f (0.33 s, before the drop) and decays it with a 6 f (0.2 s) fade-out to zero at G875; no picture change."
+    },
+    {
+      "cue": "C18",
+      "shot": "B04-SH01",
+      "frame": 943,
+      "brief": "About six soft casual cat steps on short turf, 1.3 s.",
+      "id": "foley_cat-steps-turf_01",
+      "origin": "generated",
+      "durationFrames": 37,
+      "note": "G943-G980 (L63-L100). Source is quiet (peak -6 dB before normalizing) and the step events are soft; the take has 3 clear steps in 1.25 s. Not listened."
+    },
+    {
+      "cue": "C19",
+      "shot": "B04-SH02",
+      "frame": 997,
+      "brief": "Wooden door swung shut gently, latch click at L20, hard-walled corridor, final but not ominous.",
+      "id": "foley_door-swing-latch-corridor_01",
+      "origin": "generated",
+      "durationFrames": 33,
+      "note": "G997 (L4); latch peak at 0.54 s = G1013 (L20). Door shut frame G1013 per sheet. Not listened."
+    },
+    {
+      "cue": "C20-a",
+      "shot": "B04-SH02",
+      "frame": 1015,
+      "brief": "Card on its string tapping the wood, 0.3 s.",
+      "id": "foley_card-tap-wood_01",
+      "origin": "generated",
+      "durationFrames": 9,
+      "note": "G1015 (L22). Not listened."
+    },
+    {
+      "cue": "C20-b",
+      "shot": "B04-SH02",
+      "frame": 1023,
+      "brief": "Second tap.",
+      "id": "foley_card-tap-wood_01",
+      "origin": "generated",
+      "durationFrames": 9,
+      "note": "G1023 (L30). Not listened."
+    },
+    {
+      "cue": "C21",
+      "shot": "B04-SH03",
+      "frame": 1078,
+      "brief": "Light metal pet bowl slid on linoleum, small scrape and wobble.",
+      "id": "foley_steel-bowl-slide-lino_01",
+      "origin": "generated",
+      "durationFrames": 18,
+      "note": "G1078 (L6); file 0.61 s (Film 0.5 s). Not listened."
+    },
+    {
+      "cue": "C22",
+      "shot": "B04-SH03",
+      "frame": 1095,
+      "brief": "Dry kibble poured into a metal bowl, homely.",
+      "id": "foley_kibble-pour-steel-bowl_01",
+      "origin": "generated",
+      "durationFrames": 22,
+      "note": "G1095 (L23); pour peak at 0.5 s. Not listened."
+    },
+    {
+      "cue": "C23",
+      "shot": "B05-SH01",
+      "frame": 1201,
+      "brief": "A single sheet shifting on a folder, papery hiss.",
+      "id": "foley_paper-settle-folder_01",
+      "origin": "generated",
+      "durationFrames": 15,
+      "note": "G1201 (L70); file 0.5 s (Film 0.4 s), 100 ms fade-out. Not listened."
+    },
+    {
+      "cue": "C24-a",
+      "shot": "B05-SH02",
+      "frame": 1214,
+      "brief": "Typewriter strikes following the type-on, first run (L4-L37).",
+      "id": "foley_typewriter-keys-run_01",
+      "origin": "library",
+      "durationFrames": 33,
+      "fit": "Manual typewriter key strikes, steady and uneven, small office, close (4.2 s, quiet source). Film named it as a candidate; the description (strikes following a type-on) matches. Level was low in the file (1 s RMS -30 to -34 dB) and is peak-normalized to -1 dBFS at the library; Editor sets the mix gain.",
+      "note": "Use 1.1 s from the file start, G1214-G1247 (33 f). Not listened."
+    },
+    {
+      "cue": "C24-b",
+      "shot": "B05-SH02",
+      "frame": 1258,
+      "brief": "Typewriter strikes, second run (L48-L90).",
+      "id": "foley_typewriter-keys-run_01",
+      "origin": "library",
+      "durationFrames": 42,
+      "fit": "Same file as C24-a.",
+      "note": "Use 1.4 s from source offset 2.0 s, G1258-G1300 (42 f). Not listened."
+    },
+    {
+      "cue": "C25",
+      "shot": "B05-SH02",
+      "frame": 1321,
+      "brief": "Typewriter bell and carriage slide, pleased with itself.",
+      "id": "foley_typewriter-bell-carriage_01",
+      "origin": "generated",
+      "durationFrames": 16,
+      "note": "G1321 (L111); bell at the first frame; 120 ms fade-out; file 0.55 s (Film 0.4 s). Not listened."
+    },
+    {
+      "cue": "C26",
+      "shot": "B05-SH03",
+      "frame": 1368,
+      "brief": "Heavy rubber-stamp thud, weighty and final, landing in silence.",
+      "id": "foley_stamp-heavy-thud_01",
+      "origin": "generated",
+      "durationFrames": 28,
+      "note": "G1368 stamp impact: peak at 0.02 s, so start the file at G1368. Room tone only before it (M5 out G1355). Prominent cue: 4 candidates, picked v3 (impact first, tail 0.9 s); alternates in _raw: ep32_c26_stamp_v1, _v4 and the processed foley_stamp-heavy-thud_alt-v1. Library `foley_rubber-stamp-thunk_01` is 0.35 s, \"dull thunk\" (zero-crossing 0.4 kHz, very low), not weighty with a tail. Not listened."
+    },
+    {
+      "cue": "C27",
+      "shot": "B05-SH03",
+      "frame": 1397,
+      "brief": "Card folder cover dropped shut on paper, soft.",
+      "id": "foley_folder-cover-drop_01",
+      "origin": "generated",
+      "durationFrames": 12,
+      "note": "G1397 (L70). Not listened."
+    },
+    {
+      "cue": "C28",
+      "shot": "B06-SH01",
+      "frame": 1407,
+      "brief": "One printer sheet falling flat onto a desk, flutter then light pat at L20.",
+      "id": "foley_printout-drop-desk_01",
+      "origin": "generated",
+      "durationFrames": 29,
+      "note": "Start G1407 so the pat (file 0.80 s) lands at G1431 (L20); the flutter begins 4 f before the cut (G1411). Starting at 1411 puts the pat on G1435. Not listened."
+    },
+    {
+      "cue": "C29-a",
+      "shot": "B06-SH01",
+      "frame": 1470,
+      "brief": "Felt highlighter squeak on paper.",
+      "id": "foley_highlighter-squeak_01",
+      "origin": "generated",
+      "durationFrames": 10,
+      "note": "G1470 (L59). Not listened."
+    },
+    {
+      "cue": "C29-b",
+      "shot": "B06-SH01",
+      "frame": 1551,
+      "brief": "Second squeak.",
+      "id": "foley_highlighter-squeak_01",
+      "origin": "generated",
+      "durationFrames": 10,
+      "note": "G1551 (L140). Not listened."
+    },
+    {
+      "cue": "C30",
+      "shot": "B06-SH03",
+      "frame": 1675,
+      "brief": "Soft long fur dragged once across paper on a wooden desk, lazy, content.",
+      "id": "foley_cat-tail-paper-brush_01",
+      "origin": "generated",
+      "durationFrames": 14,
+      "note": "G1675 (L24); brush peak at 0.16 s. Source is very quiet (pre-normalize peak -17 to -23 dB); file 0.5 s (Film 0.3 s) with a 150 ms fade-out. Four candidates, picked v2 (loudest). Not listened."
+    }
+  ],
+  "swaps": [],
+  "exempt": [{"src": "audio/edu/EDU-EP32-SHORT-draft-stem-v1.wav", "reason": "stem baked by short/sound-mix.py from this sheet"}],
+  "levels": {
+    "stems": {
+      "voice": "out/stems/voice.wav",
+      "music": "out/stems/music.wav",
+      "ambience": "out/stems/ambience.wav",
+      "texture": "out/stems/texture.wav",
+      "accent": "out/stems/accent.wav"
+    },
+    "checks": [
+      {
+        "beat": "B01",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 0.0,
+        "toSec": 10.93
+      },
+      {
+        "beat": "B01",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 0.0,
+        "toSec": 10.93
+      },
+      {
+        "beat": "B01",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 0.0,
+        "toSec": 10.93
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 0.0,
+        "toSec": 10.93
+      },
+      {
+        "beat": "B02",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 10.93,
+        "toSec": 19.13
+      },
+      {
+        "beat": "B02",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 10.93,
+        "toSec": 19.13
+      },
+      {
+        "beat": "B02",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 10.93,
+        "toSec": 19.13
+      },
+      {
+        "beat": "B02",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 10.93,
+        "toSec": 19.13
+      },
+      {
+        "beat": "B03",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 19.13,
+        "toSec": 29.33
+      },
+      {
+        "beat": "B03",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 19.13,
+        "toSec": 29.33
+      },
+      {
+        "beat": "B03",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 19.13,
+        "toSec": 29.33
+      },
+      {
+        "beat": "B03",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 19.13,
+        "toSec": 29.33
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 19.13,
+        "toSec": 29.33
+      },
+      {
+        "beat": "B04",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 29.33,
+        "toSec": 37.7
+      },
+      {
+        "beat": "B04",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 29.33,
+        "toSec": 37.7
+      },
+      {
+        "beat": "B04",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 29.33,
+        "toSec": 37.7
+      },
+      {
+        "beat": "B04",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 29.33,
+        "toSec": 37.7
+      },
+      {
+        "beat": "B04",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 29.33,
+        "toSec": 37.7
+      },
+      {
+        "beat": "B05",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 37.7,
+        "toSec": 47.03
+      },
+      {
+        "beat": "B05",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 37.7,
+        "toSec": 47.03
+      },
+      {
+        "beat": "B05",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 37.7,
+        "toSec": 47.03
+      },
+      {
+        "beat": "B05",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 37.7,
+        "toSec": 47.03
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 37.7,
+        "toSec": 47.03
+      },
+      {
+        "beat": "B06",
+        "layer": "background",
+        "when": "speech",
+        "min": 15,
+        "fromSec": 47.03,
+        "toSec": 56.3
+      },
+      {
+        "beat": "B06",
+        "layer": "music",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 47.03,
+        "toSec": 56.3
+      },
+      {
+        "beat": "B06",
+        "layer": "ambience",
+        "when": "speech",
+        "warnAbove": 20,
+        "fromSec": 47.03,
+        "toSec": 56.3
+      },
+      {
+        "beat": "B06",
+        "layer": "texture",
+        "when": "speech",
+        "min": 18,
+        "fromSec": 47.03,
+        "toSec": 56.3
+      },
+      {
+        "beat": "B06",
+        "layer": "accent",
+        "when": "speech",
+        "min": 12,
+        "fromSec": 47.03,
+        "toSec": 56.3
+      },
+      {
+        "beat": "B01",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 10.6,
+        "toSec": 10.97,
+        "exception": "C02 mrrp sits in the L02-L03 gap"
+      },
+      {
+        "beat": "B03",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 21.53,
+        "toSec": 21.8,
+        "exception": "C10 key-up on the cut before the agent line"
+      },
+      {
+        "beat": "B05",
+        "layer": "music",
+        "when": "drop",
+        "min": 30,
+        "fromSec": 45.2,
+        "toSec": 45.57,
+        "exception": "M5 out at G1355, room tone only until the stamp"
+      },
+      {
+        "beat": "B05",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 45.6,
+        "toSec": 46.0,
+        "exception": "C26 stamp lands in silence at G1368"
+      },
+      {
+        "beat": "B06",
+        "layer": "accent",
+        "when": "peak",
+        "min": -6,
+        "max": 3,
+        "fromSec": 54.9,
+        "toSec": 56.27,
+        "exception": "M7 ending tag in the hold, after the last word"
+      }
+    ]
+  }
+}

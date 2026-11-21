@@ -1,4 +1,4 @@
-// Kit regression stills: fixed frames from the four painted episodes, one bundle.
+// Kit regression stills: fixed frames from four painted episodes and a standalone paper-card fixture.
 // Usage: node scripts/painted-kit/regress.mjs --out=DIR   -> DIR/<COMP>_F<frame>.png
 import {bundle} from '@remotion/bundler';
 import {openBrowser, renderStill, selectComposition} from '@remotion/renderer';
@@ -27,6 +27,10 @@ try {
     }
     console.log(id, composition.durationInFrames);
   }
+  const kitUrl = await bundle({entryPoint: path.resolve('src/painted/kit/edu32-intake-sheet.tsx')});
+  const kitId = 'KIT-EDU32-INTAKE';
+  const kit = await selectComposition({serveUrl: kitUrl, id: kitId, puppeteerInstance: browser, chromiumOptions});
+  await renderStill({serveUrl: kitUrl, composition: kit, puppeteerInstance: browser, chromiumOptions, frame: 0, output: `${out}/${kitId}_F0000.png`, imageFormat: 'png'});
 } finally {
   await browser.close({silent: true});
 }
