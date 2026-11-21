@@ -4,7 +4,7 @@ Record [delivery.md](delivery.md) · Updated 2026-11-21, coordinator
 
 ## EDU-EP31-SHORT
 
-**Now:** voice locked (W4 done, user approved 2026-11-21): Kore x1.05, short 59.82 s, [voice-lock.md](short/voice-lock.md). **Next:** W5 Draft (Film timed scene sheets, Boss assets/plates, Ton sounds)
+**Now:** storyboard ROWS-R6 passed 24/24 (2026-11-21), voice locked (W4 done, user approved 2026-11-21): Kore x1.05, short 59.82 s, [voice-lock.md](short/voice-lock.md). **Next:** W5 Draft (Film timed scene sheets, Boss assets/plates, Ton sounds)
 
 - [x] W0 Ideation
   - [x] W0.1 Preaw concepts — [C113 R20](../concepts/C113.md)

@@ -71,23 +71,23 @@
  },
  "B03-SH01@board": {
   "clip": "",
-  "hash": "ba41f07fe595",
+  "hash": "3bcafe25a33c",
   "note": "default (round 2026-11-21)",
-  "rev": "EDU-EP31-ROWS-R5",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B03-SH01",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T05:22:04Z"
+  "updatedAt": "2026-11-21T06:36:25Z"
  },
  "B03-SH02@board": {
   "clip": "",
-  "hash": "1e81871a0a0d",
+  "hash": "ee09bce1fa05",
   "note": "default (round 2026-11-21)",
-  "rev": "EDU-EP31-ROWS-R5",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B03-SH02",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T05:22:04Z"
+  "updatedAt": "2026-11-21T06:36:25Z"
  },
  "B03-SH03@board": {
   "clip": "",
@@ -101,13 +101,13 @@
  },
  "B03-SH04@board": {
   "clip": "",
-  "hash": "e94ec3fcdbb5",
+  "hash": "c4319a7b1e26",
   "note": "default (round 2026-11-21)",
-  "rev": "EDU-EP31-ROWS-R5",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B03-SH04",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T05:22:04Z"
+  "updatedAt": "2026-11-21T06:37:54Z"
  },
  "B03-SH05@board": {
   "clip": "",
@@ -211,32 +211,32 @@
  },
  "B07-SH01@board": {
   "clip": "",
-  "hash": "04fd3345bf7e",
-  "note": "",
-  "rev": "EDU-EP31-ROWS-R4",
+  "hash": "ffd71475e9f6",
+  "note": "default (round 2026-11-21)",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B07-SH01",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T04:31:23.039Z"
+  "updatedAt": "2026-11-21T06:37:54Z"
  },
  "B07-SH02@board": {
   "clip": "",
-  "hash": "a69627739200",
+  "hash": "22a589d19db8",
   "note": "default (round 2026-11-21)",
-  "rev": "EDU-EP31-ROWS-R5",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B07-SH02",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T05:22:04Z"
+  "updatedAt": "2026-11-21T06:36:25Z"
  },
  "B07-SH03@board": {
   "clip": "",
-  "hash": "3eb2f4a3eb5c",
+  "hash": "3301590159f7",
   "note": "default (round 2026-11-21)",
-  "rev": "EDU-EP31-ROWS-R5",
+  "rev": "EDU-EP31-ROWS-R6",
   "shot": "B07-SH03",
   "stage": "board",
   "status": "ok",
-  "updatedAt": "2026-11-21T05:22:04Z"
+  "updatedAt": "2026-11-21T06:36:25Z"
  }
 }

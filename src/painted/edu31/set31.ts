@@ -271,7 +271,7 @@ export const paintPendant = (p: Painter, c: YCam) => {
 // ------------------------------------------------------------------ new: instant-camera-1995-broken (R6)
 /** The kitchen's generic boxy instant camera (no brand) after the slam in B03-SH01: a star-cracked lens, the flash bar hanging off the
  *  top-right corner on a red and a yellow wire, a strip of grey tape across the top. User, 2026-11-21: the blank Polaroid is OUR gag ("the
- *  camera happened to be broken"), always shown with the joke label "มุกของเรา: กล้องดันพังพอดี", never as the documented cause (F006: cause unknown).
+ *  camera happened to be broken"), always shown with the joke label "สมมุติ: กล้องดันพังพอดี", never as the documented cause (F006: cause unknown).
  *  `at` = bottom centre on the surface. Standing: front (lens) toward +z. `lying`: on its back, lens up, camera top toward -z (B07 top view),
  *  the flash bar fallen flat beside the top-right corner. `spark`: a spark and a grey puff at the flash hinge (B03-SH04's shutter beat). */
 export const BROKEN_CAM = {w: 0.13, h: 0.1, d: 0.07};

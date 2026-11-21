@@ -35,7 +35,7 @@ export type LookDef = {
   paint: (p: Painter) => void;
 };
 /** VD31-19 (R6, user 2026-11-21): the broken camera is our joke, not the documented cause (F006: cause unknown). Exact text for Boat's recheck. */
-export const JOKE_LABEL = 'มุกของเรา: กล้องดันพังพอดี';
+export const JOKE_LABEL = 'สมมุติ: กล้องดันพังพอดี';
 export const CCTV_STILL = 'edu31/cctv-still-01.png';
 
 type FigOpts = Omit<FigureAtOpts, 't'>;
